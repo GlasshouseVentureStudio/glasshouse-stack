@@ -1,13 +1,13 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from 'tsup';
 
-export default defineConfig({
-  entry: {
-    ".": "src/index.tsx",
-  },
-  banner: {
-    js: "'use client'",
-  },
-  format: ["cjs", "esm"],
-  external: ["react"],
-  dts: true,
-});
+export default defineConfig([
+	{
+		entry: ['src/client/index.ts', 'src/client/**/*.{ts,tsx}', '!src/client/**/*.stories.{ts,tsx}'],
+		format: ['cjs', 'esm'],
+		outDir: 'dist/client',
+		banner: {
+			js: "'use client'",
+		},
+		external: ['react'],
+	},
+]);

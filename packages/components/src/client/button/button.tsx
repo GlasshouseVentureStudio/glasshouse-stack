@@ -3,7 +3,14 @@ export interface ButtonProps {
 }
 
 export function Button(props: ButtonProps) {
-	return <button type='button'>{props.children}</button>;
+	return (
+		<button
+			type='button'
+			{...props}
+		>
+			{props.children}
+		</button>
+	);
 }
 
 Button.displayName = 'Button';

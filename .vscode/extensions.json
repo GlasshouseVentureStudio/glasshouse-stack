@@ -1,0 +1,23 @@
+{
+	"recommendations": [
+		"gruntfuggly.todo-tree",
+		"esbenp.prettier-vscode",
+		"bradgashler.htmltagwrap",
+		"dbaeumer.vscode-eslint",
+		"eamodio.gitlens",
+		"visualstudioexptteam.vscodeintellicode",
+		"visualstudioexptteam.intellicode-api-usage-examples",
+		"visualstudioexptteam.vscodeintellicode-completions",
+		"atlassian.atlascode",
+		"aykutsarac.jsoncrack-vscode",
+		"mariusalchimavicius.json-to-ts",
+		"christian-kohler.path-intellisense",
+		"vunguyentuan.vscode-postcss",
+		"sibiraj-s.vscode-scss-formatter",
+		"mrmlnc.vscode-scss",
+		"stylelint.vscode-stylelint",
+		"bradlc.vscode-tailwindcss",
+		"eliostruyf.vscode-typescript-exportallmodules",
+		"inlang.vs-code-extension"
+	]
+}

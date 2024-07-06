@@ -1,31 +1,31 @@
 {
 	"name": "@glasshouse/utils",
 	"version": "0.0.0",
+	"license": "MIT",
+	"sideEffects": false,
 	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
-	"sideEffects": false,
-	"license": "MIT",
 	"files": [
 		"dist/**"
 	],
 	"scripts": {
 		"build": "tsup src/index.tsx --format esm,cjs --dts --external react",
+		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
 		"dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
-		"lint": "eslint \"src/**/*.ts*\"",
-		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
-	},
-	"devDependencies": {
-		"@glasshouse/typescript-config": "workspace:*",
-		"@types/react": "^18.2.61",
-		"@types/react-dom": "^18.2.19",
-		"eslint": "^8.57.0",
-		"@glasshouse/eslint-config": "workspace:*",
-		"tsup": "^8.0.2",
-		"typescript": "^5.3.3"
+		"lint": "eslint \"src/**/*.ts*\""
 	},
 	"dependencies": {
-		"react": "^18.2.0"
+		"react": "^18.3.1"
+	},
+	"devDependencies": {
+		"@glasshouse/eslint-config": "workspace:*",
+		"@glasshouse/typescript-config": "workspace:*",
+		"@types/react": "^18.3.3",
+		"@types/react-dom": "^18.3.0",
+		"eslint": "^8.57.0",
+		"tsup": "^8.1.0",
+		"typescript": "^5.5.3"
 	},
 	"publishConfig": {
 		"access": "public"

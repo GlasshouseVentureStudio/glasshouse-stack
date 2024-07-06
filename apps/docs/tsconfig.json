@@ -1,14 +1,11 @@
 {
-	"exclude": ["node_modules"],
-	"extends": "@glasshouse/typescript-config/nextjs.json",
-	"compilerOptions": {
-		"outDir": "dist",
-		"incremental": true,
-		"plugins": [
-			{
-				"name": "next"
-			}
-		]
-	},
-	"include": ["src", "next-env.d.ts", ".next/types/**/*.ts"]
+	"files": [],
+	"references": [
+		{
+			"path": "./tsconfig.app.json"
+		},
+		{
+			"path": "./tsconfig.node.json"
+		}
+	]
 }
