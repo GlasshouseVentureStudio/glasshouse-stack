@@ -1,24 +1,33 @@
 {
-  "private": true,
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "clean": "turbo clean && rm -rf node_modules",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "changeset": "changeset",
-    "version-packages": "changeset version",
-    "release": "turbo build --filter=docs^... && changeset publish"
-  },
-  "devDependencies": {
-    "@changesets/cli": "^2.27.1",
-    "eslint": "^8.57.0",
-    "prettier": "^3.2.5",
-    "turbo": "^2.0.6"
-  },
-  "packageManager": "pnpm@8.15.6",
-  "engines": {
-    "node": ">=18"
-  },
-  "name": "with-changesets"
+	"name": "with-changesets",
+	"private": true,
+	"scripts": {
+		"build": "turbo build",
+		"changeset": "changeset",
+		"clean": "turbo clean && rm -rf node_modules",
+		"dev": "turbo dev",
+		"format": "prettier --write \"**/*.{ts,tsx,md}\"",
+		"lint": "turbo lint",
+		"prepare": "husky",
+		"release": "turbo build --filter=docs^... && changeset publish",
+		"version-packages": "changeset version"
+	},
+	"devDependencies": {
+		"@changesets/cli": "^2.27.1",
+		"@commitlint/cli": "^19.3.0",
+		"@commitlint/config-conventional": "^19.2.2",
+		"@commitlint/types": "^19.0.3",
+		"@vercel/style-guide": "^5.2.0",
+		"eslint": "^8.57.0",
+		"husky": "^9.0.11",
+		"lint-staged": "^15.2.7",
+		"prettier": "^3.2.5",
+		"prettier-plugin-packagejson": "^2.5.0",
+		"prettier-plugin-tailwindcss": "^0.6.5",
+		"turbo": "^2.0.6"
+	},
+	"packageManager": "pnpm@8.15.6",
+	"engines": {
+		"node": ">=18"
+	}
 }

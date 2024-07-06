@@ -7,11 +7,16 @@
 		"next.js",
 		"react-internal.js"
 	],
+	"dependencies": {
+		"eslint-plugin-simple-import-sort": "^12.1.1"
+	},
 	"devDependencies": {
 		"@next/eslint-plugin-next": "^14.1.4",
 		"@typescript-eslint/eslint-plugin": "^7.1.0",
 		"@typescript-eslint/parser": "^7.1.0",
 		"@vercel/style-guide": "^5.2.0",
+		"eslint-config-airbnb": "^19.0.4",
+		"eslint-config-airbnb-typescript": "^18.0.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-config-turbo": "^2.0.0",
 		"eslint-plugin-only-warn": "^1.1.0",
