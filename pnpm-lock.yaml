@@ -117,6 +117,9 @@ importers:
       '@glasshouse/components':
         specifier: workspace:*
         version: link:../../packages/components
+      '@storybook/addon-a11y':
+        specifier: ^8.1.11
+        version: 8.1.11
       '@storybook/addon-essentials':
         specifier: ^8.1.11
         version: 8.1.11(@types/react-dom@18.3.0)(@types/react@18.3.3)(prettier@3.3.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -253,6 +256,9 @@ importers:
       '@storybook/react':
         specifier: ^8.1.11
         version: 8.1.11(prettier@3.3.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.5.3)
+      '@storybook/test':
+        specifier: ^8.1.11
+        version: 8.1.11
       '@tabler/icons-react':
         specifier: ^3.9.0
         version: 3.9.0(react@18.3.1)
@@ -1947,6 +1953,9 @@ packages:
   '@sindresorhus/merge-streams@2.3.0':
     resolution: {integrity: sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==}
     engines: {node: '>=18'}
+
+  '@storybook/addon-a11y@8.1.11':
+    resolution: {integrity: sha512-JFiY/ASwMOCf3MOi7GtKOvLn62jhcIYV2he90l1SSnXxsDmurETVumyAdTQtQtUQpAJI+l0Ed4uLVjzAxkGreg==}
 
   '@storybook/addon-actions@8.1.11':
     resolution: {integrity: sha512-jqYXgBgOVInStOCk//AA+dGkrfN8R7rDXA4lyu82zM59kvICtG9iqgmkSRDn0Z3zUkM+lIHZGoz0aLVQ8pxsgw==}
@@ -8202,6 +8211,11 @@ snapshots:
   '@sinclair/typebox@0.27.8': {}
 
   '@sindresorhus/merge-streams@2.3.0': {}
+
+  '@storybook/addon-a11y@8.1.11':
+    dependencies:
+      '@storybook/addon-highlight': 8.1.11
+      axe-core: 4.9.1
 
   '@storybook/addon-actions@8.1.11':
     dependencies:
