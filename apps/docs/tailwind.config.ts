@@ -6,6 +6,7 @@ const config: Config = {
 		'./src/**/*.{js,ts,jsx,tsx}',
 		'./src/**/*.stories.{js,ts,jsx,tsx}',
 		'./node_modules/@glasshouse/components/dist/**/*.{js,ts,jsx,tsx}',
+		'../../packages/components/src/**/*.{js,ts,jsx,tsx}',
 	],
 	theme: {
 		extend: {},

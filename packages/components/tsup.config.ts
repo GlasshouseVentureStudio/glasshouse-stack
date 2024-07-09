@@ -8,6 +8,6 @@ export default defineConfig([
 		banner: {
 			js: "'use client'",
 		},
-		external: ['react'],
+		external: ['react', '@mantine/core', '@tanstack/react-query'],
 	},
 ]);

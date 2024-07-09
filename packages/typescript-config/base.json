@@ -16,5 +16,6 @@
 		"skipLibCheck": true,
 		"strict": true
 	},
+	"extends": "@vercel/style-guide/typescript/node20",
 	"exclude": ["node_modules"]
 }

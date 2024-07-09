@@ -3,6 +3,7 @@
 	"version": "0.0.0",
 	"license": "MIT",
 	"sideEffects": false,
+	"type": "module",
 	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
@@ -10,13 +11,16 @@
 		"dist/**"
 	],
 	"scripts": {
-		"build": "tsup src/index.tsx --format esm,cjs --dts --external react",
+		"build": "tsup --dts",
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-		"dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
+		"dev": "tsup --dts --watch",
 		"lint": "eslint \"src/**/*.ts*\""
 	},
 	"dependencies": {
-		"react": "^18.3.1"
+		"clsx": "^2.1.1",
+		"react": "^18.3.1",
+		"tailwind-merge": "^2.4.0",
+		"tailwind-variants": "^0.2.1"
 	},
 	"devDependencies": {
 		"@glasshouse/eslint-config": "workspace:*",

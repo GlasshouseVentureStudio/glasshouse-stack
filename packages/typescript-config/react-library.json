@@ -3,9 +3,21 @@
 	"display": "React Library",
 	"extends": "./base.json",
 	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"lib": ["DOM", "ESNext"],
+		"declaration": true,
+		"sourceMap": true,
+		"moduleResolution": "Node",
+		"skipLibCheck": true,
+		"strict": true,
+		"isolatedModules": true,
+		"noFallthroughCasesInSwitch": true,
 		"jsx": "react-jsx",
-		"lib": ["dom", "ES2015"],
-		"module": "NodeNext",
-		"target": "es6"
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"allowSyntheticDefaultImports": true,
+		"downlevelIteration": true,
+		"noImplicitAny": false
 	}
 }
