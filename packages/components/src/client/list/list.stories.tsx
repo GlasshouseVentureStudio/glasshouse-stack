@@ -188,3 +188,22 @@ export const OnItemClick: ListStory = {
 		},
 	},
 };
+
+/**
+ * [ScrollArea](https://mantine.dev/core/scroll-area/) is baked into `List`.
+ */
+export const ScrollArea: ListStory = {
+	args: {
+		data: items,
+		itemKey: 'id',
+		renderItem: item => (
+			<div className='max-w-80 border-b px-3 py-1 last:border-b-0'>
+				<h3 className='line-clamp-2 font-semibold'>{item.title}</h3>
+				<p className='line-clamp-2 text-sm text-gray-700'>{item.description}</p>
+			</div>
+		),
+		classNames: {
+			root: 'h-96',
+		},
+	},
+};

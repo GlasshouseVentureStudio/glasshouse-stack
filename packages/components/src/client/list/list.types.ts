@@ -5,8 +5,12 @@
  */
 
 import { type SlotsToClasses } from '@glasshouse/utils';
+import { type ScrollAreaProps } from '@mantine/core';
 
 import { type ListSlots, type ListVariantProps } from './list.styles';
+
+type OmittedComponentProps<T extends React.ElementType> = Omit<React.ComponentPropsWithoutRef<T>, 'style'>;
+type OmittedScrollAreaProps = Omit<ScrollAreaProps, 'classNames' | 'className'>;
 
 /**
  * Props for the List component.
@@ -16,7 +20,7 @@ import { type ListSlots, type ListVariantProps } from './list.styles';
  *
  * @template T - The type of items in the list.
  */
-export interface ListProps<T> extends React.ComponentPropsWithoutRef<'ul'>, ListVariantProps {
+export interface ListProps<T> extends OmittedComponentProps<'div'>, OmittedScrollAreaProps, ListVariantProps {
 	/**
 	 * An array of items to render in the list.
 	 */
@@ -76,4 +80,5 @@ export interface ListProps<T> extends React.ComponentPropsWithoutRef<'ul'>, List
 	 * Whether the list should have a border.
 	 */
 	bordered?: boolean;
+	listClassNames?: ScrollAreaProps['classNames'];
 }

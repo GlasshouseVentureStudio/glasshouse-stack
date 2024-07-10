@@ -3,6 +3,7 @@ import { tv, type VariantProps } from 'tailwind-variants';
 export const list = tv({
 	slots: {
 		root: 'w-fit rounded',
+		list: 'w-fit rounded',
 		item: 'px-2 py-1 text-base',
 		sectionHeader: 'bg-background-3 text-foreground-2 sticky top-0 z-10 border-y p-1 text-xs',
 	},

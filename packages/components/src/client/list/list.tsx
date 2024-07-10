@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-qualifier -- Necessary */
 import * as React from 'react';
 import { forwardRef } from 'react';
-import { Box } from '@mantine/core';
+import { Box, ScrollArea } from '@mantine/core';
 import cx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -14,7 +14,7 @@ declare module 'react' {
 	): (props: P & React.RefAttributes<T>) => React.ReactNode | null;
 }
 
-const ListInner = <T,>(props: ListProps<T>, ref: React.ForwardedRef<HTMLUListElement>) => {
+const ListInner = <T,>(props: ListProps<T>, ref: React.ForwardedRef<HTMLDivElement>) => {
 	const {
 		className,
 		classNames,
@@ -25,9 +25,10 @@ const ListInner = <T,>(props: ListProps<T>, ref: React.ForwardedRef<HTMLUListEle
 		getItemLabel,
 		onItemClick,
 		bordered,
+		listClassNames,
 		...rest
 	} = props;
-	const { root, item: itemStyles } = list({ bordered });
+	const { root, item: itemStyles, list: listStyles } = list({ bordered });
 
 	const baseStyles = twMerge(cx(className, classNames?.root));
 
@@ -76,14 +77,19 @@ const ListInner = <T,>(props: ListProps<T>, ref: React.ForwardedRef<HTMLUListEle
 	const items = data.map((item, index) => renderInnerItem(item, index));
 
 	return (
-		<Box
-			component='ul'
-			{...rest}
-			className={root({ className: baseStyles })}
+		<ScrollArea
 			ref={ref}
+			className={root({ className: baseStyles })}
+			classNames={listClassNames}
+			{...rest}
 		>
-			{items}
-		</Box>
+			<Box
+				component='ul'
+				className={listStyles({ className: classNames?.list })}
+			>
+				{items}
+			</Box>
+		</ScrollArea>
 	);
 };
 

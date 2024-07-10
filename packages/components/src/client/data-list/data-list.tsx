@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useMemo, useRef } from 'react';
-import { ScrollAreaAutosize } from '@mantine/core';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import map from 'lodash.map';
 import _orderBy from 'lodash.orderby';
@@ -68,11 +67,10 @@ export const DataList = <T,>({ queryKey, queryFn, groupByFn, iteratees, orders, 
 	}, [fetchNextPage, hasNextPage]);
 
 	return (
-		<ScrollAreaAutosize>
-			<List
-				{...props}
-				data={items}
-			/>
-		</ScrollAreaAutosize>
+		<List
+			{...props}
+			className='h-96'
+			data={items}
+		/>
 	);
 };
