@@ -12,6 +12,7 @@
 		"storybook": "storybook dev --no-open -p 3000"
 	},
 	"dependencies": {
+		"@faker-js/faker": "^8.4.1",
 		"@glasshouse/components": "workspace:*",
 		"@glasshouse/utils": "workspace:*",
 		"@mantine/carousel": "^7.11.1",

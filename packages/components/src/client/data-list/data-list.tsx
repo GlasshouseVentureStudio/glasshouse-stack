@@ -1,9 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import map from 'lodash.map';
-import _orderBy from 'lodash.orderby';
 
 import { List } from '../list';
 import { type DataListProps } from './data-list.types';
@@ -14,7 +12,7 @@ const DEFAULT_PAGE_SIZE = 50;
 /**
  * A component that renders a list of items fetched from a query. This component uses the `useInfiniteQuery` hook from `react-query` to fetch data in pages. It also supports grouping items by a key. The list is rendered using the `List` component.
  */
-export const DataList = <T,>({ queryKey, queryFn, groupByFn, iteratees, orders, ...props }: DataListProps<T>) => {
+export const DataList = <T extends object>({ queryKey, queryFn, ...props }: DataListProps<T>) => {
 	const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
 		queryKey,
 		queryFn,
@@ -31,16 +29,7 @@ export const DataList = <T,>({ queryKey, queryFn, groupByFn, iteratees, orders, 
 		refetchOnWindowFocus: false,
 	});
 
-	const items = useMemo(
-		() => _orderBy(data?.pages.map(d => d ?? []).flat() ?? [], iteratees, orders),
-		[data?.pages, iteratees, orders]
-	);
-
-	const groups = useMemo(() => {
-		const grouped = groupByFn?.(items);
-
-		return map(grouped, (value, key) => ({ key, value }));
-	}, [groupByFn, items]);
+	const items = data?.pages.map(d => d ?? []).flat() ?? [];
 
 	const loaderRef = useRef<HTMLLIElement>(null);
 
@@ -69,7 +58,6 @@ export const DataList = <T,>({ queryKey, queryFn, groupByFn, iteratees, orders, 
 	return (
 		<List
 			{...props}
-			className='h-96'
 			data={items}
 		/>
 	);
