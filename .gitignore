@@ -12,3 +12,7 @@ server/dist
 public/dist
 .turbo
 storybook-static
+build-storybook.log
+chromatic.log
+chromatic-build-*.xml
+chromatic-diagnostics.json

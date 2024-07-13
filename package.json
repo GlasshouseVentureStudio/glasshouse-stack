@@ -4,6 +4,7 @@
 	"scripts": {
 		"build": "turbo build",
 		"changeset": "changeset",
+		"chromatic": "turbo chromatic",
 		"clean": "turbo clean && rm -rf node_modules",
 		"dev": "turbo dev",
 		"format": "prettier --write \"**/*.{ts,tsx,md}\"",

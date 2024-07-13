@@ -6,6 +6,7 @@
 	"scripts": {
 		"build": "storybook build",
 		"build-storybook": "storybook build",
+		"chromatic": "chromatic --exit-zero-on-changes",
 		"dev": "storybook dev --no-open -p 3000",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview",
@@ -56,6 +57,7 @@
 		"@typescript-eslint/parser": "^7.15.0",
 		"@vitejs/plugin-react": "^4.3.1",
 		"autoprefixer": "^10.4.19",
+		"chromatic": "^11.5.5",
 		"eslint": "^8.57.0",
 		"eslint-plugin-react-hooks": "^4.6.2",
 		"eslint-plugin-react-refresh": "^0.4.7",

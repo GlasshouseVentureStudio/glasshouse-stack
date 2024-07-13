@@ -1,0 +1,20 @@
+image: node:iron
+
+pipelines:
+  default:
+    - step:
+        name: 'Run Chromatic'
+        caches:
+          - node
+        script:
+          - corepack enable
+          - pnpm install
+          - pnpm chromatic
+  pull-requests:
+    feature/*:
+      - step:
+          name: 'Run Chromatic'
+          script:
+            - corepack enable
+            - pnpm install
+            - pnpm chromatic
