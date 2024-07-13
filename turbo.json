@@ -10,9 +10,7 @@
 			"outputs": ["coverage/**"],
 			"dependsOn": []
 		},
-		"chromatic": {
-			"dependsOn": ["^build"]
-		},
+		"chromatic": {},
 		"lint": {},
 		"dev": {
 			"cache": false,
