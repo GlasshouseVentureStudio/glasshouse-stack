@@ -4,7 +4,15 @@
 	"license": "MIT",
 	"sideEffects": false,
 	"type": "module",
-	"main": "./dist/index.js",
+	"exports": {
+		".": {
+			"source": "./src/index.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs",
+			"default": "./dist/index.js"
+		}
+	},
+	"main": "./src/index.ts",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
 	"files": [
