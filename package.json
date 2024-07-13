@@ -3,6 +3,7 @@
 	"private": true,
 	"scripts": {
 		"build": "turbo build",
+		"build:packages": "turbo build --filter=docs^...",
 		"changeset": "changeset",
 		"chromatic": "turbo chromatic",
 		"clean": "turbo clean && rm -rf node_modules",
