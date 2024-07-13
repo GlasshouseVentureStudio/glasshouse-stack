@@ -10,4 +10,10 @@ export default defineConfig([
 		},
 		external: ['react', '@mantine/core', '@tanstack/react-query'],
 	},
+	{
+		entry: ['src/server/index.ts', 'src/server/**/*.{ts,tsx}'],
+		format: ['cjs', 'esm'],
+		outDir: 'dist/server',
+		external: ['react', '@mantine/core', '@tanstack/react-query'],
+	},
 ]);

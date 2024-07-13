@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { faker } from '@faker-js/faker';
-import { Box } from '@mantine/core';
+import { Box, Group, Stack, Switch } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
 import groupBy from 'lodash.groupby';
 
@@ -106,10 +107,44 @@ export const Horizontal: ListStory = {
 	},
 };
 
-export const Header: ListStory = {
+export const HeaderFooter: ListStory = {
 	args: {
 		...Default.args,
-		header: <Box className='bg-blue-100 px-3 py-1 font-bold uppercase'>Header</Box>,
+		header: <Box className='sticky top-0 bg-blue-100 px-3 py-1 font-bold uppercase'>Header</Box>,
+		footer: <Box className='bg-blue-100 px-3 py-1 font-bold uppercase'>Footer</Box>,
+		className: 'h-80',
+		stickyHeader: true,
+		stickyFooter: false,
+	},
+	render: args => {
+		const [stickyHeader, setStickyHeader] = useState(args.stickyHeader);
+		const [stickyFooter, setStickyFooter] = useState(args.stickyFooter);
+
+		return (
+			<Stack>
+				<List
+					{...args}
+					stickyFooter={stickyFooter}
+					stickyHeader={stickyHeader}
+				/>
+				<Group>
+					<Switch
+						checked={stickyHeader}
+						label='Sticky header'
+						onChange={event => {
+							setStickyHeader(event.currentTarget.checked);
+						}}
+					/>
+					<Switch
+						checked={stickyFooter}
+						label='Sticky footer'
+						onChange={event => {
+							setStickyFooter(event.currentTarget.checked);
+						}}
+					/>
+				</Group>
+			</Stack>
+		);
 	},
 };
 
@@ -120,6 +155,9 @@ export const Loading: ListStory = {
 	},
 };
 
+/**
+ * Group data using `groupByFn` and `renderGroupHeader` must be provided, group header can by sticky.
+ */
 export const Grouped: ListStory = {
 	args: {
 		...Default.args,
@@ -127,12 +165,25 @@ export const Grouped: ListStory = {
 		groupByFn: items => groupBy(items, item => item.name.toLowerCase()[0]),
 		renderGroupHeader: title => <Box className='bg-blue-100 px-3 font-bold uppercase'>{title}</Box>,
 		className: 'h-96',
+		stickyGroupHeader: false,
 	},
-};
+	render: args => {
+		const [sticky, setSticky] = useState(args.stickyGroupHeader);
 
-export const StickyGrouped: ListStory = {
-	args: {
-		...Grouped.args,
-		stickyGroupHeader: true,
+		return (
+			<Stack>
+				<List
+					{...args}
+					stickyGroupHeader={sticky}
+				/>
+				<Switch
+					checked={sticky}
+					label='Sticky group header'
+					onChange={event => {
+						setSticky(event.currentTarget.checked);
+					}}
+				/>
+			</Stack>
+		);
 	},
 };

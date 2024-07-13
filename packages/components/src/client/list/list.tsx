@@ -43,7 +43,13 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		...rest
 	} = props;
 
-	const { root, item: itemStyles, list: listStyles } = list({ bordered, stickyHeader, stickyFooter, orientation });
+	const {
+		root,
+		item: itemStyles,
+		list: listStyles,
+		header: headerStyles,
+		footer: footerStyles,
+	} = list({ bordered, stickyHeader, stickyFooter, orientation });
 
 	const baseStyles = twMerge(cx(className, classNames?.root));
 
@@ -174,7 +180,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 			{...rest}
 		>
 			<LoadingOverlay visible={loading} />
-			{header ? <Box>{header}</Box> : null}
+			{header ? <Box className={headerStyles({ className: classNames?.header })}>{header}</Box> : null}
 			<Box
 				className={listStyles({ className: classNames?.list })}
 				component='ul'
@@ -182,7 +188,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 			>
 				{items}
 			</Box>
-			{footer ? <Box>{footer}</Box> : null}
+			{footer ? <Box className={footerStyles({ className: classNames?.footer })}>{footer}</Box> : null}
 		</ScrollArea>
 	);
 };

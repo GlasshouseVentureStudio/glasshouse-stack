@@ -13,7 +13,7 @@ const DEFAULT_PAGE_SIZE = 50;
  * A component that renders a list of items fetched from a query. This component uses the `useInfiniteQuery` hook from `react-query` to fetch data in pages. It also supports grouping items by a key. The list is rendered using the `List` component.
  */
 export const DataList = <T extends object>({ queryKey, queryFn, ...props }: DataListProps<T>) => {
-	const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+	const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery({
 		queryKey,
 		queryFn,
 		initialPageParam: DEFAULT_PAGE_INDEX,
@@ -59,6 +59,7 @@ export const DataList = <T extends object>({ queryKey, queryFn, ...props }: Data
 		<List
 			{...props}
 			data={items}
+			loading={isLoading}
 		/>
 	);
 };
