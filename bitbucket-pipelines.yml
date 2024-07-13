@@ -9,7 +9,7 @@ pipelines:
         script:
           - corepack enable
           - pnpm install
-          - pnpm chromatic
+          - pnpm chromatic -- --project-token=$CHROMATIC_PROJECT_TOKEN
   pull-requests:
     feature/*:
       - step:
@@ -17,4 +17,4 @@ pipelines:
           script:
             - corepack enable
             - pnpm install
-            - pnpm chromatic
+            - pnpm chromatic -- --project-token=$CHROMATIC_PROJECT_TOKEN
