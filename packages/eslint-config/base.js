@@ -46,15 +46,5 @@ module.exports = {
 			{ blankLine: 'always', prev: '*', next: ['if', 'try', 'switch', 'for', 'while'] },
 			{ blankLine: 'always', prev: ['if', 'try', 'switch', 'for', 'while'], next: '*' },
 		],
-		'react/jsx-sort-props': [
-			2,
-			{
-				ignoreCase: true,
-				callbacksLast: false,
-				shorthandFirst: false,
-				reservedFirst: true,
-				multiline: 'last',
-			},
-		],
 	},
 };

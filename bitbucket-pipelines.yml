@@ -1,22 +1,58 @@
 image: node:iron
 
+definitions:
+  caches:
+    pnpm: $BITBUCKET_CLONE_DIR/.pnpm-store
+
 pipelines:
   default:
     - step:
-        name: 'Run Chromatic'
-        caches:
-          - node
+        name: 'Lint'
         script:
           - corepack enable
           - pnpm install
-          - pnpm build:packages
-          - pnpm chromatic -- --project-token=$CHROMATIC_PROJECT_TOKEN
-  pull-requests:
-    feature/*:
+          - pnpm lint -- --format=checkstyle -o checkstyle-result.xml
+        after-script:
+          - pipe: atlassian/checkstyle-report:0.4.0
+            variables:
+              REPORT_FAIL_SEVERITY: 'error'
+        caches:
+          - pnpm
+  branches:
+    main:
       - step:
-          name: 'Run Chromatic'
+          name: 'Publish to Chromatic'
+          deployment: chromatic
           script:
             - corepack enable
             - pnpm install
             - pnpm build:packages
             - pnpm chromatic -- --project-token=$CHROMATIC_PROJECT_TOKEN
+          caches:
+            - node
+            - pnpm
+  pull-requests:
+    feature/*:
+      - step:
+          name: 'Lint'
+          script:
+            - corepack enable
+            - pnpm install
+            - pnpm lint -- --format=checkstyle -o checkstyle-result.xml
+          after-script:
+            - pipe: atlassian/checkstyle-report:0.4.0
+              variables:
+                REPORT_FAIL_SEVERITY: 'error'
+          caches:
+            - pnpm
+      - step:
+          name: 'Publish to Chromatic'
+          deployment: chromatic
+          script:
+            - corepack enable
+            - pnpm install
+            - pnpm build:packages
+            - pnpm chromatic -- --project-token=$CHROMATIC_PROJECT_TOKEN
+          caches:
+            - node
+            - pnpm

@@ -46,4 +46,16 @@ module.exports = {
 		// Force ESLint to detect .tsx files
 		{ files: ['*.js?(x)', '*.ts?(x)'] },
 	],
+	rules: {
+		'react/jsx-sort-props': [
+			2,
+			{
+				ignoreCase: true,
+				callbacksLast: false,
+				shorthandFirst: false,
+				reservedFirst: true,
+				multiline: 'last',
+			},
+		],
+	},
 };
