@@ -9,7 +9,8 @@ import map from 'lodash.map';
 import { twMerge } from 'tailwind-merge';
 
 import { list } from './list.styles.js';
-import { instanceOfListGroupHeader, type ListGroupHeader, type ListProps } from './list.types';
+import { type ListGroupHeader, type ListProps } from './list.types';
+import { isListGroupHeader } from './list.utils';
 
 declare module 'react' {
 	function forwardRef<T, P extends object>(
@@ -66,7 +67,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 	const activeStickyIndexRef = useRef(0);
 
 	const groupHeaderIndexes = groups.map(group =>
-		findIndex(data, item => instanceOfListGroupHeader(item) && item.title === group)
+		findIndex(data, item => isListGroupHeader(item) && item.title === group)
 	);
 
 	const isSticky = (index: number) => groupHeaderIndexes.includes(index);
@@ -81,7 +82,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 
 		let key: string | number | undefined;
 
-		if (instanceOfListGroupHeader(item)) {
+		if (isListGroupHeader(item)) {
 			key = item.title;
 		} else if (typeof itemKey === 'function') {
 			key = itemKey(item, index);
@@ -93,7 +94,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 			key = `list-item-${index}`;
 		}
 
-		if (instanceOfListGroupHeader(item)) {
+		if (isListGroupHeader(item)) {
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- `renderGroupHeader` is required
 			if (!renderGroupHeader) throw new Error('List: `renderGroupHeader` is required.');
 
@@ -135,7 +136,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 				onClick={event => onItemClick?.(event, item, index)}
 				style={{ '--translate': `${virtualRow.start}px` }}
 			>
-				{renderItem(item, index, { '--translate': `${virtualRow.start}px` })}
+				{renderItem(item, index, getActiveItem?.(item, index))}
 			</Box>
 		);
 	};

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks -- valid for stories */
 import { useState } from 'react';
 import { faker } from '@faker-js/faker';
 import { Box, Group, Stack, Switch } from '@mantine/core';
@@ -7,14 +8,14 @@ import groupBy from 'lodash.groupby';
 import { List } from './list';
 
 const meta: Meta<typeof List<(typeof data)[number]>> = {
-	title: 'Components/List',
+	title: 'Components/Lists/List',
 	component: List,
-	tags: ['autodocs'],
+	tags: ['autodocs', 'lists'],
 };
 
 export default meta;
 
-const data = Array.from({ length: 100 })
+const data = Array.from({ length: 1000 })
 	.map(() => ({
 		id: faker.string.uuid(),
 		name: faker.person.firstName(),
@@ -29,7 +30,7 @@ type ListStory = StoryObj<typeof meta>;
  */
 export const Default: ListStory = {
 	args: {
-		data: data.slice(0, 10),
+		data: data.slice(0, 20),
 		itemKey: 'id',
 		estimateItemSize: () => 52,
 		renderItem: item => (
@@ -92,7 +93,6 @@ export const ScrollArea: ListStory = {
 export const Horizontal: ListStory = {
 	args: {
 		...Default.args,
-		data,
 		orientation: 'horizontal',
 		classNames: {
 			list: 'h-20',
@@ -148,10 +148,44 @@ export const HeaderFooter: ListStory = {
 	},
 };
 
+/**
+ * Renders a list with loading state using `loading` prop.
+ */
 export const Loading: ListStory = {
 	args: {
 		...Default.args,
+		data: data.slice(0, 5),
 		loading: true,
+	},
+	render: args => {
+		const [loading, setLoading] = useState(args.loading);
+
+		return (
+			<Stack>
+				<List
+					{...args}
+					loading={loading}
+				/>
+				<Switch
+					checked={loading}
+					label='Loading'
+					onChange={event => {
+						setLoading(event.currentTarget.checked);
+					}}
+				/>
+			</Stack>
+		);
+	},
+};
+
+/**
+ * List is virtualized by default using [`@tanstack/react-virtual`](https://tanstack.com/virtual/latest/docs/framework/react/react-virtual).
+ */
+export const Virtualized: ListStory = {
+	args: {
+		...Default.args,
+		data,
+		className: 'h-96',
 	},
 };
 

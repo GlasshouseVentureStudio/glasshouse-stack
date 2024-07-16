@@ -11,9 +11,9 @@ interface MockInterface {
 }
 
 const meta: Meta<typeof DataList<MockInterface>> = {
-	title: 'Components/DataList',
+	title: 'Components/Lists/DataList',
 	component: DataList,
-	tags: ['autodocs'],
+	tags: ['autodocs', 'lists'],
 };
 
 export default meta;

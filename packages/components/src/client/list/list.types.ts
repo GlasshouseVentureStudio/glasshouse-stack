@@ -4,7 +4,7 @@
  * @template T The type of items in the list.
  */
 
-import { type SlotsToClasses } from '@glasshouse/utils';
+import { type OmitComponentProps, type SlotsToClasses } from '@glasshouse/utils';
 import {
 	type BoxProps,
 	type LoadingOverlayProps,
@@ -23,7 +23,7 @@ export interface ListGroupHeader<T> {
 }
 
 type OmittedComponentProps<E extends React.ElementType> = Omit<React.ComponentPropsWithoutRef<E>, 'style'>;
-type OmittedScrollAreaProps = Omit<ScrollAreaProps, 'classNames' | 'className'>;
+type OmittedScrollAreaProps = OmitComponentProps<ScrollAreaProps, 'classNames' | 'className' | 'onChange'>;
 
 /**
  * Props for the List component.
@@ -47,7 +47,7 @@ export interface ListProps<T extends object>
 	 * @param style - The CSS styles to apply to the rendered item.
 	 * @returns The React node representing the rendered item.
 	 */
-	renderItem: (item: T, index: number, style: React.CSSProperties & Record<string, unknown>) => React.ReactNode;
+	renderItem: (item: T, index: number, active?: boolean) => React.ReactNode;
 
 	renderGroupHeader: (title: string) => React.ReactNode;
 
@@ -151,6 +151,9 @@ export interface ListProps<T extends object>
 	 */
 	groupByFn?: (items: T[]) => Dictionary<T[]>;
 
+	/**
+	 * Whether the group headers should be sticky.
+	 */
 	stickyGroupHeader?: boolean;
 }
 
@@ -158,9 +161,3 @@ export interface ListItemProps extends PolymorphicComponentProps<'li', BoxProps>
 	virtualRow: VirtualItem<Element>;
 	active?: boolean;
 }
-
-export const instanceOfListGroupHeader = <T extends object>(
-	item: T | ListGroupHeader<T>
-): item is ListGroupHeader<T> => {
-	return 'type' in item && item.type === 'group-header';
-};
