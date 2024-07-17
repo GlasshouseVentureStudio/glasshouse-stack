@@ -180,6 +180,31 @@ export const Loading: ListStory = {
 	},
 };
 
+export const CustomLoader: ListStory = {
+	args: {
+		...Loading.args,
+		data: data.slice(0, 5),
+		loading: true,
+		renderLoader: () => (
+			<Box className='flex h-full w-full items-center justify-center bg-white bg-opacity-80 py-3 text-center'>
+				Loading...
+			</Box>
+		),
+	},
+};
+
+export const Empty: ListStory = {
+	args: {
+		...Default.args,
+		data: [],
+		renderEmpty: () => (
+			<Box className='flex h-full w-full items-center justify-center bg-white bg-opacity-80 py-3 text-center'>
+				No items
+			</Box>
+		),
+	},
+};
+
 /**
  * List is virtualized by default using [`@tanstack/react-virtual`](https://tanstack.com/virtual/latest/docs/framework/react/react-virtual).
  */

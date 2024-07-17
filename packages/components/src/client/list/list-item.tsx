@@ -1,4 +1,5 @@
 import { forwardRef } from 'react';
+import { cn } from '@glasshouse/utils';
 import { Box } from '@mantine/core';
 
 import { type ListItemProps } from './list.types';
@@ -10,12 +11,10 @@ const ListItemInner = (
 	return (
 		<Box
 			ref={ref}
-			className={className}
+			className={cn(className, 'absolute')}
 			component={component}
 			data-active={active}
-			style={{
-				'--translate-y': `${virtualRow.start}px`,
-			}}
+			style={{ '--translate': `${virtualRow.start}px` }}
 			{...props}
 		>
 			{children}

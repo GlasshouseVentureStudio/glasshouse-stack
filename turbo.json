@@ -6,13 +6,10 @@
 			"outputs": ["dist/**", ".next/**", "!.next/cache/**", "storybook-static/**"],
 			"dependsOn": ["^build"]
 		},
-		"test": {
-			"outputs": ["coverage/**"],
-			"dependsOn": []
-		},
 		"chromatic": {},
 		"test-storybook": {
-			"cache": false
+			"cache": false,
+			"outputs": ["coverage/**"]
 		},
 		"lint": {
 			"cache": false

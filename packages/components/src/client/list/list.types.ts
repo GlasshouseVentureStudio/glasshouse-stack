@@ -1,9 +1,3 @@
-/**
- * Props for the List component.
- *
- * @template T The type of items in the list.
- */
-
 import { type OmitComponentProps, type SlotsToClasses } from '@glasshouse/utils';
 import {
 	type BoxProps,
@@ -16,7 +10,7 @@ import { type Dictionary } from 'lodash';
 
 import { type ListSlots, type ListVariantProps } from './list.styles';
 
-export interface ListGroupHeader<T> {
+export interface ListGroupHeaderType<T> {
 	title: string;
 	type: 'group-header' | 'item';
 	items: T[];
@@ -49,7 +43,7 @@ export interface ListProps<T extends object>
 	 */
 	renderItem: (item: T, index: number, active?: boolean) => React.ReactNode;
 
-	renderGroupHeader?: (header: ListGroupHeader<T>) => React.ReactNode;
+	renderGroupHeader?: (header: ListGroupHeaderType<T>) => React.ReactNode;
 
 	/**
 	 * A function to estimate the size of each item in the list.
@@ -65,7 +59,7 @@ export interface ListProps<T extends object>
 	 * @param index - The index of the group header in the list.
 	 * @returns The estimated size of the group header.
 	 */
-	estimateGroupHeaderSize?: (item: ListGroupHeader<T>, index: number) => number;
+	estimateGroupHeaderSize?: (item: ListGroupHeaderType<T>, index: number) => number;
 
 	/**
 	 * An optional function to extract a unique key for each item in the list.
@@ -158,9 +152,18 @@ export interface ListProps<T extends object>
 	selectable?: boolean;
 	value?: T;
 	onChange?: (value: T) => void;
+	renderLoader?: () => React.ReactNode;
+	renderEmpty?: () => React.ReactNode;
 }
 
 export interface ListItemProps extends PolymorphicComponentProps<'li', BoxProps> {
 	virtualRow: VirtualItem<Element>;
 	active?: boolean;
+}
+
+export interface ListGroupHeaderProps extends PolymorphicComponentProps<'li', BoxProps> {
+	virtualRow: VirtualItem<Element>;
+	orientation: 'vertical' | 'horizontal';
+	isSticky: (index: number) => boolean | undefined;
+	isActiveSticky: (index: number) => boolean | undefined;
 }

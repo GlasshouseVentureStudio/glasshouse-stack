@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-qualifier -- Necessary */
 import { forwardRef, useCallback, useRef, useState } from 'react';
-import { cn } from '@glasshouse/utils';
-import { Box, LoadingOverlay, ScrollArea } from '@mantine/core';
+import { Box, LoadingOverlay, ScrollArea, Text } from '@mantine/core';
 import { defaultRangeExtractor, type Range, useVirtualizer, type VirtualItem } from '@tanstack/react-virtual';
 import cx from 'clsx';
 import findIndex from 'lodash.findindex';
@@ -9,9 +8,11 @@ import map from 'lodash.map';
 import omit from 'lodash.omit';
 import { twMerge } from 'tailwind-merge';
 
+import { ListGroupHeader } from './group-header';
 import { list } from './list.styles.js';
-import { type ListGroupHeader, type ListProps } from './list.types';
+import { type ListGroupHeaderType, type ListProps } from './list.types';
 import { isListGroupHeader } from './list.utils';
+import { ListItem } from './list-item';
 
 declare module 'react' {
 	function forwardRef<T, P extends object>(
@@ -45,6 +46,8 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		selectable,
 		value: valueProp,
 		onChange,
+		renderLoader,
+		renderEmpty,
 		...rest
 	} = props;
 
@@ -86,7 +89,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 
 	const data = groupByFn
 		? map(groupByFn(externalData), (value, key) => [
-				{ title: key, items: value, type: 'group-header' } as ListGroupHeader<T>,
+				{ title: key, items: value, type: 'group-header' } as ListGroupHeaderType<T>,
 				...value,
 			]).flat()
 		: externalData;
@@ -101,7 +104,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 
 	const isActiveSticky = (index: number) => activeStickyIndexRef.current === index && stickyGroupHeader;
 
-	const renderInnerItem = (item: T | ListGroupHeader<T>, index: number, virtualRow: VirtualItem<Element>) => {
+	const renderInnerItem = (item: T | ListGroupHeaderType<T>, index: number, virtualRow: VirtualItem<Element>) => {
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- `renderItem` is required
 		if (!renderItem) {
 			throw new Error('List: `renderItem` is required');
@@ -125,47 +128,30 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 			if (!renderGroupHeader) throw new Error('List: `renderGroupHeader` is required.');
 
 			return (
-				<Box
+				<ListGroupHeader
 					key={key}
-					className={itemStyles({ className: cn(classNames?.item) })}
-					component='li'
-					style={{
-						...(isSticky(virtualRow.index)
-							? {
-									zIndex: 10,
-								}
-							: {}),
-						...(isActiveSticky(virtualRow.index)
-							? {
-									position: 'sticky',
-								}
-							: {
-									position: 'absolute',
-									transform:
-										orientation === 'vertical'
-											? `translateY(${virtualRow.start}px)`
-											: `translateX(${virtualRow.start}px)`,
-								}),
-					}}
+					isActiveSticky={isActiveSticky}
+					isSticky={isSticky}
+					orientation={orientation}
+					virtualRow={virtualRow}
 				>
 					{renderGroupHeader(item)}
-				</Box>
+				</ListGroupHeader>
 			);
 		}
 
 		return (
-			<Box
+			<ListItem
 				key={key}
-				className={itemStyles({ className: cn(classNames?.item, 'absolute') })}
-				component='li'
-				data-active={getActiveItem(item, index)}
-				style={{ '--translate': `${virtualRow.start}px` }}
+				active={getActiveItem(item, index)}
+				className={itemStyles({ className: classNames?.item })}
+				virtualRow={virtualRow}
 				onClick={event => {
 					handleItemClick(event, item, index);
 				}}
 			>
 				{renderItem(item, index, getActiveItem(item, index))}
-			</Box>
+			</ListItem>
 		);
 	};
 	// =============== Handle data items =============== //
@@ -189,7 +175,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		getScrollElement: () => scrollRef.current,
 		estimateSize: index => {
 			if (groupHeaderIndexes.includes(index)) {
-				return estimateGroupHeaderSize(data[index] as ListGroupHeader<T>, index);
+				return estimateGroupHeaderSize(data[index] as ListGroupHeaderType<T>, index);
 			}
 
 			return estimateItemSize(data[index] as T, index);
@@ -199,6 +185,34 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 	});
 
 	const items = rowVirtualizer.getVirtualItems().map(row => renderInnerItem(data[row.index] as T, row.index, row));
+
+	const renderInnerLoader = () => {
+		if (renderLoader) {
+			if (loading) return <Box className='absolute inset-0 z-10'>{renderLoader()}</Box>;
+
+			return null;
+		}
+
+		return <LoadingOverlay visible={loading} />;
+	};
+
+	const renderInnerEmpty = () => {
+		if (renderEmpty) return renderEmpty();
+
+		return <Text>No items</Text>;
+	};
+
+	const childrenContent = items.length ? (
+		<Box
+			className={listStyles({ className: classNames?.list })}
+			component='ul'
+			style={{ '--list-size': `${rowVirtualizer.getTotalSize()}px` }}
+		>
+			{items}
+		</Box>
+	) : (
+		<Box className='flex min-h-20 items-center justify-center'>{renderInnerEmpty()}</Box>
+	);
 
 	return (
 		<ScrollArea
@@ -212,15 +226,9 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 			}}
 			{...omit(rest, 'onChange', 'value')}
 		>
-			<LoadingOverlay visible={loading} />
+			{renderInnerLoader()}
 			{header ? <Box className={headerStyles({ className: classNames?.header })}>{header}</Box> : null}
-			<Box
-				className={listStyles({ className: classNames?.list })}
-				component='ul'
-				style={{ '--list-size': `${rowVirtualizer.getTotalSize()}px` }}
-			>
-				{items}
-			</Box>
+			{childrenContent}
 			{footer ? <Box className={footerStyles({ className: classNames?.footer })}>{footer}</Box> : null}
 		</ScrollArea>
 	);
