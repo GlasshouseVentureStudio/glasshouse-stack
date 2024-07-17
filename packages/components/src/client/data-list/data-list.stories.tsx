@@ -10,14 +10,14 @@ interface MockInterface {
 	body: string;
 }
 
-const meta: Meta = {
+const meta: Meta<typeof DataList<MockInterface>> = {
 	title: 'Components/Lists/DataList',
 	component: DataList,
 	tags: ['autodocs', 'lists'],
 };
 
 export default meta;
-type DataListStory = StoryObj;
+type DataListStory = StoryObj<typeof meta>;
 
 /**
  * Default configuration for the DataListStory.

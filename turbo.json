@@ -11,8 +11,12 @@
 			"dependsOn": []
 		},
 		"chromatic": {},
-		"test-storybook": {},
-		"lint": {},
+		"test-storybook": {
+			"cache": false
+		},
+		"lint": {
+			"cache": false
+		},
 		"dev": {
 			"cache": false,
 			"persistent": true
