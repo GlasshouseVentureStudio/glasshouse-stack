@@ -8,7 +8,7 @@ import groupBy from 'lodash.groupby';
 
 import { List } from './list';
 
-const meta: Meta = {
+const meta: Meta<typeof List<DataType>> = {
 	title: 'Components/Lists/List',
 	component: List,
 	tags: ['autodocs', 'lists'],
@@ -24,7 +24,8 @@ const data = Array.from({ length: 1000 })
 	}))
 	.sort((a, b) => a.name.localeCompare(b.name));
 
-type ListStory = StoryObj;
+type DataType = (typeof data)[number];
+type ListStory = StoryObj<typeof meta>;
 
 /**
  * Renders a list with the provided data.
@@ -197,14 +198,12 @@ export const Grouped: ListStory = {
 	args: {
 		...Default.args,
 		data,
-		groupByFn: items => {
-			const groups = groupBy(items, item => item.name.toLowerCase()[0]);
-
-			console.log('groups: ', groups);
-
-			return groups;
-		},
-		renderGroupHeader: title => <Box className='bg-blue-100 px-3 font-bold uppercase'>{title}</Box>,
+		groupByFn: items => groupBy(items, item => item.name.toLowerCase()[0]),
+		renderGroupHeader: header => (
+			<Box className='bg-blue-100 px-3 font-bold uppercase'>
+				{header.title} {`(${header.items.length} items)`}
+			</Box>
+		),
 		className: 'h-96',
 		stickyGroupHeader: false,
 	},
@@ -229,10 +228,10 @@ export const Grouped: ListStory = {
 	},
 };
 
-const selectableData = Array.from({ length: 10 })
+const selectableData: DataType[] = Array.from({ length: 10 })
 	.map(() => ({
 		id: faker.string.uuid(),
-		name: faker.person.firstName(),
+		name: faker.person.fullName(),
 		job: faker.person.jobTitle(),
 	}))
 	.sort((a, b) => a.name.localeCompare(b.name));
@@ -251,7 +250,6 @@ export const Selectable: ListStory = {
 					checked={active}
 					data-testid={item.name}
 					id={item.name}
-					onChange={() => {}}
 				/>
 				<Box className='line-clamp-1 flex h-8 items-center'>
 					<label htmlFor={item.name}>{item.name}</label>
@@ -288,7 +286,7 @@ export const ControlledSelectable: ListStory = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		const element = canvas.getByTestId(selectableData[0]?.name ?? '');
+		const element = canvas.getByTestId(selectableData[3]?.name ?? '');
 
 		await userEvent.click(element);
 		await expect(element).toBeChecked();

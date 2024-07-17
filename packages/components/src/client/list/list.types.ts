@@ -20,7 +20,6 @@ export interface ListGroupHeader<T> {
 	title: string;
 	type: 'group-header' | 'item';
 	items: T[];
-	// TODO: Add groupData
 }
 
 type OmittedComponentProps<E extends React.ElementType> = Omit<React.ComponentPropsWithoutRef<E>, 'style' | 'onChange'>;
@@ -50,7 +49,7 @@ export interface ListProps<T extends object>
 	 */
 	renderItem: (item: T, index: number, active?: boolean) => React.ReactNode;
 
-	renderGroupHeader: (title: string) => React.ReactNode;
+	renderGroupHeader?: (header: ListGroupHeader<T>) => React.ReactNode;
 
 	/**
 	 * A function to estimate the size of each item in the list.
@@ -58,7 +57,7 @@ export interface ListProps<T extends object>
 	 * @param index - The index of the item in the list.
 	 * @returns The estimated size of the item.
 	 */
-	estimateItemSize: (index: number) => number;
+	estimateItemSize: (item: T, index: number) => number;
 
 	/**
 	 * A function to estimate the size of each group header in the list.
@@ -66,7 +65,7 @@ export interface ListProps<T extends object>
 	 * @param index - The index of the group header in the list.
 	 * @returns The estimated size of the group header.
 	 */
-	estimateGroupHeaderSize: (index: number) => number;
+	estimateGroupHeaderSize?: (item: ListGroupHeader<T>, index: number) => number;
 
 	/**
 	 * An optional function to extract a unique key for each item in the list.
@@ -156,9 +155,7 @@ export interface ListProps<T extends object>
 	 * Whether the group headers should be sticky.
 	 */
 	stickyGroupHeader?: boolean;
-
 	selectable?: boolean;
-
 	value?: T;
 	onChange?: (value: T) => void;
 }

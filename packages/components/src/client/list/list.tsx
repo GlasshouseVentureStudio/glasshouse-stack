@@ -6,6 +6,7 @@ import { defaultRangeExtractor, type Range, useVirtualizer, type VirtualItem } f
 import cx from 'clsx';
 import findIndex from 'lodash.findindex';
 import map from 'lodash.map';
+import omit from 'lodash.omit';
 import { twMerge } from 'tailwind-merge';
 
 import { list } from './list.styles.js';
@@ -58,7 +59,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 	const baseStyles = twMerge(cx(className, classNames?.root));
 
 	// =============== Handle selection =============== //
-	const [value, setValue] = useState<T | undefined>(valueProp);
+	const [value, setValue] = useState<T | T[] | undefined>(valueProp);
 
 	const realValue = valueProp ? valueProp : value;
 
@@ -71,7 +72,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 				setValue(prev => (prev === item ? undefined : item));
 			}
 		},
-		[onChange, onItemClick, selectable]
+		[onItemClick, selectable, onChange]
 	);
 
 	const getInnerActiveItem = useCallback((item: T) => item === realValue, [realValue]);
@@ -121,7 +122,6 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		}
 
 		if (isListGroupHeader(item)) {
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- `renderGroupHeader` is required
 			if (!renderGroupHeader) throw new Error('List: `renderGroupHeader` is required.');
 
 			return (
@@ -148,7 +148,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 								}),
 					}}
 				>
-					{renderGroupHeader(item.title)}
+					{renderGroupHeader(item)}
 				</Box>
 			);
 		}
@@ -168,6 +168,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 			</Box>
 		);
 	};
+	// =============== Handle data items =============== //
 
 	const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -188,10 +189,10 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		getScrollElement: () => scrollRef.current,
 		estimateSize: index => {
 			if (groupHeaderIndexes.includes(index)) {
-				return estimateGroupHeaderSize(index);
+				return estimateGroupHeaderSize(data[index] as ListGroupHeader<T>, index);
 			}
 
-			return estimateItemSize(index);
+			return estimateItemSize(data[index] as T, index);
 		},
 		overscan: 5,
 		rangeExtractor,
@@ -204,9 +205,12 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 			ref={ref}
 			className={root({ className: baseStyles })}
 			classNames={scrollAreaClassNames}
-			viewportProps={viewportProps}
 			viewportRef={scrollRef}
-			{...rest}
+			viewportProps={{
+				...viewportProps,
+				tabIndex: 0,
+			}}
+			{...omit(rest, 'onChange', 'value')}
 		>
 			<LoadingOverlay visible={loading} />
 			{header ? <Box className={headerStyles({ className: classNames?.header })}>{header}</Box> : null}

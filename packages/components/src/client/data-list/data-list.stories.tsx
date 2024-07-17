@@ -10,14 +10,14 @@ interface MockInterface {
 	body: string;
 }
 
-const meta: Meta<typeof DataList<MockInterface>> = {
+const meta: Meta = {
 	title: 'Components/Lists/DataList',
 	component: DataList,
 	tags: ['autodocs', 'lists'],
 };
 
 export default meta;
-type DataListStory = StoryObj<typeof meta>;
+type DataListStory = StoryObj;
 
 /**
  * Default configuration for the DataListStory.
@@ -45,8 +45,8 @@ export const GroupedDataList: DataListStory = {
 		...Detault.args,
 		groupByFn: items => groupBy(items, item => item.title.toLowerCase()[0]),
 		estimateGroupHeaderSize: () => 32,
-		renderGroupHeader: title => (
-			<p className='sticky top-0 bg-black px-3 py-1 font-bold uppercase text-white'>{title}</p>
+		renderGroupHeader: group => (
+			<p className='sticky top-0 bg-black px-3 py-1 font-bold uppercase text-white'>{group.title}</p>
 		),
 	},
 };
