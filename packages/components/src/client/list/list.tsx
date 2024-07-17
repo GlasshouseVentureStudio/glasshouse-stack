@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-qualifier -- Necessary */
-import { forwardRef, useCallback, useRef } from 'react';
+import { forwardRef, useCallback, useRef, useState } from 'react';
 import { cn } from '@glasshouse/utils';
 import { Box, LoadingOverlay, ScrollArea } from '@mantine/core';
 import { defaultRangeExtractor, type Range, useVirtualizer, type VirtualItem } from '@tanstack/react-virtual';
@@ -25,7 +25,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		data: externalData,
 		renderItem,
 		itemKey,
-		getActiveItem,
+		getActiveItem: getActiveItemProp,
 		onItemClick,
 		bordered,
 		scrollAreaClassNames,
@@ -41,6 +41,9 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		groupByFn,
 		stickyGroupHeader,
 		orientation = 'vertical',
+		selectable,
+		value: valueProp,
+		onChange,
 		...rest
 	} = props;
 
@@ -54,6 +57,29 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 
 	const baseStyles = twMerge(cx(className, classNames?.root));
 
+	// =============== Handle selection =============== //
+	const [value, setValue] = useState<T | undefined>(valueProp);
+
+	const realValue = valueProp ? valueProp : value;
+
+	const handleItemClick = useCallback(
+		(event: React.MouseEvent, item: T, index: number) => {
+			onItemClick?.(event, item, index);
+
+			if (selectable) {
+				onChange?.(item);
+				setValue(prev => (prev === item ? undefined : item));
+			}
+		},
+		[onChange, onItemClick, selectable]
+	);
+
+	const getInnerActiveItem = useCallback((item: T) => item === realValue, [realValue]);
+
+	const getActiveItem = getActiveItemProp ?? getInnerActiveItem;
+	// =============== Handle selection =============== //
+
+	// =============== Handle data items =============== //
 	const grouped = groupByFn?.(externalData) ?? {};
 	const groups = Object.keys(grouped);
 
@@ -132,11 +158,13 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 				key={key}
 				className={itemStyles({ className: cn(classNames?.item, 'absolute') })}
 				component='li'
-				data-active={getActiveItem?.(item, index)}
-				onClick={event => onItemClick?.(event, item, index)}
+				data-active={getActiveItem(item, index)}
 				style={{ '--translate': `${virtualRow.start}px` }}
+				onClick={event => {
+					handleItemClick(event, item, index);
+				}}
 			>
-				{renderItem(item, index, getActiveItem?.(item, index))}
+				{renderItem(item, index, getActiveItem(item, index))}
 			</Box>
 		);
 	};

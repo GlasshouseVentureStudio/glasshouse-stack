@@ -11,6 +11,7 @@
 			"dependsOn": []
 		},
 		"chromatic": {},
+		"test-storybook": {},
 		"lint": {},
 		"dev": {
 			"cache": false,

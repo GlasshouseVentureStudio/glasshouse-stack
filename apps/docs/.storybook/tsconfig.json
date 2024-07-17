@@ -23,5 +23,5 @@
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true
 	},
-	"include": ["./main.ts", "./preview.tsx", "./manager.ts", "./theme.ts"]
+	"include": ["./main.ts", "./preview.tsx"]
 }

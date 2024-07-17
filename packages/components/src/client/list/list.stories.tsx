@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks -- valid for stories */
 import { useState } from 'react';
 import { faker } from '@faker-js/faker';
-import { Box, Group, Stack, Switch } from '@mantine/core';
+import { Box, Checkbox, Group, Stack, Switch } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
+import { expect, userEvent, within } from '@storybook/test';
 import groupBy from 'lodash.groupby';
 
 import { List } from './list';
 
-const meta: Meta<typeof List<(typeof data)[number]>> = {
+const meta: Meta = {
 	title: 'Components/Lists/List',
 	component: List,
 	tags: ['autodocs', 'lists'],
@@ -23,7 +24,7 @@ const data = Array.from({ length: 1000 })
 	}))
 	.sort((a, b) => a.name.localeCompare(b.name));
 
-type ListStory = StoryObj<typeof meta>;
+type ListStory = StoryObj;
 
 /**
  * Renders a list with the provided data.
@@ -196,7 +197,13 @@ export const Grouped: ListStory = {
 	args: {
 		...Default.args,
 		data,
-		groupByFn: items => groupBy(items, item => item.name.toLowerCase()[0]),
+		groupByFn: items => {
+			const groups = groupBy(items, item => item.name.toLowerCase()[0]);
+
+			console.log('groups: ', groups);
+
+			return groups;
+		},
 		renderGroupHeader: title => <Box className='bg-blue-100 px-3 font-bold uppercase'>{title}</Box>,
 		className: 'h-96',
 		stickyGroupHeader: false,
@@ -218,6 +225,85 @@ export const Grouped: ListStory = {
 					}}
 				/>
 			</Stack>
+		);
+	},
+};
+
+const selectableData = Array.from({ length: 10 })
+	.map(() => ({
+		id: faker.string.uuid(),
+		name: faker.person.firstName(),
+		job: faker.person.jobTitle(),
+	}))
+	.sort((a, b) => a.name.localeCompare(b.name));
+
+export const Selectable: ListStory = {
+	args: {
+		...Default.args,
+		data: selectableData,
+		renderItem: (item, index, active) => (
+			<Group
+				className='cursor-pointer'
+				data-active={active}
+				px={8}
+			>
+				<Checkbox
+					checked={active}
+					data-testid={item.name}
+					id={item.name}
+					onChange={() => {}}
+				/>
+				<Box className='line-clamp-1 flex h-8 items-center'>
+					<label htmlFor={item.name}>{item.name}</label>
+				</Box>
+			</Group>
+		),
+		estimateItemSize: () => 32,
+		classNames: {
+			root: 'w-80',
+			item: 'data-[active=true]:bg-gray-200',
+		},
+		selectable: true,
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const elements = selectableData.map(item => canvas.getByTestId(item.name));
+
+		for (const element of elements) {
+			await userEvent.click(element);
+			await expect(element).toBeChecked();
+		}
+	},
+};
+
+/**
+ * Controlled SelectList using `value` and `onChange` props.
+ */
+
+export const ControlledSelectable: ListStory = {
+	args: {
+		...Selectable.args,
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const element = canvas.getByTestId(selectableData[0]?.name ?? '');
+
+		await userEvent.click(element);
+		await expect(element).toBeChecked();
+	},
+	render: args => {
+		const [value, setValue] = useState<(typeof data)[number] | undefined>(selectableData[0]);
+
+		return (
+			<List
+				{...args}
+				value={value}
+				onChange={value => {
+					setValue(value);
+				}}
+			/>
 		);
 	},
 };

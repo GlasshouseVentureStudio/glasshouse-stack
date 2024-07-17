@@ -20,9 +20,10 @@ export interface ListGroupHeader<T> {
 	title: string;
 	type: 'group-header' | 'item';
 	items: T[];
+	// TODO: Add groupData
 }
 
-type OmittedComponentProps<E extends React.ElementType> = Omit<React.ComponentPropsWithoutRef<E>, 'style'>;
+type OmittedComponentProps<E extends React.ElementType> = Omit<React.ComponentPropsWithoutRef<E>, 'style' | 'onChange'>;
 type OmittedScrollAreaProps = OmitComponentProps<ScrollAreaProps, 'classNames' | 'className' | 'onChange'>;
 
 /**
@@ -97,7 +98,7 @@ export interface ListProps<T extends object>
 	 * @param item - The clicked item.
 	 * @param index - The index of the clicked item in the list.
 	 */
-	onItemClick?: (event: React.MouseEvent<HTMLLIElement>, item: T, index: number) => void;
+	onItemClick?: (event: React.MouseEvent, item: T, index: number) => void;
 
 	/**
 	 * Whether the list should have a border.
@@ -155,6 +156,11 @@ export interface ListProps<T extends object>
 	 * Whether the group headers should be sticky.
 	 */
 	stickyGroupHeader?: boolean;
+
+	selectable?: boolean;
+
+	value?: T;
+	onChange?: (value: T) => void;
 }
 
 export interface ListItemProps extends PolymorphicComponentProps<'li', BoxProps> {

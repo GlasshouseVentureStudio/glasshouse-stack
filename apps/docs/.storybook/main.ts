@@ -23,10 +23,21 @@ const config: StorybookConfig = {
 		getAbsolutePath('@storybook/addon-interactions'),
 		getAbsolutePath('@storybook/addon-a11y'),
 		getAbsolutePath('storybook-dark-mode'),
+		getAbsolutePath('@storybook/test-runner'),
+		{
+			name: '@storybook/addon-coverage',
+			options: {
+				istanbul: {
+					// Fixes https://github.com/storybookjs/addon-coverage/issues/35
+					include: ['**/stories/**'],
+				},
+			},
+		},
 	],
 	framework: {
 		name: getAbsolutePath('@storybook/react-vite'),
 		options: {},
 	},
 };
+
 export default config;
