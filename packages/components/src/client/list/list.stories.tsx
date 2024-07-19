@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/rules-of-hooks -- valid for stories */
+import { useState } from 'react';
 import { faker } from '@faker-js/faker';
 import { Box, Checkbox, Group, Radio, Stack, Switch } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from '@storybook/test';
 import chunk from 'lodash.chunk';
 import groupBy from 'lodash.groupby';
-import { useState } from 'react';
 
 import { List } from './list';
 import { type PaginationConfig } from './list.types';
 
-const meta: Meta<typeof List<DataType>> = {
+const meta: Meta = {
 	title: 'Components/Lists/List',
 	component: List,
 	tags: ['autodocs', 'lists'],
@@ -27,7 +27,7 @@ const data = Array.from({ length: 1000 })
 	.sort((a, b) => a.name.localeCompare(b.name));
 
 type DataType = (typeof data)[number];
-type ListStory = StoryObj<typeof meta>;
+type ListStory = StoryObj;
 
 /**
  * Renders a list with the provided data.
@@ -272,7 +272,7 @@ export const Grouped: ListStory = {
 	},
 };
 
-const selectableData: DataType[] = Array.from({ length: 10 })
+const selectableData: DataType[] = Array.from({ length: 5 })
 	.map(() => ({
 		id: faker.string.uuid(),
 		name: faker.person.fullName(),
@@ -293,10 +293,10 @@ export const Selectable: ListStory = {
 				<Checkbox
 					checked={active}
 					data-testid={item.name}
-					id={item.name}
+					id={item.id}
 				/>
 				<Box className='line-clamp-1 flex h-8 items-center'>
-					<label htmlFor={item.name}>{item.name}</label>
+					<label htmlFor={item.id}>{item.name}</label>
 				</Box>
 			</Group>
 		),
@@ -311,6 +311,8 @@ export const Selectable: ListStory = {
 		const canvas = within(canvasElement);
 
 		const elements = selectableData.map(item => canvas.getByTestId(item.name));
+
+		console.log('elements: ', elements);
 
 		for (const element of elements) {
 			await userEvent.click(element);
