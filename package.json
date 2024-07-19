@@ -3,7 +3,7 @@
 	"private": true,
 	"scripts": {
 		"build": "turbo build",
-		"build:packages": "turbo build --filter=docs^...",
+		"build:packages": "turbo build --filter=@glasshouse/docs^...",
 		"changeset": "changeset",
 		"chromatic": "turbo chromatic",
 		"clean": "turbo clean && rm -rf node_modules",
@@ -11,7 +11,7 @@
 		"format": "prettier --write \"**/*.{ts,tsx,md}\"",
 		"lint": "turbo lint",
 		"prepare": "husky",
-		"release": "turbo build --filter=docs^... && changeset publish",
+		"release": "turbo build --filter=@glasshouse/docs^... && changeset publish",
 		"test-storybook": "turbo test-storybook",
 		"version-packages": "changeset version"
 	},
