@@ -10,26 +10,30 @@ interface MockInterface {
 	body: string;
 }
 
-const meta: Meta<typeof DataList<MockInterface>> = {
+const meta: Meta = {
 	title: 'Components/Lists/DataList',
 	component: DataList,
 	tags: ['autodocs', 'lists'],
 };
 
 export default meta;
-type DataListStory = StoryObj<typeof meta>;
+type DataListStory = StoryObj;
 
 /**
  * Default configuration for the DataListStory.
  */
 export const Detault: DataListStory = {
 	args: {
-		queryKey: ['data-list'],
-		queryFn: async () => {
-			const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-			const data = (await response.json()) as MockInterface[];
+		queryOptions: {
+			queryKey: ['data-list'],
+			queryFn: async () => {
+				const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+				const data = (await response.json()) as MockInterface[];
 
-			return data;
+				return data;
+			},
+			getNextPageParam: (lastPage, allPages) => allPages.length,
+			initialPageParam: 0,
 		},
 		renderItem: (item, index) => <p className='px-3 py-1'>{`${index + 1}. ${item.title}`}</p>,
 		estimateItemSize: () => 32,

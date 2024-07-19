@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks -- valid for stories */
-import { useState } from 'react';
 import { faker } from '@faker-js/faker';
 import { Box, Checkbox, Group, Radio, Stack, Switch } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from '@storybook/test';
 import chunk from 'lodash.chunk';
 import groupBy from 'lodash.groupby';
+import { useState } from 'react';
 
 import { List } from './list';
 import { type PaginationConfig } from './list.types';
@@ -114,8 +114,24 @@ export const Horizontal: ListStory = {
 export const HeaderFooter: ListStory = {
 	args: {
 		...Default.args,
-		header: <Box className='sticky top-0 bg-blue-100 px-3 py-1 font-bold uppercase'>Header</Box>,
-		footer: <Box className='bg-blue-100 px-3 py-1 font-bold uppercase'>Footer</Box>,
+		header: (
+			<Box
+				bg='blue'
+				c='white'
+				className='sticky top-0 px-3 py-1 font-bold uppercase'
+			>
+				Header
+			</Box>
+		),
+		footer: (
+			<Box
+				bg='blue'
+				c='white'
+				className='px-3 py-1 font-bold uppercase'
+			>
+				Footer
+			</Box>
+		),
 		className: 'h-80',
 		stickyHeader: true,
 		stickyFooter: false,
@@ -200,9 +216,7 @@ export const Empty: ListStory = {
 		...Default.args,
 		data: [],
 		renderEmpty: () => (
-			<Box className='flex h-full w-full items-center justify-center bg-white bg-opacity-80 py-3 text-center'>
-				No items
-			</Box>
+			<Box className='flex h-full w-full items-center justify-center bg-opacity-80 py-3 text-center'>No items</Box>
 		),
 	},
 };
@@ -227,7 +241,10 @@ export const Grouped: ListStory = {
 		data,
 		groupByFn: items => groupBy(items, item => item.name.toLowerCase()[0]),
 		renderGroupHeader: header => (
-			<Box className='bg-blue-100 px-3 font-bold uppercase'>
+			<Box
+				bg='blue'
+				className='px-3 font-bold uppercase'
+			>
 				{header.title} {`(${header.items.length} items)`}
 			</Box>
 		),

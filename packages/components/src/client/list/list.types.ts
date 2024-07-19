@@ -11,9 +11,23 @@ import { type Dictionary } from 'lodash';
 
 import { type ListSlots, type ListVariantProps } from './list.styles';
 
+/**
+ * Represents the type for a list group header.
+ *
+ * @template T - The type of items in the list group.
+ */
 export interface ListGroupHeaderType<T> {
+	/**
+	 * The title of the group item.
+	 */
 	title: string;
+	/**
+	 * The type of the item.
+	 */
 	type: 'group-header' | 'item';
+	/**
+	 * The items in the group item.
+	 */
 	items: T[];
 }
 
@@ -44,11 +58,18 @@ export interface ListProps<T extends object>
 	 */
 	renderItem: (item: T, index: number, active?: boolean) => React.ReactNode;
 
+	/**
+	 * A function that renders the group header for each group in the list.
+	 *
+	 * @param header - The group header to render.
+	 * @returns The React node representing the rendered group header.
+	 */
 	renderGroupHeader?: (header: ListGroupHeaderType<T>) => React.ReactNode;
 
 	/**
 	 * A function to estimate the size of each item in the list.
 	 *
+	 * @param item - The item to estimate the size for.
 	 * @param index - The index of the item in the list.
 	 * @returns The estimated size of the item.
 	 */
@@ -57,6 +78,7 @@ export interface ListProps<T extends object>
 	/**
 	 * A function to estimate the size of each group header in the list.
 	 *
+	 * @param item - The group header to estimate the size for.
 	 * @param index - The index of the group header in the list.
 	 * @returns The estimated size of the group header.
 	 */
@@ -135,14 +157,15 @@ export interface ListProps<T extends object>
 	loading?: boolean;
 
 	/**
-	 * Props for the [LoadingOverlay](https://mantine.dev/core/loading-overlay/?t=props).
+	 * Props for the LoadingOverlay component.
 	 */
 	loadingOverlay?: LoadingOverlayProps;
 
 	/**
 	 * A function that returns an object with keys of the groups and values of the items in that group.
+	 *
 	 * @param items - The items to group.
-	 * @returns
+	 * @returns An object with keys of the groups and values of the items in that group.
 	 */
 	groupByFn?: (items: T[]) => Dictionary<T[]>;
 
@@ -150,27 +173,100 @@ export interface ListProps<T extends object>
 	 * Whether the group headers should be sticky.
 	 */
 	stickyGroupHeader?: boolean;
+
+	/**
+	 * Whether the list items are selectable.
+	 */
 	selectable?: boolean;
+
+	/**
+	 * The currently selected value.
+	 */
 	value?: T;
+
+	/**
+	 * A callback function that is called when the selected value changes.
+	 *
+	 * @param value - The new selected value.
+	 */
 	onChange?: (value: T) => void;
+
+	/**
+	 * A function that renders the loader component when the list is loading.
+	 *
+	 * @returns The React node representing the loader component.
+	 */
 	renderLoader?: () => React.ReactNode;
+
+	/**
+	 * A function that renders the empty state component when the list is empty.
+	 *
+	 * @returns The React node representing the empty state component.
+	 */
 	renderEmpty?: () => React.ReactNode;
+
+	/**
+	 * Configuration for pagination.
+	 */
 	pagination?: PaginationConfig;
 }
 
+/**
+ * Configuration options for pagination.
+ */
 export type PaginationConfig = Omit<PaginationProps, ''> & {
+	/**
+	 * The position of the pagination component. Default `bottom`.
+	 * - 'top': Display the pagination component at the top.
+	 * - 'bottom': Display the pagination component at the bottom.
+	 */
 	position?: 'top' | 'bottom';
+
+	/**
+	 * The number of items to display per page.
+	 */
 	pageSize?: number;
 };
 
+/**
+ * Represents the props for a list item component.
+ */
 export interface ListItemProps extends PolymorphicComponentProps<'li', BoxProps> {
+	/**
+	 * The virtual row associated with the list item.
+	 */
 	virtualRow: VirtualItem<Element>;
+
+	/**
+	 * Indicates whether the list item is active or not.
+	 */
 	active?: boolean;
 }
 
+/**
+ * Props for the ListGroupHeader component.
+ */
 export interface ListGroupHeaderProps extends PolymorphicComponentProps<'li', BoxProps> {
+	/**
+	 * The virtual row associated with the ListGroupHeader.
+	 */
 	virtualRow: VirtualItem<Element>;
+
+	/**
+	 * The orientation of the ListGroupHeader.
+	 * Can be either 'vertical' or 'horizontal'.
+	 */
 	orientation: 'vertical' | 'horizontal';
+
+	/**
+	 * A function that determines if the ListGroupHeader at the given index should be sticky.
+	 * Returns `true` if the ListGroupHeader should be sticky, `false` otherwise.
+	 */
 	isSticky: (index: number) => boolean | undefined;
+
+	/**
+	 * A function that determines if the ListGroupHeader at the given index is actively sticky.
+	 * Returns `true` if the ListGroupHeader is actively sticky, `false` otherwise.
+	 */
 	isActiveSticky: (index: number) => boolean | undefined;
 }

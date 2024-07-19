@@ -59,6 +59,9 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		list: listStyles,
 		header: headerStyles,
 		footer: footerStyles,
+		empty,
+		loader,
+		pagination: paginationStyles,
 	} = list({ bordered, stickyHeader, stickyFooter, orientation });
 
 	const baseStyles = twMerge(cx(className, classNames?.root));
@@ -87,6 +90,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 
 	// =============== Handle data items =============== //
 	const grouped = groupByFn?.(externalData) ?? {};
+
 	const groups = Object.keys(grouped);
 
 	const data = groupByFn
@@ -132,6 +136,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 			return (
 				<ListGroupHeader
 					key={key}
+					className={itemStyles({ className: classNames?.item })}
 					isActiveSticky={isActiveSticky}
 					isSticky={isSticky}
 					orientation={orientation}
@@ -190,7 +195,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 
 	const renderInnerLoader = () => {
 		if (renderLoader) {
-			if (loading) return <Box className='absolute inset-0 z-10'>{renderLoader()}</Box>;
+			if (loading) return <Box className={loader({ className: classNames?.loader })}>{renderLoader()}</Box>;
 
 			return null;
 		}
@@ -213,16 +218,16 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 			{items}
 		</Box>
 	) : (
-		<Box className='flex min-h-20 items-center justify-center'>{renderInnerEmpty()}</Box>
+		<Box className={empty({ className: classNames?.empty })}>{renderInnerEmpty()}</Box>
 	);
 
 	const paginationPosition = pagination?.position ?? 'bottom';
 
-	const paginationContent = pagination && (
-		<Box>
+	const paginationContent = pagination ? (
+		<Box className={paginationStyles({ className: classNames?.pagination })}>
 			<Pagination {...pagination} />
 		</Box>
-	);
+	) : null;
 
 	return (
 		<Stack className={root({ className: baseStyles })}>

@@ -6,9 +6,12 @@ export const list = tv({
 		scrollArea: 'relative rounded',
 		list: 'relative rounded',
 		item: 'left-0 top-0',
-		sectionHeader: 'bg-background-3 text-foreground-2 sticky top-0 z-10 border-y p-1 text-xs',
+		groupHeader: 'sticky top-0 z-10 border-y p-1 text-xs',
 		header: '',
 		footer: '',
+		loader: 'absolute inset-0 z-10',
+		empty: 'flex min-h-20 items-center justify-center',
+		pagination: '',
 	},
 	variants: {
 		bordered: {

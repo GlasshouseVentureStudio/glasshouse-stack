@@ -1,8 +1,9 @@
+import { forwardRef } from 'react';
 import { Box } from '@mantine/core';
 
 import { type ListGroupHeaderProps } from './list.types';
 
-export const ListGroupHeader = (
+export const ListGroupHeaderInner = (
 	{ className, children, orientation, virtualRow, isSticky, isActiveSticky, ...props }: ListGroupHeaderProps,
 	ref: React.ForwardedRef<HTMLLIElement>
 ) => {
@@ -33,3 +34,5 @@ export const ListGroupHeader = (
 		</Box>
 	);
 };
+
+export const ListGroupHeader = forwardRef(ListGroupHeaderInner);

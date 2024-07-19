@@ -1,37 +1,36 @@
-import { type QueryFunction, type QueryKey } from '@tanstack/react-query';
+import {
+	type InfiniteData,
+	type QueryClient,
+	type QueryKey,
+	type UndefinedInitialDataInfiniteOptions,
+} from '@tanstack/react-query';
 
 import { type ListProps } from '../list/list.types';
 
-export interface DataListProps<T extends object> extends Omit<ListProps<T>, 'data'> {
-	/**
-	 * The query key for `@tanstack/react-query` query.
-	 */
-	queryKey: QueryKey;
-
-	/**
-	 * The function that fetches the data for `@tanstack/react-query` query.
-	 */
-	queryFn: QueryFunction<T[] | undefined, QueryKey, number> | undefined;
-}
-
 /**
- * The props for the data list server component.
- * @template T The type of the item.
- * @prop `queryKey` - The query key for `@tanstack/react-query` query.
- * @prop `children` - The children to render.
- * @prop `initialData` - The initial data for the query.
+ * Props for the DataList component.
+ *
+ * @template T - The type of the data items in the list.
+ * @template TQueryFnData - The type of the data returned by the query function.
+ * @template TError - The type of the error returned by the query function.
+ * @template TData - The type of the data returned by the query.
+ * @template TQueryKey - The type of the query key.
+ * @template TPageParam - The type of the page parameter.
  */
-export interface DataListServerProps<T> {
+export interface DataListProps<
+	T extends object,
+	TQueryFnData = T[],
+	TError = Error,
+	TData = InfiniteData<TQueryFnData>,
+	TQueryKey extends QueryKey = QueryKey,
+	TPageParam = unknown,
+> extends Omit<ListProps<T>, 'data'> {
 	/**
-	 * The query key for `@tanstack/react-query` query.
+	 * The options parameter for `useInfiniteQuery` hook.
 	 */
-	queryKey: QueryKey;
+	queryOptions: UndefinedInitialDataInfiniteOptions<TQueryFnData, TError, TData, TQueryKey, TPageParam>;
 	/**
-	 * The children to render.
+	 * The query client parameter for `useInfiniteQuery` hook.
 	 */
-	children: React.ReactNode;
-	/**
-	 * The initial data for the query.
-	 */
-	initialData: T | Promise<T>;
+	queryClient?: QueryClient;
 }
