@@ -2,7 +2,8 @@ import { tv, type VariantProps } from 'tailwind-variants';
 
 export const list = tv({
 	slots: {
-		root: 'relative rounded',
+		root: '',
+		scrollArea: 'relative rounded',
 		list: 'relative rounded',
 		item: 'left-0 top-0',
 		sectionHeader: 'bg-background-3 text-foreground-2 sticky top-0 z-10 border-y p-1 text-xs',
@@ -12,17 +13,17 @@ export const list = tv({
 	variants: {
 		bordered: {
 			true: {
-				root: 'border',
+				scrollArea: 'border',
 			},
 		},
 		orientation: {
 			horizontal: {
-				root: 'h-full',
+				scrollArea: 'h-full',
 				item: 'h-full translate-x-[var(--translate)]',
 				list: 'h-full w-[var(--list-size)]',
 			},
 			vertical: {
-				root: 'w-full',
+				scrollArea: 'w-full',
 				item: 'w-full translate-y-[var(--translate)]',
 				list: 'h-[var(--list-size)]',
 			},

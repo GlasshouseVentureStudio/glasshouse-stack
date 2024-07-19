@@ -1,12 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks -- valid for stories */
 import { useState } from 'react';
 import { faker } from '@faker-js/faker';
-import { Box, Checkbox, Group, Stack, Switch } from '@mantine/core';
+import { Box, Checkbox, Group, Radio, Stack, Switch } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from '@storybook/test';
+import chunk from 'lodash.chunk';
 import groupBy from 'lodash.groupby';
 
 import { List } from './list';
+import { type PaginationConfig } from './list.types';
 
 const meta: Meta<typeof List<DataType>> = {
 	title: 'Components/Lists/List',
@@ -327,6 +329,65 @@ export const ControlledSelectable: ListStory = {
 					setValue(value);
 				}}
 			/>
+		);
+	},
+};
+
+export const Pagination: ListStory = {
+	args: {
+		...Default.args,
+		data,
+		pagination: {
+			total: chunk(data, 20).length,
+			pageSize: 10,
+			position: 'bottom',
+		},
+		classNames: {
+			root: 'h-96',
+		},
+	},
+	render: args => {
+		const [position, setPosition] = useState<PaginationConfig['position']>('bottom');
+		const [page, setPage] = useState(1);
+
+		const data = chunk(args.data, 20);
+
+		const items = data[page - 1] ?? [];
+
+		return (
+			<Stack>
+				<List
+					{...args}
+					data={items}
+					pagination={{
+						...args.pagination,
+						value: page,
+						total: args.pagination?.total ?? 0,
+						onChange: value => {
+							setPage(value);
+						},
+						position,
+					}}
+				/>
+				<Radio.Group
+					label='Pagination position'
+					value={position}
+					onChange={value => {
+						setPosition(value as 'top' | 'bottom');
+					}}
+				>
+					<Group>
+						<Radio
+							label='Top'
+							value='top'
+						/>
+						<Radio
+							label='Bottom'
+							value='bottom'
+						/>
+					</Group>
+				</Radio.Group>
+			</Stack>
 		);
 	},
 };

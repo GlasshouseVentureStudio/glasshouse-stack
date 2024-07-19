@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-qualifier -- Necessary */
 import { forwardRef, useCallback, useRef, useState } from 'react';
-import { Box, LoadingOverlay, ScrollArea, Text } from '@mantine/core';
+import { Box, LoadingOverlay, Pagination, ScrollArea, Stack, Text } from '@mantine/core';
 import { defaultRangeExtractor, type Range, useVirtualizer, type VirtualItem } from '@tanstack/react-virtual';
 import cx from 'clsx';
 import findIndex from 'lodash.findindex';
@@ -48,11 +48,13 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		onChange,
 		renderLoader,
 		renderEmpty,
+		pagination,
 		...rest
 	} = props;
 
 	const {
 		root,
+		scrollArea,
 		item: itemStyles,
 		list: listStyles,
 		header: headerStyles,
@@ -214,23 +216,35 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		<Box className='flex min-h-20 items-center justify-center'>{renderInnerEmpty()}</Box>
 	);
 
+	const paginationPosition = pagination?.position ?? 'bottom';
+
+	const paginationContent = pagination && (
+		<Box>
+			<Pagination {...pagination} />
+		</Box>
+	);
+
 	return (
-		<ScrollArea
-			ref={ref}
-			className={root({ className: baseStyles })}
-			classNames={scrollAreaClassNames}
-			viewportRef={scrollRef}
-			viewportProps={{
-				...viewportProps,
-				tabIndex: 0,
-			}}
-			{...omit(rest, 'onChange', 'value')}
-		>
-			{renderInnerLoader()}
-			{header ? <Box className={headerStyles({ className: classNames?.header })}>{header}</Box> : null}
-			{childrenContent}
-			{footer ? <Box className={footerStyles({ className: classNames?.footer })}>{footer}</Box> : null}
-		</ScrollArea>
+		<Stack className={root({ className: baseStyles })}>
+			{paginationPosition === 'top' ? paginationContent : null}
+			<ScrollArea
+				ref={ref}
+				className={scrollArea({ className: classNames?.scrollArea })}
+				classNames={scrollAreaClassNames}
+				viewportRef={scrollRef}
+				viewportProps={{
+					...viewportProps,
+					tabIndex: 0,
+				}}
+				{...omit(rest, 'onChange', 'value')}
+			>
+				{renderInnerLoader()}
+				{header ? <Box className={headerStyles({ className: classNames?.header })}>{header}</Box> : null}
+				{childrenContent}
+				{footer ? <Box className={footerStyles({ className: classNames?.footer })}>{footer}</Box> : null}
+			</ScrollArea>
+			{paginationPosition === 'bottom' ? paginationContent : null}
+		</Stack>
 	);
 };
 

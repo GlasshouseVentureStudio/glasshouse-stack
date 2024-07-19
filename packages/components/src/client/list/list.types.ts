@@ -2,6 +2,7 @@ import { type OmitComponentProps, type SlotsToClasses } from '@glasshouse/utils'
 import {
 	type BoxProps,
 	type LoadingOverlayProps,
+	type PaginationProps,
 	type PolymorphicComponentProps,
 	type ScrollAreaProps,
 } from '@mantine/core';
@@ -154,7 +155,13 @@ export interface ListProps<T extends object>
 	onChange?: (value: T) => void;
 	renderLoader?: () => React.ReactNode;
 	renderEmpty?: () => React.ReactNode;
+	pagination?: PaginationConfig;
 }
+
+export type PaginationConfig = Omit<PaginationProps, ''> & {
+	position?: 'top' | 'bottom';
+	pageSize?: number;
+};
 
 export interface ListItemProps extends PolymorphicComponentProps<'li', BoxProps> {
 	virtualRow: VirtualItem<Element>;
