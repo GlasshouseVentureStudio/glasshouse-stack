@@ -2,7 +2,12 @@ import { defineConfig } from 'tsup';
 
 export default defineConfig([
 	{
-		entry: ['src/client/index.ts', 'src/client/**/*.{ts,tsx}', '!src/client/**/*.stories.{ts,tsx}'],
+		entry: [
+			'src/client/index.ts',
+			'src/client/**/*.{ts,tsx}',
+			'!src/client/**/*.stories.{ts,tsx}',
+			'src/data-table/*.{ts,tsx}',
+		],
 		format: ['cjs', 'esm'],
 		outDir: 'dist/client',
 		banner: {

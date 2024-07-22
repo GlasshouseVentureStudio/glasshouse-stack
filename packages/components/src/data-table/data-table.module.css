@@ -1,0 +1,123 @@
+.table {
+	button:focus {
+		outline: none;
+	}
+
+	&[data-column-drag-handle-display='cell'] {
+		:global {
+			.mrt-table-head-cell-content {
+				position: relative;
+
+				.mrt-table-head-cell-content-actions > .mantine-ActionIcon-root:not(.mrt-grab-handle-button),
+				.mrt-table-head-cell-filter-label-icon,
+				.mrt-table-head-sort-button {
+					z-index: 2;
+				}
+
+				.mrt-grab-handle-button {
+					position: absolute;
+					inset-block: calc(var(--table-vertical-spacing) * -1);
+					inset-inline: calc(var(--table-horizontal-spacing) * -1);
+					width: auto;
+					min-width: none;
+					min-height: 0;
+					height: auto;
+					z-index: 1;
+
+					.mantine-ActionIcon-icon {
+						display: none;
+					}
+				}
+			}
+		}
+	}
+}
+
+.td {
+	--hover-thickness: 1px;
+
+	&[data-column-pinned][data-column-pinned='right'][data-first-right-pinned] {
+		overflow: visible;
+
+		&:before {
+			box-shadow: none !important;
+		}
+
+		&:after {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: -6px;
+			width: 6px;
+			background-image: linear-gradient(
+				90deg,
+				transparent 0,
+				var(--mantine-color-gray-2) 85%,
+				hsla(0, 0%, 87%, 0.8) 90%,
+				hsla(0, 0%, 87%, 0.8) 100%
+			);
+			transition: opacity 0.2s ease;
+			content: '';
+		}
+	}
+}
+
+.th {
+	--hover-thickness: 1px;
+	:global {
+		.mrt-table-head-cell-content {
+			width: 100%;
+			.mrt-table-head-cell-labels {
+				justify-content: space-between;
+				width: 100%;
+				min-height: 0;
+			}
+
+			.mrt-table-head-cell-filter-label-icon {
+				margin-inline-start: auto;
+			}
+
+			.mrt-table-head-cell-resize-handle {
+				--resize-handle-thickness: 2px;
+				margin-right: calc(var(--table-horizontal-spacing) * -1);
+				height: 100%;
+			}
+		}
+	}
+
+	&[data-column-pinned='right'][data-first-right-pinned] {
+		box-shadow: none !important;
+
+		&:after {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: -6px;
+			width: 6px;
+			background-image: linear-gradient(
+				90deg,
+				transparent 0,
+				var(--mantine-color-gray-2) 85%,
+				hsla(0, 0%, 87%, 0.8) 90%,
+				hsla(0, 0%, 87%, 0.8) 100%
+			);
+			transition: opacity 0.2s ease;
+			content: '';
+			pointer-events: none;
+		}
+	}
+}
+
+.th-actions {
+	:global {
+		.mrt-table-head-cell-content-wrapper {
+			margin-left: auto;
+		}
+	}
+}
+
+.expand-button-root {
+	&:disabled {
+		opacity: 0;
+	}
+}
