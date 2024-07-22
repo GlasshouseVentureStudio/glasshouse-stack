@@ -1,6 +1,7 @@
 import {
 	type InfiniteData,
 	type QueryClient,
+	type QueryFunction,
 	type QueryKey,
 	type UndefinedInitialDataInfiniteOptions,
 } from '@tanstack/react-query';
@@ -19,7 +20,7 @@ import { type ListProps } from '../list/list.types';
  */
 export interface DataListProps<
 	T extends object,
-	TQueryFnData = T[],
+	TQueryFnData = T[] | undefined,
 	TError = Error,
 	TData = InfiniteData<TQueryFnData>,
 	TQueryKey extends QueryKey = QueryKey,
@@ -28,7 +29,16 @@ export interface DataListProps<
 	/**
 	 * The options parameter for `useInfiniteQuery` hook.
 	 */
-	queryOptions: UndefinedInitialDataInfiniteOptions<TQueryFnData, TError, TData, TQueryKey, TPageParam>;
+	queryOptions: Omit<
+		UndefinedInitialDataInfiniteOptions<TQueryFnData, TError, TData, TQueryKey, TPageParam>,
+		'queryFn'
+	>;
+
+	/**
+	 * The function that fetches the data for `@tanstack/react-query` query.
+	 */
+	fetchFn: QueryFunction<TQueryFnData, TQueryKey, TPageParam> | undefined;
+
 	/**
 	 * The query client parameter for `useInfiniteQuery` hook.
 	 */

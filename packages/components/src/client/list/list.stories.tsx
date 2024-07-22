@@ -10,7 +10,7 @@ import groupBy from 'lodash.groupby';
 import { List } from './list';
 import { type PaginationConfig } from './list.types';
 
-const meta: Meta = {
+const meta: Meta<typeof List<DataType>> = {
 	title: 'Components/Lists/List',
 	component: List,
 	tags: ['autodocs', 'lists'],
@@ -27,7 +27,7 @@ const data = Array.from({ length: 1000 })
 	.sort((a, b) => a.name.localeCompare(b.name));
 
 type DataType = (typeof data)[number];
-type ListStory = StoryObj;
+type ListStory = StoryObj<typeof meta>;
 
 /**
  * Renders a list with the provided data.

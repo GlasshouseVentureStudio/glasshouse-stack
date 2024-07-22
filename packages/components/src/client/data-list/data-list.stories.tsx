@@ -10,14 +10,14 @@ interface MockInterface {
 	body: string;
 }
 
-const meta: Meta = {
+const meta: Meta<typeof DataList<MockInterface>> = {
 	title: 'Components/Lists/DataList',
 	component: DataList,
 	tags: ['autodocs', 'lists'],
 };
 
 export default meta;
-type DataListStory = StoryObj;
+type DataListStory = StoryObj<typeof meta>;
 
 /**
  * Default configuration for the DataListStory.
@@ -26,14 +26,14 @@ export const Detault: DataListStory = {
 	args: {
 		queryOptions: {
 			queryKey: ['data-list'],
-			queryFn: async () => {
-				const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-				const data = (await response.json()) as MockInterface[];
-
-				return data;
-			},
 			getNextPageParam: (lastPage, allPages) => allPages.length,
 			initialPageParam: 0,
+		},
+		fetchFn: async () => {
+			const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+			const data = (await response.json()) as MockInterface[];
+
+			return data;
 		},
 		renderItem: (item, index) => <p className='px-3 py-1'>{`${index + 1}. ${item.title}`}</p>,
 		estimateItemSize: () => 32,
