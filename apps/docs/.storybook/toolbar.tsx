@@ -41,7 +41,10 @@ export const Toolbar = ({ onPrimaryColorChange }: { onPrimaryColorChange?: (colo
 	const options = colorSchemeOptions();
 
 	return (
-		<Paper p='sm'>
+		<Paper
+			p='sm'
+			radius={0}
+		>
 			<Group justify='flex-end'>
 				<ColorPickerPopover onChange={onPrimaryColorChange} />
 				<Tooltip label='Change color scheme'>

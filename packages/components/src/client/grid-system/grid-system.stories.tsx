@@ -22,8 +22,7 @@ export const Default: GridSystemStory = {
 			<GridSystemCell>2</GridSystemCell>
 			<GridSystemCell>3</GridSystemCell>
 			<GridSystemCell>4</GridSystemCell>
-			<GridSystemCell>5</GridSystemCell>
-			<GridSystemCell>6</GridSystemCell>
+			<GridSystemCell className='col-span-2'>5</GridSystemCell>
 		</GridSystem>
 	),
 };

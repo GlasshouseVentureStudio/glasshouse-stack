@@ -1,3 +1,4 @@
+/* eslint-disable no-console -- safe for stories */
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn, userEvent, within } from '@storybook/test';
 
@@ -26,9 +27,15 @@ export const Default: ButtonStory = {
 			console.log('Button clicked');
 		}),
 	},
+	render: args => (
+		<Button
+			{...args}
+			data-testid='button-stories'
+		/>
+	),
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		await userEvent.click(canvas.getByRole('button'));
+		await userEvent.click(canvas.getByTestId('button-stories'));
 	},
 };

@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks -- valid for stories */
 import { useState } from 'react';
 import { faker } from '@faker-js/faker';
-import { Box, Checkbox, Group, Radio, Stack, Switch } from '@mantine/core';
+import { Box, Checkbox, Group, Paper, Radio, Stack, Switch, Text, Title } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, fn, userEvent, within } from '@storybook/test';
 import chunk from 'lodash.chunk';
 import groupBy from 'lodash.groupby';
 
@@ -14,6 +14,16 @@ const meta: Meta<typeof List<DataType>> = {
 	title: 'Components/Lists/List',
 	component: List,
 	tags: ['autodocs', 'lists'],
+	decorators: [
+		render => (
+			<Paper
+				className='p-5'
+				radius={0}
+			>
+				{render()}
+			</Paper>
+		),
+	],
 };
 
 export default meta;
@@ -38,10 +48,15 @@ export const Default: ListStory = {
 		itemKey: 'id',
 		estimateItemSize: () => 52,
 		renderItem: item => (
-			<div className='px-3 py-1'>
-				<h3 className='line-clamp-1 font-semibold'>{item.name}</h3>
-				<p className='line-clamp-1 text-sm text-gray-700'>{item.job}</p>
-			</div>
+			<Box className='px-3 py-1'>
+				<Title
+					className='line-clamp-1 font-semibold'
+					order={5}
+				>
+					{item.name}
+				</Title>
+				<Text className='line-clamp-1 text-sm text-gray-700'>{item.job}</Text>
+			</Box>
 		),
 	},
 };
@@ -103,10 +118,15 @@ export const Horizontal: ListStory = {
 		},
 		estimateItemSize: () => 240,
 		renderItem: item => (
-			<div className='flex h-full w-60 flex-col justify-center px-3 py-1'>
-				<h3 className='line-clamp-1 font-semibold'>{item.name}</h3>
-				<p className='line-clamp-1 text-sm text-gray-700'>{item.job}</p>
-			</div>
+			<Box className='flex h-full w-60 flex-col justify-center px-3 py-1'>
+				<Title
+					className='line-clamp-1 font-semibold'
+					order={5}
+				>
+					{item.name}
+				</Title>
+				<Text className='line-clamp-1 text-sm text-gray-700'>{item.job}</Text>
+			</Box>
 		),
 	},
 };
@@ -306,13 +326,14 @@ export const Selectable: ListStory = {
 			item: 'data-[active=true]:bg-gray-200',
 		},
 		selectable: true,
+		onClick: fn(() => {
+			console.log('Item clicked');
+		}),
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
 		const elements = selectableData.map(item => canvas.getByTestId(item.name));
-
-		console.log('elements: ', elements);
 
 		for (const element of elements) {
 			await userEvent.click(element);
@@ -324,7 +345,6 @@ export const Selectable: ListStory = {
 /**
  * Controlled SelectList using `value` and `onChange` props.
  */
-
 export const ControlledSelectable: ListStory = {
 	args: {
 		...Selectable.args,

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-qualifier -- Necessary */
 import { forwardRef, useCallback, useRef, useState } from 'react';
+import { cn } from '@glasshouse/utils';
 import { Box, LoadingOverlay, Pagination, ScrollArea, Stack, Text } from '@mantine/core';
 import { defaultRangeExtractor, type Range, useVirtualizer, type VirtualItem } from '@tanstack/react-virtual';
 import cx from 'clsx';
@@ -235,8 +236,11 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 			<ScrollArea
 				ref={ref}
 				className={scrollArea({ className: classNames?.scrollArea })}
-				classNames={scrollAreaClassNames}
 				viewportRef={scrollRef}
+				classNames={{
+					thumb: cn('z-10', typeof scrollAreaClassNames === 'object' && scrollAreaClassNames.thumb),
+					...scrollAreaClassNames,
+				}}
 				viewportProps={{
 					...viewportProps,
 					tabIndex: 0,

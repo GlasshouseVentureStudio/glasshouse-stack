@@ -79,13 +79,17 @@ export const GridSystem = ({ columns, rows, ...props }: GridSystemProps) => {
 
 interface GridSystemCellProps {
 	children: React.ReactNode;
+	className?: string;
 }
 
-export const GridSystemCell = ({ children }: GridSystemCellProps) => {
+export const GridSystemCell = ({ children, className }: GridSystemCellProps) => {
 	return (
 		<Box
-			className='z-[2] col-[var(--grid-column)] row-[var(--grid-row)] mb-[var(--guide-width)] mr-[var(--guide-width)] overflow-hidden p-2'
 			data-grid-cell
+			className={cn(
+				'z-[2] col-[var(--grid-column)] row-[var(--grid-row)] mb-[var(--guide-width)] mr-[var(--guide-width)] overflow-hidden p-2',
+				className
+			)}
 			style={{
 				'--grid-row': 'auto',
 				'--grid-column': 'auto',

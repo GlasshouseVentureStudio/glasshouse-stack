@@ -1,3 +1,4 @@
+import { Box, Text } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
 import groupBy from 'lodash.groupby';
 
@@ -50,7 +51,9 @@ export const GroupedDataList: DataListStory = {
 		groupByFn: items => groupBy(items, item => item.title.toLowerCase()[0]),
 		estimateGroupHeaderSize: () => 32,
 		renderGroupHeader: group => (
-			<p className='sticky top-0 bg-black px-3 py-1 font-bold uppercase text-white'>{group.title}</p>
+			<Box bg='blue'>
+				<Text className='sticky top-0 line-clamp-1 px-3 py-1 font-bold uppercase text-white'>{group.title}</Text>
+			</Box>
 		),
 	},
 };
