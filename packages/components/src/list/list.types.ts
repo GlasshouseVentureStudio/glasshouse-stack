@@ -1,6 +1,7 @@
 import { type OmitComponentProps, type SlotsToClasses } from '@glasshouse/utils';
 import {
 	type BoxProps,
+	type LoaderProps,
 	type LoadingOverlayProps,
 	type PaginationProps,
 	type PolymorphicComponentProps,
@@ -209,6 +210,26 @@ export interface ListProps<T extends object>
 	 * Configuration for pagination.
 	 */
 	pagination?: PaginationConfig;
+
+	/**
+	 * A function that is called when the end of the list is reached.
+	 */
+	onEndReached?: () => void;
+
+	/**
+	 * How far from the end the trailing edge of the list must be from the end of the content to trigger the `onEndReached` callback. Can have values similar to the CSS `margin` property, e.g. `"10px 20px 30px 40px"` (top, right, bottom, left). Default `256px`.
+	 */
+	onEndReachedThreshold?: string;
+
+	/**
+	 * Props for the bottom loader component.
+	 */
+	bottomLoaderProps?: LoaderProps;
+
+	/**
+	 * Whether the list is loading more items at the bottom.
+	 */
+	bottomLoading?: boolean;
 }
 
 /**

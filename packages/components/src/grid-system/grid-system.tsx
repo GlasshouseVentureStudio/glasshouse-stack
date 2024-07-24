@@ -34,12 +34,12 @@ export const GridSystem = ({ columns, rows, ...props }: GridSystemProps) => {
 		return (
 			<Box
 				key={`${x}-${y}`}
-				style={{ '--x': x, '--y': y }}
 				className={cn(
 					'absolute inset-0 col-start-[var(--x)] col-end-[span_1] row-start-[var(--y)] row-end-[span_1] border border-l-0 border-t-0',
 					x === columns && 'border-r-0',
 					y === rows && 'border-b-0'
 				)}
+				style={{ '--x': x, '--y': y }}
 			/>
 		);
 	});
@@ -85,11 +85,11 @@ interface GridSystemCellProps {
 export const GridSystemCell = ({ children, className }: GridSystemCellProps) => {
 	return (
 		<Box
-			data-grid-cell
 			className={cn(
 				'z-[2] col-[var(--grid-column)] row-[var(--grid-row)] mb-[var(--guide-width)] mr-[var(--guide-width)] overflow-hidden p-2',
 				className
 			)}
+			data-grid-cell
 			style={{
 				'--grid-row': 'auto',
 				'--grid-column': 'auto',

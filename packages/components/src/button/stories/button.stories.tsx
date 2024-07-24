@@ -2,7 +2,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn, userEvent, within } from '@storybook/test';
 
-import { Button } from './button';
+import { Button } from '../button';
 
 const meta: Meta<typeof Button> = {
 	title: 'Examples/Button',

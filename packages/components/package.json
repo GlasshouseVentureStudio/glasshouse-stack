@@ -6,24 +6,18 @@
 	"type": "module",
 	"exports": {
 		".": {
-			"source": "./src/client/index.ts",
-			"import": "./dist/client/index.js",
-			"require": "./dist/client/index.cjs",
-			"default": "./dist/client/index.js"
+			"source": "./src/index.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs",
+			"default": "./dist/index.js"
 		},
-		"./server": {
-			"source": "./src/server/index.ts",
-			"import": "./dist/server/index.js",
-			"require": "./dist/server/index.cjs",
-			"default": "./dist/server/index.js"
-		},
-		"./styles.css": "./dist/client/index.css"
+		"./styles.css": "./dist/index.css"
 	},
 	"files": [
 		"dist/**"
 	],
 	"scripts": {
-		"build": "tsup --dts",
+		"build": "tsup --dts --clean",
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
 		"dev": "tsup --dts --watch",
 		"lint": "eslint \"src/**/*.ts*\""
@@ -95,11 +89,11 @@
 		"tsup": "^8.1.0",
 		"typescript": "^5.5.3"
 	},
-	"publishConfig": {
-		"access": "public"
-	},
 	"peerDependencies": {
 		"@tabler/icons-react": "^3.11.0",
 		"lodash.isfunction": "^3.0.9"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }

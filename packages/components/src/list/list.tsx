@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-qualifier -- Necessary */
-import { forwardRef, useCallback, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '@glasshouse/utils';
-import { Box, LoadingOverlay, Pagination, ScrollArea, Stack, Text } from '@mantine/core';
+import { Box, Loader, LoadingOverlay, Pagination, ScrollArea, Stack, Text } from '@mantine/core';
 import { defaultRangeExtractor, type Range, useVirtualizer, type VirtualItem } from '@tanstack/react-virtual';
 import cx from 'clsx';
 import findIndex from 'lodash.findindex';
@@ -50,6 +50,12 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		renderLoader,
 		renderEmpty,
 		pagination,
+		onEndReached,
+		bottomLoaderProps = {
+			type: 'dots',
+		},
+		bottomLoading,
+		onEndReachedThreshold = '256px',
 		...rest
 	} = props;
 
@@ -63,6 +69,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		empty,
 		loader,
 		pagination: paginationStyles,
+		bottomLoaderWrapper,
 	} = list({ bordered, stickyHeader, stickyFooter, orientation });
 
 	const baseStyles = twMerge(cx(className, classNames?.root));
@@ -153,10 +160,10 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 				key={key}
 				active={getActiveItem(item, index)}
 				className={itemStyles({ className: classNames?.item })}
-				virtualRow={virtualRow}
 				onClick={event => {
 					handleItemClick(event, item, index);
 				}}
+				virtualRow={virtualRow}
 			>
 				{renderItem(item, index, getActiveItem(item, index))}
 			</ListItem>
@@ -165,6 +172,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 	// =============== Handle data items =============== //
 
 	const scrollRef = useRef<HTMLDivElement>(null);
+	const bottomRef = useRef<HTMLDivElement>(null);
 
 	const rangeExtractor = useCallback(
 		(range: Range) => {
@@ -205,6 +213,8 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 	};
 
 	const renderInnerEmpty = () => {
+		if (loading) return null;
+
 		if (renderEmpty) return renderEmpty();
 
 		return <Text>No items</Text>;
@@ -230,13 +240,50 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		</Box>
 	) : null;
 
+	/**
+	 * Handle on end reached.
+	 */
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			entries => {
+				const target = entries[0];
+
+				if (target?.isIntersecting) onEndReached?.();
+			},
+			{
+				root: scrollRef.current,
+				rootMargin: onEndReachedThreshold,
+			}
+		);
+
+		const loader = bottomRef.current;
+
+		if (loader) {
+			observer.observe(loader);
+		}
+
+		return () => {
+			if (loader) {
+				observer.unobserve(loader);
+			}
+		};
+	}, [onEndReached, onEndReachedThreshold]);
+
+	const bottomContent = bottomLoading ? (
+		<Box className={bottomLoaderWrapper({ className: classNames?.bottomLoaderWrapper })}>
+			<Loader {...bottomLoaderProps} />
+		</Box>
+	) : null;
+
+	const headerContent = header ? <Box className={headerStyles({ className: classNames?.header })}>{header}</Box> : null;
+	const footerContent = footer ? <Box className={footerStyles({ className: classNames?.footer })}>{footer}</Box> : null;
+
 	return (
 		<Stack className={root({ className: baseStyles })}>
 			{paginationPosition === 'top' ? paginationContent : null}
 			<ScrollArea
 				ref={ref}
 				className={scrollArea({ className: classNames?.scrollArea })}
-				viewportRef={scrollRef}
 				classNames={{
 					thumb: cn('z-10', typeof scrollAreaClassNames === 'object' && scrollAreaClassNames.thumb),
 					...scrollAreaClassNames,
@@ -245,12 +292,15 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 					...viewportProps,
 					tabIndex: 0,
 				}}
+				viewportRef={scrollRef}
 				{...omit(rest, 'onChange', 'value')}
 			>
 				{renderInnerLoader()}
-				{header ? <Box className={headerStyles({ className: classNames?.header })}>{header}</Box> : null}
+				{headerContent}
 				{childrenContent}
-				{footer ? <Box className={footerStyles({ className: classNames?.footer })}>{footer}</Box> : null}
+				{bottomContent}
+				{footerContent}
+				<Box ref={bottomRef} />
 			</ScrollArea>
 			{paginationPosition === 'bottom' ? paginationContent : null}
 		</Stack>

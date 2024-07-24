@@ -1,6 +1,6 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import { GridSystem, GridSystemCell } from './grid-system';
+import { GridSystem, GridSystemCell } from '../grid-system';
 
 const meta: Meta<typeof GridSystem> = {
 	title: 'Components/GridSystem',

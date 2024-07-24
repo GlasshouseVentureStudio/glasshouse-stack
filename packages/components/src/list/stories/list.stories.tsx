@@ -7,8 +7,8 @@ import { expect, fn, userEvent, within } from '@storybook/test';
 import chunk from 'lodash.chunk';
 import groupBy from 'lodash.groupby';
 
-import { List } from './list';
-import { type PaginationConfig } from './list.types';
+import { List } from '../list';
+import { type PaginationConfig } from '../list.types';
 
 const meta: Meta<typeof List<DataType>> = {
 	title: 'Components/Lists/List',
@@ -363,10 +363,10 @@ export const ControlledSelectable: ListStory = {
 		return (
 			<List
 				{...args}
-				value={value}
 				onChange={value => {
 					setValue(value);
 				}}
+				value={value}
 			/>
 		);
 	},
@@ -410,10 +410,10 @@ export const Pagination: ListStory = {
 				/>
 				<Radio.Group
 					label='Pagination position'
-					value={position}
 					onChange={value => {
 						setPosition(value as 'top' | 'bottom');
 					}}
+					value={position}
 				>
 					<Group>
 						<Radio

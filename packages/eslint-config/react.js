@@ -52,9 +52,7 @@ module.exports = {
 			{
 				ignoreCase: true,
 				callbacksLast: false,
-				shorthandFirst: false,
 				reservedFirst: true,
-				multiline: 'last',
 			},
 		],
 	},

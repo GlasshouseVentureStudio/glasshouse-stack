@@ -1,7 +1,6 @@
 import {
 	type InfiniteData,
 	type QueryClient,
-	type QueryFunction,
 	type QueryKey,
 	type UndefinedInitialDataInfiniteOptions,
 } from '@tanstack/react-query';
@@ -19,28 +18,52 @@ import { type ListProps } from '../list/list.types';
  * @template TPageParam - The type of the page parameter.
  */
 export interface DataListProps<
-	T extends object,
-	TQueryFnData = T[] | undefined,
+	TData extends object,
+	TQueryFnData = unknown,
 	TError = Error,
-	TData = InfiniteData<TQueryFnData>,
 	TQueryKey extends QueryKey = QueryKey,
 	TPageParam = unknown,
-> extends Omit<ListProps<T>, 'data'> {
+> extends Omit<ListProps<TData>, 'data' | 'renderItem'> {
 	/**
 	 * The options parameter for `useInfiniteQuery` hook.
 	 */
 	queryOptions: Omit<
-		UndefinedInitialDataInfiniteOptions<TQueryFnData, TError, TData, TQueryKey, TPageParam>,
-		'queryFn'
+		UndefinedInitialDataInfiniteOptions<TQueryFnData, TError, InfiniteData<TData[]>, TQueryKey, TPageParam>,
+		'queryFn' | 'initialPageParam'
 	>;
 
 	/**
 	 * The function that fetches the data for `@tanstack/react-query` query.
 	 */
-	fetchFn: QueryFunction<TQueryFnData, TQueryKey, TPageParam> | undefined;
+	fetchFn: FetchFn<TQueryFnData, TPageParam>;
+
+	/**
+	 * The function that selects the data from the query result.
+	 */
+	dataSelector: ListDataSelectorFn<TQueryFnData, TData, TPageParam>;
 
 	/**
 	 * The query client parameter for `useInfiniteQuery` hook.
 	 */
 	queryClient?: QueryClient;
+
+	/**
+	 * The function that renders each item in the list.
+	 */
+	renderItem: (item: TData, index: number, active?: boolean) => React.ReactNode;
+
+	initialPageParam: TPageParam;
+}
+
+export type ListDataSelectorFn<TQueryFnData, TData, TPageParam> = (
+	data: InfiniteData<TQueryFnData, TPageParam>
+) => InfiniteData<TData, TPageParam>;
+
+export type FetchFn<TQueryFnData, TPageParam> = (params: TPageParam) => Promise<TQueryFnData>;
+
+export interface FetchFnParams {
+	pageIndex: number;
+	pageSize: number;
+	orderBy?: string;
+	orderDirection?: 'ASC' | 'DESC';
 }

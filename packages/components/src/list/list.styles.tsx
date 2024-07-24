@@ -10,8 +10,9 @@ export const list = tv({
 		header: '',
 		footer: '',
 		loader: 'absolute inset-0 z-[1]',
-		empty: 'flex min-h-20 items-center justify-center',
+		empty: 'flex h-full min-h-20 w-full min-w-20 items-center justify-center',
 		pagination: '',
+		bottomLoaderWrapper: 'flex w-full items-center justify-center p-10',
 	},
 	variants: {
 		bordered: {

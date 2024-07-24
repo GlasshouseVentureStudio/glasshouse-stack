@@ -1,24 +1,8 @@
 import { defineConfig } from 'tsup';
 
-export default defineConfig([
-	{
-		entry: [
-			'src/client/index.ts',
-			'src/client/**/*.{ts,tsx}',
-			'!src/client/**/*.stories.{ts,tsx}',
-			'src/data-table/*.{ts,tsx}',
-		],
-		format: ['cjs', 'esm'],
-		outDir: 'dist/client',
-		banner: {
-			js: "'use client'",
-		},
-		external: ['react', '@mantine/core', '@tanstack/react-query'],
-	},
-	{
-		entry: ['src/server/index.ts', 'src/server/**/*.{ts,tsx}'],
-		format: ['cjs', 'esm'],
-		outDir: 'dist/server',
-		external: ['react', '@mantine/core', '@tanstack/react-query'],
-	},
-]);
+export default defineConfig({
+	entry: ['src/index.ts', 'src/**/*.{ts,tsx}', '!src/**/*.stories.{ts,tsx}', '!src/types'],
+	format: ['cjs', 'esm'],
+	outDir: 'dist',
+	external: ['react', '@mantine/core', '@tanstack/react-query'],
+});
