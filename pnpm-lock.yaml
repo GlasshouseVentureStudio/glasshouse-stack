@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@changesets/changelog-git':
+        specifier: ^0.2.0
+        version: 0.2.0
       '@changesets/cli':
         specifier: ^2.27.7
         version: 2.27.7
@@ -458,6 +461,12 @@ importers:
       typescript:
         specifier: ^5.5.3
         version: 5.5.3
+
+  packages/prettier-config:
+    devDependencies:
+      prettier-plugin-tailwindcss:
+        specifier: ^0.6.5
+        version: 0.6.5(prettier@3.3.3)
 
   packages/typescript-config:
     devDependencies:
@@ -13246,6 +13255,10 @@ snapshots:
   prettier-plugin-tailwindcss@0.6.5(prettier@3.3.2):
     dependencies:
       prettier: 3.3.2
+
+  prettier-plugin-tailwindcss@0.6.5(prettier@3.3.3):
+    dependencies:
+      prettier: 3.3.3
 
   prettier@2.8.8: {}
 
