@@ -94,6 +94,7 @@
 		"lodash.isfunction": "^3.0.9"
 	},
 	"publishConfig": {
-		"access": "public"
+		"access": "public",
+		"registry": "https://npm.glasshouseventure.studio"
 	}
 }
