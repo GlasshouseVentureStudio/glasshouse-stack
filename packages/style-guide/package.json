@@ -66,5 +66,9 @@
 		"typescript": {
 			"optional": true
 		}
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://npm.glasshouseventure.studio"
 	}
 }
