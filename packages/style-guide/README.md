@@ -103,7 +103,7 @@ To use the shared TypeScript config, set the following in `tsconfig.json`.
 }
 ```
 
-The base TypeScript config is also available as `@glasshouse/style-guide/typescript` which only specifies a set of general rules.
+The base TypeScript config is also available as `@glasshouse/style-guide/typescript` which only specifies a set of general rules:
 
 ```json
 {
