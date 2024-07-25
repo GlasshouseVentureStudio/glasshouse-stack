@@ -17,13 +17,13 @@ All configs are contained in one package, `@glasshouse/style-guide`. To install:
 
 ```sh
 # If you use npm
-npm i --save-dev @vercel/style-guide
+npm i --save-dev @glasshouse/style-guide
 
 # If you use pnpm
-pnpm i --save-dev @vercel/style-guide
+pnpm i --save-dev @glasshouse/style-guide
 
 # If you use Yarn
-yarn add --dev @vercel/style-guide
+yarn add --dev @glasshouse/style-guide
 ```
 
 ## Prettier
@@ -35,7 +35,7 @@ To use the shared Prettier config, set the following in `package.json`:
 
 ```
 {
-  "prettier": "@vercel/style-guide/prettier"
+  "prettier": "@glasshouse/style-guide/prettier"
 }
 ```
 
