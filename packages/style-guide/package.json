@@ -5,9 +5,11 @@
 	"description": "Glasshouse Style Guide",
 	"exports": {
 		"./eslint/*": "./eslint/*.js",
-		"./prettier/*": "./prettier/*.js",
-		"./typescript/*": "./typescript/*.json",
-		"./stylelint/*": "./stylelint/*.js"
+		"./prettier": "./prettier/index.js",
+		"./typescript": "./typescript/base.json",
+		"./typescript/nextjs": "./typescript/nextjs.json",
+		"./typescript/react-library": "./typescript/react-library.json",
+		"./stylelint": "./stylelint/index.json"
 	},
 	"files": [
 		"eslint",
@@ -36,6 +38,7 @@
 	},
 	"devDependencies": {
 		"eslint": "^8.57.0",
+		"postcss": "^8.4.40",
 		"prettier": "^3.3.2",
 		"stylelint": "^16.7.0",
 		"typescript": "^5.5.4"

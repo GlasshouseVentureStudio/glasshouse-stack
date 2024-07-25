@@ -1,7 +1,7 @@
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
 	root: true,
-	extends: ['@glasshouse/eslint-config/react.js'],
+	extends: [require.resolve('@glasshouse/style-guide/eslint/react')],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		project: true,

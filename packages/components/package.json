@@ -45,6 +45,7 @@
 	},
 	"devDependencies": {
 		"@glasshouse/eslint-config": "workspace:*",
+		"@glasshouse/style-guide": "workspace:*",
 		"@glasshouse/typescript-config": "workspace:*",
 		"@mantine/carousel": "^7.11.2",
 		"@mantine/charts": "^7.11.2",

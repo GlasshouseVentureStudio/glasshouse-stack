@@ -410,6 +410,9 @@ importers:
       '@glasshouse/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
+      '@glasshouse/style-guide':
+        specifier: workspace:*
+        version: link:../style-guide
       '@glasshouse/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
@@ -535,7 +538,7 @@ importers:
         version: 2.12.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tsup:
         specifier: ^8.1.0
-        version: 8.1.0(@swc/core@1.6.13(@swc/helpers@0.5.5))(postcss@8.4.39)(typescript@5.5.3)
+        version: 8.1.0(@swc/core@1.6.13(@swc/helpers@0.5.5))(postcss@8.4.40)(typescript@5.5.3)
       typescript:
         specifier: ^5.5.3
         version: 5.5.3
@@ -605,14 +608,17 @@ importers:
         version: 0.1.2
       stylelint-config-sass-guidelines:
         specifier: ^12.0.0
-        version: 12.0.0(postcss@7.0.39)(stylelint@16.7.0(typescript@5.5.4))
+        version: 12.0.0(postcss@8.4.40)(stylelint@16.7.0(typescript@5.5.4))
       stylelint-config-standard-scss:
         specifier: ^13.1.0
-        version: 13.1.0(postcss@7.0.39)(stylelint@16.7.0(typescript@5.5.4))
+        version: 13.1.0(postcss@8.4.40)(stylelint@16.7.0(typescript@5.5.4))
     devDependencies:
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
+      postcss:
+        specifier: ^8.4.40
+        version: 8.4.40
       prettier:
         specifier: ^3.3.2
         version: 3.3.3
@@ -661,7 +667,7 @@ importers:
         version: 8.57.0
       tsup:
         specifier: ^8.1.0
-        version: 8.1.0(@swc/core@1.6.13(@swc/helpers@0.5.5))(postcss@8.4.39)(typescript@5.5.3)
+        version: 8.1.0(@swc/core@1.6.13(@swc/helpers@0.5.5))(postcss@8.4.40)(typescript@5.5.3)
       typescript:
         specifier: ^5.5.3
         version: 5.5.3
@@ -6651,6 +6657,10 @@ packages:
 
   postcss@8.4.39:
     resolution: {integrity: sha512-0vzE+lAiG7hZl1/9I8yzKLx3aR9Xbof3fBHKunvMfOCYAtMhrsnccJY2iTURb9EZd5+pLuiNV9/c/GZJOHsgIw==}
+    engines: {node: ^10 || ^12 || >=14}
+
+  postcss@8.4.40:
+    resolution: {integrity: sha512-YF2kKIUzAofPMpfH6hOi2cGnv/HrUlfucspc7pDyvv7kGdqXrfj8SCl/t8owkEgKEuu8ZcRjSOxFxVLqwChZ2Q==}
     engines: {node: ^10 || ^12 || >=14}
 
   preferred-pm@3.1.4:
@@ -16088,11 +16098,11 @@ snapshots:
 
   possible-typed-array-names@1.0.0: {}
 
-  postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39):
+  postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39):
     dependencies:
       htmlparser2: 3.10.1
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39))(postcss-jsx@0.36.4(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39))(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39))(postcss-jsx@0.36.4(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39))(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39)
 
   postcss-import@15.1.0(postcss@8.4.39):
     dependencies:
@@ -16106,11 +16116,11 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.4.39
 
-  postcss-jsx@0.36.4(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39):
+  postcss-jsx@0.36.4(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39):
     dependencies:
       '@babel/core': 7.24.9
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39))(postcss-jsx@0.36.4(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39))(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39))(postcss-jsx@0.36.4(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39))(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39)
     transitivePeerDependencies:
       - supports-color
 
@@ -16125,10 +16135,17 @@ snapshots:
     optionalDependencies:
       postcss: 8.4.39
 
-  postcss-markdown@0.36.0(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39):
+  postcss-load-config@4.0.2(postcss@8.4.40):
+    dependencies:
+      lilconfig: 3.1.2
+      yaml: 2.4.5
+    optionalDependencies:
+      postcss: 8.4.40
+
+  postcss-markdown@0.36.0(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39):
     dependencies:
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39))(postcss-jsx@0.36.4(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39))(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39))(postcss-jsx@0.36.4(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39))(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39)
       remark: 10.0.1
       unist-util-find-all-after: 1.0.5
 
@@ -16166,9 +16183,9 @@ snapshots:
     dependencies:
       postcss: 7.0.39
 
-  postcss-safe-parser@7.0.0(postcss@8.4.39):
+  postcss-safe-parser@7.0.0(postcss@8.4.40):
     dependencies:
-      postcss: 8.4.39
+      postcss: 8.4.40
 
   postcss-sass@0.3.5:
     dependencies:
@@ -16179,9 +16196,9 @@ snapshots:
     dependencies:
       postcss: 7.0.39
 
-  postcss-scss@4.0.9(postcss@7.0.39):
+  postcss-scss@4.0.9(postcss@8.4.40):
     dependencies:
-      postcss: 7.0.39
+      postcss: 8.4.40
 
   postcss-selector-parser@3.1.2:
     dependencies:
@@ -16203,14 +16220,14 @@ snapshots:
       lodash: 4.17.21
       postcss: 7.0.39
 
-  postcss-syntax@0.36.2(postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39))(postcss-jsx@0.36.4(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39))(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39):
+  postcss-syntax@0.36.2(postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39))(postcss-jsx@0.36.4(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39))(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39):
     dependencies:
       postcss: 7.0.39
     optionalDependencies:
-      postcss-html: 0.36.0(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39)
-      postcss-jsx: 0.36.4(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39)
+      postcss-html: 0.36.0(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39)
+      postcss-jsx: 0.36.4(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39)
       postcss-less: 3.1.4
-      postcss-markdown: 0.36.0(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39)
+      postcss-markdown: 0.36.0(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39)
       postcss-scss: 2.1.1
 
   postcss-value-parser@3.3.1: {}
@@ -16229,6 +16246,12 @@ snapshots:
       source-map-js: 1.2.0
 
   postcss@8.4.39:
+    dependencies:
+      nanoid: 3.3.7
+      picocolors: 1.0.1
+      source-map-js: 1.2.0
+
+  postcss@8.4.40:
     dependencies:
       nanoid: 3.3.7
       picocolors: 1.0.1
@@ -17344,34 +17367,34 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  stylelint-config-recommended-scss@14.1.0(postcss@7.0.39)(stylelint@16.7.0(typescript@5.5.4)):
+  stylelint-config-recommended-scss@14.1.0(postcss@8.4.40)(stylelint@16.7.0(typescript@5.5.4)):
     dependencies:
-      postcss-scss: 4.0.9(postcss@7.0.39)
+      postcss-scss: 4.0.9(postcss@8.4.40)
       stylelint: 16.7.0(typescript@5.5.4)
       stylelint-config-recommended: 14.0.1(stylelint@16.7.0(typescript@5.5.4))
       stylelint-scss: 6.4.1(stylelint@16.7.0(typescript@5.5.4))
     optionalDependencies:
-      postcss: 7.0.39
+      postcss: 8.4.40
 
   stylelint-config-recommended@14.0.1(stylelint@16.7.0(typescript@5.5.4)):
     dependencies:
       stylelint: 16.7.0(typescript@5.5.4)
 
-  stylelint-config-sass-guidelines@12.0.0(postcss@7.0.39)(stylelint@16.7.0(typescript@5.5.4)):
+  stylelint-config-sass-guidelines@12.0.0(postcss@8.4.40)(stylelint@16.7.0(typescript@5.5.4)):
     dependencies:
       '@stylistic/stylelint-plugin': 2.1.2(stylelint@16.7.0(typescript@5.5.4))
-      postcss: 7.0.39
-      postcss-scss: 4.0.9(postcss@7.0.39)
+      postcss: 8.4.40
+      postcss-scss: 4.0.9(postcss@8.4.40)
       stylelint: 16.7.0(typescript@5.5.4)
       stylelint-scss: 6.4.1(stylelint@16.7.0(typescript@5.5.4))
 
-  stylelint-config-standard-scss@13.1.0(postcss@7.0.39)(stylelint@16.7.0(typescript@5.5.4)):
+  stylelint-config-standard-scss@13.1.0(postcss@8.4.40)(stylelint@16.7.0(typescript@5.5.4)):
     dependencies:
       stylelint: 16.7.0(typescript@5.5.4)
-      stylelint-config-recommended-scss: 14.1.0(postcss@7.0.39)(stylelint@16.7.0(typescript@5.5.4))
+      stylelint-config-recommended-scss: 14.1.0(postcss@8.4.40)(stylelint@16.7.0(typescript@5.5.4))
       stylelint-config-standard: 36.0.1(stylelint@16.7.0(typescript@5.5.4))
     optionalDependencies:
-      postcss: 7.0.39
+      postcss: 8.4.40
 
   stylelint-config-standard@36.0.1(stylelint@16.7.0(typescript@5.5.4)):
     dependencies:
@@ -17423,9 +17446,9 @@ snapshots:
       micromatch: 4.0.7
       normalize-path: 3.0.0
       picocolors: 1.0.1
-      postcss: 8.4.39
+      postcss: 8.4.40
       postcss-resolve-nested-selector: 0.1.4
-      postcss-safe-parser: 7.0.0(postcss@8.4.39)
+      postcss-safe-parser: 7.0.0(postcss@8.4.40)
       postcss-selector-parser: 6.1.1
       postcss-value-parser: 4.2.0
       resolve-from: 5.0.0
@@ -17468,9 +17491,9 @@ snapshots:
       micromatch: 4.0.7
       normalize-path: 3.0.0
       picocolors: 1.0.1
-      postcss: 8.4.39
+      postcss: 8.4.40
       postcss-resolve-nested-selector: 0.1.4
-      postcss-safe-parser: 7.0.0(postcss@8.4.39)
+      postcss-safe-parser: 7.0.0(postcss@8.4.40)
       postcss-selector-parser: 6.1.1
       postcss-value-parser: 4.2.0
       resolve-from: 5.0.0
@@ -17511,10 +17534,10 @@ snapshots:
       normalize-selector: 0.2.0
       pify: 4.0.1
       postcss: 7.0.39
-      postcss-html: 0.36.0(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39)
-      postcss-jsx: 0.36.4(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39)
+      postcss-html: 0.36.0(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39)
+      postcss-jsx: 0.36.4(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39)
       postcss-less: 3.1.4
-      postcss-markdown: 0.36.0(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39)
+      postcss-markdown: 0.36.0(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39)
       postcss-media-query-parser: 0.2.3
       postcss-reporter: 6.0.1
       postcss-resolve-nested-selector: 0.1.4
@@ -17522,7 +17545,7 @@ snapshots:
       postcss-sass: 0.3.5
       postcss-scss: 2.1.1
       postcss-selector-parser: 3.1.2
-      postcss-syntax: 0.36.2(postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39))(postcss-jsx@0.36.4(postcss-syntax@0.36.2(postcss@7.0.39))(postcss@7.0.39))(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39))(postcss-jsx@0.36.4(postcss-syntax@0.36.2(postcss@8.4.40))(postcss@7.0.39))(postcss-less@3.1.4)(postcss-markdown@0.36.0)(postcss-scss@2.1.1)(postcss@7.0.39)
       postcss-value-parser: 3.3.1
       resolve-from: 4.0.0
       signal-exit: 3.0.7
@@ -17767,7 +17790,7 @@ snapshots:
 
   tslib@2.6.3: {}
 
-  tsup@8.1.0(@swc/core@1.6.13(@swc/helpers@0.5.5))(postcss@8.4.39)(typescript@5.5.3):
+  tsup@8.1.0(@swc/core@1.6.13(@swc/helpers@0.5.5))(postcss@8.4.40)(typescript@5.5.3):
     dependencies:
       bundle-require: 4.2.1(esbuild@0.21.5)
       cac: 6.7.14
@@ -17777,7 +17800,7 @@ snapshots:
       execa: 5.1.1
       globby: 11.1.0
       joycon: 3.1.1
-      postcss-load-config: 4.0.2(postcss@8.4.39)
+      postcss-load-config: 4.0.2(postcss@8.4.40)
       resolve-from: 5.0.0
       rollup: 4.18.1
       source-map: 0.8.0-beta.0
@@ -17785,7 +17808,7 @@ snapshots:
       tree-kill: 1.2.2
     optionalDependencies:
       '@swc/core': 1.6.13(@swc/helpers@0.5.5)
-      postcss: 8.4.39
+      postcss: 8.4.40
       typescript: 5.5.3
     transitivePeerDependencies:
       - supports-color

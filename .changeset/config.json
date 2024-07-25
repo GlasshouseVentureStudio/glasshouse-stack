@@ -6,6 +6,6 @@
 	"linked": [],
 	"access": "public",
 	"updateInternalDependencies": "patch",
-	"ignore": ["@glasshouse/docs"],
+	"ignore": ["@glasshouse/docs", "@glasshouse/demo"],
 	"baseBranch": "main"
 }

@@ -1,21 +1,13 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"display": "Default",
+	"display": "Vercel Base",
+	"docs": "https://github.com/vercel/style-guide",
 	"compilerOptions": {
-		"composite": false,
-		"declaration": true,
-		"declarationMap": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
-		"inlineSources": false,
-		"isolatedModules": true,
-		"moduleResolution": "NodeNext",
-		"noUnusedLocals": false,
-		"noUnusedParameters": false,
-		"preserveWatchOutput": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedIndexedAccess": true,
 		"skipLibCheck": true,
 		"strict": true
-	},
-	"extends": "@vercel/style-guide/typescript/node20",
-	"exclude": ["node_modules"]
+	}
 }
