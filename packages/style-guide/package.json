@@ -1,7 +1,7 @@
 {
 	"name": "@glasshouse/style-guide",
 	"version": "0.1.0",
-	"private": true,
+	"private": false,
 	"description": "Glasshouse Style Guide",
 	"exports": {
 		"./eslint/*": "./eslint/*.js",
