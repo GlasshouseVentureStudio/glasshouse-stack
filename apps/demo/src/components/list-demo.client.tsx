@@ -1,13 +1,10 @@
 'use client';
 
+import { useCallback } from 'react';
 import { List } from '@glasshouse/components';
 import { Avatar, Group, Paper, Stack, Text } from '@mantine/core';
-import { useCallback } from 'react';
-import { User } from './list-demo';
 
-const getAvatarUrl = (data: User) => {
-	return `https://dummyjson.com/icon/${data.username}/150`;
-};
+import { type User } from './list-demo';
 
 const getFullName = (data: User) => {
 	return `${data.firstName} ${data.lastName}`;

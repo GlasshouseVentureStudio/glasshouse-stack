@@ -1,0 +1,67 @@
+{
+	"name": "@glasshouse/style-guide",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Glasshouse Style Guide",
+	"exports": {
+		"./eslint/*": "./eslint/*.js",
+		"./prettier/*": "./prettier/*.js",
+		"./typescript/*": "./typescript/*.json",
+		"./stylelint/*": "./stylelint/*.js"
+	},
+	"files": [
+		"eslint",
+		"prettier",
+		"typescript",
+		"stylelint"
+	],
+	"scripts": {
+		"build": "echo 'Add build script here'",
+		"dev": "echo 'Add dev script here'",
+		"lint": "echo 'Add lint script here'",
+		"test": "echo 'Add test script here'"
+	},
+	"dependencies": {
+		"@next/eslint-plugin-next": "^14.2.5",
+		"@typescript-eslint/eslint-plugin": "^7.16.1",
+		"@typescript-eslint/parser": "^7.16.1",
+		"@vercel/style-guide": "^6.0.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-config-turbo": "^2.0.6",
+		"prettier-plugin-packagejson": "^2.5.0",
+		"stylelint-config-prettier-scss": "^1.0.0",
+		"stylelint-config-rational-order": "^0.1.2",
+		"stylelint-config-sass-guidelines": "^12.0.0",
+		"stylelint-config-standard-scss": "^13.1.0"
+	},
+	"devDependencies": {
+		"eslint": "^8.57.0",
+		"prettier": "^3.3.2",
+		"stylelint": "^16.7.0",
+		"typescript": "^5.5.4"
+	},
+	"peerDependencies": {
+		"@next/eslint-plugin-next": ">=12.3.0 <15.0.0-0",
+		"eslint": ">=8.48.0 <9",
+		"prettier": ">=3.0.0 <4",
+		"stylelint": ">=16.0.0 <17",
+		"typescript": ">=4.8.0 <6"
+	},
+	"peerDependenciesMeta": {
+		"@next/eslint-plugin-next": {
+			"optional": true
+		},
+		"eslint": {
+			"optional": true
+		},
+		"prettier": {
+			"optional": true
+		},
+		"stylelint": {
+			"optional": true
+		},
+		"typescript": {
+			"optional": true
+		}
+	}
+}

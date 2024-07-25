@@ -1,7 +1,8 @@
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
-import '@mantine/core/styles.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+
+import '@mantine/core/styles.css';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
