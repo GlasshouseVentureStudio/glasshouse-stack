@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { cn } from '@glasshouse/utils';
 import {
 	IconCaretDownFilled,
@@ -9,7 +9,6 @@ import {
 	IconGripHorizontal,
 	IconSettings,
 } from '@tabler/icons-react';
-import { type UseInfiniteQueryOptions } from '@tanstack/react-query';
 import isFunction from 'lodash.isfunction';
 import omit from 'lodash.omit';
 import {
@@ -17,15 +16,15 @@ import {
 	type MRT_ColumnDef,
 	type MRT_Icons,
 	type MRT_RowData,
-	type MRT_TableOptions,
 	type MRT_TableState,
 	useMantineReactTable,
 } from 'mantine-react-table';
 
-import { type DataTableBaseProps } from './data-table.types';
+import { type DataTableBaseProps, type DataTableOptions } from './data-table.types';
 import { resolveComponentProps } from './data-table.utils';
 import { DataTableActionsHeader } from './data-table-actions-header';
 import { BottomToolbar } from './toolbar/bottom-toolbar';
+import { TopToolbar } from './toolbar/top-toolbar';
 
 import styles from './data-table.module.css';
 
@@ -46,21 +45,6 @@ const customIcons: Partial<MRT_Icons> = {
 		/>
 	),
 };
-
-interface DataTablePropsWithQuery<TData extends MRT_RowData, TQueryFnData = unknown, TError = Error>
-	extends Omit<MRT_TableOptions<TData>, 'data'> {
-	queryOptions: UseInfiniteQueryOptions<TQueryFnData, TError, TData[]>;
-	data?: null;
-}
-
-interface DataTablePropsWithoutQuery<TData extends MRT_RowData> extends MRT_TableOptions<TData> {
-	queryOptions?: undefined;
-	data: TData[];
-}
-
-export type DataTableProps<TData extends MRT_RowData, TQueryFnData = unknown, TError = Error> =
-	| DataTablePropsWithQuery<TData, TQueryFnData, TError>
-	| DataTablePropsWithoutQuery<TData>;
 
 export const DataTableBase = <TData extends MRT_RowData>({
 	columnDragHandleDisplayMode = 'button',
@@ -85,6 +69,7 @@ export const DataTableBase = <TData extends MRT_RowData>({
 	mantineSelectAllCheckboxProps: mantineSelectAllCheckboxPropsFromProps,
 	mantineSelectCheckboxProps: mantineSelectCheckboxPropsFromProps,
 	mantineTableProps: mantineTablePropsFromProps,
+	renderTopToolbar: renderTopToolbarFromProps,
 	positionActionsColumn = 'last',
 	renderBottomToolbar: renderBottomToolbarFromProps,
 	statesStorageProvider,
@@ -160,7 +145,7 @@ export const DataTableBase = <TData extends MRT_RowData>({
 		...iconsFromProps,
 	};
 
-	const mantineColumnDragHandleProps: MRT_TableOptions<TData>['mantineColumnDragHandleProps'] = props => {
+	const mantineColumnDragHandleProps: DataTableOptions<TData>['mantineColumnDragHandleProps'] = props => {
 		const resolvedProps = resolveComponentProps(props, mantineColumnDragHandlePropsFromProps);
 
 		return {
@@ -180,7 +165,7 @@ export const DataTableBase = <TData extends MRT_RowData>({
 		};
 	};
 
-	const mantineExpandAllButtonProps: MRT_TableOptions<TData>['mantineExpandAllButtonProps'] = props => {
+	const mantineExpandAllButtonProps: DataTableOptions<TData>['mantineExpandAllButtonProps'] = props => {
 		const resolvedProps = resolveComponentProps(props, mantineExpandAllButtonPropsFromProps);
 		const classNames = resolvedProps?.classNames;
 
@@ -199,7 +184,7 @@ export const DataTableBase = <TData extends MRT_RowData>({
 		};
 	};
 
-	const mantineExpandButtonProps: MRT_TableOptions<TData>['mantineExpandButtonProps'] = props => {
+	const mantineExpandButtonProps: DataTableOptions<TData>['mantineExpandButtonProps'] = props => {
 		const resolvedProps = resolveComponentProps(props, mantineExpandButtonPropsFromProps);
 		const classNames = resolvedProps?.classNames;
 
@@ -218,7 +203,7 @@ export const DataTableBase = <TData extends MRT_RowData>({
 		};
 	};
 
-	const mantinePaginationProps: MRT_TableOptions<TData>['mantinePaginationProps'] = props => {
+	const mantinePaginationProps: DataTableOptions<TData>['mantinePaginationProps'] = props => {
 		const resolvedProps = resolveComponentProps(props, mantinePaginationPropsFromProps);
 
 		return {
@@ -226,7 +211,7 @@ export const DataTableBase = <TData extends MRT_RowData>({
 		};
 	};
 
-	const mantineRowDragHandleProps: MRT_TableOptions<TData>['mantineRowDragHandleProps'] = props => {
+	const mantineRowDragHandleProps: DataTableOptions<TData>['mantineRowDragHandleProps'] = props => {
 		const resolvedProps = resolveComponentProps(props, mantineRowDragHandlePropsFromProps);
 
 		return {
@@ -239,7 +224,7 @@ export const DataTableBase = <TData extends MRT_RowData>({
 		};
 	};
 
-	const mantineSelectAllCheckboxProps: MRT_TableOptions<TData>['mantineSelectAllCheckboxProps'] = props => {
+	const mantineSelectAllCheckboxProps: DataTableOptions<TData>['mantineSelectAllCheckboxProps'] = props => {
 		const resolvedProps = resolveComponentProps(props, mantineSelectAllCheckboxPropsFromProps);
 
 		return {
@@ -248,7 +233,7 @@ export const DataTableBase = <TData extends MRT_RowData>({
 		};
 	};
 
-	const mantineSelectCheckboxProps: MRT_TableOptions<TData>['mantineSelectCheckboxProps'] = props => {
+	const mantineSelectCheckboxProps: DataTableOptions<TData>['mantineSelectCheckboxProps'] = props => {
 		const resolvedProps = resolveComponentProps(props, mantineSelectCheckboxPropsFromProps);
 
 		return {
@@ -257,7 +242,7 @@ export const DataTableBase = <TData extends MRT_RowData>({
 		};
 	};
 
-	const mantineTableProps: MRT_TableOptions<TData>['mantineTableProps'] = props => {
+	const mantineTableProps: DataTableOptions<TData>['mantineTableProps'] = props => {
 		const resolvedProps = resolveComponentProps(props, mantineTablePropsFromProps);
 		const classNames = resolvedProps?.classNames;
 
@@ -281,10 +266,16 @@ export const DataTableBase = <TData extends MRT_RowData>({
 		};
 	};
 
-	const renderBottomToolbar: MRT_TableOptions<TData>['renderBottomToolbar'] = props => {
+	const renderBottomToolbar: DataTableOptions<TData>['renderBottomToolbar'] = props => {
 		const resolvedProps = resolveComponentProps(props, renderBottomToolbarFromProps);
 
 		return resolvedProps ?? <BottomToolbar table={props.table} />;
+	};
+
+	const renderTopToolbar: DataTableOptions<TData>['renderTopToolbar'] = props => {
+		const resolvedProps = resolveComponentProps(props, renderTopToolbarFromProps);
+
+		return resolvedProps ?? <TopToolbar table={props.table} />;
 	};
 
 	const stateFromStorage = statesStorageProvider?.get(statesStorageKey);
@@ -324,6 +315,7 @@ export const DataTableBase = <TData extends MRT_RowData>({
 		mantineTableProps,
 		positionActionsColumn,
 		renderBottomToolbar,
+		renderTopToolbar,
 		...props,
 	});
 

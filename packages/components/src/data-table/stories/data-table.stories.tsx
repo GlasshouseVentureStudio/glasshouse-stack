@@ -1,3 +1,4 @@
+import React from 'react';
 import { faker } from '@faker-js/faker';
 import { ActionIcon, Group } from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react';
@@ -173,11 +174,11 @@ export const FullFeatures: StoryObj<DataTableProps<DataType>> = {
 					<IconEye size={16} />
 				</ActionIcon>
 				<ActionIcon
-					size='sm'
-					variant='outline'
 					onClick={() => {
 						table.setEditingRow(row);
 					}}
+					size='sm'
+					variant='outline'
 				>
 					<IconEdit size={16} />
 				</ActionIcon>

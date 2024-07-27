@@ -1,16 +1,17 @@
 /* eslint-disable react/jsx-pascal-case -- 3rd party */
+import React from 'react';
 import { Box, type BoxProps } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { clsx } from 'clsx';
 import {
 	MRT_ProgressBar,
 	type MRT_RowData,
-	type MRT_TableInstance,
 	MRT_TablePagination,
 	MRT_ToolbarAlertBanner,
 	MRT_ToolbarDropZone,
 } from 'mantine-react-table';
 
+import { type DataTableInstance } from '../data-table.types';
 import { resolveComponentProps } from '../data-table.utils';
 import { TablePaginationSimple } from './table-pagination-simple';
 
@@ -18,7 +19,7 @@ import classes from './bottom-toolbar.module.css';
 import commonClasses from './common.module.css';
 
 interface BottomToolbarProps<TData extends MRT_RowData> extends BoxProps {
-	table: MRT_TableInstance<TData>;
+	table: DataTableInstance<TData>;
 }
 
 export const BottomToolbar = <TData extends MRT_RowData>({ table, ...rest }: BottomToolbarProps<TData>) => {

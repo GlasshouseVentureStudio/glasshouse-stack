@@ -1,3 +1,4 @@
+import React from 'react';
 import { ActionIcon, Anchor, Avatar, Group, MantineProvider, rem, Tooltip } from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react';
 import { IconCircleCheck, IconEdit, IconEye, IconTrash, IconVocabulary } from '@tabler/icons-react';
@@ -429,6 +430,11 @@ const columns: MRT_ColumnDef<Pipeline>[] = [
 export const FandeloOnePipeline: StoryObj<DataTableProps<Pipeline, PipelineData>> = {
 	args: {
 		columnDragHandleDisplayMode: 'cell',
+		columnsControlMenuProps: {
+			withColumnDragHandles: false,
+			withColumnPinningButtons: false,
+			withQuickActions: false,
+		},
 		columnFilterDisplayMode: 'popover',
 		displayColumnDefOptions: {
 			'mrt-table-actions': {
@@ -535,11 +541,11 @@ export const FandeloOnePipeline: StoryObj<DataTableProps<Pipeline, PipelineData>
 				</ActionIcon>
 				<ActionIcon
 					color='black'
-					size='xs'
-					variant='transparent'
 					onClick={() => {
 						table.setEditingRow(row);
 					}}
+					size='xs'
+					variant='transparent'
 				>
 					<IconEdit
 						size={16}

@@ -1,21 +1,12 @@
-import {
-	type MRT_Column,
-	type MRT_Header,
-	type MRT_RowData,
-	MRT_ShowHideColumnsButton,
-	type MRT_TableInstance,
-} from 'mantine-react-table';
+import React from 'react';
+import { type MRT_RowData } from 'mantine-react-table';
 
-export const DataTableActionsHeader = <TData extends MRT_RowData>({
-	table,
-}: {
-	column: MRT_Column<TData>;
-	header: MRT_Header<TData>;
-	table: MRT_TableInstance<TData>;
-}) => {
+import { ColumnsControlButton } from './buttons/columns-control-button';
+import { type DataTableInstance } from './data-table.types';
+
+export const DataTableActionsHeader = <TData extends MRT_RowData>({ table }: { table: DataTableInstance<TData> }) => {
 	return (
-		// eslint-disable-next-line react/jsx-pascal-case -- 3rd party
-		<MRT_ShowHideColumnsButton
+		<ColumnsControlButton
 			size='xs'
 			table={table}
 		/>

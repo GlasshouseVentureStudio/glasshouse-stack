@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { keepPreviousData, type QueryKey, useQuery } from '@tanstack/react-query';
 import omit from 'lodash.omit';
 import {
@@ -59,7 +59,6 @@ export const DataTableWithQuery = <
 			{...props}
 			data={data}
 			initialState={initialState}
-			rowCount={getRowCount ? getRowCount(queryData) : props.rowCount}
 			onColumnFiltersChange={updater => {
 				setColumnFilters(updater);
 				onColumnFiltersChange?.(updater);
@@ -72,6 +71,7 @@ export const DataTableWithQuery = <
 				setSorting(updater);
 				onSortingChange?.(updater);
 			}}
+			rowCount={getRowCount ? getRowCount(queryData) : props.rowCount}
 			state={{
 				isLoading: isFetching,
 				pagination,

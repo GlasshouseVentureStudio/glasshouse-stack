@@ -1,3 +1,4 @@
+import { type FC } from 'react';
 import {
 	type DefaultError,
 	type InfiniteData,
@@ -9,12 +10,62 @@ import {
 	type MRT_ColumnFiltersState,
 	type MRT_DisplayColumnDef,
 	type MRT_DisplayColumnIds,
+	type MRT_Icons,
+	type MRT_Localization,
 	type MRT_RowData,
+	type MRT_TableInstance,
 	type MRT_TableOptions,
 	type MRT_TableState,
 } from 'mantine-react-table';
 
 export type DisplayColumnIds = MRT_DisplayColumnIds | 'mrt-table-actions';
+
+export interface DataTableOptions<TData extends MRT_RowData> extends MRT_TableOptions<TData> {
+	columnsControlMenuProps?: {
+		withColumnDragHandles?: boolean;
+		withColumnPinningButtons?: boolean;
+		withQuickActions?: boolean;
+	};
+}
+
+export interface StatefulDataTableOptions<TData extends MRT_RowData> extends DefinedDataTableOptions<TData> {
+	state: Pick<
+		MRT_TableState<TData>,
+		| 'columnFilterFns'
+		| 'columnOrder'
+		| 'columnSizingInfo'
+		| 'creatingRow'
+		| 'density'
+		| 'draggingColumn'
+		| 'draggingRow'
+		| 'editingCell'
+		| 'editingRow'
+		| 'globalFilterFn'
+		| 'grouping'
+		| 'hoveredColumn'
+		| 'hoveredRow'
+		| 'isFullScreen'
+		| 'pagination'
+		| 'showAlertBanner'
+		| 'showColumnFilters'
+		| 'showGlobalFilter'
+		| 'showToolbarDropZone'
+	>;
+}
+
+export type DataTableIcons = Record<keyof MRT_Icons, FC>;
+
+export type DefinedDataTableOptions<TData extends MRT_RowData> = Omit<
+	DataTableOptions<TData>,
+	'icons' | 'localization'
+> & {
+	icons: DataTableIcons;
+	localization: MRT_Localization;
+};
+
+export interface DataTableInstance<TData extends MRT_RowData> extends MRT_TableInstance<TData> {
+	options: StatefulDataTableOptions<TData>;
+}
 
 export interface GetDataParams {
 	pageIndex: number;
@@ -27,7 +78,7 @@ export interface GetDataParams {
 export type GetDataFn<TQueryFnData> = (params: GetDataParams) => Promise<TQueryFnData>;
 
 export interface DataTableBaseProps<TData extends MRT_RowData>
-	extends Omit<MRT_TableOptions<TData>, 'displayColumnDefOptions'> {
+	extends Omit<DataTableOptions<TData>, 'displayColumnDefOptions'> {
 	columnDragHandleDisplayMode?: 'cell' | 'button';
 	displayColumnDefOptions?: Partial<Record<DisplayColumnIds, Partial<MRT_DisplayColumnDef<TData>>>>;
 	enableTableActionsColumn?: boolean;

@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { type QueryKey } from '@tanstack/react-query';
 import { type MRT_RowData } from 'mantine-react-table';
 
