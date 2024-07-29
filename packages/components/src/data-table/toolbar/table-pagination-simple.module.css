@@ -13,6 +13,8 @@
 			width: calc(5rem * var(--mantine-scale));
 		}
 	}
+
+	font-size: 12px;
 }
 
 .with-top-margin {

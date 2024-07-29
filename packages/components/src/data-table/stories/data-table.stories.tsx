@@ -1,19 +1,19 @@
-import React from 'react';
 import { faker } from '@faker-js/faker';
 import { ActionIcon, Group } from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react';
 import { IconEdit, IconEye, IconTrash } from '@tabler/icons-react';
+import { type QueryKey } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import omit from 'lodash.omit';
 import { type MRT_ColumnDef } from 'mantine-react-table';
 
 import { DataTable } from '../data-table';
-import { type DataTableProps } from '../data-table.types';
+import { type DataTableProps, type GetDataFn } from '../data-table.types';
 
 const meta: Meta = {
-	title: 'Components/DataTable/DataTable',
+	title: 'Components/DataTable/Generic',
 	component: DataTable,
-	tags: ['autodocs', 'DataTables'],
+	tags: ['autodocs', 'DataTable'],
 };
 
 const generateData = (length: number): DataType[] =>
@@ -205,22 +205,33 @@ export const FullFeatures: StoryObj<DataTableProps<DataType>> = {
 
 const bigData = generateData(123456);
 
-const getData = ({
-	pageIndex = 0,
-	pageSize = 10,
-}: {
-	pageIndex?: number;
-	pageSize?: number;
-	orderBy?: string;
-	orderDirection?: 'ASC' | 'DESC';
-}) => {
+const getData: GetDataFn<DataType, { data: DataType[]; total: number }> = (_, { pagination }) => {
 	return new Promise<{ data: DataType[]; total: number }>(resolve => {
 		setTimeout(() => {
 			resolve({
-				data: bigData.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize),
+				data: bigData.slice(
+					pagination.pageIndex * pagination.pageSize,
+					(pagination.pageIndex + 1) * pagination.pageSize
+				),
 				total: 123456,
 			});
-		}, 200);
+		}, 400);
+	});
+};
+
+const getInfiniteData: GetDataFn<
+	DataType,
+	{ data: DataType[]; total: number },
+	QueryKey,
+	{ pageSize: number; pageIndex: number }
+> = ({ pageParam }) => {
+	return new Promise<{ data: DataType[]; total: number }>(resolve => {
+		setTimeout(() => {
+			resolve({
+				data: bigData.slice(pageParam.pageIndex * pageParam.pageSize, (pageParam.pageIndex + 1) * pageParam.pageSize),
+				total: 123456,
+			});
+		}, 400);
 	});
 };
 
@@ -255,7 +266,7 @@ export const FullFeatureWithInfiniteQuery: StoryObj<DataTableProps<DataType>> = 
 			<DataTable
 				{...props}
 				columns={columns}
-				getData={getData}
+				getData={getInfiniteData}
 				infinite
 				mantineTableContainerProps={{
 					style: {
@@ -263,11 +274,13 @@ export const FullFeatureWithInfiniteQuery: StoryObj<DataTableProps<DataType>> = 
 					},
 				}}
 				queryOptions={{
-					queryKey: ['FullFeatureWithQuery'],
+					queryKey: ['FullFeatureWithInfiniteQuery'],
 					select: ({ pageParams, pages }) => ({ pageParams, pages: pages.map(page => page.data) }),
-					getNextPageParam: (lastPage, allPages) =>
-						(allPages.length - 1) * lastPage.data.length < lastPage.total ? allPages.length : null,
-					initialPageParam: 0 as number,
+					getNextPageParam: (lastPage, _, lastPageParams) =>
+						lastPageParams.pageIndex * lastPage.data.length < lastPage.total
+							? { pageIndex: lastPageParams.pageIndex + 1, pageSize: 20 }
+							: null,
+					initialPageParam: { pageSize: 20, pageIndex: 0 },
 				}}
 			/>
 		);

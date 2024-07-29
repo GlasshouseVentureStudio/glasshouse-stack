@@ -1,20 +1,19 @@
 'use client';
 
-import React from 'react';
 import { type QueryKey } from '@tanstack/react-query';
 import { type MRT_RowData } from 'mantine-react-table';
 
-import { type DataTableProps } from './data-table.types';
 import { DataTableBase } from './data-table-base';
 import { DataTableWithInfiniteQuery } from './data-table-with-infinite-query';
 import { DataTableWithQuery } from './data-table-with-query';
+import { type DataTableProps } from './data-table.types';
 
 export const DataTable = <
 	TData extends MRT_RowData,
 	TQueryFnData = unknown,
 	TError = Error,
 	TQueryKey extends QueryKey = QueryKey,
-	TPageParam extends number = number,
+	TPageParam = unknown,
 >(
 	props: DataTableProps<TData, TQueryFnData, TError, TQueryKey, TPageParam>
 ) => {

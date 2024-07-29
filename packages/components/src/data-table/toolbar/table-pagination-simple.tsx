@@ -1,11 +1,10 @@
-import React from 'react';
 import { Box, Group, Pagination, type PaginationProps, Select, Text } from '@mantine/core';
 import { clsx } from 'clsx';
 import { type MRT_RowData } from 'mantine-react-table';
 
-import { type DataTableInstance } from '../data-table.types';
 import { resolveComponentProps } from '../data-table.utils';
 
+import { DataTableInstance } from '../data-table.types';
 import classes from './table-pagination-simple.module.css';
 
 const defaultRowsPerPage = [5, 10, 15, 20, 25, 30, 50, 100].map(x => x.toString());
@@ -25,9 +24,10 @@ export const TablePaginationSimple = <TData extends MRT_RowData>({
 		getState,
 		options: {
 			enableToolbarInternalActions,
-			icons: { IconChevronLeft, IconChevronLeftPipe, IconChevronRight, IconChevronRightPipe },
+			icons: { IconChevronDown, IconChevronLeft, IconChevronLeftPipe, IconChevronRight, IconChevronRightPipe },
 			localization,
 			mantinePaginationProps,
+			paginationDisplayMode,
 			rowCount,
 		},
 		setPageIndex,
@@ -51,39 +51,26 @@ export const TablePaginationSimple = <TData extends MRT_RowData>({
 	const totalRowCount = rowCount ?? getPrePaginationRowModel().rows.length;
 	const numberOfPages = Math.ceil(totalRowCount / pageSize);
 	const showFirstLastPageButtons = numberOfPages > 2;
+	const firstRowIndex = pageIndex * pageSize;
+	const lastRowIndex = Math.min(pageIndex * pageSize + pageSize, totalRowCount);
 
 	const {
 		rowsPerPageOptions = defaultRowsPerPage,
 		showRowsPerPage = true,
 		withEdges = showFirstLastPageButtons,
 		...rest
-	} = paginationProps;
+	} = paginationProps ?? {};
 
 	const needsTopMargin = position === 'top' && enableToolbarInternalActions && !showGlobalFilter;
 
 	return (
 		<Box className={clsx('mrt-table-pagination', classes.root, needsTopMargin && classes['with-top-margin'])}>
-			{showRowsPerPage ? (
-				<Group gap='xs'>
-					<Text id='rpp-label'>{localization.rowsPerPage}</Text>
-					<Select
-						allowDeselect={false}
-						aria-labelledby='rpp-label'
-						className={classes.pagesize}
-						data={rowsPerPageOptions}
-						onChange={(value: null | string) => {
-							setPageSize(Number(value ?? 10));
-						}}
-						value={pageSize.toString()}
-					/>
-				</Group>
-			) : null}
 			<Pagination.Root
+				total={numberOfPages}
+				value={pageIndex + 1}
 				onChange={newPageIndex => {
 					setPageIndex(newPageIndex - 1);
 				}}
-				total={numberOfPages}
-				value={pageIndex + 1}
 				{...rest}
 			>
 				<Group gap={2}>
@@ -109,6 +96,29 @@ export const TablePaginationSimple = <TData extends MRT_RowData>({
 					) : null}
 				</Group>
 			</Pagination.Root>
+			{paginationProps.showRowsPerPage !== false && (
+				<Group gap='xs'>
+					<Text
+						fz={14}
+						id='rpp-label'
+					>
+						View:
+					</Text>
+					<Select
+						allowDeselect={false}
+						aria-labelledby='rpp-label'
+						className={classes.pagesize}
+						data={paginationProps.rowsPerPageOptions ?? defaultRowsPerPage}
+						rightSection={<IconChevronDown />}
+						value={pageSize.toString()}
+						variant='unstyled'
+						w={64}
+						onChange={(value: null | string) => {
+							setPageSize(Number(value!));
+						}}
+					/>
+				</Group>
+			)}
 		</Box>
 	);
 };

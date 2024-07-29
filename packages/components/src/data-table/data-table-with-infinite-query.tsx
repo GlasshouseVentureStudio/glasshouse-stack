@@ -1,26 +1,34 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
 import { type DefaultError, type InfiniteData, type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 import omit from 'lodash.omit';
-import { type MRT_RowData, type MRT_RowVirtualizer, type MRT_SortingState } from 'mantine-react-table';
+import {
+	type MRT_ColumnFiltersState,
+	type MRT_PaginationState,
+	type MRT_RowData,
+	type MRT_RowVirtualizer,
+	type MRT_SortingState,
+} from 'mantine-react-table';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { DataTableBase } from './data-table-base';
 import { type DataTableOptions, type DataTableWithInfiniteQueryProps } from './data-table.types';
 import { resolveComponentProps } from './data-table.utils';
-import { DataTableBase } from './data-table-base';
 
 export const DataTableWithInfiniteQuery = <
 	TData extends MRT_RowData,
 	TQueryFnData = unknown,
 	TError = DefaultError,
 	TQueryKey extends QueryKey = QueryKey,
-	TPageParam extends number = number,
+	TPageParam = unknown,
 >({
 	getData,
 	queryOptions,
 	state,
 	mantineTableContainerProps: mantineTableContainerPropsFromProps,
 	initialState,
+	onColumnFiltersChange,
+	onPaginationChange,
 	onSortingChange,
 	scrollThreshold = 0.25,
 	...props
@@ -28,6 +36,12 @@ export const DataTableWithInfiniteQuery = <
 	const tableContainerRef = useRef<HTMLDivElement>(null);
 	const rowVirtualizerInstanceRef = useRef<MRT_RowVirtualizer>(null);
 	const [sorting, setSorting] = useState<MRT_SortingState>(initialState?.sorting ?? state?.sorting ?? []);
+	const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
+		initialState?.columnFilters ?? state?.columnFilters ?? []
+	);
+	const [pagination, setPagination] = useState<MRT_PaginationState>(
+		initialState?.pagination ?? state?.pagination ?? { pageIndex: 0, pageSize: 10 }
+	);
 
 	const {
 		data: queryData,
@@ -38,18 +52,12 @@ export const DataTableWithInfiniteQuery = <
 	} = useInfiniteQuery<TQueryFnData, TError, InfiniteData<TQueryFnData, TPageParam>, TQueryKey, TPageParam>({
 		...omit(queryOptions, 'select'),
 		queryKey: [...queryOptions.queryKey] as unknown as TQueryKey,
-		queryFn: ({ pageParam }) =>
-			getData({
-				pageIndex: pageParam as number,
-				pageSize: 20,
-				orderBy: sorting[0]?.id,
-				orderDirection: sorting[0]?.desc ? 'DESC' : 'ASC',
-			}),
+		queryFn: context => getData(context, { columnFilters, pagination, sorting }),
 	});
 
-	const selectedQueryData = queryData && queryOptions.select?.(queryData);
+	const selectedQueryData = useMemo(() => queryData && queryOptions.select?.(queryData), [queryData, queryOptions]);
 
-	const data = selectedQueryData?.pages.flat() ?? [];
+	const data = useMemo(() => selectedQueryData?.pages.flat() ?? [], [selectedQueryData?.pages]);
 
 	const mantineTableContainerProps: DataTableOptions<TData>['mantineTableContainerProps'] = props => {
 		const resolvedProps = resolveComponentProps(props, mantineTableContainerPropsFromProps);
@@ -93,11 +101,19 @@ export const DataTableWithInfiniteQuery = <
 			enableRowVirtualization
 			initialState={initialState}
 			mantineTableContainerProps={mantineTableContainerProps}
+			rowVirtualizerInstanceRef={rowVirtualizerInstanceRef}
+			onColumnFiltersChange={updater => {
+				setColumnFilters(updater);
+				onColumnFiltersChange?.(updater);
+			}}
+			onPaginationChange={updater => {
+				setPagination(updater);
+				onPaginationChange?.(updater);
+			}}
 			onSortingChange={updater => {
 				setSorting(updater);
 				onSortingChange?.(updater);
 			}}
-			rowVirtualizerInstanceRef={rowVirtualizerInstanceRef}
 			rowVirtualizerOptions={{
 				overscan: 20,
 			}}

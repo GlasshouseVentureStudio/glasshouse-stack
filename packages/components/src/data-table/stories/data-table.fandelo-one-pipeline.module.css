@@ -1,0 +1,16 @@
+.detail-panel {
+	animation: show 0ms ease 250ms forwards;
+}
+
+@keyframes show {
+	from {
+		margin: 0;
+		padding-bottom: 16px;
+		padding-inline: 8px;
+	}
+	to {
+		margin: -16px;
+		padding-bottom: 32px;
+		padding-inline: 24px;
+	}
+}

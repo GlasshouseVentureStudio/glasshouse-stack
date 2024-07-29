@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-pascal-case -- 3rd party */
-import React from 'react';
 import { Box, type BoxProps } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { clsx } from 'clsx';
@@ -52,7 +51,7 @@ export const BottomToolbar = <TData extends MRT_RowData>({ table, ...rest }: Bot
 	const stackAlertBanner = isMobile || Boolean(renderBottomToolbarCustomActions);
 
 	const paginationComponent =
-		table.options.paginationDisplayMode === 'custom' ? (
+		(table.options.paginationDisplayMode as string) === 'simple' ? (
 			<TablePaginationSimple table={table} />
 		) : (
 			<MRT_TablePagination

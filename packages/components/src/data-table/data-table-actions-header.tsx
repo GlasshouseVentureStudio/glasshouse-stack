@@ -1,4 +1,3 @@
-import React from 'react';
 import { type MRT_RowData } from 'mantine-react-table';
 
 import { ColumnsControlButton } from './buttons/columns-control-button';

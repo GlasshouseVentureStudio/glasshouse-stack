@@ -1,14 +1,22 @@
-import React from 'react';
-import { ActionIcon, Anchor, Avatar, Group, MantineProvider, rem, Tooltip } from '@mantine/core';
+import { ActionIcon, Anchor, Avatar, Box, Button, Group, MantineProvider, Paper, rem, Tooltip } from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react';
-import { IconCircleCheck, IconEdit, IconEye, IconTrash, IconVocabulary } from '@tabler/icons-react';
+import {
+	IconCheckupList,
+	IconCircleCheck,
+	IconEdit,
+	IconEye,
+	IconNote,
+	IconPaperclip,
+	IconTrash,
+	IconVocabulary,
+} from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import orderBy from 'lodash.orderby';
 import uniqBy from 'lodash.uniqby';
 import { createMRTColumnHelper, type MRT_ColumnDef, type MRT_TableState } from 'mantine-react-table';
 
 import { DataTable } from '../data-table';
-import { type DataTableProps, type GetDataParams } from '../data-table.types';
+import { type DataTableProps, type GetDataFn } from '../data-table.types';
 import { MultiSelectFilter } from '../filters/multi-select';
 import pipelineData from './pipeline-data.json';
 
@@ -58,146 +66,118 @@ interface Pipeline {
 	statusId?: string;
 	competitorProbability?: number;
 	value?: number;
-	contacts?: Contact[];
-	tasks?: Task[];
+	contacts?: {
+		id: string;
+		email: string;
+		phoneNumber: string;
+		displayName: string;
+		phoneCode: string;
+	}[];
+	tasks?: {
+		id: string;
+		dueDate: number;
+		summary: string;
+		completedDate?: number;
+		talent?: Client;
+		agency: Agency;
+		type: {
+			key: string;
+			value: string;
+		};
+		status: Status;
+		opportunity: {
+			id: string;
+			summary: string;
+		};
+		cost?: number;
+		extra?: number;
+		sale?: number;
+		chargeTo: string;
+		creator?: Agency;
+		priorityLevel: string;
+		createdDate: number;
+		countryCode?: string;
+		venue?: string;
+		statusId: string;
+		opportunityId: string;
+		startDate?: number;
+		collaborators?: Collaborator[];
+		assignee?: Collaborator;
+		contact?: string;
+		phone?: string;
+		reminder?: {
+			durationType: string;
+			notificationTypes: string[];
+			duration: number;
+			key: string;
+			value: string;
+		};
+		note?: string;
+		description?: string;
+		supplier?: {
+			id: string;
+			name: string;
+		};
+		recurrenceSetting?: string;
+		recurrence?: {
+			frequencyType: string;
+			startDate: number;
+			endDate: number;
+			timeZoneId: string;
+			lastDayOfMonth: boolean;
+		};
+		recurrenceId?: string;
+	}[];
 	createdDate: number;
 	leads?: Collaborator[];
 	collaborators?: Collaborator[];
 	creator?: Agency;
 	updatedDate: number;
-	contract?: Contract;
+	contract?: {
+		id: string;
+		status: string;
+		pdfUrl?: string;
+	};
 	description?: string;
-	medias?: Media[];
-	notes?: Note[];
+	medias?: {
+		id: string;
+		filename: string;
+		contentType: string;
+		cdnOrigin: string;
+		type: string;
+		opportunityId: string;
+		originalFilename: string;
+		uploadedDate: number;
+	}[];
+	notes?: {
+		id: string;
+		title: string;
+		description: string;
+		creator: Agency;
+		createdDate: number;
+		opportunityId: string;
+	}[];
 	comment?: string;
 	hardCompletionDate?: number;
 }
 
-interface Note {
-	id: string;
-	title: string;
-	description: string;
-	creator: Agency;
-	createdDate: number;
-	opportunityId: string;
-}
-
-interface Media {
-	id: string;
-	filename: string;
-	contentType: string;
-	cdnOrigin: string;
-	type: string;
-	opportunityId: string;
-	originalFilename: string;
-	uploadedDate: number;
-}
-
-interface Contract {
-	id: string;
-	status: string;
-	pdfUrl?: string;
-}
-
-interface Task {
-	id: string;
-	dueDate: number;
-	summary: string;
-	completedDate?: number;
-	talent?: Client;
-	agency: Agency;
-	type: Type;
-	status: Status;
-	opportunity: Opportunity;
-	cost?: number;
-	extra?: number;
-	sale?: number;
-	chargeTo: string;
-	creator?: Agency;
-	priorityLevel: string;
-	createdDate: number;
-	countryCode?: string;
-	venue?: string;
-	statusId: string;
-	opportunityId: string;
-	startDate?: number;
-	collaborators?: Collaborator[];
-	assignee?: Collaborator;
-	contact?: string;
-	phone?: string;
-	reminder?: Reminder;
-	note?: string;
-	description?: string;
-	supplier?: Supplier;
-	recurrenceSetting?: string;
-	recurrence?: Recurrence;
-	recurrenceId?: string;
-}
-
-interface Recurrence {
-	frequencyType: string;
-	startDate: number;
-	endDate: number;
-	timeZoneId: string;
-	lastDayOfMonth: boolean;
-}
-
-interface Supplier {
-	id: string;
-	name: string;
-}
-
-interface Reminder {
-	durationType: string;
-	notificationTypes: string[];
-	duration: number;
-	key: string;
-	value: string;
-}
-
 interface Collaborator {
 	id: string;
-	avatar?: AvatarImage;
+	avatar?: {
+		id: string;
+		filename: string;
+		contentType: string;
+		url: string;
+		uploadedDate: number;
+		cdnOrigin: string;
+		type: number;
+		width: number;
+		height: number;
+		cdnLarge?: string;
+		cdnMedium?: string;
+		cdnSmall?: string;
+	};
 	displayName: string;
-}
-
-interface AvatarImage {
-	id: string;
-	filename: string;
-	contentType: string;
-	url: string;
-	uploadedDate: number;
-	cdnOrigin: string;
-	type: number;
-	width: number;
-	height: number;
-	cdnLarge?: string;
-	cdnMedium?: string;
-	cdnSmall?: string;
-}
-
-interface Opportunity {
-	id: string;
-	summary: string;
-}
-
-interface Type {
-	key: string;
-	value: string;
-}
-
-interface Contact {
-	id: string;
-	email: string;
-	phoneNumber: string;
-	countryCode: string;
-	displayName: string;
-	opportunityId: string;
-	type?: string;
-	position: number;
-	phoneCode: string;
-	firstName?: string;
-	lastName?: string;
 }
 
 interface Status {
@@ -207,14 +187,12 @@ interface Status {
 	color: string;
 	order: number;
 	type: string;
-	category: Category;
+	category: {
+		id: string;
+		code: string;
+		label: string;
+	};
 	deletable: boolean;
-}
-
-interface Category {
-	id: string;
-	code: string;
-	label: string;
 }
 
 interface Agency {
@@ -228,11 +206,16 @@ interface Client {
 	assigned: boolean;
 }
 
-const getPipelineData = ({ pageIndex, pageSize, orderBy: orderByProperty, orderDirection, filters }: GetDataParams) => {
+const getPipelineData: GetDataFn<Pipeline, PipelineData> = (_, tableState) => {
+	const {
+		columnFilters,
+		pagination: { pageIndex, pageSize },
+		sorting,
+	} = tableState;
 	const data = orderBy(
 		pipelineData.responseData.data.filter(item => {
-			return !filters
-				?.map(({ id, value }) => {
+			return !columnFilters
+				.map(({ id, value }) => {
 					switch (id) {
 						case 'client.displayName':
 							return (value as string[] | undefined)?.length
@@ -256,8 +239,8 @@ const getPipelineData = ({ pageIndex, pageSize, orderBy: orderByProperty, orderD
 				})
 				.some(filter => !filter);
 		}),
-		orderByProperty,
-		orderDirection?.toLowerCase() as 'asc' | 'desc'
+		sorting[0]?.id,
+		sorting[0]?.desc ? 'desc' : 'asc'
 	);
 
 	return new Promise<PipelineData>(resolve => {
@@ -270,7 +253,7 @@ const getPipelineData = ({ pageIndex, pageSize, orderBy: orderByProperty, orderD
 					total: data.length,
 				},
 			});
-		});
+		}, 400);
 	});
 };
 
@@ -316,7 +299,6 @@ const columns: MRT_ColumnDef<Pipeline>[] = [
 		header: 'Lead',
 		minSize: 88,
 		size: 120,
-		enableColumnFilter: true,
 		Cell: ({ cell: { getValue } }) => <Anchor fz='inherit'>{getValue<string>()}</Anchor>,
 	},
 	accessor('collaborators', {
@@ -463,6 +445,43 @@ export const FandeloOnePipeline: StoryObj<DataTableProps<Pipeline, PipelineData>
 		enableStickyHeader: true,
 		enableTableActionsColumn: true,
 		positionActionsColumn: 'last',
+		renderDetailPanel: () => (
+			<Box
+				bg='blue.0'
+				pb={16}
+				px={8}
+				w='100%'
+			>
+				<Paper p={16}>
+					<Button.Group>
+						<Button
+							leftSection={<IconPaperclip />}
+							radius='md'
+							variant='default'
+						>
+							Attachments
+						</Button>
+						<Button
+							leftSection={<IconCheckupList />}
+							variant='default'
+						>
+							Tasks
+						</Button>
+						<Button
+							leftSection={<IconNote />}
+							radius='md'
+							variant='default'
+						>
+							Notes
+						</Button>
+					</Button.Group>
+				</Paper>
+			</Box>
+		),
+		mantineDetailPanelProps: {
+			display: 'block',
+			bg: 'blue.0',
+		},
 		getRowCanExpand: () => true,
 		getRowId: ({ id }) => id,
 		icons: {
@@ -511,7 +530,8 @@ export const FandeloOnePipeline: StoryObj<DataTableProps<Pipeline, PipelineData>
 			siblings: 0,
 			boundaries: 0,
 		},
-		paginationDisplayMode: 'custom',
+		paginationDisplayMode: 'simple',
+		excludeStates: ['columnFilters', 'sorting'],
 		statesStorageKey: 'PipelineTable',
 		statesStorageProvider: {
 			clear: key => {

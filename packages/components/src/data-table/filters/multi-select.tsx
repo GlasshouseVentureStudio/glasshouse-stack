@@ -15,7 +15,7 @@ import {
 	TextInput,
 } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
-import { type MRT_Column, type MRT_Header, type MRT_RowData, type MRT_TableInstance } from 'mantine-react-table';
+import { type MRT_Column, type MRT_RowData } from 'mantine-react-table';
 
 const getValue = (data: string | ComboboxItem | ComboboxItemGroup) => {
 	if (typeof data === 'string') {
@@ -37,13 +37,11 @@ const getLabel = (data: string | ComboboxItem | ComboboxItemGroup) => {
 	}
 };
 
+// TODO: clear filter value if value is not included in data
 export const MultiSelectFilter = <TData extends MRT_RowData, TValue = unknown>({
 	column,
 }: {
 	column: MRT_Column<TData, TValue>;
-	header: MRT_Header<TData, TValue>;
-	rangeFilterIndex?: number;
-	table: MRT_TableInstance<TData>;
 }) => {
 	const data = (column.columnDef.mantineFilterMultiSelectProps as MultiSelectProps).data ?? [];
 	const [value, setValue] = useState<string[]>((column.getFilterValue() as string[] | undefined) ?? []);

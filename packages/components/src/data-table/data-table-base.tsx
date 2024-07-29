@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useEffect, useMemo } from 'react';
 import { cn } from '@glasshouse/utils';
 import {
 	IconCaretDownFilled,
@@ -16,13 +15,15 @@ import {
 	type MRT_ColumnDef,
 	type MRT_Icons,
 	type MRT_RowData,
+	MRT_TableOptions,
 	type MRT_TableState,
 	useMantineReactTable,
 } from 'mantine-react-table';
+import { useEffect, useMemo } from 'react';
 
+import { DataTableActionsHeader } from './data-table-actions-header';
 import { type DataTableBaseProps, type DataTableOptions } from './data-table.types';
 import { resolveComponentProps } from './data-table.utils';
-import { DataTableActionsHeader } from './data-table-actions-header';
 import { BottomToolbar } from './toolbar/bottom-toolbar';
 import { TopToolbar } from './toolbar/top-toolbar';
 
@@ -70,6 +71,7 @@ export const DataTableBase = <TData extends MRT_RowData>({
 	mantineSelectCheckboxProps: mantineSelectCheckboxPropsFromProps,
 	mantineTableProps: mantineTablePropsFromProps,
 	renderTopToolbar: renderTopToolbarFromProps,
+	paginationDisplayMode,
 	positionActionsColumn = 'last',
 	renderBottomToolbar: renderBottomToolbarFromProps,
 	statesStorageProvider,
@@ -313,6 +315,7 @@ export const DataTableBase = <TData extends MRT_RowData>({
 		mantineSelectAllCheckboxProps,
 		mantineSelectCheckboxProps,
 		mantineTableProps,
+		paginationDisplayMode: paginationDisplayMode as MRT_TableOptions<TData>['paginationDisplayMode'],
 		positionActionsColumn,
 		renderBottomToolbar,
 		renderTopToolbar,
