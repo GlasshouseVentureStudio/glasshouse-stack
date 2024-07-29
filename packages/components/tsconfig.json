@@ -1,7 +1,4 @@
 {
-	"compilerOptions": {
-		"jsx": "react"
-	},
 	"extends": "@glasshouse/style-guide/typescript/react-library",
 	"include": ["."],
 	"exclude": ["dist", "build", "node_modules"],
