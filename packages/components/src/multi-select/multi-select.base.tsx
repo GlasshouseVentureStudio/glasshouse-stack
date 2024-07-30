@@ -1,10 +1,8 @@
 import { type ForwardedRef, forwardRef, useEffect, useState } from 'react';
 import {
-	type __InputStylesNames,
 	Combobox,
 	type ComboboxItem,
 	type ComboboxItemGroup,
-	type ComboboxLikeStylesNames,
 	extractStyleProps,
 	getOptionsLockup,
 	getParsedComboboxData,
@@ -23,8 +21,6 @@ import omit from 'lodash.omit';
 import { OptionsDropdown } from '../combobox/options-dropdown';
 import { filterPickedValues } from './filter-picked-values';
 import { type MultiSelectBaseProps } from './multi-select.types';
-
-export type MultiSelectStylesNames = __InputStylesNames | ComboboxLikeStylesNames | 'pill' | 'pillsList' | 'inputField';
 
 const defaultProps: Partial<MultiSelectBaseProps> = {
 	maxValues: Infinity,
@@ -332,7 +328,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 									disabled={disabled}
 									onBlur={event => {
 										onBlur?.(event);
-										combobox.closeDropdown();
+										!creatable && combobox.closeDropdown();
 										setSearchValue('');
 									}}
 									onChange={event => {
