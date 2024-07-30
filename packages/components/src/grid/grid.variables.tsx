@@ -8,13 +8,9 @@ import {
 	useMantineTheme,
 } from '@mantine/core';
 
-import {
-	type GridSystemCellVariablesProps,
-	type GridSystemGuideBlockVariablesProps,
-	type GridSystemVariablesProps,
-} from './grid-system.types';
+import { type GridCellVariablesProps, type GridGuideBlockVariablesProps, type GridVariablesProps } from './grid.types';
 
-export const GridSystemVariables = ({ columns, rows, selector }: GridSystemVariablesProps) => {
+export const GridVariables = ({ columns, rows, selector }: GridVariablesProps) => {
 	const theme = useMantineTheme();
 
 	const baseStyles: Record<string, string | undefined> = filterProps({
@@ -56,7 +52,7 @@ export const GridSystemVariables = ({ columns, rows, selector }: GridSystemVaria
 	);
 };
 
-export const GridSystemCellVariables = ({ column, row, selector }: GridSystemCellVariablesProps) => {
+export const GridCellVariables = ({ column, row, selector }: GridCellVariablesProps) => {
 	const theme = useMantineTheme();
 
 	const baseStyles: Record<string, string | undefined> = filterProps({
@@ -98,7 +94,7 @@ export const GridSystemCellVariables = ({ column, row, selector }: GridSystemCel
 	);
 };
 
-export const GridSystemGuideBlockVariables = ({ display, selector, opacity }: GridSystemGuideBlockVariablesProps) => {
+export const GridGuideBlockVariables = ({ display, selector, opacity }: GridGuideBlockVariablesProps) => {
 	const theme = useMantineTheme();
 
 	const baseStyles: Record<string, string | undefined> = filterProps({

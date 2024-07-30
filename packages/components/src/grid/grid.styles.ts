@@ -13,5 +13,5 @@ export const gridSystem = tv({
 	},
 });
 
-export type GridSystemVariantProps = VariantProps<typeof gridSystem>;
-export type GridSystemSlots = keyof ReturnType<typeof gridSystem>;
+export type GridVariantProps = VariantProps<typeof gridSystem>;
+export type GridSlots = keyof ReturnType<typeof gridSystem>;

@@ -4,31 +4,27 @@ import { Children, isValidElement, useMemo } from 'react';
 import { cn } from '@glasshouse/utils';
 import { Box, SimpleGrid, useRandomClassName } from '@mantine/core';
 
-import { gridSystem } from './grid-system.styles';
+import { gridSystem } from './grid.styles';
 import {
 	type ClipSpan,
-	type GridSystemCellProps,
-	type GridSystemGuideBlockProps,
-	type GridSystemGuideProps,
-	type GridSystemGuidesProps,
-	type GridSystemGuideVariablesProps,
-	type GridSystemProps,
-} from './grid-system.types';
-import { areClipSpansEqual, convertToSpan, mergeGridProps, restrictResponsiveProp } from './grid-system.utils';
-import { GridSystemCellVariables, GridSystemVariables } from './grid-system.variables';
+	type GridCellProps,
+	type GridGuideBlockProps,
+	type GridGuideProps,
+	type GridGuidesProps,
+	type GridGuideVariablesProps,
+	type GridProps,
+} from './grid.types';
+import { areClipSpansEqual, convertToPx, convertToSpan, mergeGridProps, restrictResponsiveProp } from './grid.utils';
+import { GridCellVariables, GridVariables } from './grid.variables';
+
+import styles from './grid.module.css';
 
 /**
- * Renders a grid system with customizable columns and rows.
+ * Renders a grid system with customizable columns and rows. Built on top of Mantine's `SimpleGrid` component.
+ *
+ * This component is based from Vercel's Geist Design System `Grid` component.
  */
-export const GridSystem = ({
-	className,
-	classNames,
-	columns,
-	rows,
-	children,
-	hideGuides,
-	...props
-}: GridSystemProps) => {
+export const Grid = ({ className, classNames, columns, rows, children, hideGuides, ...props }: GridProps) => {
 	const { root } = gridSystem();
 
 	const responsiveClassName = useRandomClassName();
@@ -38,12 +34,12 @@ export const GridSystem = ({
 	const cells = Children.toArray(children)
 		.filter(isValidElement)
 		.filter(child => {
-			const { column, row } = child.props as GridSystemCellProps;
+			const { column, row } = child.props as GridCellProps;
 
 			return column && row;
 		})
 		.map(child => {
-			const { row, column } = child.props as GridSystemGuideVariablesProps;
+			const { row, column } = child.props as GridGuideVariablesProps;
 
 			if (!row || !column) {
 				throw Error('Invalid props passed to Grid.Cell');
@@ -97,7 +93,7 @@ export const GridSystem = ({
 
 	return (
 		<>
-			<GridSystemVariables
+			<GridVariables
 				columns={columns}
 				rows={rows}
 				selector={`.${responsiveClassName}`}
@@ -121,7 +117,7 @@ export const GridSystem = ({
 				{...props}
 			>
 				{children}
-				<GridSystemGuides
+				<GridGuides
 					columns={gridColumns}
 					hideGuides={hideGuides}
 					responsiveClipSpans={responsiveClipSpans}
@@ -132,12 +128,12 @@ export const GridSystem = ({
 	);
 };
 
-export const GridSystemCell = ({ children, className, column, row }: GridSystemCellProps) => {
+export const GridCell = ({ children, className, column, row }: GridCellProps) => {
 	const responsiveClassName = useRandomClassName();
 
 	return (
 		<>
-			<GridSystemCellVariables
+			<GridCellVariables
 				column={column}
 				row={row}
 				selector={`.${responsiveClassName}`}
@@ -155,7 +151,7 @@ export const GridSystemCell = ({ children, className, column, row }: GridSystemC
 	);
 };
 
-const GridSystemGuides = ({ rows, columns, hideGuides, responsiveClipSpans }: GridSystemGuidesProps) => {
+const GridGuides = ({ rows, columns, hideGuides, responsiveClipSpans }: GridGuidesProps) => {
 	const areRowsEqual =
 		typeof rows.base === rows.xs &&
 		rows.xs === rows.sm &&
@@ -179,7 +175,7 @@ const GridSystemGuides = ({ rows, columns, hideGuides, responsiveClipSpans }: Gr
 
 	if (areRowsEqual && areColumnsEqual && areClipSpansEqualAcrossBreakpoints) {
 		return (
-			<GridSystemGuide
+			<GridGuide
 				clipSpans={responsiveClipSpans.xs}
 				columns={columns.xs as number}
 				hideGuides={hideGuides}
@@ -190,14 +186,14 @@ const GridSystemGuides = ({ rows, columns, hideGuides, responsiveClipSpans }: Gr
 
 	return (
 		<>
-			<GridSystemGuide
+			<GridGuide
 				clipSpans={responsiveClipSpans.base}
 				columns={columns.base as number}
 				hiddenFrom='xs'
 				hideGuides={hideGuides}
 				rows={rows.base as number}
 			/>
-			<GridSystemGuide
+			<GridGuide
 				clipSpans={responsiveClipSpans.xs}
 				columns={columns.xs as number}
 				hiddenFrom='sm'
@@ -205,7 +201,7 @@ const GridSystemGuides = ({ rows, columns, hideGuides, responsiveClipSpans }: Gr
 				rows={rows.xs as number}
 				visibleFrom='xs'
 			/>
-			<GridSystemGuide
+			<GridGuide
 				clipSpans={responsiveClipSpans.sm}
 				columns={columns.sm as number}
 				hiddenFrom='md'
@@ -213,7 +209,7 @@ const GridSystemGuides = ({ rows, columns, hideGuides, responsiveClipSpans }: Gr
 				rows={rows.sm as number}
 				visibleFrom='sm'
 			/>
-			<GridSystemGuide
+			<GridGuide
 				clipSpans={responsiveClipSpans.md}
 				columns={columns.md as number}
 				hiddenFrom='lg'
@@ -221,7 +217,7 @@ const GridSystemGuides = ({ rows, columns, hideGuides, responsiveClipSpans }: Gr
 				rows={rows.md as number}
 				visibleFrom='md'
 			/>
-			<GridSystemGuide
+			<GridGuide
 				clipSpans={responsiveClipSpans.lg}
 				columns={columns.lg as number}
 				hiddenFrom='xl'
@@ -229,7 +225,7 @@ const GridSystemGuides = ({ rows, columns, hideGuides, responsiveClipSpans }: Gr
 				rows={rows.lg as number}
 				visibleFrom='lg'
 			/>
-			<GridSystemGuide
+			<GridGuide
 				clipSpans={responsiveClipSpans.xl}
 				columns={columns.xl as number}
 				hideGuides={hideGuides}
@@ -240,7 +236,7 @@ const GridSystemGuides = ({ rows, columns, hideGuides, responsiveClipSpans }: Gr
 	);
 };
 
-const GridSystemGuide = ({
+const GridGuide = ({
 	className,
 	columns,
 	rows,
@@ -249,7 +245,7 @@ const GridSystemGuide = ({
 	hiddenFrom,
 	visibleFrom,
 	...props
-}: GridSystemGuideProps) => {
+}: GridGuideProps) => {
 	const hideAllGuides = typeof hideGuides === 'boolean' && hideGuides;
 	const hideColumnGuides = hideAllGuides || hideGuides === 'column';
 	const hideRowGuides = hideAllGuides || hideGuides === 'row';
@@ -286,7 +282,7 @@ const GridSystemGuide = ({
 					);
 
 				return (
-					<GridSystemGuideBlock
+					<GridGuideBlock
 						key={index}
 						className={className}
 						columnIndex={columnIndex}
@@ -303,9 +299,9 @@ const GridSystemGuide = ({
 	);
 };
 
-GridSystem.Cell = GridSystemCell;
+Grid.Cell = GridCell;
 
-const GridSystemGuideBlock = ({
+const GridGuideBlock = ({
 	index,
 	className,
 	columnIndex,
@@ -313,7 +309,7 @@ const GridSystemGuideBlock = ({
 	hideRightBorder,
 	hideBottomBorder,
 	...props
-}: GridSystemGuideBlockProps) => {
+}: GridGuideBlockProps) => {
 	return (
 		<Box
 			key={index}
@@ -332,3 +328,55 @@ const GridSystemGuideBlock = ({
 		/>
 	);
 };
+
+export interface GridSystemProps {
+	guideWidth?: string | number;
+	guideColor?: string;
+	crossColor?: string;
+	maxWidth?: string | number;
+	minWidth?: string | number;
+	debug?: boolean;
+	className?: string;
+	lazyLayout?: boolean;
+	unstable_useContainer?: boolean;
+	children: React.ReactNode;
+}
+
+export const GridSystem = ({
+	guideWidth = 1,
+	guideColor,
+	crossColor,
+	maxWidth = 1080,
+	children,
+	minWidth = 368,
+	className,
+	lazyLayout,
+	// eslint-disable-next-line camelcase -- safe to ignore
+	unstable_useContainer,
+}: GridSystemProps) => {
+	// eslint-disable-next-line camelcase -- safe to ignore
+	const containerClass = unstable_useContainer ? styles.unstable_gridSystemWrapper : styles.gridSystemContentWrapper;
+	const gridSystemClass = cn(styles.gridSystem, className, {
+		[styles.gridSystemLazyLayout ?? '']: lazyLayout,
+	});
+
+	return (
+		<Box className={containerClass}>
+			<Box
+				className={gridSystemClass}
+				style={{
+					'--guide-width': convertToPx(guideWidth),
+					'--max-width': convertToPx(maxWidth),
+					'--min-width': convertToPx(minWidth),
+					'--guide-color': guideColor,
+					'--cross-color': crossColor,
+				}}
+			>
+				{Children.toArray(children).slice(0, 2)}
+				<div className={styles.gridSystemLazyContent}>{Children.toArray(children).slice(2)}</div>
+			</Box>
+		</Box>
+	);
+};
+
+Grid.System = GridSystem;

@@ -1,41 +1,42 @@
 import { type SlotsToClasses } from '@glasshouse/utils';
 import { type BoxProps, type MantineSize, type SimpleGridProps, type StyleProp } from '@mantine/core';
 
-import { type GridSystemSlots, type GridSystemVariantProps } from './grid-system.styles';
-import { type restrictResponsiveProp } from './grid-system.utils';
+import { type GridSlots, type GridVariantProps } from './grid.styles';
+import { type restrictResponsiveProp } from './grid.utils';
 
-export interface BaseGridSystemProps {
+export interface BaseGridProps {
 	columns: StyleProp<number>;
 	rows: StyleProp<number>;
 }
 
-export interface GridSystemProps
-	extends BaseGridSystemProps,
-		GridSystemVariantProps,
+export interface GridProps
+	extends BaseGridProps,
+		GridVariantProps,
 		Omit<SimpleGridProps, 'cols' | 'spacing' | 'classNames'> {
-	classNames?: SlotsToClasses<GridSystemSlots>;
+	classNames?: SlotsToClasses<GridSlots>;
 	hideGuides?: StyleProp<boolean | 'column' | 'row'>;
+	guideWidth?: number;
 }
 
-export interface GridSystemCellProps extends BoxProps, Omit<React.ComponentPropsWithoutRef<'div'>, 'style'> {
+export interface GridCellProps extends BoxProps, Omit<React.ComponentPropsWithoutRef<'div'>, 'style'> {
 	column?: StyleProp<number | string>;
 	row?: StyleProp<number | string>;
 }
 
-export interface GridSystemVariablesProps extends BaseGridSystemProps {
+export interface GridVariablesProps extends BaseGridProps {
 	selector: string;
 }
 
-export interface GridSystemCellVariablesProps extends GridSystemCellProps {
+export interface GridCellVariablesProps extends GridCellProps {
 	selector: string;
 }
 
-export interface GridSystemGuideVariablesProps extends BaseGridSystemProps, GridSystemCellProps {
+export interface GridGuideVariablesProps extends BaseGridProps, GridCellProps {
 	selector: string;
 	index: number;
 }
 
-export interface GridSystemGuideProps extends BoxProps {
+export interface GridGuideProps extends BoxProps {
 	columns: number;
 	rows: number;
 	hideGuides?: StyleProp<boolean | 'column' | 'row'>;
@@ -60,18 +61,18 @@ export type ClipSpan = Record<
 	}[]
 >;
 
-export interface GridSystemGuidesProps {
+export interface GridGuidesProps {
 	columns: RestrictedResponsiveProp;
 	rows: RestrictedResponsiveProp;
 	hideGuides?: StyleProp<boolean | 'column' | 'row'>;
 	responsiveClipSpans: ClipSpan;
 }
 
-export interface GridSystemGuideBlockVariablesProps extends BoxProps {
+export interface GridGuideBlockVariablesProps extends BoxProps {
 	selector: string;
 }
 
-export interface GridSystemGuideBlockProps extends BoxProps {
+export interface GridGuideBlockProps extends BoxProps {
 	index: number;
 	columnIndex: number;
 	rowIndex: number;

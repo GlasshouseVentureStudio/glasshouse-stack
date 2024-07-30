@@ -1,24 +1,4 @@
-import { keys, px, type StyleProp } from '@mantine/core';
-
-import { type BaseGridSystemProps } from './grid-system.types';
-
-export const getBreakpoints = (values: unknown) => {
-	if (typeof values === 'object' && values !== null) {
-		return keys(values);
-	}
-
-	return [];
-};
-
-const sortBreakpoints = (breakpoints: string[]) => {
-	return breakpoints.sort((a, b) => (px(a) as number) - (px(b) as number));
-};
-
-export const getUniqueBreakpoints = ({ columns, rows }: BaseGridSystemProps) => {
-	const breakpoints = Array.from(new Set([...getBreakpoints(columns), ...getBreakpoints(rows)]));
-
-	return sortBreakpoints(breakpoints);
-};
+import { type StyleProp } from '@mantine/core';
 
 type GridPosition = number | string | [number, number];
 
@@ -178,4 +158,8 @@ export type RestrictedResponsiveProp = ReturnType<typeof restrictResponsiveProp>
 
 export const areClipSpansEqual = (clipSpans1: unknown, clipSpans2: unknown): boolean => {
 	return JSON.stringify(clipSpans1) === JSON.stringify(clipSpans2);
+};
+
+export const convertToPx = (value: number | string): string => {
+	return typeof value === 'number' ? `${value}px` : value;
 };

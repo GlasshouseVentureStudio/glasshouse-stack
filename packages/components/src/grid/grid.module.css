@@ -1,0 +1,57 @@
+.gridSystem {
+	--max-width: 1080px;
+	--min-width: 368px;
+	--guide-width: 1px;
+	--horizontal-margin: 2rem;
+	--grid-system-width: 100vw;
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	max-width: var(--max-width);
+	min-width: var(--min-width);
+	margin-top: var(--guide-width);
+	margin-left: var(--guide-width);
+
+	&::before {
+		position: absolute;
+		inset: 0;
+		left: calc(-1 * var(--guide-width));
+		top: calc(-1 * var(--guide-width));
+		content: '';
+		border: var(--guide-width) solid var(--guide-color);
+		pointer-events: none;
+	}
+
+	[data-grid] {
+		border-bottom: var(--guide-width) solid var(--guide-color);
+	}
+}
+
+.grid {
+	--width: clamp(
+		calc(var(--min-width) - var(--guide-width)),
+		calc(var(--grid-system-width) - var(--guide-width) - (var(--horizontal-margin) * 2)),
+		calc(var(--max-width) - var(--guide-width))
+	);
+	width: var(--width);
+	height: var(--height);
+	display: grid;
+	position: relative;
+	--column-width: calc(var(--width) / var(--grid-columns));
+	--row-height: calc(var(--height) / var(--grid-rows));
+	grid-template-columns: repeat(var(--grid-columns), var(--column-width));
+	grid-template-rows: repeat(var(--grid-rows), var(--row-height));
+}
+
+.unstable_gridSystemWrapper {
+	width: 100%;
+	display: inherit;
+	justify-content: inherit;
+	align-items: inherit;
+	container-type: inline-size;
+
+	.gridSystem {
+		--horizontal-margin: 0px;
+		--grid-system-width: calc(100cqw);
+	}
+}

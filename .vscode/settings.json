@@ -5,9 +5,6 @@
 		}
 	],
 	"editor.codeActionsOnSave": ["source.organizeImports", "source.fixAll.eslint", "source.fixAll.stylelint"],
-	"tailwindCSS.experimental.classRegex": [
-		["tv\\((([^()]*|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-		["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
-	],
+	"tailwindCSS.experimental.classRegex": [["([\"'`][^\"'`]*.*?[\"'`])", "[\"'`]([^\"'`]*).*?[\"'`]"]],
 	"todo-tree.general.tags": ["BUG", "HACK", "FIXME", "TODO", "XXX", "[ ]", "[x]", "TYPES"]
 }
