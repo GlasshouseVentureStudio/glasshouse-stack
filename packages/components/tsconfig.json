@@ -2,5 +2,8 @@
 	"extends": "@glasshouse/style-guide/typescript/react-library",
 	"include": ["."],
 	"exclude": ["dist", "build", "node_modules"],
-	"files": ["src/types/declarations.d.ts"]
+	"files": ["src/types/declarations.d.ts"],
+	"compilerOptions": {
+		"typeRoots": []
+	}
 }

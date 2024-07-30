@@ -13,6 +13,7 @@ import {
 	type GridGuidesProps,
 	type GridGuideVariablesProps,
 	type GridProps,
+	type GridSystemProps,
 } from './grid.types';
 import { areClipSpansEqual, convertToPx, convertToSpan, mergeGridProps, restrictResponsiveProp } from './grid.utils';
 import { GridCellVariables, GridVariables } from './grid.variables';
@@ -24,7 +25,16 @@ import styles from './grid.module.css';
  *
  * This component is based from Vercel's Geist Design System `Grid` component.
  */
-export const Grid = ({ className, classNames, columns, rows, children, hideGuides, ...props }: GridProps) => {
+export const Grid = ({
+	className,
+	classNames,
+	columns,
+	rows,
+	children,
+	hideGuides,
+	guideWidth = 1,
+	...props
+}: GridProps) => {
 	const { root } = gridSystem();
 
 	const responsiveClassName = useRandomClassName();
@@ -106,13 +116,13 @@ export const Grid = ({ className, classNames, columns, rows, children, hideGuide
 				style={{
 					'--column-width': 'calc(var(--width) / var(--grid-columns))',
 					'--grid-system-width': 'calc(100cqw)',
-					'--guide-width': '1px',
 					'--horizontal-margin': '0px',
 					'--max-width': '600px',
 					'--min-width': '300px',
 					'--row-height': 'calc(var(--height) / var(--grid-rows))',
 					'--width': '100%',
 					'--height': 'fit-content',
+					'--guide-width': convertToPx(guideWidth),
 				}}
 				{...props}
 			>
@@ -128,7 +138,18 @@ export const Grid = ({ className, classNames, columns, rows, children, hideGuide
 	);
 };
 
-export const GridCell = ({ children, className, column, row }: GridCellProps) => {
+/**
+ * Renders a grid cell component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The content to be rendered inside the grid cell.
+ * @param {string} props.className - The additional CSS class name for the grid cell.
+ * @param {number} props.column - The column index of the grid cell.
+ * @param {number} props.row - The row index of the grid cell.
+ * @returns {JSX.Element} The rendered grid cell component.
+ */
+export const GridCell = ({ children, className, column, row }: GridCellProps): JSX.Element => {
 	const responsiveClassName = useRandomClassName();
 
 	return (
@@ -151,6 +172,13 @@ export const GridCell = ({ children, className, column, row }: GridCellProps) =>
 	);
 };
 
+/**
+ * Renders a grid with guides based on the provided rows and columns configuration.
+ *
+ * @component
+ * @param {GridGuidesProps} props - The props for the GridGuides component.
+ * @returns {JSX.Element} The rendered GridGuides component.
+ */
 const GridGuides = ({ rows, columns, hideGuides, responsiveClipSpans }: GridGuidesProps) => {
 	const areRowsEqual =
 		typeof rows.base === rows.xs &&
@@ -236,6 +264,9 @@ const GridGuides = ({ rows, columns, hideGuides, responsiveClipSpans }: GridGuid
 	);
 };
 
+/**
+ * Renders a grid guide component.
+ */
 const GridGuide = ({
 	className,
 	columns,
@@ -299,8 +330,9 @@ const GridGuide = ({
 	);
 };
 
-Grid.Cell = GridCell;
-
+/**
+ * Renders a grid guide block.
+ */
 const GridGuideBlock = ({
 	index,
 	className,
@@ -329,19 +361,21 @@ const GridGuideBlock = ({
 	);
 };
 
-export interface GridSystemProps {
-	guideWidth?: string | number;
-	guideColor?: string;
-	crossColor?: string;
-	maxWidth?: string | number;
-	minWidth?: string | number;
-	debug?: boolean;
-	className?: string;
-	lazyLayout?: boolean;
-	unstable_useContainer?: boolean;
-	children: React.ReactNode;
-}
-
+/**
+ * Renders a grid system component. Wrap this outside of `Grid` components to enable grid system features.
+ *
+ * @param {Object} props - The component props.
+ * @param {number} props.guideWidth - The width of the grid guide.
+ * @param {string} props.guideColor - The color of the grid guide.
+ * @param {string} props.crossColor - The color of the grid cross.
+ * @param {number} props.maxWidth - The maximum width of the grid system.
+ * @param {ReactNode} props.children - The child elements to render inside the grid system.
+ * @param {number} props.minWidth - The minimum width of the grid system.
+ * @param {string} props.className - The additional CSS class name for the grid system.
+ * @param {boolean} props.lazyLayout - Whether to enable lazy layout for the grid system.
+ * @param {boolean} props.unstable_useContainer - Whether to use the unstable container for the grid system.
+ * @returns {ReactElement} The rendered grid system component.
+ */
 export const GridSystem = ({
 	guideWidth = 1,
 	guideColor,
@@ -379,4 +413,5 @@ export const GridSystem = ({
 	);
 };
 
+Grid.Cell = GridCell;
 Grid.System = GridSystem;

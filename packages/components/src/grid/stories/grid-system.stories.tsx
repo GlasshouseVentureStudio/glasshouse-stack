@@ -33,6 +33,9 @@ export const Default: GridStory = {
 	),
 };
 
+/**
+ * Grid can be responsive.
+ */
 export const ResponsiveGrid: GridStory = {
 	args: {
 		className: 'flex items-center justify-center p-5',
@@ -52,6 +55,9 @@ export const ResponsiveGrid: GridStory = {
 	),
 };
 
+/**
+ * Grid guides can be clipped to specific cells based on cells position.
+ */
 export const ResponsiveGridWithResponsiveGuideClippingCells: GridStory = {
 	args: {
 		className: 'flex items-center justify-center p-5',
@@ -81,6 +87,10 @@ export const ResponsiveGridWithResponsiveGuideClippingCells: GridStory = {
 	),
 };
 
+/**
+ * Grid guides can be hidden by either `rows` or `columns` or `all`.
+ *
+ */
 export const HideGuides: GridStory = {
 	args: {
 		className: 'flex items-center justify-center p-5',

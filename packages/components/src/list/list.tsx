@@ -1,3 +1,5 @@
+'use client';
+
 /* eslint-disable @typescript-eslint/no-unnecessary-qualifier -- Necessary */
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '@glasshouse/utils';

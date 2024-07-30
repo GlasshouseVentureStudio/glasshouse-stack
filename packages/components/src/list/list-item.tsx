@@ -1,3 +1,5 @@
+'use client';
+
 import { forwardRef } from 'react';
 import { cn } from '@glasshouse/utils';
 import { Box } from '@mantine/core';
