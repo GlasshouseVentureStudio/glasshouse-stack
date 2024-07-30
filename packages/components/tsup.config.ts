@@ -5,4 +5,6 @@ export default defineConfig({
 	format: ['cjs', 'esm'],
 	outDir: 'dist',
 	external: ['react', '@mantine/core', '@tanstack/react-query'],
+	minify: true,
+	sourcemap: true,
 });
