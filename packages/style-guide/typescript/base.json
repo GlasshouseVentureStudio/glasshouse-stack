@@ -1,6 +1,6 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"display": "Vercel Base",
+	"display": "Glasshouse Base",
 	"docs": "https://github.com/vercel/style-guide",
 	"compilerOptions": {
 		"esModuleInterop": true,
@@ -9,5 +9,6 @@
 		"noUncheckedIndexedAccess": true,
 		"skipLibCheck": true,
 		"strict": true
-	}
+	},
+	"extends": "@vercel/style-guide/typescript/node20"
 }

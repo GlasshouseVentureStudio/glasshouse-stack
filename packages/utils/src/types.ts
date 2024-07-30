@@ -7,6 +7,6 @@ export type SlotsToClasses<S extends string> = {
 	[key in S]?: ClassValue;
 };
 
-export type OmitComponentProps<C, O extends keyof any = never> = Omit<C, O>;
+export type OmitComponentProps<C, O extends keyof Record<string, unknown> = never> = Omit<C, O>;
 
 export type AnyObject = Record<PropertyKey, unknown>;
