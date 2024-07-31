@@ -101,7 +101,7 @@ export interface OptionsDropdownProps {
 	combobox: ComboboxStore;
 	creatable?: boolean;
 	createInputValidator?: (value: string) => Exclude<ReactNode, false | ReactPortal | undefined>;
-	creatablePosition?: 'header' | 'footer' | 'search';
+	creatablePosition?: 'header' | 'footer' | 'inline';
 	data: OptionsData;
 	filter: OptionsFilter | undefined;
 	filterOptions?: boolean;

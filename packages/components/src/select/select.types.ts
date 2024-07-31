@@ -7,8 +7,9 @@ import {
 } from '@mantine/core';
 import {
 	type InfiniteData,
-	type QueryFunction,
+	type QueryFunctionContext,
 	type QueryKey,
+	type QueryMeta,
 	type UndefinedInitialDataInfiniteOptions,
 	type UseQueryOptions,
 } from '@tanstack/react-query';
@@ -16,7 +17,7 @@ import {
 export interface SelectBaseProps extends MantineSelectProps {
 	creatable?: boolean;
 	createInputValidator?: (value: string) => Exclude<ReactNode, false | ReactPortal | undefined>;
-	creatablePosition?: 'header' | 'footer' | 'search';
+	creatablePosition?: 'header' | 'footer' | 'inline';
 	dropdownLoading?: boolean;
 	dropdownLoadingType?: 'skeleton' | 'overlay' | 'loader';
 	loading?: boolean;
@@ -35,7 +36,16 @@ export interface SelectBaseProps extends MantineSelectProps {
 
 export interface SelectWithQueryProps<TQueryFnData = unknown, TError = Error, TQueryKey extends QueryKey = QueryKey>
 	extends Omit<SelectBaseProps, 'data'> {
-	getData: QueryFunction<TQueryFnData, TQueryKey>;
+	getData: (
+		context: {
+			queryKey: TQueryKey;
+			signal: AbortSignal;
+			meta: QueryMeta | undefined;
+			pageParam?: unknown;
+			direction?: unknown;
+		},
+		params: { search?: string }
+	) => TQueryFnData | Promise<TQueryFnData>;
 	infinite?: false;
 	queryOptions: Omit<UseQueryOptions<TQueryFnData, TError, ComboboxData, TQueryKey>, 'queryFn'>;
 }
@@ -46,7 +56,10 @@ export interface SelectWithInfiniteQueryProps<
 	TQueryKey extends QueryKey = QueryKey,
 	TPageParam = unknown,
 > extends Omit<SelectBaseProps, 'data'> {
-	getData: QueryFunction<TQueryFnData, TQueryKey, TPageParam>;
+	getData: (
+		context: QueryFunctionContext<TQueryKey, TPageParam>,
+		params: { search?: string }
+	) => TQueryFnData | Promise<TQueryFnData>;
 	infinite: true;
 	queryOptions: Omit<
 		UndefinedInitialDataInfiniteOptions<TQueryFnData, TError, InfiniteData<ComboboxData>, TQueryKey, TPageParam>,

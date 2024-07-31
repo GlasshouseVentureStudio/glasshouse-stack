@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { ActionIcon, Button, Combobox, type ComboboxData, Group, Stack } from '@mantine/core';
+import { ActionIcon, Button, Combobox, type ComboboxData, type ComboboxItem, Group, Stack } from '@mantine/core';
 import { Notifications, notifications } from '@mantine/notifications';
 import type { Meta, StoryObj } from '@storybook/react';
 import { IconCheck, IconChevronLeft, IconChevronRight, IconThumbUp } from '@tabler/icons-react';
@@ -269,11 +269,13 @@ export const WithQuery: StoryObj<SelectProps> = {
 		return (
 			<Select
 				clearable
-				getData={() => {
+				getData={(_, { search }) => {
 					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 						setTimeout(() => {
 							resolve({
-								data,
+								data: search
+									? data.filter(value => (value as ComboboxItem).label.toLowerCase().includes(search.toLowerCase()))
+									: data,
 								total: 50,
 							});
 						}, 500);
@@ -281,6 +283,7 @@ export const WithQuery: StoryObj<SelectProps> = {
 				}}
 				placeholder='Select person'
 				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
+				searchable
 				w={256}
 			/>
 		);
@@ -310,14 +313,14 @@ export const WithInfiniteQuery: StoryObj<
 			<Select
 				{...props}
 				clearable
-				getData={({ pageParam }) => {
+				getData={({ pageParam }, { search }) => {
 					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 						setTimeout(() => {
 							resolve({
-								data: data.slice(
-									pageParam.pageIndex * pageParam.pageSize,
-									(pageParam.pageIndex + 1) * pageParam.pageSize
-								),
+								data: (search
+									? data.filter(value => (value as ComboboxItem).label.toLowerCase().includes(search.toLowerCase()))
+									: data
+								).slice(pageParam.pageIndex * pageParam.pageSize, (pageParam.pageIndex + 1) * pageParam.pageSize),
 								total: 50,
 							});
 						}, 1000);
@@ -333,6 +336,7 @@ export const WithInfiniteQuery: StoryObj<
 					},
 					initialPageParam: { pageSize: 20, pageIndex: 0 },
 				}}
+				searchable
 				w={256}
 			/>
 		);
