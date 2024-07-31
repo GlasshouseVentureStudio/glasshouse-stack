@@ -17,7 +17,7 @@
 		"dist/**"
 	],
 	"scripts": {
-		"build": "tsup --dts --clean",
+		"build": "tsup --tsconfig ./tsconfig.json --dts --clean",
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
 		"dev": "tsup --dts --watch",
 		"lint": "eslint \"src/**/*.ts*\""

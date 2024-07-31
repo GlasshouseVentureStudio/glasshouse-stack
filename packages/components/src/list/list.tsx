@@ -1,6 +1,5 @@
 'use client';
 
-/* eslint-disable @typescript-eslint/no-unnecessary-qualifier -- Necessary */
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '@glasshouse/utils';
 import { Box, Loader, LoadingOverlay, Pagination, ScrollArea, Stack, Text } from '@mantine/core';
@@ -16,12 +15,6 @@ import { list } from './list.styles.js';
 import { type ListGroupHeaderType, type ListProps } from './list.types';
 import { isListGroupHeader } from './list.utils';
 import { ListItem } from './list-item';
-
-declare module 'react' {
-	function forwardRef<T, P extends object>(
-		render: (props: P, ref: React.Ref<T>) => React.ReactNode | null
-	): (props: P & React.RefAttributes<T>) => React.ReactNode | null;
-}
 
 const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRef<HTMLDivElement>) => {
 	const {
