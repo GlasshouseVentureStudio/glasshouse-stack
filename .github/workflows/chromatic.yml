@@ -18,6 +18,8 @@ jobs:
         uses: pnpm/action-setup@v4
       - name: Install dependencies
         run: pnpm install
+      - name: Build packages
+        run: pnpm build
       - name: Run Chromatic
         uses: chromaui/action@latest
         with:
