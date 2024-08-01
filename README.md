@@ -1,3 +1,5 @@
+![GVSStack](./assets/gvs-stack.svg)
+
 # Glasshouse Stack
 
 This is an official React design system starter powered by Turborepo. Versioning and package publishing is handled by [Changesets](https://github.com/changesets/changesets) and fully automated with GitHub Actions.
