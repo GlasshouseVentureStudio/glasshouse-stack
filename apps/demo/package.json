@@ -9,7 +9,7 @@
 		"start": "next start"
 	},
 	"dependencies": {
-		"@glasshouse/components": "^0.2.0",
+		"@glasshouse/components": "^0.2.1",
 		"@mantine/carousel": "^7.11.2",
 		"@mantine/charts": "^7.11.2",
 		"@mantine/code-highlight": "^7.11.2",
@@ -35,7 +35,7 @@
 		"recharts": "2"
 	},
 	"devDependencies": {
-		"@glasshouse/style-guide": "^0.1.0",
+		"@glasshouse/style-guide": "^0.1.1",
 		"@types/node": "^20",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
