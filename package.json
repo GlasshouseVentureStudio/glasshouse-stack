@@ -14,7 +14,7 @@
 		"prepare": "husky",
 		"release": "turbo build --filter=@glasshouse/docs^... && changeset publish",
 		"test-storybook": "turbo test-storybook",
-		"version-packages": "changeset version"
+		"version:packages": "changeset version"
 	},
 	"devDependencies": {
 		"@changesets/changelog-git": "^0.2.0",
