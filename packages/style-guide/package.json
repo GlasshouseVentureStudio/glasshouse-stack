@@ -62,7 +62,6 @@
 		}
 	},
 	"publishConfig": {
-		"access": "public",
-		"registry": "https://npm.glasshouseventure.studio"
+		"access": "public"
 	}
 }
