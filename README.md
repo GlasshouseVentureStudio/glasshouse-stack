@@ -1,14 +1,6 @@
-# Turborepo Design System starter with Changesets
+# Glasshouse Stack
 
 This is an official React design system starter powered by Turborepo. Versioning and package publishing is handled by [Changesets](https://github.com/changesets/changesets) and fully automated with GitHub Actions.
-
-## Using this example
-
-Run the following command:
-
-```sh
-npx create-turbo@latest -e with-changesets
-```
 
 ## What's inside?
 
@@ -16,13 +8,11 @@ This Turborepo includes the following:
 
 ### Apps and Packages
 
-- `docs`: A placeholder documentation site powered by [Next.js](https://nextjs.org/)
+- `@glasshouse/docs`: A placeholder documentation site powered by [Storybook](https://storybook.js.org/)
+- `@glasshouse/demo`: A placeholder demo site powered by [Next.js](https://nextjs.org/)
 - `@glasshouse/components`: core React components
 - `@glasshouse/utils`: shared React utilities
-- `@glasshouse/typescript-config`: shared `tsconfig.json`s used throughout the monorepo
-- `@glasshouse/eslint-config`: ESLint preset
-
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
+- `@glasshouse/style-guide`: shared configs package used throughout the monorepo, included configs: `typescript`, `eslint`, `prettier`, `stylelint`
 
 ### Utilities
 
@@ -31,22 +21,15 @@ This Turborepo has some additional tools already setup for you:
 - [TypeScript](https://www.typescriptlang.org/) for static type checking
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io) for code formatting
+- [StyleLint]() for CSS formatting
 
 ### Useful commands
 
-- `yarn build` - Build all packages and the docs site
-- `yarn dev` - Develop all packages and the docs site
-- `yarn lint` - Lint all packages
-- `yarn changeset` - Generate a changeset
-- `yarn clean` - Clean up all `node_modules` and `dist` folders (runs each package's clean script)
-
-### Changing the npm organization scope
-
-The npm organization scope for this design system starter is `@glasshouse`. To change this, it's a bit manual at the moment, but you'll need to do the following:
-
-- Rename folders in `packages/*` to replace `acme` with your desired scope
-- Search and replace `acme` with your desired scope
-- Re-run `yarn install`
+- `pnpm build` - Build all packages and the docs site
+- `pnpm dev` - Develop all packages and the docs site
+- `pnpm lint` - Lint all packages
+- `pnpm changeset` - Generate a changeset
+- `pnpm clean` - Clean up all `node_modules` and `dist` folders (runs each package's clean script)
 
 ## Versioning and Publishing packages
 

@@ -1,5 +1,5 @@
 {
-	"extends": "@glasshouse/typescript-config/react-library.json",
+	"extends": "@glasshouse/style-guide/typescript/react-library",
 	"include": ["."],
 	"exclude": ["dist", "build", "node_modules"]
 }
