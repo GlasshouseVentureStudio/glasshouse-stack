@@ -17,12 +17,6 @@
 		"typescript",
 		"stylelint"
 	],
-	"scripts": {
-		"build": "echo 'Add build script here'",
-		"dev": "echo 'Add dev script here'",
-		"lint": "echo 'Add lint script here'",
-		"test": "echo 'Add test script here'"
-	},
 	"dependencies": {
 		"@next/eslint-plugin-next": "^14.2.5",
 		"@typescript-eslint/eslint-plugin": "^7.16.1",
