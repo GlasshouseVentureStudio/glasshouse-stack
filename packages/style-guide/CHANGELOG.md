@@ -1,5 +1,11 @@
 # @glasshouse/style-guide
 
+## 0.1.2
+
+### Patch Changes
+
+- Remove eslint-config-turbo
+
 ## 0.1.1
 
 ### Patch Changes
