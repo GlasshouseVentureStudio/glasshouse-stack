@@ -1,1 +1,1 @@
-# Glasshouse Components
+# ![GVSStack](../../assets/gvs-components.svg)

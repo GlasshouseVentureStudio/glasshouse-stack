@@ -1,6 +1,4 @@
-# Glasshouse Style Guide
-
-## Introduction
+# ![GVSStack](../../assets/gvs-style-guide.svg)
 
 This repository includes configs for popular linting and styling tools, extended from `@vercel/style-guide`. See [Vercel's style guide](https://github.com/vercel/style-guide).
 
