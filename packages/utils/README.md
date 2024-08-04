@@ -1,1 +1,1 @@
-# ![GVSStack](../../assets/gvs-utils.svg)
+# ![GVSStack](./gvs-utils.svg)

@@ -1,6 +1,6 @@
 {
 	"name": "@glasshouse/components",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"license": "MIT",
 	"sideEffects": false,
 	"type": "module",
@@ -14,7 +14,8 @@
 		"./styles.css": "./dist/index.css"
 	},
 	"files": [
-		"dist/**"
+		"dist/**",
+		"gvs-components.svg"
 	],
 	"scripts": {
 		"build": "tsup --tsconfig ./tsconfig.json --dts --clean",

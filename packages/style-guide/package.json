@@ -1,6 +1,6 @@
 {
 	"name": "@glasshouse/style-guide",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"private": false,
 	"description": "Glasshouse Style Guide",
 	"exports": {
@@ -15,7 +15,8 @@
 		"eslint",
 		"prettier",
 		"typescript",
-		"stylelint"
+		"stylelint",
+		"gvs-style-guide.svg"
 	],
 	"dependencies": {
 		"@next/eslint-plugin-next": "^14.2.5",
