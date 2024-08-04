@@ -1,6 +1,6 @@
 # ![GVSStack](./assets/gvs-stack.svg)
 
-[![Quality](https://img.shields.io/github/actions/workflow/status/GlasshouseVentureStudio/glasshouse-stack/release.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=ffffff&label=QUality)](https://github.com/GlasshouseVentureStudio/glasshouse-stack/actions/workflows/quality.yml)
+[![Quality](https://img.shields.io/github/actions/workflow/status/GlasshouseVentureStudio/glasshouse-stack/quality.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=ffffff&label=QUality)](https://github.com/GlasshouseVentureStudio/glasshouse-stack/actions/workflows/quality.yml)
 [![Chromatic](https://img.shields.io/github/actions/workflow/status/GlasshouseVentureStudio/glasshouse-stack/chromatic.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=ffffff&label=Chromatic)](https://github.com/GlasshouseVentureStudio/glasshouse-stack/actions/workflows/chromatic.yml)
 [![Release](https://img.shields.io/github/actions/workflow/status/GlasshouseVentureStudio/glasshouse-stack/release.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=ffffff&label=Release)](https://github.com/GlasshouseVentureStudio/glasshouse-stack/actions/workflows/release.yml)
 
