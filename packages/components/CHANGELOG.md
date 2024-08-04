@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.2.7
+
+### Patch Changes
+
+- chore(components): add missing lodash.isfunction
+
 ## 0.2.6
 
 ### Patch Changes
