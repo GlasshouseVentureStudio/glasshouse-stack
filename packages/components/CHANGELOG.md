@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.2.6
+
+### Patch Changes
+
+- chore(components): restructure package.json
+
 ## 0.2.5
 
 ### Patch Changes
