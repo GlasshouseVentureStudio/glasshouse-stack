@@ -1,7 +1,6 @@
 # ![GVSStack](./assets/gvs-stack.svg)
 
 [![Chromatic](https://img.shields.io/github/actions/workflow/status/GlasshouseVentureStudio/glasshouse-stack/chromatic.yml?branch=main&style=for-the-badge&label=Chromatic)](https://github.com/GlasshouseVentureStudio/glasshouse-stack/actions/workflows/chromatic.yml)
-[![Lint](https://img.shields.io/github/actions/workflow/status/GlasshouseVentureStudio/glasshouse-stack/lint.yml?branch=main&style=for-the-badge&label=Lint)](https://github.com/GlasshouseVentureStudio/glasshouse-stack/actions/workflows/lint.yml)
 [![Release](https://img.shields.io/github/actions/workflow/status/GlasshouseVentureStudio/glasshouse-stack/release.yml?branch=main&style=for-the-badge&label=Release)](https://github.com/GlasshouseVentureStudio/glasshouse-stack/actions/workflows/release.yml)
 
 This Turborepo is home to various libraries made by [Glasshouse](https://www.glasshouseventure.studio/) developers.

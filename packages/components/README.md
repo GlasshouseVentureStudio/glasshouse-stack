@@ -1,6 +1,6 @@
 # ![GVSComponents](./gvs-components.svg)
 
-This package contains the core React components used in the GVSStack design system.
+This package contains the core React components used by Glasshouse developers.
 
 ## Installation
 
