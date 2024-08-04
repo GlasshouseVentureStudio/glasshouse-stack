@@ -10,11 +10,11 @@ import {
 	type OptionsDropdownProps,
 	type SelectFactory,
 	useCombobox,
-	useProps,
 	useResolvedStylesApi,
 } from '@mantine/core';
 import { useId, usePrevious, useUncontrolled } from '@mantine/hooks';
 
+import { useProps } from '../../hooks/use-props';
 import { OptionsDropdown } from '../combobox/options-dropdown';
 import { type SelectBaseProps } from './select.types';
 

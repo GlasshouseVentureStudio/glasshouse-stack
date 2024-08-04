@@ -11,13 +11,13 @@ import {
 	Pill,
 	PillsInput,
 	useCombobox,
-	useProps,
 	useResolvedStylesApi,
 	useStyles,
 } from '@mantine/core';
 import { useId, useUncontrolled } from '@mantine/hooks';
 import omit from 'lodash.omit';
 
+import { useProps } from '../../hooks/use-props';
 import { OptionsDropdown } from '../combobox/options-dropdown';
 import { filterPickedValues } from './filter-picked-values';
 import { type MultiSelectBaseProps } from './multi-select.types';

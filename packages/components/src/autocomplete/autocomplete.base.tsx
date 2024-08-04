@@ -7,12 +7,12 @@ import {
 	InputBase,
 	Loader,
 	useCombobox,
-	useProps,
 	useResolvedStylesApi,
 } from '@mantine/core';
 import { useId, useUncontrolled } from '@mantine/hooks';
 import omit from 'lodash.omit';
 
+import { useProps } from '../../hooks/use-props';
 import { OptionsDropdown } from '../combobox/options-dropdown';
 import { type AutocompleteBaseProps } from './autocomplete.types';
 
