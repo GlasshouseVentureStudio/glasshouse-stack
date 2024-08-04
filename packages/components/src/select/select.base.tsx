@@ -210,7 +210,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 					const nextValue = optionLockup ? optionLockup.value : null;
 
 					nextValue !== _value && setValue(nextValue, optionLockup);
-					!controlled && setSearch(typeof nextValue === 'string' ? optionLockup?.label ?? '' : '');
+					!controlled && setSearch(typeof nextValue === 'string' ? (optionLockup?.label ?? '') : '');
 					combobox.closeDropdown();
 				}}
 				readOnly={readOnly}
@@ -235,7 +235,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 						error={error}
 						onBlur={event => {
 							searchable && combobox.closeDropdown();
-							setSearch(_value !== null ? optionsLockup[_value]?.label ?? '' : '');
+							setSearch(_value !== null ? (optionsLockup[_value]?.label ?? '') : '');
 							onBlur?.(event);
 						}}
 						onChange={event => {
