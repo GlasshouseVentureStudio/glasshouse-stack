@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.2.5
+
+### Patch Changes
+
+- fix(components): add 'use client' to combobox components entry point
+
 ## 0.2.4
 
 ### Patch Changes
