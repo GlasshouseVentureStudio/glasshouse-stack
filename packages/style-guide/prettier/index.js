@@ -12,7 +12,7 @@ const overridableDefaults = {
 };
 
 /** @type import('prettier').Config */
-const config = {
+module.exports = {
 	...overridableDefaults,
 	arrowParens: 'avoid',
 	bracketSameLine: false,
@@ -25,5 +25,3 @@ const config = {
 	trailingComma: 'es5',
 	plugins: ['prettier-plugin-packagejson'],
 };
-
-export default config;

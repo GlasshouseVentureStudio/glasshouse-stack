@@ -2,7 +2,13 @@
 	"name": "@glasshouse/style-guide",
 	"version": "0.1.3",
 	"private": false,
-	"description": "Glasshouse Style Guide",
+	"description": "Glasshouse's engineering style guide",
+	"homepage": "https://github.com/GlasshouseVentureStudio/glasshouse-stack/tree/main/packages/style-guide",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/GlasshouseVentureStudio/glasshouse-stack/tree/main/packages/style-guide"
+	},
+	"license": "MIT",
 	"exports": {
 		"./eslint/*": "./eslint/*.js",
 		"./prettier": "./prettier/index.js",
@@ -18,6 +24,7 @@
 		"stylelint",
 		"gvs-style-guide.svg"
 	],
+	"prettier": "./prettier",
 	"dependencies": {
 		"@next/eslint-plugin-next": "^14.2.5",
 		"@typescript-eslint/eslint-plugin": "^7.16.1",
