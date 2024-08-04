@@ -19,9 +19,9 @@ This Turborepo includes the following:
 
 - `@glasshouse/docs`: A placeholder documentation site powered by [Storybook](https://storybook.js.org/)
 - `@glasshouse/demo`: A placeholder demo site powered by [Next.js](https://nextjs.org/)
-- `@glasshouse/components`: core React components
-- `@glasshouse/utils`: shared React utilities
-- `@glasshouse/style-guide`: shared configs package used throughout the monorepo, included configs: `typescript`, `eslint`, `prettier`, `stylelint`
+- [`@glasshouse/components`](https://github.com/GlasshouseVentureStudio/glasshouse-stack/tree/main/packages/components): core React components
+- [`@glasshouse/utils`](https://github.com/GlasshouseVentureStudio/glasshouse-stack/tree/main/packages/utils): shared React utilities
+- [`@glasshouse/style-guide`](https://github.com/GlasshouseVentureStudio/glasshouse-stack/tree/main/packages/style-guide): shared configs package used throughout the monorepo, included configs: `typescript`, `eslint`, `prettier`, `stylelint`
 
 ### Utilities
 
