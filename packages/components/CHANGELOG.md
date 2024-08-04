@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.2.3
+
+### Patch Changes
+
+- Add missing exports.
+
 ## 0.2.2
 
 ### Patch Changes
