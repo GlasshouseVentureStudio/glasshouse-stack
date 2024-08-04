@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.2.8
+
+### Patch Changes
+
+- fix(components): use internal useProps hook instead of mantine
+
 ## 0.2.7
 
 ### Patch Changes
