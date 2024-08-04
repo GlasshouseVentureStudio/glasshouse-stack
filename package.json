@@ -9,9 +9,10 @@
 		"clean": "turbo clean && rm -rf node_modules",
 		"dev": "turbo dev --filter=@glasshouse/docs --filter=@glasshouse/components --filter=@glasshouse/utils",
 		"dev:demo": "turbo dev --filter=@glasshouse/demo",
-		"format": "prettier --write \"**/*.{ts,tsx,md}\"",
 		"lint": "turbo lint",
 		"prepare": "husky",
+		"prettier:check": "prettier --check \"**/*.{ts,tsx,md}\"",
+		"prettier:format": "prettier --write \"**/*.{ts,tsx,md}\"",
 		"release": "turbo build --filter=@glasshouse/docs^... && changeset publish",
 		"test-storybook": "turbo test-storybook",
 		"version:packages": "changeset version"

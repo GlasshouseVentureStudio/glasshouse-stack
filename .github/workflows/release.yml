@@ -18,16 +18,8 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-
-      - name: Install Dependencies
-        run: pnpm install
+      - name: Install
+        uses: ./.github/composite-actions/install
 
       - name: Modify .npmrc for publishing to npm
         run: |
@@ -39,23 +31,6 @@ jobs:
 
       - name: Publish to npm
         id: changesets-npm
-        uses: changesets/action@v1
-        with:
-          publish: pnpm release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Modify .npmrc for publishing to Github Packages
-        run: |
-          cat << EOF > "$HOME/.npmrc"
-            //npm.pkg.github.com/:_authToken=$GITHUB_TOKEN
-          EOF
-        env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish to Github Packages
-        id: changesets-github
         uses: changesets/action@v1
         with:
           publish: pnpm release
