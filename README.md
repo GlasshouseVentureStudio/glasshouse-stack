@@ -1,10 +1,18 @@
 # ![GVSStack](./assets/gvs-stack.svg)
 
+[![Chromatic](https://img.shields.io/github/actions/workflow/status/GlasshouseVentureStudio/glasshouse-stack/chromatic.yml?branch=main&style=for-the-badge&label=Chromatic)](https://github.com/GlasshouseVentureStudio/glasshouse-stack/actions/workflows/chromatic.yml)
+[![Lint](https://img.shields.io/github/actions/workflow/status/GlasshouseVentureStudio/glasshouse-stack/lint.yml?branch=main&style=for-the-badge&label=Lint)](https://github.com/GlasshouseVentureStudio/glasshouse-stack/actions/workflows/lint.yml)
+[![Release](https://img.shields.io/github/actions/workflow/status/GlasshouseVentureStudio/glasshouse-stack/release.yml?branch=main&style=for-the-badge&label=Release)](https://github.com/GlasshouseVentureStudio/glasshouse-stack/actions/workflows/release.yml)
+
 This Turborepo is home to various libraries made by [Glasshouse](https://www.glasshouseventure.studio/) developers.
 
 Versioning and package publishing is handled by [Changesets](https://github.com/changesets/changesets) and fully automated with GitHub Actions.
 
 ## What's inside?
+
+[![NPM Version](https://img.shields.io/npm/v/%40glasshouse%2Fcomponents?style=for-the-badge&label=components)](https://www.npmjs.com/package/@glasshouse/components)
+[![NPM Version](https://img.shields.io/npm/v/%40glasshouse%2Futils?style=for-the-badge&label=utils)](https://www.npmjs.com/package/@glasshouse/utils)
+[![NPM Version](https://img.shields.io/npm/v/%40glasshouse%2Fstyle-guide?style=for-the-badge&label=style-guide)](https://www.npmjs.com/package/@glasshouse/style-guide)
 
 This Turborepo includes the following:
 
