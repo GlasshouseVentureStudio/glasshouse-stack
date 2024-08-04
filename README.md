@@ -9,9 +9,9 @@ Versioning and package publishing is handled by [Changesets](https://github.com/
 
 ## What's inside?
 
-[![NPM Version](https://img.shields.io/npm/v/%40glasshouse%2Fcomponents?style=for-the-badge&label=components)](https://www.npmjs.com/package/@glasshouse/components)
-[![NPM Version](https://img.shields.io/npm/v/%40glasshouse%2Futils?style=for-the-badge&label=utils)](https://www.npmjs.com/package/@glasshouse/utils)
-[![NPM Version](https://img.shields.io/npm/v/%40glasshouse%2Fstyle-guide?style=for-the-badge&label=style-guide)](https://www.npmjs.com/package/@glasshouse/style-guide)
+[![NPM Version](https://img.shields.io/npm/v/%40glasshouse%2Fcomponents?style=for-the-badge&logo=npm&label=components)](https://www.npmjs.com/package/@glasshouse/components)
+[![NPM Version](https://img.shields.io/npm/v/%40glasshouse%2Futils?style=for-the-badge&logo=npm&label=utils)](https://www.npmjs.com/package/@glasshouse/utils)
+[![NPM Version](https://img.shields.io/npm/v/%40glasshouse%2Fstyle-guide?style=for-the-badge&logo=npm&label=style-guide)](https://www.npmjs.com/package/@glasshouse/style-guide)
 
 This Turborepo includes the following:
 
