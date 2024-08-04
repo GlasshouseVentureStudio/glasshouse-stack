@@ -29,7 +29,7 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Modify .npmrc
+      - name: Modify .npmrc for publishing to npm
         run: |
           cat << EOF > "$HOME/.npmrc"
             //registry.npmjs.org/:_authToken=$NPM_TOKEN
@@ -38,7 +38,24 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to npm
-        id: changesets
+        id: changesets-npm
+        uses: changesets/action@v1
+        with:
+          publish: pnpm release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Modify .npmrc for publishing to Github Packages
+        run: |
+          cat << EOF > "$HOME/.npmrc"
+            //registry.npmjs.org/:_authToken=$NPM_TOKEN
+          EOF
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to Github Packages
+        id: changesets-github
         uses: changesets/action@v1
         with:
           publish: pnpm release
