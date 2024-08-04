@@ -1,6 +1,8 @@
 # ![GVSStack](./assets/gvs-stack.svg)
 
-This is an official React design system starter powered by Turborepo. Versioning and package publishing is handled by [Changesets](https://github.com/changesets/changesets) and fully automated with GitHub Actions.
+This Turborepo is home to various libraries made by [Glasshouse](https://www.glasshouseventure.studio/) developers.
+
+Versioning and package publishing is handled by [Changesets](https://github.com/changesets/changesets) and fully automated with GitHub Actions.
 
 ## What's inside?
 
@@ -21,7 +23,7 @@ This Turborepo has some additional tools already setup for you:
 - [TypeScript](https://www.typescriptlang.org/) for static type checking
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io) for code formatting
-- [StyleLint]() for CSS formatting
+- [StyleLint](https://stylelint.io/) for CSS formatting
 
 ### Useful commands
 
@@ -35,21 +37,13 @@ This Turborepo has some additional tools already setup for you:
 
 Package publishing has been configured using [Changesets](https://github.com/changesets/changesets). Please review their [documentation](https://github.com/changesets/changesets#documentation) to familiarize yourself with the workflow.
 
-This example comes with automated npm releases setup in a [GitHub Action](https://github.com/changesets/action). To get this working, you will need to create an `NPM_TOKEN` and `GITHUB_TOKEN` in your repository settings. You should also install the [Changesets bot](https://github.com/apps/changeset-bot) on your GitHub repository as well.
+This example comes with automated npm releases setup in a [GitHub Action](https://github.com/changesets/action).
 
 For more information about this automation, refer to the official [changesets documentation](https://github.com/changesets/changesets/blob/main/docs/automating-changesets.md)
 
 ### npm
 
 If you want to publish package to the public npm registry and make them publicly available, this is already setup.
-
-To publish packages to a private npm organization scope, **remove** the following from each of the `package.json`'s
-
-```diff
-- "publishConfig": {
--  "access": "public"
-- },
-```
 
 ### GitHub Package Registry
 
