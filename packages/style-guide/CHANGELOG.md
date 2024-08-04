@@ -1,5 +1,11 @@
 # @glasshouse/style-guide
 
+## 0.1.4
+
+### Patch Changes
+
+- Add missing `eslint-plugin-simple-import-sort` package and use commonjs export for prettier.
+
 ## 0.1.3
 
 ### Patch Changes
