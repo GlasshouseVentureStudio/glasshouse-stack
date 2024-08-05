@@ -11,14 +11,16 @@
 			"require": "./dist/index.cjs",
 			"default": "./dist/index.js"
 		},
-		"./styles.css": "./dist/index.css"
+		"./styles.css": "./dist/index.css",
+		"./tailwind.css": "./dist/tailwind.css"
 	},
 	"files": [
 		"dist/**",
 		"gvs-components.svg"
 	],
 	"scripts": {
-		"build": "tsup --tsconfig ./tsconfig.json --dts --clean",
+		"build": "tsup --tsconfig ./tsconfig.json --dts --clean && pnpm build:tailwind",
+		"build:tailwind": "tailwindcss -i ./src/styles.css -o ./dist/tailwind.css",
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
 		"dev": "tsup --dts --watch",
 		"lint": "eslint \"src/**/*.ts*\""

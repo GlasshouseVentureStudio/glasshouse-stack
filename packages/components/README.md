@@ -22,12 +22,33 @@ yarn add @glasshouse/components
 
 ## Usage
 
+### Setup with Next.js app router
+
+Add styles import to the `app/layout.tsx` file:
+
+```ts
+// app/layout.tsx
+
+import '@glasshouse/components/styles.css'
+import '@glasshouse/components/tailwind.css'
+
+const RootLayout = () => (
+  <html lang="en">
+    <body>
+      {...}
+    </body>
+  </html>
+);
+
+export default RootLayout;
+```
+
 Import the components you need from the `@glasshouse/components` package:
 
 ```ts
 import { Grid } from '@glasshouse/components';
 
-const App = () => (
+const Component = () => (
   <div>
     <Grid>
       <Grid.Cell>I am a Grid Cell</Grid.Cell>
