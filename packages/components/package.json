@@ -1,6 +1,6 @@
 {
 	"name": "@glasshouse/components",
-	"version": "0.2.8",
+	"version": "0.2.9",
 	"license": "MIT",
 	"sideEffects": false,
 	"type": "module",

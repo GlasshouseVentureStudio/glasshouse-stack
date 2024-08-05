@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.2.9
+
+### Patch Changes
+
+- Compile and export tailwind styles
+
 ## 0.2.8
 
 ### Patch Changes
