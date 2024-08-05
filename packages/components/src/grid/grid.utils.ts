@@ -132,9 +132,9 @@ export const restrictResponsiveProp = (prop?: StyleProp<string | number> | null)
 			base: prop.base ?? null,
 			xs: prop.xs ?? prop.base ?? null,
 			sm: prop.sm ?? prop.xs ?? prop.base ?? null,
-			md: prop.md ?? prop.sm ?? prop.xs ?? null,
-			lg: prop.lg ?? prop.md ?? prop.sm ?? null,
-			xl: prop.xl ?? prop.lg ?? prop.md ?? null,
+			md: prop.md ?? prop.sm ?? prop.xs ?? prop.base ?? null,
+			lg: prop.lg ?? prop.md ?? prop.sm ?? prop.xs ?? prop.base ?? null,
+			xl: prop.xl ?? prop.lg ?? prop.md ?? prop.sm ?? prop.xs ?? prop.base ?? null,
 		};
 
 		if (Object.values(restrictedProp).some(value => value === null)) {
