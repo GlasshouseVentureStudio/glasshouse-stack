@@ -154,8 +154,6 @@ export const restrictResponsiveProp = (prop?: StyleProp<string | number> | null)
 	};
 };
 
-export type RestrictedResponsiveProp = ReturnType<typeof restrictResponsiveProp>;
-
 export const areClipSpansEqual = (clipSpans1: unknown, clipSpans2: unknown): boolean => {
 	return JSON.stringify(clipSpans1) === JSON.stringify(clipSpans2);
 };
