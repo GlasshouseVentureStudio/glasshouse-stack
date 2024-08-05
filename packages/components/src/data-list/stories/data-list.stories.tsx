@@ -30,7 +30,7 @@ export const Detault: DataListStory = {
 
 		return (
 			<DataList
-				className='h-80'
+				className='gvs-h-80'
 				dataSelector={({ pages, pageParams }) => ({
 					pages: pages.flatMap(page => page.comments),
 					pageParams,
@@ -56,7 +56,7 @@ export const Detault: DataListStory = {
 					},
 				}}
 				renderItem={item => {
-					return <Text className='line-clamp-1 px-3 py-1'>{item.body}</Text>;
+					return <Text className='gvs-line-clamp-1 gvs-px-3 gvs-py-1'>{item.body}</Text>;
 				}}
 			/>
 		);
@@ -101,7 +101,7 @@ export const GroupedDataList: UsersDataListStory = {
 		return (
 			<Stack>
 				<DataList
-					className='h-80'
+					className='gvs-h-80'
 					dataSelector={({ pages, pageParams }) => ({
 						pages: pages.flatMap(page => page.users),
 						pageParams,
@@ -136,11 +136,13 @@ export const GroupedDataList: UsersDataListStory = {
 					}}
 					renderGroupHeader={group => (
 						<Box bg='blue'>
-							<Text className='sticky top-0 line-clamp-1 px-3 py-1 font-bold uppercase text-white'>{group.title}</Text>
+							<Text className='gvs-sticky gvs-top-0 gvs-line-clamp-1 gvs-px-3 gvs-py-1 gvs-font-bold gvs-uppercase gvs-text-white'>
+								{group.title}
+							</Text>
 						</Box>
 					)}
 					renderItem={item => {
-						return <Text className='line-clamp-1 px-3 py-1'>{item.firstName}</Text>;
+						return <Text className='gvs-line-clamp-1 gvs-px-3 gvs-py-1'>{item.firstName}</Text>;
 					}}
 					stickyGroupHeader={sticky}
 				/>

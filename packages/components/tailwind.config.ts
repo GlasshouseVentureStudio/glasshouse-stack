@@ -11,6 +11,7 @@ const config: Config = {
 		},
 	},
 	plugins: [],
+	prefix: 'gvs-',
 };
 
 export default config;

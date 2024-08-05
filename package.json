@@ -8,7 +8,7 @@
 		"chromatic": "turbo chromatic",
 		"clean": "turbo clean && rm -rf node_modules",
 		"dev": "turbo dev --filter=@glasshouse/docs --filter=@glasshouse/components --filter=@glasshouse/utils",
-		"dev:demo": "turbo dev --filter=@glasshouse/demo",
+		"dev:demo": "turbo dev --filter=@glasshouse/demo --filter=@glasshouse/components --filter=@glasshouse/utils",
 		"lint": "turbo lint",
 		"prepare": "husky",
 		"prettier:check": "prettier --check \"**/*.{ts,tsx,md}\"",

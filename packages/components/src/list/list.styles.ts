@@ -3,33 +3,33 @@ import { tv, type VariantProps } from 'tailwind-variants';
 export const list = tv({
 	slots: {
 		root: '',
-		scrollArea: 'relative rounded',
-		list: 'relative rounded',
-		item: 'left-0 top-0',
-		groupHeader: 'sticky top-0 z-[1] border-y p-1 text-xs',
+		scrollArea: 'gvs-relative gvs-rounded',
+		list: 'gvs-relative gvs-rounded',
+		item: 'gvs-left-0 gvs-top-0',
+		groupHeader: 'gvs-sticky gvs-top-0 gvs-z-[1] gvs-border-y gvs-p-1 gvs-text-xs',
 		header: '',
 		footer: '',
-		loader: 'absolute inset-0 z-[1]',
-		empty: 'flex h-full min-h-20 w-full min-w-20 items-center justify-center',
+		loader: 'gvs-absolute gvs-inset-0 gvs-z-[1]',
+		empty: 'gvs-flex gvs-h-full gvs-min-h-20 gvs-w-full gvs-min-w-20 gvs-items-center gvs-justify-center',
 		pagination: '',
-		bottomLoaderWrapper: 'flex w-full items-center justify-center p-10',
+		bottomLoaderWrapper: 'gvs-flex gvs-w-full gvs-items-center gvs-justify-center gvs-p-10',
 	},
 	variants: {
 		bordered: {
 			true: {
-				scrollArea: 'border',
+				scrollArea: 'gvs-border',
 			},
 		},
 		orientation: {
 			horizontal: {
-				scrollArea: 'h-full',
-				item: 'h-full translate-x-[var(--translate)]',
-				list: 'h-full w-[var(--list-size)]',
+				scrollArea: 'gvs-h-full',
+				item: 'gvs-h-full gvs-translate-x-[var(--translate)]',
+				list: 'gvs-h-full gvs-w-[var(--list-size)]',
 			},
 			vertical: {
-				scrollArea: 'w-full',
-				item: 'w-full translate-y-[var(--translate)]',
-				list: 'h-[var(--list-size)]',
+				scrollArea: 'gvs-w-full',
+				item: 'gvs-w-full gvs-translate-y-[var(--translate)]',
+				list: 'gvs-h-[var(--list-size)]',
 			},
 		},
 		stickyHeader: {
@@ -50,26 +50,26 @@ export const list = tv({
 			bordered: true,
 			orientation: 'horizontal',
 			class: {
-				item: 'border-r last:border-r-0',
+				item: 'gvs-border-r gvs-last:border-r-0',
 			},
 		},
 		{
 			bordered: true,
 			orientation: 'vertical',
 			class: {
-				item: 'border-b last:border-b-0',
+				item: 'gvs-border-b gvs-last:border-b-0',
 			},
 		},
 		{
 			stickyHeader: true,
 			class: {
-				header: 'sticky top-0 z-10',
+				header: 'gvs-sticky gvs-top-0 gvs-z-10',
 			},
 		},
 		{
 			stickyFooter: true,
 			class: {
-				footer: 'sticky bottom-0 z-10',
+				footer: 'gvs-sticky gvs-bottom-0 gvs-z-10',
 			},
 		},
 	],

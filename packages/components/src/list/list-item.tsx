@@ -13,7 +13,7 @@ const ListItemInner = (
 	return (
 		<Box
 			ref={ref}
-			className={cn(className, 'absolute')}
+			className={cn(className, 'gvs-absolute')}
 			component={component}
 			data-active={active}
 			style={{ '--translate': `${virtualRow.start}px` }}

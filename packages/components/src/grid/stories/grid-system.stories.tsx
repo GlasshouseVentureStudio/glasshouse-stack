@@ -16,7 +16,7 @@ type GridStory = StoryObj<typeof meta>;
 
 export const Default: GridStory = {
 	args: {
-		className: 'flex items-center justify-center p-5',
+		className: 'gvs-flex gvs-items-center gvs-justify-center gvs-p-5',
 	},
 	render: ({ className }) => (
 		<Grid
@@ -38,7 +38,7 @@ export const Default: GridStory = {
  */
 export const ResponsiveGrid: GridStory = {
 	args: {
-		className: 'flex items-center justify-center p-5',
+		className: 'gvs-flex gvs-items-center gvs-justify-center gvs-p-5',
 	},
 	render: ({ className }) => (
 		<Grid
@@ -60,7 +60,7 @@ export const ResponsiveGrid: GridStory = {
  */
 export const ResponsiveGridWithResponsiveGuideClippingCells: GridStory = {
 	args: {
-		className: 'flex items-center justify-center p-5',
+		className: 'gvs-flex gvs-items-center gvs-justify-center gvs-p-5',
 	},
 	render: ({ className }) => (
 		<Grid
@@ -93,7 +93,7 @@ export const ResponsiveGridWithResponsiveGuideClippingCells: GridStory = {
  */
 export const HideGuides: GridStory = {
 	args: {
-		className: 'flex items-center justify-center p-5',
+		className: 'gvs-flex gvs-items-center gvs-justify-center gvs-p-5',
 	},
 	render: ({ className }) => {
 		const [hideGuidesType, setHideGuidesType] = useState<'row' | 'column' | 'all'>();
@@ -138,7 +138,7 @@ export const HideGuides: GridStory = {
  */
 export const WithGridSystem: GridStory = {
 	args: {
-		className: 'flex items-center justify-center p-5',
+		className: 'gvs-flex gvs-items-center gvs-justify-center gvs-p-5',
 	},
 	render: ({ className }) => (
 		<Grid.System unstable_useContainer>

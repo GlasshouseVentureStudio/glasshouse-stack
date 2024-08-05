@@ -17,7 +17,7 @@ const meta: Meta<typeof List<DataType>> = {
 	decorators: [
 		render => (
 			<Paper
-				className='p-5'
+				className='gvs-p-5'
 				radius={0}
 			>
 				{render()}
@@ -48,14 +48,14 @@ export const Default: ListStory = {
 		itemKey: 'id',
 		estimateItemSize: () => 52,
 		renderItem: item => (
-			<Box className='px-3 py-1'>
+			<Box className='gvs-px-3 gvs-py-1'>
 				<Title
-					className='line-clamp-1 font-semibold'
+					className='gvs-line-clamp-1 gvs-font-semibold'
 					order={5}
 				>
 					{item.name}
 				</Title>
-				<Text className='line-clamp-1 text-sm text-gray-700'>{item.job}</Text>
+				<Text className='gvs-line-clamp-1 gvs-text-sm gvs-text-gray-700'>{item.job}</Text>
 			</Box>
 		),
 	},
@@ -79,7 +79,7 @@ export const ActiveItem: ListStory = {
 		...Default.args,
 		getActiveItem: (item, index) => index === 2,
 		classNames: {
-			item: 'data-[active=true]:bg-gray-200',
+			item: 'gvs-data-[active=true]:gvs-bg-gray-200',
 		},
 	},
 };
@@ -88,7 +88,7 @@ export const OnItemClick: ListStory = {
 	args: {
 		...Default.args,
 		classNames: {
-			item: 'cursor-pointer hover:bg-gray-100 transition-all',
+			item: 'gvs-cursor-pointer gvs-hover:bg-gray-100 gvs-transition-all',
 		},
 		onItemClick: (event, item) => {
 			// eslint-disable-next-line no-alert -- This is a demo
@@ -104,7 +104,7 @@ export const ScrollArea: ListStory = {
 	args: {
 		...Default.args,
 		classNames: {
-			root: 'h-60',
+			root: 'gvs-h-60',
 		},
 	},
 };
@@ -114,18 +114,18 @@ export const Horizontal: ListStory = {
 		...Default.args,
 		orientation: 'horizontal',
 		classNames: {
-			list: 'h-20',
+			list: 'gvs-h-20',
 		},
 		estimateItemSize: () => 240,
 		renderItem: item => (
-			<Box className='flex h-full w-60 flex-col justify-center px-3 py-1'>
+			<Box className='gvs-flex gvs-h-full gvs-w-60 gvs-flex-col gvs-justify-center gvs-px-3 gvs-py-1'>
 				<Title
-					className='line-clamp-1 font-semibold'
+					className='gvs-line-clamp-1 gvs-font-semibold'
 					order={5}
 				>
 					{item.name}
 				</Title>
-				<Text className='line-clamp-1 text-sm text-gray-700'>{item.job}</Text>
+				<Text className='gvs-line-clamp-1 gvs-text-sm gvs-text-gray-700'>{item.job}</Text>
 			</Box>
 		),
 	},
@@ -138,7 +138,7 @@ export const HeaderFooter: ListStory = {
 			<Box
 				bg='blue'
 				c='white'
-				className='sticky top-0 px-3 py-1 font-bold uppercase'
+				className='gvs-sticky gvs-top-0 gvs-px-3 gvs-py-1 gvs-font-bold gvs-uppercase'
 			>
 				Header
 			</Box>
@@ -147,12 +147,12 @@ export const HeaderFooter: ListStory = {
 			<Box
 				bg='blue'
 				c='white'
-				className='px-3 py-1 font-bold uppercase'
+				className='gvs-px-3 gvs-py-1 gvs-font-bold gvs-uppercase'
 			>
 				Footer
 			</Box>
 		),
-		className: 'h-80',
+		className: 'gvs-h-80',
 		stickyHeader: true,
 		stickyFooter: false,
 	},
@@ -224,7 +224,7 @@ export const CustomLoader: ListStory = {
 		data: data.slice(0, 5),
 		loading: true,
 		renderLoader: () => (
-			<Box className='flex h-full w-full items-center justify-center bg-white bg-opacity-80 py-3 text-center'>
+			<Box className='gvs-flex gvs-h-full gvs-w-full gvs-items-center gvs-justify-center gvs-bg-white gvs-bg-opacity-80 gvs-py-3 gvs-text-center'>
 				Loading...
 			</Box>
 		),
@@ -236,7 +236,9 @@ export const Empty: ListStory = {
 		...Default.args,
 		data: [],
 		renderEmpty: () => (
-			<Box className='flex h-full w-full items-center justify-center bg-opacity-80 py-3 text-center'>No items</Box>
+			<Box className='gvs-flex gvs-h-full gvs-w-full gvs-items-center gvs-justify-center gvs-bg-opacity-80 gvs-py-3 gvs-text-center'>
+				No items
+			</Box>
 		),
 	},
 };
@@ -248,7 +250,7 @@ export const Virtualized: ListStory = {
 	args: {
 		...Default.args,
 		data,
-		className: 'h-96',
+		className: 'gvs-h-96',
 	},
 };
 
@@ -263,12 +265,12 @@ export const Grouped: ListStory = {
 		renderGroupHeader: header => (
 			<Box
 				bg='blue'
-				className='px-3 font-bold uppercase'
+				className='gvs-px-3 gvs-font-bold gvs-uppercase'
 			>
 				{header.title} {`(${header.items.length} items)`}
 			</Box>
 		),
-		className: 'h-96',
+		className: 'gvs-h-96',
 		stickyGroupHeader: false,
 	},
 	render: args => {
@@ -306,7 +308,7 @@ export const Selectable: ListStory = {
 		data: selectableData,
 		renderItem: (item, index, active) => (
 			<Group
-				className='cursor-pointer'
+				className='gvs-cursor-pointer'
 				data-active={active}
 				px={8}
 			>
@@ -315,15 +317,15 @@ export const Selectable: ListStory = {
 					data-testid={item.name}
 					id={item.id}
 				/>
-				<Box className='line-clamp-1 flex h-8 items-center'>
+				<Box className='gvs-line-clamp-1 gvs-flex gvs-h-8 gvs-items-center'>
 					<label htmlFor={item.id}>{item.name}</label>
 				</Box>
 			</Group>
 		),
 		estimateItemSize: () => 32,
 		classNames: {
-			root: 'w-80',
-			item: 'data-[active=true]:bg-gray-200',
+			root: 'gvs-w-80',
+			item: 'gvs-data-[active=true]:gvs-bg-gray-200',
 		},
 		selectable: true,
 		onClick: fn(() => {
@@ -382,7 +384,7 @@ export const Pagination: ListStory = {
 			position: 'bottom',
 		},
 		classNames: {
-			root: 'h-96',
+			root: 'gvs-h-96',
 		},
 	},
 	render: args => {

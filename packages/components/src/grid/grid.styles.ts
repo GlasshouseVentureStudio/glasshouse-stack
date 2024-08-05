@@ -2,12 +2,12 @@ import { tv, type VariantProps } from 'tailwind-variants';
 
 export const gridSystem = tv({
 	slots: {
-		root: 'relative grid h-[var(--height)] w-[var(--width)] grid-cols-[repeat(var(--grid-columns),_var(--column-width))] grid-rows-[repeat(var(--grid-rows),_var(--row-height))] border',
+		root: 'gvs-relative gvs-grid gvs-h-[var(--height)] gvs-w-[var(--width)] gvs-grid-cols-[repeat(var(--grid-columns),_var(--column-width))] gvs-grid-rows-[repeat(var(--grid-rows),_var(--row-height))] gvs-border',
 	},
 	variants: {
 		rootBorder: {
 			true: {
-				root: 'border',
+				root: 'gvs-border',
 			},
 		},
 	},

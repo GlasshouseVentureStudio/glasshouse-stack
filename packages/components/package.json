@@ -23,6 +23,7 @@
 		"build:tailwind": "tailwindcss -i ./src/styles.css -o ./dist/tailwind.css",
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
 		"dev": "tsup --dts --watch",
+		"dev:tailwind": "tailwindcss -i ./src/styles.css -o ./dist/tailwind.css --watch",
 		"lint": "eslint \"src/**/*.ts*\""
 	},
 	"dependencies": {

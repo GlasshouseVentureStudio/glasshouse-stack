@@ -157,13 +157,13 @@ export const GridCell = ({ children, className, column, row }: GridCellProps): J
 			<GridCellVariables
 				column={column}
 				row={row}
-				selector={`.${responsiveClassName}`}
+				selector={`.gvs-${responsiveClassName}`}
 			/>
 			<Box
 				className={cn(
-					'z-[2] col-[var(--grid-column)] row-[var(--grid-row)] mb-[var(--guide-width)] mr-[var(--guide-width)] overflow-hidden p-2',
+					'gvs-z-[2] gvs-col-[var(--grid-column)] gvs-row-[var(--grid-row)] gvs-mb-[var(--guide-width)] gvs-mr-[var(--guide-width)] gvs-overflow-hidden gvs-p-2',
 					className,
-					responsiveClassName
+					`gvs-${responsiveClassName}`
 				)}
 			>
 				{children}
@@ -283,7 +283,7 @@ const GridGuide = ({
 
 	return (
 		<Box
-			className='pointer-events-none z-[1] contents'
+			className='gvs-pointer-events-none gvs-z-[1] gvs-contents'
 			{...props}
 		>
 			{Array.from({ length: rows * columns }, (_, index) => {
@@ -347,7 +347,7 @@ const GridGuideBlock = ({
 			key={index}
 			aria-hidden='true'
 			className={cn(
-				'absolute inset-0 col-start-[var(--x)] col-end-[span_1] row-start-[var(--y)] row-end-[span_1] border border-l-0 border-t-0',
+				'gvs-absolute gvs-inset-0 gvs-col-start-[var(--x)] gvs-col-end-[span_1] gvs-row-start-[var(--y)] gvs-row-end-[span_1] gvs-border gvs-border-l-0 gvs-border-t-0',
 				className
 			)}
 			style={{
