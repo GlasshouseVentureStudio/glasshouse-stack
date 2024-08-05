@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.2.10
+
+### Patch Changes
+
+- Grid restrict responsive prop fallbacks.
+
 ## 0.2.9
 
 ### Patch Changes
