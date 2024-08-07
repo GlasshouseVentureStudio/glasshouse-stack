@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.3.1
+
+### Patch Changes
+
+- Add tsup loader for css modules compiling.
+
 ## 0.3.0
 
 ### Minor Changes
