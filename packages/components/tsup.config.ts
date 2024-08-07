@@ -8,4 +8,7 @@ export default defineConfig({
 	minify: true,
 	sourcemap: true,
 	metafile: true,
+	loader: {
+		'.css': 'local-css',
+	},
 });
