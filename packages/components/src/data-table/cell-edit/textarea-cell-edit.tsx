@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { Textarea, type TextareaProps } from '@mantine/core';
-import { type MRT_Cell, type MRT_Column, type MRT_Row, type MRT_TableInstance } from 'mantine-react-table';
+import {
+	type MRT_Cell,
+	type MRT_CellValue,
+	type MRT_Column,
+	type MRT_Row,
+	type MRT_RowData,
+	type MRT_TableInstance,
+} from 'mantine-react-table';
 
 interface MantineTableCellProps<TData extends Record<string, any>> {
 	cell: MRT_Cell<TData>;
@@ -8,65 +15,66 @@ interface MantineTableCellProps<TData extends Record<string, any>> {
 	row: MRT_Row<TData>;
 	table: MRT_TableInstance<TData>;
 }
+interface PropsTextArea<TData extends MRT_RowData, TValue = MRT_CellValue> extends TextareaProps {
+	cell: MRT_Cell<TData, TValue>;
+	table: MRT_TableInstance<TData>;
+	column: MRT_Column<TData>;
+	row: MRT_Row<TData>;
+	onSaveValue?: (value: TValue) => Promise<void> | void;
+}
 
-function useEdit<TData extends Record<string, any>>(props: MantineTableCellProps<TData>) {
-	const { cell, column, table } = props;
+export function useEditTextArea<TData extends Record<string, any>>(props: PropsTextArea<TData>) {
+	const { cell, column, row, table, onSaveValue } = props;
+	const { getState, setEditingCell, setEditingRow, setCreatingRow } = table;
+	const { editingRow, creatingRow } = getState();
 
-	const [value, setValue] = useState<any>(() => cell.getValue());
+	const [value, setValue] = useState(() => cell.getValue());
+	const isCreating = creatingRow?.id === row.id;
+	const isEditing = editingRow?.id === row.id;
 
-	const { setEditingRow, setEditingCell, getState } = table;
+	const handleOnChange = (newValue: unknown) => {
+		//@ts-ignore
+		row._valuesCache[column.id] = newValue;
 
-	const { editingRow } = getState();
+		if (isCreating) setCreatingRow(row);
+		else if (isEditing) setEditingRow(row);
 
-	const handleOnChange = (newValue: any) => {
-		// setValue(newValue);
+		setValue(newValue);
+	};
 
-		console.log(editingRow);
-
-		if (editingRow) {
-			setEditingRow({
-				...editingRow,
-				_valuesCache: { ...editingRow._valuesCache, [column.id]: newValue },
-			});
+	const handleBlur = async () => {
+		if (onSaveValue) {
+			try {
+				await onSaveValue(value);
+				setEditingCell(null);
+			} catch (error) {
+				setEditingCell(null);
+			}
+		} else {
+			setEditingCell(null);
 		}
 	};
 
-	const handleBlur = () => {
-		console.log(table);
-		handleOnChange(value);
-		setEditingCell(null);
+	const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+		if (event.key === 'Enter') {
+			handleBlur();
+		}
 	};
 
-	return { value, setValue, handleOnChange, handleBlur };
+	return { value, handleOnChange, handleBlur, onKeyDown };
 }
 
-export const TextAreaCellEdit = <TData extends Record<string, any>>({
-	cellProps,
-	props = {},
-	onChangeCellValue,
-}: {
-	cellProps: MantineTableCellProps<TData>;
-	props?: TextareaProps;
-	onChangeCellValue?: (value: string) => void;
-}) => {
-	const { value, handleOnChange, handleBlur, setValue } = useEdit(cellProps);
+export const TextAreaCellEdit = <TData extends MRT_RowData>(props: PropsTextArea<TData>) => {
+	const { value, handleOnChange, handleBlur, onKeyDown } = useEditTextArea(props);
 
 	return (
 		<Textarea
-			{...props}
-			onBlur={() => {
-				handleBlur();
-
-				if (onChangeCellValue) {
-					onChangeCellValue(value);
-				}
+			onBlur={handleBlur}
+			onChange={event => {
+				handleOnChange(event.target.value);
 			}}
-			onChange={e => {
-				setValue(e.target.value);
-			}}
-			value={value}
+			onKeyDown={onKeyDown}
+			value={value as string}
 		/>
 	);
 };
-
-//https://github.com/KevinVandy/mantine-react-table/blob/v2/packages/mantine-react-table/src/components/inputs/MRT_EditCellTextInput.tsx

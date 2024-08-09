@@ -99,20 +99,14 @@ export const DataTableWithInfiniteQuery = <
 			data={data}
 			editDisplayMode='cell'
 			enableEditing
-			enablePagination
+			enablePagination={false}
 			enableRowVirtualization
 			initialState={initialState}
-			mantinePaginationProps={{
-				showRowsPerPage: false,
-			}}
 			mantineTableContainerProps={mantineTableContainerProps}
 			manualPagination
 			onColumnFiltersChange={updater => {
 				setColumnFilters(updater);
 				onColumnFiltersChange?.(updater);
-			}}
-			onEditingRowSave={async ({ values, table }) => {
-				console.log('values', values, table);
 			}}
 			onPaginationChange={updater => {
 				setPagination(updater);
@@ -122,7 +116,6 @@ export const DataTableWithInfiniteQuery = <
 				setSorting(updater);
 				onSortingChange?.(updater);
 			}}
-			paginationDisplayMode='custom'
 			rowVirtualizerInstanceRef={rowVirtualizerInstanceRef}
 			rowVirtualizerOptions={{
 				overscan: 20,

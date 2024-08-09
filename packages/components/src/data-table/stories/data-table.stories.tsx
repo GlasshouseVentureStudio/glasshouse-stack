@@ -64,12 +64,10 @@ const columns: MRT_ColumnDef<DataType>[] = [
 	{
 		header: 'First name',
 		accessorKey: 'firstName',
-		enableSorting: false,
 	},
 	{
 		header: 'Middle name',
 		accessorKey: 'middleName',
-		enableEditing: true,
 	},
 	{
 		header: 'Last name',
@@ -82,7 +80,7 @@ const columns: MRT_ColumnDef<DataType>[] = [
 	{
 		header: 'Job title',
 		accessorKey: 'job',
-		Edit: props => <TextAreaCellEdit cellProps={props} />,
+		Edit: props => <TextAreaCellEdit {...props} />,
 	},
 	{
 		header: 'Date of birth',
