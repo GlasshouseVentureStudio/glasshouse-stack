@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import omit from 'lodash.omit';
 import { type MRT_ColumnDef } from 'mantine-react-table';
 
+import { TextAreaCellEdit } from '../cell-edit/textarea-cell-edit';
 import { DataTable } from '../data-table';
 import { type DataTableProps, type GetDataFn } from '../data-table.types';
 
@@ -63,10 +64,12 @@ const columns: MRT_ColumnDef<DataType>[] = [
 	{
 		header: 'First name',
 		accessorKey: 'firstName',
+		enableSorting: false,
 	},
 	{
 		header: 'Middle name',
 		accessorKey: 'middleName',
+		enableEditing: true,
 	},
 	{
 		header: 'Last name',
@@ -79,6 +82,7 @@ const columns: MRT_ColumnDef<DataType>[] = [
 	{
 		header: 'Job title',
 		accessorKey: 'job',
+		Edit: props => <TextAreaCellEdit cellProps={props} />,
 	},
 	{
 		header: 'Date of birth',

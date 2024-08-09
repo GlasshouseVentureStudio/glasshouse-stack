@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { type DefaultError, type InfiniteData, type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 import omit from 'lodash.omit';
 import {
@@ -9,11 +10,10 @@ import {
 	type MRT_RowVirtualizer,
 	type MRT_SortingState,
 } from 'mantine-react-table';
-import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { DataTableBase } from './data-table-base';
 import { type DataTableOptions, type DataTableWithInfiniteQueryProps } from './data-table.types';
 import { resolveComponentProps } from './data-table.utils';
+import { DataTableBase } from './data-table-base';
 
 export const DataTableWithInfiniteQuery = <
 	TData extends MRT_RowData,
@@ -97,14 +97,22 @@ export const DataTableWithInfiniteQuery = <
 		<DataTableBase
 			{...props}
 			data={data}
-			enablePagination={false}
+			editDisplayMode='cell'
+			enableEditing
+			enablePagination
 			enableRowVirtualization
 			initialState={initialState}
+			mantinePaginationProps={{
+				showRowsPerPage: false,
+			}}
 			mantineTableContainerProps={mantineTableContainerProps}
-			rowVirtualizerInstanceRef={rowVirtualizerInstanceRef}
+			manualPagination
 			onColumnFiltersChange={updater => {
 				setColumnFilters(updater);
 				onColumnFiltersChange?.(updater);
+			}}
+			onEditingRowSave={async ({ values, table }) => {
+				console.log('values', values, table);
 			}}
 			onPaginationChange={updater => {
 				setPagination(updater);
@@ -114,6 +122,8 @@ export const DataTableWithInfiniteQuery = <
 				setSorting(updater);
 				onSortingChange?.(updater);
 			}}
+			paginationDisplayMode='custom'
+			rowVirtualizerInstanceRef={rowVirtualizerInstanceRef}
 			rowVirtualizerOptions={{
 				overscan: 20,
 			}}
