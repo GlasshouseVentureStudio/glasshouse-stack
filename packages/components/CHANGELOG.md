@@ -1,5 +1,13 @@
 # @glasshouse/components
 
+## 0.3.2
+
+### Patch Changes
+
+- - Add inline editing using text area
+  - Add an option to trigger infinite loading by clicking a button
+  - Export component data-table's types
+
 ## 0.3.1
 
 ### Patch Changes
