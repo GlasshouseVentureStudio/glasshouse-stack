@@ -9,12 +9,6 @@ import {
 	type MRT_TableInstance,
 } from 'mantine-react-table';
 
-interface MantineTableCellProps<TData extends Record<string, any>> {
-	cell: MRT_Cell<TData>;
-	column: MRT_Column<TData>;
-	row: MRT_Row<TData>;
-	table: MRT_TableInstance<TData>;
-}
 interface PropsTextArea<TData extends MRT_RowData, TValue = MRT_CellValue> extends TextareaProps {
 	cell: MRT_Cell<TData, TValue>;
 	table: MRT_TableInstance<TData>;

@@ -1,3 +1,4 @@
+import { type FC } from 'react';
 import {
 	type DefaultError,
 	type InfiniteData,
@@ -16,7 +17,6 @@ import {
 	type MRT_TableOptions,
 	type MRT_TableState,
 } from 'mantine-react-table';
-import { type FC } from 'react';
 
 export type DisplayColumnIds = MRT_DisplayColumnIds | 'mrt-table-actions';
 
@@ -121,6 +121,8 @@ export interface DataTableWithInfiniteQueryProps<
 	>;
 	getRowCount?: (data?: TQueryFnData) => number;
 	scrollThreshold?: number | string;
+	enableLoadMoreButton?: boolean;
+	renderLoadMoreButton?: (props: LoadMoreButtonProps) => React.ReactNode;
 }
 
 interface DataTablePropsWithoutQuery<TData extends MRT_RowData, TQueryFnData = unknown>
@@ -141,3 +143,9 @@ export type DataTableProps<
 	| DataTableWithQueryProps<TData, TQueryFnData, TError, TQueryKey>
 	| DataTableWithInfiniteQueryProps<TData, TQueryFnData, TError, TQueryKey, TPageParam>
 	| DataTablePropsWithoutQuery<TData, TQueryFnData>;
+
+export interface LoadMoreButtonProps {
+	isFetching?: boolean;
+	onClick?: () => void;
+	hasNextPage?: boolean;
+}

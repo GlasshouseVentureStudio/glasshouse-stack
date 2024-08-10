@@ -11,9 +11,14 @@ import {
 	type MRT_SortingState,
 } from 'mantine-react-table';
 
-import { type DataTableOptions, type DataTableWithInfiniteQueryProps } from './data-table.types';
+import {
+	type DataTableOptions,
+	type DataTableWithInfiniteQueryProps,
+	type LoadMoreButtonProps,
+} from './data-table.types';
 import { resolveComponentProps } from './data-table.utils';
 import { DataTableBase } from './data-table-base';
+import LoadMoreButton from './toolbar/load-more-button';
 
 export const DataTableWithInfiniteQuery = <
 	TData extends MRT_RowData,
@@ -31,6 +36,8 @@ export const DataTableWithInfiniteQuery = <
 	onPaginationChange,
 	onSortingChange,
 	scrollThreshold = 0.25,
+	enableLoadMoreButton = false,
+	renderLoadMoreButton = (props: LoadMoreButtonProps) => <LoadMoreButton {...props} />,
 	...props
 }: DataTableWithInfiniteQueryProps<TData, TQueryFnData, TError, TQueryKey, TPageParam>) => {
 	const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -66,20 +73,22 @@ export const DataTableWithInfiniteQuery = <
 			...resolvedProps,
 			ref: tableContainerRef,
 			style: { maxHeight: 768, ...resolvedProps?.style },
-			onScroll: e => {
-				const { scrollHeight, scrollTop, clientHeight } = e.currentTarget;
-				const threshold =
-					typeof scrollThreshold === 'number' ? scrollThreshold : parseInt(scrollThreshold.replace('px', ''));
+			onScroll: enableLoadMoreButton
+				? undefined
+				: e => {
+						const { scrollHeight, scrollTop, clientHeight } = e.currentTarget;
+						const threshold =
+							typeof scrollThreshold === 'number' ? scrollThreshold : parseInt(scrollThreshold.replace('px', ''));
 
-				if (
-					scrollHeight - scrollTop - clientHeight <
-						(typeof scrollThreshold === 'number' ? clientHeight * (1 - threshold) : threshold) &&
-					!isFetching &&
-					hasNextPage
-				) {
-					void fetchNextPage();
-				}
-			},
+						if (
+							scrollHeight - scrollTop - clientHeight <
+								(typeof scrollThreshold === 'number' ? clientHeight * (1 - threshold) : threshold) &&
+							!isFetching &&
+							hasNextPage
+						) {
+							void fetchNextPage();
+						}
+					},
 		};
 	};
 
@@ -125,6 +134,10 @@ export const DataTableWithInfiniteQuery = <
 				showProgressBars: isFetchingNextPage,
 				...state,
 			}}
+			{...(enableLoadMoreButton && {
+				renderBottomToolbar: () =>
+					renderLoadMoreButton({ onClick: fetchNextPage, isFetching: isFetchingNextPage, hasNextPage }),
+			})}
 		/>
 	);
 };
