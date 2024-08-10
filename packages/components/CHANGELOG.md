@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.3.4
+
+### Patch Changes
+
+- - Add missing props to Cell Edit component
+
 ## 0.3.3
 
 ### Patch Changes
