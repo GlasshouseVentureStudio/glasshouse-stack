@@ -59,7 +59,8 @@ export function useEditTextArea<TData extends Record<string, any>>(props: PropsT
 }
 
 export const TextAreaCellEdit = <TData extends MRT_RowData>(props: PropsTextArea<TData>) => {
-	const { value, handleOnChange, handleBlur, onKeyDown } = useEditTextArea(props);
+	const { cell, column, row, table, onSaveValue, ...rest } = props;
+	const { value, handleOnChange, handleBlur, onKeyDown } = useEditTextArea({ cell, column, row, table, onSaveValue });
 
 	return (
 		<Textarea
@@ -69,6 +70,7 @@ export const TextAreaCellEdit = <TData extends MRT_RowData>(props: PropsTextArea
 			}}
 			onKeyDown={onKeyDown}
 			value={value as string}
+			{...rest}
 		/>
 	);
 };
