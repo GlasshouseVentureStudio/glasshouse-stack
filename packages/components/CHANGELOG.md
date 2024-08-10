@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.3.3
+
+### Patch Changes
+
+- - Export data-table styles
+
 ## 0.3.2
 
 ### Patch Changes
