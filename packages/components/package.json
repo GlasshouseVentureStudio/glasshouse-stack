@@ -12,16 +12,18 @@
 			"default": "./dist/index.js"
 		},
 		"./styles.css": "./dist/index.css",
-		"./tailwind.css": "./dist/tailwind.css"
+		"./tailwind.css": "./dist/tailwind.css",
+		"./data-table.css": "./dist/data-table/styles.css"
 	},
 	"files": [
 		"dist/**",
 		"gvs-components.svg"
 	],
 	"scripts": {
-		"build": "tsup --tsconfig ./tsconfig.json --dts --clean && pnpm build:tailwind",
+		"build": "tsup --tsconfig ./tsconfig.json --dts --clean && pnpm build:tailwind && pnpm run copy:css",
 		"build:tailwind": "tailwindcss -i ./src/styles.css -o ./dist/tailwind.css",
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+		"copy:css": "node -e \"require('fs').cpSync('./node_modules/mantine-react-table/styles.css', './dist/data-table/styles.css');\"",
 		"dev": "tsup --dts --watch",
 		"dev:tailwind": "tailwindcss -i ./src/styles.css -o ./dist/tailwind.css --watch",
 		"lint": "eslint \"src/**/*.ts*\""
