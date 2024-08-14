@@ -106,7 +106,7 @@ export const AddOption = ({ data, onCreate, onCreateError, onCreateSuccess, vali
 			fullWidth
 			leftSection={<IconPlus size={14} />}
 			onClick={open}
-			size='sm'
+			size='xs'
 			variant='subtle'
 		>
 			Add new
