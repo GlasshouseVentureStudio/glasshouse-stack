@@ -60,6 +60,7 @@ function Option({ data, withCheckIcon, value, checkIconPosition, unstyled, rende
 				aria-hidden
 				checked={checked}
 				className={classes.optionsDropdownCheckIcon}
+				onChange={() => {}}
 				radius='xs'
 				size='xs'
 				style={{ pointerEvents: 'none' }}
