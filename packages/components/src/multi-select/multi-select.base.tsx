@@ -1,4 +1,4 @@
-import { type ForwardedRef, forwardRef, useEffect, useState } from 'react';
+import { type ForwardedRef, forwardRef, useEffect, useMemo, useState } from 'react';
 import {
 	Combobox,
 	type ComboboxItem,
@@ -10,6 +10,7 @@ import {
 	type MultiSelectFactory,
 	Pill,
 	PillsInput,
+	Tooltip,
 	useCombobox,
 	useResolvedStylesApi,
 	useStyles,
@@ -18,7 +19,8 @@ import { useId, useUncontrolled } from '@mantine/hooks';
 import omit from 'lodash.omit';
 
 import { useProps } from '../../hooks/use-props';
-import { OptionsDropdown } from '../combobox/options-dropdown';
+import { type OptionsData, OptionsDropdown } from '../combobox/options-dropdown';
+import { isLabelValueList, isOptionsGroupList } from '../combobox/options-dropdown/is-option-group-list';
 import { filterPickedValues } from './filter-picked-values';
 import { type MultiSelectBaseProps } from './multi-select.types';
 
@@ -28,6 +30,9 @@ const defaultProps: Partial<MultiSelectBaseProps> = {
 	checkIconPosition: 'left',
 	hiddenInputValuesDivider: ',',
 };
+
+const SELECT_ALL_VALUE = 'all';
+const NA_VALUE = '-1';
 
 function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRef<HTMLInputElement>) {
 	const props = useProps('MultiSelect', defaultProps, _props);
@@ -87,6 +92,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		onOptionSubmit,
 		onRemove,
 		onSearchChange,
+		pillType,
 		placeholder,
 		radius,
 		readOnly,
@@ -115,6 +121,9 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		withErrorStyles,
 		withScrollArea,
 		wrapperProps,
+		canSelectAll,
+		includeNA,
+		selectAllText,
 		...others
 	} = props;
 
@@ -126,7 +135,6 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	const _id = useId(id);
 	const parsedData = getParsedComboboxData(internalData);
-	const optionsLockup = getOptionsLockup(parsedData);
 
 	const combobox = useCombobox({
 		opened: dropdownOpened,
@@ -156,6 +164,70 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		finalValue: '',
 		onChange: onSearchChange,
 	});
+
+	const filteredData = filterPickedValues({ data: parsedData, value: _value });
+
+	const extraOptions = useMemo<ComboboxItem[]>(
+		() => [
+			...(canSelectAll
+				? [
+						{
+							label: selectAllText ?? 'Select All',
+							value: SELECT_ALL_VALUE,
+						},
+					]
+				: []),
+			...(includeNA
+				? [
+						{
+							label: 'N/A',
+							value: NA_VALUE,
+						},
+					]
+				: []),
+		],
+		[canSelectAll, includeNA, selectAllText]
+	);
+
+	//get list options based on data and props
+	const allOptions = useMemo<OptionsData>(() => {
+		const data = hidePickedOptions ? filteredData : parsedData;
+		const isGroup = isOptionsGroupList(data);
+
+		if (isGroup) {
+			return [
+				{
+					group: '',
+					items: extraOptions,
+				},
+				...data,
+			];
+		}
+
+		return [...extraOptions, ...data];
+	}, [parsedData, extraOptions, filteredData, hidePickedOptions]);
+
+	//use for reference for set value of group options
+	const flatOptionsData = useMemo<ComboboxItem[]>(() => {
+		const data = hidePickedOptions ? filteredData : parsedData;
+
+		if (isOptionsGroupList(data)) {
+			return [
+				...extraOptions,
+				...data.reduce((acc: ComboboxItem[], group) => {
+					return [...acc, ...group.items];
+				}, []),
+			];
+		}
+
+		if (isLabelValueList(data)) {
+			return [...extraOptions, ...data];
+		}
+
+		return [];
+	}, [parsedData, extraOptions, filteredData, hidePickedOptions]);
+
+	const optionsLockup = getOptionsLockup(allOptions);
 
 	const getStyles = useStyles<MultiSelectFactory>({
 		name: 'MultiSelect',
@@ -191,23 +263,6 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		}
 	};
 
-	const values = _value.map((item, index) => (
-		<Pill
-			// eslint-disable-next-line react/no-array-index-key -- ensure key is unique
-			key={`${item}-${index}`}
-			disabled={disabled}
-			onRemove={() => {
-				setValue(_value.filter(i => item !== i));
-				onRemove?.(item);
-			}}
-			unstyled={unstyled}
-			withRemoveButton={!readOnly && !optionsLockup[item]?.disabled}
-			{...getStyles('pill')}
-		>
-			{optionsLockup[item]?.label ?? item}
-		</Pill>
-	));
-
 	useEffect(() => {
 		if (selectFirstOptionOnChange) {
 			combobox.selectFirstOption();
@@ -236,27 +291,89 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	const inputRightSection = clearButton ? clearButton : _rightSection;
 
-	const filteredData = filterPickedValues({ data: parsedData, value: _value });
+	const labelList = useMemo<string>(() => {
+		const labelList: string[] = _value
+			.filter(item => item !== 'all')
+			.map(item => {
+				return optionsLockup[item]?.label ?? '';
+			});
+		const labelJoined = labelList.join(', ');
+
+		return labelJoined;
+	}, [_value, optionsLockup]);
+
+	// if pill type is combined, show all values in a single pill
+	const values =
+		pillType === 'combined' ? (
+			<Tooltip
+				className='text-wrap text-xs'
+				label={labelList}
+			>
+				<Pill
+					onClick={() => {
+						if (!disabled) combobox.openDropdown();
+					}}
+					{...getStyles('pill')}
+				>
+					{labelList}
+				</Pill>
+			</Tooltip>
+		) : (
+			_value.map((item, index) => (
+				<Pill
+					// eslint-disable-next-line react/no-array-index-key -- ensure key is unique
+					key={`${item}-${index}`}
+					disabled={disabled}
+					onRemove={() => {
+						setValue(_value.filter(i => item !== i));
+						onRemove?.(item);
+					}}
+					unstyled={unstyled}
+					withRemoveButton={!readOnly && !optionsLockup[item]?.disabled}
+					{...getStyles('pill')}
+				>
+					{optionsLockup[item]?.label ?? item}
+				</Pill>
+			))
+		);
+
+	//when pill type is combined, show pills only when dropdown is closed
+	const isShowPill = useMemo(() => {
+		if (pillType === 'combined') {
+			return _value.length > 0 && !combobox.dropdownOpened;
+		}
+
+		return true;
+	}, [_value, pillType, combobox.dropdownOpened]);
+
+	const handleValueSelect = (val: string) => {
+		onOptionSubmit?.(val);
+		setSearchValue('');
+		combobox.updateSelectedOptionIndex('selected');
+
+		const optionsLockupValue = optionsLockup[val]?.value;
+
+		//select all items when select 'All' option
+		if (val === SELECT_ALL_VALUE && !_value.includes(SELECT_ALL_VALUE)) {
+			setValue(flatOptionsData.map(item => item.value));
+		}
+		//deselect all items when deselect 'All' option
+		else if (val === SELECT_ALL_VALUE && _value.includes(SELECT_ALL_VALUE)) {
+			setValue([]);
+		} else if (optionsLockupValue && _value.includes(optionsLockupValue)) {
+			setValue(_value.filter(v => v !== optionsLockupValue && v !== SELECT_ALL_VALUE));
+			onRemove?.(optionsLockupValue);
+		} else if (optionsLockupValue && _value.length < (maxValues ?? Infinity)) {
+			setValue([..._value, optionsLockupValue]);
+		}
+	};
 
 	return (
 		<>
 			<Combobox
 				__staticSelector='MultiSelect'
 				classNames={resolvedClassNames}
-				onOptionSubmit={val => {
-					onOptionSubmit?.(val);
-					setSearchValue('');
-					combobox.updateSelectedOptionIndex('selected');
-
-					const optionsLockupValue = optionsLockup[val]?.value;
-
-					if (optionsLockupValue && _value.includes(optionsLockupValue)) {
-						setValue(_value.filter(v => v !== optionsLockupValue));
-						onRemove?.(optionsLockupValue);
-					} else if (optionsLockupValue && _value.length < (maxValues ?? Infinity)) {
-						setValue([..._value, optionsLockupValue]);
-					}
-				}}
+				onOptionSubmit={handleValueSelect}
 				readOnly={readOnly}
 				size={size}
 				store={combobox}
@@ -316,7 +433,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 							unstyled={unstyled}
 							{...getStyles('pillsList')}
 						>
-							{values}
+							{isShowPill ? values : null}
 							<Combobox.EventsTarget autoComplete={autoComplete}>
 								<PillsInput.Field
 									{...omit(rest, 'type')}
@@ -326,6 +443,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 									type={!searchable && !placeholder ? 'hidden' : 'visible'}
 									{...getStyles('inputField')}
 									disabled={disabled}
+									hidden={isShowPill}
 									onBlur={event => {
 										onBlur?.(event);
 										!creatable && combobox.closeDropdown();
@@ -358,7 +476,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 					creatable={creatable}
 					creatablePosition={creatablePosition}
 					createInputValidator={createInputValidator}
-					data={hidePickedOptions ? filteredData : parsedData}
+					data={allOptions}
 					filter={filter}
 					filterOptions={searchable}
 					hidden={readOnly ? readOnly : disabled}
@@ -389,6 +507,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 					value={_value}
 					withCheckIcon={withCheckIcon}
 					withScrollArea={withScrollArea}
+					{...getStyles('option')}
 				/>
 			</Combobox>
 			<Combobox.HiddenInput

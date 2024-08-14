@@ -14,7 +14,7 @@ interface PropsTextArea<TData extends MRT_RowData, TValue = MRT_CellValue> exten
 	table: MRT_TableInstance<TData>;
 	column: MRT_Column<TData>;
 	row: MRT_Row<TData>;
-	onSaveValue?: (value: TValue) => Promise<void> | void;
+	onSaveValue?: (value: TValue) => Promise<void>;
 }
 
 export function useEditTextArea<TData extends Record<string, any>>(props: PropsTextArea<TData>) {
@@ -51,6 +51,7 @@ export function useEditTextArea<TData extends Record<string, any>>(props: PropsT
 
 	const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		if (event.key === 'Enter') {
+			event.preventDefault();
 			handleBlur();
 		}
 	};

@@ -2,7 +2,7 @@
 import { type ReactNode, type ReactPortal } from 'react';
 import {
 	Center,
-	CheckIcon,
+	Checkbox,
 	Combobox,
 	type ComboboxItem,
 	type ComboboxLikeRenderOptionInput,
@@ -55,7 +55,17 @@ function isValueChecked(value: string | string[] | undefined | null, optionValue
 function Option({ data, withCheckIcon, value, checkIconPosition, unstyled, renderOption }: OptionProps) {
 	if (!isOptionsGroup(data)) {
 		const checked = isValueChecked(value, data.value);
-		const check = withCheckIcon && checked && <CheckIcon className={classes.optionsDropdownCheckIcon} />;
+		const check = withCheckIcon && (
+			<Checkbox
+				aria-hidden
+				checked={checked}
+				className={classes.optionsDropdownCheckIcon}
+				radius='xs'
+				size='xs'
+				style={{ pointerEvents: 'none' }}
+				tabIndex={-1}
+			/>
+		);
 
 		const defaultContent = (
 			<>
@@ -131,6 +141,7 @@ export interface OptionsDropdownProps {
 	value?: string | string[] | null;
 	withCheckIcon?: boolean;
 	withScrollArea: boolean | undefined;
+	style?: React.CSSProperties;
 }
 
 export function OptionsDropdown({
@@ -165,6 +176,7 @@ export function OptionsDropdown({
 	value,
 	withCheckIcon = false,
 	withScrollArea = true,
+	style,
 }: OptionsDropdownProps) {
 	validateOptions(data);
 
@@ -197,6 +209,7 @@ export function OptionsDropdown({
 					<Combobox.Option
 						// eslint-disable-next-line react/no-array-index-key -- not important here
 						key={index}
+						style={style}
 						value={`skeleton-${index}`}
 					>
 						<Skeleton

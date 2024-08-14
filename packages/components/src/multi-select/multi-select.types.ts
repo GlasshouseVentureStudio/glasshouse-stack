@@ -32,6 +32,11 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	renderFooter?: (props: { combobox: ComboboxStore; data: ComboboxParsedItem[] }) => ReactNode;
 	renderHeader?: (props: { combobox: ComboboxStore; data: ComboboxParsedItem[] }) => ReactNode;
 	renderOptions?: (data: ComboboxParsedItem[], options: ReactNode) => ReactNode;
+	canSelectAll?: boolean;
+	includeNA?: boolean;
+	selectAllText?: string;
+	renderPill?: (values: string[]) => ReactNode;
+	pillType?: 'default' | 'combined'; //whether to show selected values as separate pills or as a single pill
 }
 
 export interface MultiSelectWithQueryProps<
