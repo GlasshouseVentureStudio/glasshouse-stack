@@ -62,7 +62,7 @@ export const AddOption = ({ data, onCreate, onCreateError, onCreateSuccess, vali
 	});
 
 	return active ? (
-		<FocusTrap>
+		<FocusTrap active={active}>
 			<form
 				onSubmit={form.onSubmit(({ value }) => {
 					void createOption(value);
@@ -105,7 +105,10 @@ export const AddOption = ({ data, onCreate, onCreateError, onCreateSuccess, vali
 		<Button
 			fullWidth
 			leftSection={<IconPlus size={14} />}
-			onClick={open}
+			onClick={e => {
+				e.stopPropagation();
+				open();
+			}}
 			size='xs'
 			variant='subtle'
 		>
