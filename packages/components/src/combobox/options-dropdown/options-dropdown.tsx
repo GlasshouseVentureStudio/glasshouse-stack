@@ -2,7 +2,7 @@
 import { type ReactNode, type ReactPortal } from 'react';
 import {
 	Center,
-	Checkbox,
+	CheckIcon,
 	Combobox,
 	type ComboboxItem,
 	type ComboboxLikeRenderOptionInput,
@@ -55,18 +55,7 @@ function isValueChecked(value: string | string[] | undefined | null, optionValue
 function Option({ data, withCheckIcon, value, checkIconPosition, unstyled, renderOption }: OptionProps) {
 	if (!isOptionsGroup(data)) {
 		const checked = isValueChecked(value, data.value);
-		const check = withCheckIcon && (
-			<Checkbox
-				aria-hidden
-				checked={checked}
-				className={classes.optionsDropdownCheckIcon}
-				onChange={() => {}}
-				radius='xs'
-				size='xs'
-				style={{ pointerEvents: 'none' }}
-				tabIndex={-1}
-			/>
-		);
+		const check = withCheckIcon && checked && <CheckIcon className={classes.optionsDropdownCheckIcon} />;
 
 		const defaultContent = (
 			<>

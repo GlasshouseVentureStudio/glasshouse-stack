@@ -17,7 +17,7 @@ interface PropsTextArea<TData extends MRT_RowData, TValue = MRT_CellValue> exten
 	onSaveValue?: (value: TValue) => Promise<void>;
 }
 
-export function useEditTextArea<TData extends Record<string, any>>(props: PropsTextArea<TData>) {
+export function useEditTextArea<TData extends Record<string, unknown>>(props: PropsTextArea<TData>) {
 	const { cell, column, row, table, onSaveValue } = props;
 	const { getState, setEditingCell, setEditingRow, setCreatingRow } = table;
 	const { editingRow, creatingRow } = getState();

@@ -122,8 +122,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		withScrollArea,
 		wrapperProps,
 		canSelectAll,
-		includeNA,
-		selectAllText,
+		selectAllLabel,
 		...others
 	} = props;
 
@@ -172,21 +171,13 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 			...(canSelectAll
 				? [
 						{
-							label: selectAllText ?? 'Select All',
+							label: selectAllLabel ?? 'Select All',
 							value: SELECT_ALL_VALUE,
 						},
 					]
 				: []),
-			...(includeNA
-				? [
-						{
-							label: 'N/A',
-							value: NA_VALUE,
-						},
-					]
-				: []),
 		],
-		[canSelectAll, includeNA, selectAllText]
+		[canSelectAll, selectAllLabel]
 	);
 
 	//get list options based on data and props
