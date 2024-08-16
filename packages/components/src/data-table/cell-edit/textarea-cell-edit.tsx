@@ -17,7 +17,7 @@ interface PropsTextArea<TData extends MRT_RowData, TValue = MRT_CellValue> exten
 	onSaveValue?: (value: TValue) => Promise<void>;
 }
 
-export function useEditTextArea<TData extends Record<string, unknown>>(props: PropsTextArea<TData>) {
+export function useEditTextArea<TData extends Record<string, unknown>>(props: PropsTextArea<TData, string>) {
 	const { cell, column, row, table, onSaveValue } = props;
 	const { getState, setEditingCell, setEditingRow, setCreatingRow } = table;
 	const { editingRow, creatingRow } = getState();
@@ -26,7 +26,7 @@ export function useEditTextArea<TData extends Record<string, unknown>>(props: Pr
 	const isCreating = creatingRow?.id === row.id;
 	const isEditing = editingRow?.id === row.id;
 
-	const handleOnChange = (newValue: unknown) => {
+	const handleOnChange = (newValue: string) => {
 		//@ts-ignore
 		row._valuesCache[column.id] = newValue;
 
@@ -59,7 +59,7 @@ export function useEditTextArea<TData extends Record<string, unknown>>(props: Pr
 	return { value, handleOnChange, handleBlur, onKeyDown };
 }
 
-export const TextAreaCellEdit = <TData extends MRT_RowData>(props: PropsTextArea<TData>) => {
+export const TextAreaCellEdit = <TData extends MRT_RowData>(props: PropsTextArea<TData, string>) => {
 	const { cell, column, row, table, onSaveValue, ...rest } = props;
 	const { value, handleOnChange, handleBlur, onKeyDown } = useEditTextArea({ cell, column, row, table, onSaveValue });
 
@@ -70,7 +70,7 @@ export const TextAreaCellEdit = <TData extends MRT_RowData>(props: PropsTextArea
 				handleOnChange(event.target.value);
 			}}
 			onKeyDown={onKeyDown}
-			value={value as string}
+			value={value}
 			{...rest}
 		/>
 	);
