@@ -10,7 +10,6 @@ import {
 	type MultiSelectFactory,
 	Pill,
 	PillsInput,
-	Tooltip,
 	useCombobox,
 	useResolvedStylesApi,
 	useStyles,
@@ -32,7 +31,6 @@ const defaultProps: Partial<MultiSelectBaseProps> = {
 };
 
 const SELECT_ALL_VALUE = 'all';
-const NA_VALUE = '-1';
 
 function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRef<HTMLInputElement>) {
 	const props = useProps('MultiSelect', defaultProps, _props);
@@ -92,7 +90,6 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		onOptionSubmit,
 		onRemove,
 		onSearchChange,
-		pillType,
 		placeholder,
 		radius,
 		readOnly,
@@ -282,60 +279,22 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	const inputRightSection = clearButton ? clearButton : _rightSection;
 
-	const labelList = useMemo<string>(() => {
-		const labelList: string[] = _value
-			.filter(item => item !== 'all')
-			.map(item => {
-				return optionsLockup[item]?.label ?? '';
-			});
-		const labelJoined = labelList.join(', ');
-
-		return labelJoined;
-	}, [_value, optionsLockup]);
-
-	// if pill type is combined, show all values in a single pill
-	const values =
-		pillType === 'combined' ? (
-			<Tooltip
-				className='text-wrap text-xs'
-				label={labelList}
-			>
-				<Pill
-					onClick={() => {
-						if (!disabled) combobox.openDropdown();
-					}}
-					{...getStyles('pill')}
-				>
-					{labelList}
-				</Pill>
-			</Tooltip>
-		) : (
-			_value.map((item, index) => (
-				<Pill
-					// eslint-disable-next-line react/no-array-index-key -- ensure key is unique
-					key={`${item}-${index}`}
-					disabled={disabled}
-					onRemove={() => {
-						setValue(_value.filter(i => item !== i));
-						onRemove?.(item);
-					}}
-					unstyled={unstyled}
-					withRemoveButton={!readOnly && !optionsLockup[item]?.disabled}
-					{...getStyles('pill')}
-				>
-					{optionsLockup[item]?.label ?? item}
-				</Pill>
-			))
-		);
-
-	//when pill type is combined, show pills only when dropdown is closed
-	const isShowPill = useMemo(() => {
-		if (pillType === 'combined') {
-			return _value.length > 0 && !combobox.dropdownOpened;
-		}
-
-		return true;
-	}, [_value, pillType, combobox.dropdownOpened]);
+	const values = _value.map((item, index) => (
+		<Pill
+			// eslint-disable-next-line react/no-array-index-key -- ensure key is unique
+			key={`${item}-${index}`}
+			disabled={disabled}
+			onRemove={() => {
+				setValue(_value.filter(i => item !== i));
+				onRemove?.(item);
+			}}
+			unstyled={unstyled}
+			withRemoveButton={!readOnly && !optionsLockup[item]?.disabled}
+			{...getStyles('pill')}
+		>
+			{optionsLockup[item]?.label ?? item}
+		</Pill>
+	));
 
 	const handleValueSelect = (val: string) => {
 		onOptionSubmit?.(val);
@@ -424,7 +383,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 							unstyled={unstyled}
 							{...getStyles('pillsList')}
 						>
-							{isShowPill ? values : null}
+							{values}
 							<Combobox.EventsTarget autoComplete={autoComplete}>
 								<PillsInput.Field
 									{...omit(rest, 'type')}
@@ -434,7 +393,6 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 									type={!searchable && !placeholder ? 'hidden' : 'visible'}
 									{...getStyles('inputField')}
 									disabled={disabled}
-									hidden={isShowPill}
 									onBlur={event => {
 										onBlur?.(event);
 										!creatable && combobox.closeDropdown();
