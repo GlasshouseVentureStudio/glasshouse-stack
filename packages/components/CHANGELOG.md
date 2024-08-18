@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.3.5
+
+### Patch Changes
+
+- - Add option to select all in MultiSelect component
+
 ## 0.3.4
 
 ### Patch Changes
