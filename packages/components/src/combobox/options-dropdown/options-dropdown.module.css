@@ -10,15 +10,15 @@
 	&:where([data-reverse]) {
 		justify-content: space-between;
 	}
+
+	&:where([data-checked]) {
+		color: var(--mantine-primary-color-filled);
+	}
 }
 
 .optionsDropdownCheckIcon {
-	opacity: 0.4;
-	width: 0.8em;
-	min-width: 0.8em;
-	height: 0.8em;
-
-	:where([data-combobox-selected]) & {
-		opacity: 1;
-	}
+	width: rem(16px);
+	min-width: rem(16px);
+	height: rem(16px);
+	color: var(--mantine-primary-color-filled);
 }

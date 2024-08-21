@@ -198,21 +198,23 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 		withScrollArea,
 	};
 
+	const handleValueSelect = (val: string) => {
+		onOptionSubmit?.(val);
+		const item = optionsLockup[val]?.value === _value ? null : optionsLockup[val];
+		const optionLockup = allowDeselect ? item : optionsLockup[val];
+
+		const nextValue = optionLockup ? optionLockup.value : null;
+
+		nextValue !== _value && setValue(nextValue, optionLockup);
+		!controlled && setSearch(typeof nextValue === 'string' ? (optionLockup?.label ?? '') : '');
+		combobox.closeDropdown();
+	};
+
 	return (
 		<>
 			<Combobox
 				classNames={resolvedClassNames}
-				onOptionSubmit={val => {
-					onOptionSubmit?.(val);
-					const item = optionsLockup[val]?.value === _value ? null : optionsLockup[val];
-					const optionLockup = allowDeselect ? item : optionsLockup[val];
-
-					const nextValue = optionLockup ? optionLockup.value : null;
-
-					nextValue !== _value && setValue(nextValue, optionLockup);
-					!controlled && setSearch(typeof nextValue === 'string' ? (optionLockup?.label ?? '') : '');
-					combobox.closeDropdown();
-				}}
+				onOptionSubmit={handleValueSelect}
 				readOnly={readOnly}
 				size={size}
 				store={combobox}

@@ -2,7 +2,6 @@
 import { type ReactNode, type ReactPortal } from 'react';
 import {
 	Center,
-	CheckIcon,
 	Combobox,
 	type ComboboxItem,
 	type ComboboxLikeRenderOptionInput,
@@ -17,6 +16,7 @@ import {
 	Skeleton,
 } from '@mantine/core';
 import { clsx } from 'clsx';
+import { CheckIcon } from 'lucide-react';
 
 import { AddOption } from '../add-option';
 import { isComboboxDataEmpty } from './is-combobox-data-empty';

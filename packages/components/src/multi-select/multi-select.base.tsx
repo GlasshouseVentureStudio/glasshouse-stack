@@ -417,7 +417,6 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 						</Pill.Group>
 					</PillsInput>
 				</Combobox.DropdownTarget>
-
 				<OptionsDropdown
 					aria-label={label ? undefined : others['aria-label']}
 					checkIconPosition={checkIconPosition}
