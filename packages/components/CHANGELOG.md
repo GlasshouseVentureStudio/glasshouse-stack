@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.3.6
+
+### Patch Changes
+
+- Tweak dropdown option active style
+
 ## 0.3.5
 
 ### Patch Changes
