@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.3.9
+
+### Patch Changes
+
+- feat(components): pass Autocomplete's options to onOptionSubmit
+
 ## 0.3.8
 
 ### Patch Changes
