@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.3.11
+
+### Patch Changes
+
+- update combobox
+
 ## 0.3.10
 
 ### Patch Changes
