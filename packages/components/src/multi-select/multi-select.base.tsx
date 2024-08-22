@@ -22,8 +22,10 @@ import { XIcon } from 'lucide-react';
 import { useProps } from '../../hooks/use-props';
 import { type OptionsData, OptionsDropdown } from '../combobox/options-dropdown';
 import { isLabelValueList, isOptionsGroupList } from '../combobox/options-dropdown/is-option-group-list';
-import { filterPickedValues } from './filter-picked-values';
 import { type MultiSelectBaseProps } from './multi-select.types';
+import { filterPickedValues } from './multi-select.utils';
+
+import classes from './multi-select.module.css';
 
 const defaultProps: Partial<MultiSelectBaseProps> = {
 	maxValues: Infinity,
@@ -125,6 +127,8 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		maxDisplayedValues = 999,
 		renderMaxDisplayedValuesLabel,
 		mode = 'pills',
+		floatingInput,
+		lineClamp,
 		...others
 	} = props;
 
@@ -224,8 +228,8 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	const getStyles = useStyles<MultiSelectFactory>({
 		name: 'MultiSelect',
-		classes: {},
 		props,
+		classes,
 		classNames,
 		styles,
 		unstyled,
@@ -298,7 +302,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	const renderMaxDisplayedPillValuesLabel = useCallback(
 		() => (
-			<Pill>
+			<Pill style={{ flexShrink: 0, flexGrow: 0, minWidth: 'auto' }}>
 				{renderMaxDisplayedValuesLabel
 					? renderMaxDisplayedValuesLabel(_value.length)
 					: `+${_value.length - (maxDisplayedValues - 1)} more`}
@@ -334,8 +338,9 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	const textValues = (
 		<Text
-			lineClamp={1}
-			size={size}
+			fz='var(--input-fz, var(--input-fz, var(--mantine-font-size-sm)))'
+			lineClamp={lineClamp}
+			span
 			unstyled={unstyled}
 			{...getStyles('pill')}
 		>
@@ -430,9 +435,16 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 						wrapperProps={wrapperProps}
 					>
 						<Pill.Group
+							data-floating={floatingInput}
+							data-hasvalue={_value.length > 0 && floatingInput}
+							data-line-clamp={lineClamp === 1 && floatingInput}
 							disabled={disabled}
 							unstyled={unstyled}
-							{...getStyles('pillsList')}
+							{...getStyles('pillsList', {
+								style: {
+									'--text-line-clamp': lineClamp,
+								},
+							})}
 						>
 							{mode === 'pills' ? values : textValues}
 
@@ -442,11 +454,10 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 								<PillsInput.Field
 									{...omit(rest, 'type')}
 									ref={ref}
-									id={_id}
-									placeholder={placeholder}
-									type={!searchable && !placeholder ? 'hidden' : 'visible'}
-									{...getStyles('inputField')}
+									data-floating={floatingInput}
+									data-hasvalue={_value.length > 0 && floatingInput}
 									disabled={disabled}
+									id={_id}
 									onBlur={event => {
 										onBlur?.(event);
 										!creatable && combobox.closeDropdown();
@@ -462,10 +473,13 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 										searchable && combobox.openDropdown();
 									}}
 									onKeyDown={handleInputKeydown}
+									placeholder={placeholder}
 									pointer={!searchable}
 									readOnly={readOnly ? readOnly : !searchable}
+									type={!searchable && !placeholder ? 'hidden' : 'visible'}
 									unstyled={unstyled}
 									value={_searchValue}
+									{...getStyles('inputField')}
 								/>
 							</Combobox.EventsTarget>
 						</Pill.Group>

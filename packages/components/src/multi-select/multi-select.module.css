@@ -1,0 +1,55 @@
+.pillsList {
+	> span {
+		transition:
+			opacity 150ms ease,
+			transform 150ms ease;
+	}
+
+	&:where([data-line-clamp='true']) {
+		text-overflow: ellipsis;
+		/* display: -webkit-box; */
+		-webkit-line-clamp: var(--text-line-clamp);
+		-webkit-box-orient: vertical;
+		width: 100%;
+		flex-wrap: nowrap;
+
+		> * {
+			flex-grow: 1;
+			min-width: 0;
+		}
+	}
+
+	&[data-floating='true'] {
+		&:has(:focus-visible)[data-hasvalue='true'] {
+			> span {
+				transform: translateY(-100%);
+				opacity: 0;
+			}
+		}
+	}
+}
+
+.inputField {
+	&[data-floating='true'] {
+		position: absolute;
+		top: var(--input-padding-y, 0rem);
+		bottom: var(--input-padding-y, 0rem);
+		left: var(--input-padding-inline-start);
+		right: var(--input-padding-inline-end);
+		background-color: var(--input-bg);
+
+		transition:
+			opacity 150ms ease,
+			transform 150ms ease;
+
+		&[data-hasvalue='true'] {
+			transform: translateY(100%);
+			opacity: 0;
+		}
+
+		&:focus-visible {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+}

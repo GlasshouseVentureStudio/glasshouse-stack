@@ -145,6 +145,18 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	 * - `texts`: Selected items are displayed as plain text.
 	 */
 	mode?: 'pills' | 'texts';
+	/**
+	 * Hide search when values are selected and hide values when search is focused.
+	 */
+	floatingInput?: boolean;
+	/**
+	 * Only works when `floatingInput` is `true`.
+	 *
+	 * Limit number of plain text value lines when `mode` is `texts`.
+	 *
+	 * Limit number of pill lines when `mode` is `pills`, only works when `lineClamp` is `1`.
+	 */
+	lineClamp?: number;
 }
 
 export interface MultiSelectWithQueryProps<

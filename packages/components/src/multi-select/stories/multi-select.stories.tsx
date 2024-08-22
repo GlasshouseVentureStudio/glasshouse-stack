@@ -1,5 +1,17 @@
+import { useState } from 'react';
 import { faker } from '@faker-js/faker';
-import { ActionIcon, Button, Combobox, type ComboboxData, type ComboboxItem, Group, Stack } from '@mantine/core';
+import {
+	ActionIcon,
+	Button,
+	Combobox,
+	type ComboboxData,
+	type ComboboxItem,
+	Group,
+	NumberInput,
+	Select,
+	Stack,
+	Switch,
+} from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import type { Meta, StoryObj } from '@storybook/react';
 import { IconCheck, IconChevronLeft, IconChevronRight, IconThumbUp } from '@tabler/icons-react';
@@ -461,35 +473,142 @@ export const ValueMode: StoryObj<
 			{ pageSize: number; pageIndex: number }
 		>
 	) => {
+		const [mode, setMode] = useState<'pills' | 'texts'>('texts');
+
 		return (
-			<MultiSelect
-				{...props}
-				getData={({ pageParam }, { search }) => {
-					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
-						setTimeout(() => {
-							resolve({
-								data: (search
-									? data.filter(value => (value as ComboboxItem).label.toLowerCase().includes(search.toLowerCase()))
-									: data
-								).slice(pageParam.pageIndex * pageParam.pageSize, (pageParam.pageIndex + 1) * pageParam.pageSize),
-								total: 50,
-							});
-						}, 1000);
-					});
-				}}
-				infinite
-				mode='texts'
-				queryOptions={{
-					queryKey: ['WithQuery'],
-					select: ({ pageParams, pages }) => ({ pageParams, pages: pages.map(page => page.data) }),
-					getNextPageParam: (lastPage, _, { pageIndex, pageSize }) => {
-						return pageIndex * pageSize < lastPage.total ? { pageIndex: pageIndex + 1, pageSize } : null;
-					},
-					initialPageParam: { pageSize: 20, pageIndex: 0 },
-				}}
-				renderMaxDisplayedValuesLabel={count => `, +${count}`}
-				size='xs'
-			/>
+			<Stack>
+				<Select
+					data={[
+						{ label: 'Pills', value: 'pills' },
+						{ label: 'Texts', value: 'texts' },
+					]}
+					label='Mode'
+					onChange={value => {
+						setMode(value as 'pills' | 'texts');
+					}}
+					value={mode}
+					w={100}
+				/>
+				<MultiSelect
+					{...props}
+					getData={({ pageParam }, { search }) => {
+						return new Promise<{ data: ComboboxData; total: number }>(resolve => {
+							setTimeout(() => {
+								resolve({
+									data: (search
+										? data.filter(value => (value as ComboboxItem).label.toLowerCase().includes(search.toLowerCase()))
+										: data
+									).slice(pageParam.pageIndex * pageParam.pageSize, (pageParam.pageIndex + 1) * pageParam.pageSize),
+									total: 50,
+								});
+							}, 1000);
+						});
+					}}
+					infinite
+					mode={mode}
+					queryOptions={{
+						queryKey: ['WithQuery'],
+						select: ({ pageParams, pages }) => ({ pageParams, pages: pages.map(page => page.data) }),
+						getNextPageParam: (lastPage, _, { pageIndex, pageSize }) => {
+							return pageIndex * pageSize < lastPage.total ? { pageIndex: pageIndex + 1, pageSize } : null;
+						},
+						initialPageParam: { pageSize: 20, pageIndex: 0 },
+					}}
+					renderMaxDisplayedValuesLabel={count => `, +${count}`}
+				/>
+			</Stack>
+		);
+	},
+};
+
+export const FloatingInput: StoryObj<
+	MultiSelectWithInfiniteQueryProps<
+		{ data: ComboboxData; total: number },
+		Error,
+		string[],
+		{ pageSize: number; pageIndex: number }
+	>
+> = {
+	args: {
+		...MaxDisplayedValues.args,
+	},
+	render: (
+		props: MultiSelectWithInfiniteQueryProps<
+			{ data: ComboboxData; total: number },
+			Error,
+			string[],
+			{ pageSize: number; pageIndex: number }
+		>
+	) => {
+		const [mode, setMode] = useState<'pills' | 'texts'>('texts');
+		const [lineClamp, setLineClamp] = useState<number | string>(1);
+		const [maxDisplayedValues, setMaxDisplayedValues] = useState<number | string>(2);
+		const [floating, setFloating] = useState(true);
+
+		return (
+			<Stack>
+				<Group className='border'>
+					<Select
+						data={[
+							{ label: 'Pills', value: 'pills' },
+							{ label: 'Texts', value: 'texts' },
+						]}
+						label='Mode'
+						onChange={value => {
+							setMode(value as 'pills' | 'texts');
+						}}
+						value={mode}
+						w={100}
+					/>
+					<NumberInput
+						label='Line clamp'
+						onChange={setLineClamp}
+						value={lineClamp}
+					/>
+					<NumberInput
+						label='Max displayed values'
+						onChange={setMaxDisplayedValues}
+						value={maxDisplayedValues}
+					/>
+					<Switch
+						checked={floating}
+						label='Floating input'
+						onChange={event => {
+							setFloating(event.currentTarget.checked);
+						}}
+					/>
+				</Group>
+				<MultiSelect
+					{...props}
+					floatingInput={floating}
+					getData={({ pageParam }, { search }) => {
+						return new Promise<{ data: ComboboxData; total: number }>(resolve => {
+							setTimeout(() => {
+								resolve({
+									data: (search
+										? data.filter(value => (value as ComboboxItem).label.toLowerCase().includes(search.toLowerCase()))
+										: data
+									).slice(pageParam.pageIndex * pageParam.pageSize, (pageParam.pageIndex + 1) * pageParam.pageSize),
+									total: 50,
+								});
+							}, 1000);
+						});
+					}}
+					infinite
+					lineClamp={parseInt(lineClamp.toString())}
+					maxDisplayedValues={parseInt(maxDisplayedValues.toString())}
+					mode={mode}
+					queryOptions={{
+						queryKey: ['WithQuery'],
+						select: ({ pageParams, pages }) => ({ pageParams, pages: pages.map(page => page.data) }),
+						getNextPageParam: (lastPage, _, { pageIndex, pageSize }) => {
+							return pageIndex * pageSize < lastPage.total ? { pageIndex: pageIndex + 1, pageSize } : null;
+						},
+						initialPageParam: { pageSize: 20, pageIndex: 0 },
+					}}
+					renderMaxDisplayedValuesLabel={count => `+${count} more`}
+				/>
+			</Stack>
 		);
 	},
 };
