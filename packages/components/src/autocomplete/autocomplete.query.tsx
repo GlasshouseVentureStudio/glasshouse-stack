@@ -10,6 +10,7 @@ function AutocompleteWithQueryComponent<TQueryFnData = unknown, TError = Error, 
 		getData,
 		loading,
 		onChange,
+		onOptionSubmit,
 		queryOptions,
 		value,
 		...props
@@ -34,6 +35,7 @@ function AutocompleteWithQueryComponent<TQueryFnData = unknown, TError = Error, 
 				setSearch(value);
 				onChange?.(value);
 			}}
+			onOptionSubmit={value => onOptionSubmit?.(value, data)}
 			value={value}
 		/>
 	);

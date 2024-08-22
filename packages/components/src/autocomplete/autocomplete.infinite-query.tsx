@@ -18,6 +18,7 @@ function AutocompleteWithInfiniteQueryComponent<
 		getData,
 		loading,
 		onChange,
+		onOptionSubmit,
 		queryOptions,
 		scrollAreaProps,
 		scrollThreshold = 0.25,
@@ -74,6 +75,7 @@ function AutocompleteWithInfiniteQueryComponent<
 				setSearch(value);
 				onChange?.(value);
 			}}
+			onOptionSubmit={value => onOptionSubmit?.(value, data)}
 			scrollAreaProps={{
 				...scrollAreaProps,
 				onScrollPositionChange: handleScrollPositionChange,

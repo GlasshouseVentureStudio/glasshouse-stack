@@ -38,7 +38,7 @@ export interface AutocompleteWithQueryProps<
 	TQueryFnData = unknown,
 	TError = Error,
 	TQueryKey extends QueryKey = QueryKey,
-> extends Omit<AutocompleteBaseProps, 'data'> {
+> extends Omit<AutocompleteBaseProps, 'data' | 'onOptionSubmit'> {
 	getData: (
 		context: {
 			queryKey: TQueryKey;
@@ -50,6 +50,7 @@ export interface AutocompleteWithQueryProps<
 		params: { search?: string }
 	) => TQueryFnData | Promise<TQueryFnData>;
 	infinite?: false;
+	onOptionSubmit?: (value: string, options?: ComboboxData) => void;
 	queryOptions: Omit<UseQueryOptions<TQueryFnData, TError, ComboboxData, TQueryKey>, 'queryFn'>;
 }
 
@@ -64,6 +65,7 @@ export interface AutocompleteWithInfiniteQueryProps<
 		params: { search?: string }
 	) => TQueryFnData | Promise<TQueryFnData>;
 	infinite: true;
+	onOptionSubmit?: (value: string, options?: ComboboxData) => void;
 	queryOptions: Omit<
 		UndefinedInitialDataInfiniteOptions<TQueryFnData, TError, InfiniteData<ComboboxData>, TQueryKey, TPageParam>,
 		'queryFn'
