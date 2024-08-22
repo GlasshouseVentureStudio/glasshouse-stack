@@ -1,4 +1,5 @@
 import { type ForwardedRef, forwardRef, useState } from 'react';
+import { useDebouncedValue } from '@mantine/hooks';
 import { type QueryKey, useQuery } from '@tanstack/react-query';
 import omit from 'lodash.omit';
 
@@ -19,9 +20,10 @@ function AutocompleteWithQueryComponent<TQueryFnData = unknown, TError = Error, 
 	ref: ForwardedRef<HTMLInputElement>
 ) {
 	const [search, setSearch] = useState(defaultValue ?? value);
+	const [debouncedSearch] = useDebouncedValue(search, 300);
 	const { data, isFetching } = useQuery({
 		...omit(queryOptions, 'select'),
-		queryKey: [...queryOptions.queryKey, search] as unknown as TQueryKey,
+		queryKey: [...queryOptions.queryKey, debouncedSearch] as unknown as TQueryKey,
 		queryFn: context => getData(context, { search }),
 	});
 

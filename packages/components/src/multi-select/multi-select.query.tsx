@@ -1,4 +1,5 @@
 import { type ForwardedRef, forwardRef, useState } from 'react';
+import { useDebouncedValue } from '@mantine/hooks';
 import { keepPreviousData, type QueryKey, useQuery } from '@tanstack/react-query';
 
 import { MultiSelectBase } from './multi-select.base';
@@ -17,10 +18,11 @@ function MultiSelectWithQueryComponent<TQueryFnData = unknown, TError = Error, T
 	ref: ForwardedRef<HTMLInputElement>
 ) {
 	const [search, setSearch] = useState(defaultSearchValue ?? searchValue);
+	const [debouncedSearch] = useDebouncedValue(search, 300);
 	const { data, isFetching } = useQuery({
 		placeholderData: keepPreviousData,
 		...queryOptions,
-		queryKey: [...queryOptions.queryKey, search] as unknown as TQueryKey,
+		queryKey: [...queryOptions.queryKey, debouncedSearch] as unknown as TQueryKey,
 		queryFn: context => getData(context, { search }),
 	});
 

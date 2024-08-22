@@ -1,6 +1,6 @@
 import { type ForwardedRef, forwardRef, useCallback, useRef, useState } from 'react';
 import { type ScrollAreaProps } from '@mantine/core';
-import { useMergedRef } from '@mantine/hooks';
+import { useDebouncedValue, useMergedRef } from '@mantine/hooks';
 import { type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 
 import { SelectBase } from './select.base';
@@ -27,6 +27,7 @@ function SelectWithInfiniteQueryComponent<
 	ref: ForwardedRef<HTMLInputElement>
 ) {
 	const [search, setSearch] = useState(defaultSearchValue ?? searchValue);
+	const [debouncedSearch] = useDebouncedValue(search, 300);
 	const viewportRef = useRef<HTMLDivElement>(null);
 	const mergedRef = useMergedRef(viewportRef, scrollAreaProps?.viewportRef);
 	const {
@@ -37,7 +38,7 @@ function SelectWithInfiniteQueryComponent<
 		fetchNextPage,
 	} = useInfiniteQuery({
 		...queryOptions,
-		queryKey: [...queryOptions.queryKey, search] as unknown as TQueryKey,
+		queryKey: [...queryOptions.queryKey, debouncedSearch] as unknown as TQueryKey,
 		queryFn: context => getData(context, { search }),
 	});
 

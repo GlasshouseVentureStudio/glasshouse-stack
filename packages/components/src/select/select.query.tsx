@@ -1,4 +1,5 @@
 import { type ForwardedRef, forwardRef, useState } from 'react';
+import { useDebouncedValue } from '@mantine/hooks';
 import { type QueryKey, useQuery } from '@tanstack/react-query';
 
 import { SelectBase } from './select.base';
@@ -17,9 +18,10 @@ function SelectWithQueryComponent<TQueryFnData = unknown, TError = Error, TQuery
 	ref: ForwardedRef<HTMLInputElement>
 ) {
 	const [search, setSearch] = useState(defaultSearchValue ?? searchValue);
+	const [debouncedSearch] = useDebouncedValue(search, 300);
 	const { data, isFetching } = useQuery({
 		...queryOptions,
-		queryKey: [...queryOptions.queryKey, search] as unknown as TQueryKey,
+		queryKey: [...queryOptions.queryKey, debouncedSearch] as unknown as TQueryKey,
 		queryFn: context => getData(context, { search }),
 	});
 
