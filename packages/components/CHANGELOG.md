@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.3.10
+
+### Patch Changes
+
+- feat(components): pass Autocomplete's original query data to onOptionSubmit
+
 ## 0.3.9
 
 ### Patch Changes
