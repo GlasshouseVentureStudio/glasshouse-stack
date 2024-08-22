@@ -33,8 +33,10 @@ function SelectWithQueryComponent<TQueryFnData = unknown, TError = Error, TQuery
 			defaultSearchValue={defaultSearchValue}
 			loading={isFetching || loading}
 			onSearchChange={value => {
-				setSearch(value);
-				onSearchChange?.(value);
+				if (props.searchable) {
+					setSearch(value);
+					onSearchChange?.(value);
+				}
 			}}
 			searchValue={searchValue}
 		/>

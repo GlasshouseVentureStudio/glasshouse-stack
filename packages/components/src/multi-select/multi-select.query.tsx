@@ -34,8 +34,10 @@ function MultiSelectWithQueryComponent<TQueryFnData = unknown, TError = Error, T
 			defaultSearchValue={defaultSearchValue}
 			loading={isFetching || loading}
 			onSearchChange={value => {
-				setSearch(value);
-				onSearchChange?.(value);
+				if (props.searchable) {
+					setSearch(value);
+					onSearchChange?.(value);
+				}
 			}}
 			searchValue={searchValue}
 		/>
