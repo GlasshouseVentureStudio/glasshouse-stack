@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.3.7
+
+### Patch Changes
+
+- Additional props for multiselect for changing value display mode, floating search input, values line clamp
+
 ## 0.3.6
 
 ### Patch Changes
