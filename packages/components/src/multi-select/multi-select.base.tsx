@@ -336,21 +336,22 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		[_value.length, maxDisplayedValues, renderMaxDisplayedValuesLabel]
 	);
 
-	const textValues = (
-		<Text
-			fz='var(--input-fz, var(--input-fz, var(--mantine-font-size-sm)))'
-			lineClamp={lineClamp}
-			span
-			unstyled={unstyled}
-			{...getStyles('pill')}
-		>
-			{_value
-				.slice(0, isMaxDisplayedValues)
-				.map(item => optionsLockup[item]?.label ?? item)
-				.join(', ')}
-			{showMaxDisplayedValuesLabel ? renderMaxDisplayedTextValuesLabel() : null}
-		</Text>
-	);
+	const textValues =
+		_value.length > 0 ? (
+			<Text
+				fz='var(--input-fz, var(--input-fz, var(--mantine-font-size-sm)))'
+				lineClamp={lineClamp}
+				span
+				unstyled={unstyled}
+				{...getStyles('pill')}
+			>
+				{_value
+					.slice(0, isMaxDisplayedValues)
+					.map(item => optionsLockup[item]?.label ?? item)
+					.join(', ')}
+				{showMaxDisplayedValuesLabel ? renderMaxDisplayedTextValuesLabel() : null}
+			</Text>
+		) : null;
 
 	const handleValueSelect = (val: string) => {
 		onOptionSubmit?.(val);
