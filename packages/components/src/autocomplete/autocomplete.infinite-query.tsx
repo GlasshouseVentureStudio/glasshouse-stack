@@ -1,7 +1,8 @@
 import { type ForwardedRef, forwardRef, useCallback, useRef, useState } from 'react';
 import { type ScrollAreaProps } from '@mantine/core';
 import { useMergedRef } from '@mantine/hooks';
-import { type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
+import { type InfiniteData, type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
+import omit from 'lodash.omit';
 
 import { AutocompleteBase } from './autocomplete.base';
 import { type AutocompleteWithInfiniteQueryProps } from './autocomplete.types';
@@ -37,12 +38,14 @@ function AutocompleteWithInfiniteQueryComponent<
 		hasNextPage,
 		fetchNextPage,
 	} = useInfiniteQuery({
-		...queryOptions,
+		...omit(queryOptions, 'select'),
 		queryKey: [...queryOptions.queryKey, search] as unknown as TQueryKey,
 		queryFn: context => getData(context, { search }),
 	});
 
-	const data = queryData?.pages.flatMap(page => page);
+	const options = queryData ? queryOptions.select?.(queryData as InfiniteData<TQueryFnData, TPageParam>) : undefined;
+
+	const data = options?.pages.flatMap(page => page);
 
 	const handleScrollPositionChange: ScrollAreaProps['onScrollPositionChange'] = useCallback(
 		(position: { x: number; y: number }) => {

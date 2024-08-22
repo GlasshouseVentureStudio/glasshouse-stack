@@ -1,5 +1,6 @@
 import { type ForwardedRef, forwardRef, useState } from 'react';
 import { type QueryKey, useQuery } from '@tanstack/react-query';
+import omit from 'lodash.omit';
 
 import { AutocompleteBase } from './autocomplete.base';
 import { type AutocompleteWithQueryProps } from './autocomplete.types';
@@ -19,23 +20,25 @@ function AutocompleteWithQueryComponent<TQueryFnData = unknown, TError = Error, 
 ) {
 	const [search, setSearch] = useState(defaultValue ?? value);
 	const { data, isFetching } = useQuery({
-		...queryOptions,
+		...omit(queryOptions, 'select'),
 		queryKey: [...queryOptions.queryKey, search] as unknown as TQueryKey,
 		queryFn: context => getData(context, { search }),
 	});
+
+	const options = data ? queryOptions.select?.(data) : [];
 
 	return (
 		<AutocompleteBase
 			{...props}
 			ref={ref}
-			data={data}
+			data={options}
 			defaultValue={defaultValue}
 			loading={isFetching || loading}
 			onChange={value => {
 				setSearch(value);
 				onChange?.(value);
 			}}
-			onOptionSubmit={value => onOptionSubmit?.(value, data)}
+			onOptionSubmit={value => onOptionSubmit?.(value, options, data)}
 			value={value}
 		/>
 	);

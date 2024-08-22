@@ -50,7 +50,7 @@ export interface AutocompleteWithQueryProps<
 		params: { search?: string }
 	) => TQueryFnData | Promise<TQueryFnData>;
 	infinite?: false;
-	onOptionSubmit?: (value: string, options?: ComboboxData) => void;
+	onOptionSubmit?: (value: string, options?: ComboboxData, data?: TQueryFnData) => void;
 	queryOptions: Omit<UseQueryOptions<TQueryFnData, TError, ComboboxData, TQueryKey>, 'queryFn'>;
 }
 
@@ -65,7 +65,7 @@ export interface AutocompleteWithInfiniteQueryProps<
 		params: { search?: string }
 	) => TQueryFnData | Promise<TQueryFnData>;
 	infinite: true;
-	onOptionSubmit?: (value: string, options?: ComboboxData) => void;
+	onOptionSubmit?: (value: string, options?: ComboboxData, data?: TQueryFnData) => void;
 	queryOptions: Omit<
 		UndefinedInitialDataInfiniteOptions<TQueryFnData, TError, InfiniteData<ComboboxData>, TQueryKey, TPageParam>,
 		'queryFn'
