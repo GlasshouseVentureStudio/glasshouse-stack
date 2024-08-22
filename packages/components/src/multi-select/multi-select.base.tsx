@@ -1,4 +1,4 @@
-import { type ForwardedRef, forwardRef, useEffect, useMemo, useState } from 'react';
+import { type ForwardedRef, forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
 import {
 	Combobox,
 	type ComboboxItem,
@@ -10,12 +10,14 @@ import {
 	type MultiSelectFactory,
 	Pill,
 	PillsInput,
+	Text,
 	useCombobox,
 	useResolvedStylesApi,
 	useStyles,
 } from '@mantine/core';
 import { useId, useUncontrolled } from '@mantine/hooks';
 import omit from 'lodash.omit';
+import { XIcon } from 'lucide-react';
 
 import { useProps } from '../../hooks/use-props';
 import { type OptionsData, OptionsDropdown } from '../combobox/options-dropdown';
@@ -120,6 +122,9 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		wrapperProps,
 		canSelectAll,
 		selectAllLabel,
+		maxDisplayedValues = 999,
+		renderMaxDisplayedValuesLabel,
+		mode = 'pills',
 		...others
 	} = props;
 
@@ -261,6 +266,14 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		<Combobox.ClearButton
 			size={size}
 			{...clearButtonProps}
+			icon={
+				<XIcon
+					style={{
+						width: 'var(--cb-icon-size, 70%)',
+						height: 'var(--cb-icon-size, 70%)',
+					}}
+				/>
+			}
 			onClear={() => {
 				onClear?.();
 				setValue([]);
@@ -279,7 +292,22 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	const inputRightSection = clearButton ? clearButton : _rightSection;
 
-	const values = _value.map((item, index) => (
+	const isMaxDisplayedValues = maxDisplayedValues === _value.length ? maxDisplayedValues : maxDisplayedValues - 1;
+
+	const showMaxDisplayedValuesLabel = _value.length > maxDisplayedValues;
+
+	const renderMaxDisplayedPillValuesLabel = useCallback(
+		() => (
+			<Pill>
+				{renderMaxDisplayedValuesLabel
+					? renderMaxDisplayedValuesLabel(_value.length)
+					: `+${_value.length - (maxDisplayedValues - 1)} more`}
+			</Pill>
+		),
+		[_value.length, maxDisplayedValues, renderMaxDisplayedValuesLabel]
+	);
+
+	const values = _value.slice(0, isMaxDisplayedValues).map((item, index) => (
 		<Pill
 			// eslint-disable-next-line react/no-array-index-key -- ensure key is unique
 			key={`${item}-${index}`}
@@ -295,6 +323,29 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 			{optionsLockup[item]?.label ?? item}
 		</Pill>
 	));
+
+	const renderMaxDisplayedTextValuesLabel = useCallback(
+		() =>
+			renderMaxDisplayedValuesLabel
+				? renderMaxDisplayedValuesLabel(_value.length)
+				: `, +${_value.length - (maxDisplayedValues - 1)} more`,
+		[_value.length, maxDisplayedValues, renderMaxDisplayedValuesLabel]
+	);
+
+	const textValues = (
+		<Text
+			lineClamp={1}
+			size={size}
+			unstyled={unstyled}
+			{...getStyles('pill')}
+		>
+			{_value
+				.slice(0, isMaxDisplayedValues)
+				.map(item => optionsLockup[item]?.label ?? item)
+				.join(', ')}
+			{showMaxDisplayedValuesLabel ? renderMaxDisplayedTextValuesLabel() : null}
+		</Text>
+	);
 
 	const handleValueSelect = (val: string) => {
 		onOptionSubmit?.(val);
@@ -383,7 +434,10 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 							unstyled={unstyled}
 							{...getStyles('pillsList')}
 						>
-							{values}
+							{mode === 'pills' ? values : textValues}
+
+							{showMaxDisplayedValuesLabel && mode === 'pills' ? renderMaxDisplayedPillValuesLabel() : null}
+
 							<Combobox.EventsTarget autoComplete={autoComplete}>
 								<PillsInput.Field
 									{...omit(rest, 'type')}

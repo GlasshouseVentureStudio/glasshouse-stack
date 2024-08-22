@@ -4,10 +4,10 @@ import { notifications } from '@mantine/notifications';
 import type { Meta, StoryObj } from '@storybook/react';
 import { IconCheck, IconChevronLeft, IconChevronRight, IconThumbUp } from '@tabler/icons-react';
 
-import { MultiSelect } from './multi-select';
-import { type MultiSelectProps, type MultiSelectWithInfiniteQueryProps } from './multi-select.types';
+import { MultiSelect } from '../multi-select';
+import { type MultiSelectProps, type MultiSelectWithInfiniteQueryProps } from '../multi-select.types';
 
-const meta: Meta = {
+const meta: Meta<typeof MultiSelect> = {
 	title: 'Components/MultiSelect',
 	component: MultiSelect,
 	tags: ['autodocs', 'MultiSelect'],
@@ -20,8 +20,9 @@ const generateData = (length: number): ComboboxData =>
 	}));
 
 export default meta;
+type MultiSelectStory = StoryObj<typeof meta>;
 
-export const Basic: StoryObj<MultiSelectProps> = {
+export const Basic: StoryObj<MultiSelectStory> = {
 	args: {
 		data: generateData(20),
 		w: 256,
@@ -333,6 +334,161 @@ export const WithInfiniteQuery: StoryObj<
 				}}
 				searchable
 				w={256}
+			/>
+		);
+	},
+};
+
+export const MaxDisplayedValues: StoryObj<
+	MultiSelectWithInfiniteQueryProps<
+		{ data: ComboboxData; total: number },
+		Error,
+		string[],
+		{ pageSize: number; pageIndex: number }
+	>
+> = {
+	args: {
+		clearable: true,
+		infinite: true,
+		maxDisplayedValues: 2,
+		placeholder: 'MultiSelect person',
+		searchable: true,
+		w: 200,
+	},
+	render: (
+		props: MultiSelectWithInfiniteQueryProps<
+			{ data: ComboboxData; total: number },
+			Error,
+			string[],
+			{ pageSize: number; pageIndex: number }
+		>
+	) => {
+		return (
+			<MultiSelect
+				{...props}
+				getData={({ pageParam }, { search }) => {
+					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
+						setTimeout(() => {
+							resolve({
+								data: (search
+									? data.filter(value => (value as ComboboxItem).label.toLowerCase().includes(search.toLowerCase()))
+									: data
+								).slice(pageParam.pageIndex * pageParam.pageSize, (pageParam.pageIndex + 1) * pageParam.pageSize),
+								total: 50,
+							});
+						}, 1000);
+					});
+				}}
+				infinite
+				queryOptions={{
+					queryKey: ['WithQuery'],
+					select: ({ pageParams, pages }) => ({ pageParams, pages: pages.map(page => page.data) }),
+					getNextPageParam: (lastPage, _, { pageIndex, pageSize }) => {
+						return pageIndex * pageSize < lastPage.total ? { pageIndex: pageIndex + 1, pageSize } : null;
+					},
+					initialPageParam: { pageSize: 20, pageIndex: 0 },
+				}}
+			/>
+		);
+	},
+};
+
+export const RenderMaxDisplayedValuesLabel: StoryObj<
+	MultiSelectWithInfiniteQueryProps<
+		{ data: ComboboxData; total: number },
+		Error,
+		string[],
+		{ pageSize: number; pageIndex: number }
+	>
+> = {
+	...MaxDisplayedValues,
+	render: (
+		props: MultiSelectWithInfiniteQueryProps<
+			{ data: ComboboxData; total: number },
+			Error,
+			string[],
+			{ pageSize: number; pageIndex: number }
+		>
+	) => {
+		return (
+			<MultiSelect
+				{...props}
+				getData={({ pageParam }, { search }) => {
+					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
+						setTimeout(() => {
+							resolve({
+								data: (search
+									? data.filter(value => (value as ComboboxItem).label.toLowerCase().includes(search.toLowerCase()))
+									: data
+								).slice(pageParam.pageIndex * pageParam.pageSize, (pageParam.pageIndex + 1) * pageParam.pageSize),
+								total: 50,
+							});
+						}, 1000);
+					});
+				}}
+				infinite
+				queryOptions={{
+					queryKey: ['WithQuery'],
+					select: ({ pageParams, pages }) => ({ pageParams, pages: pages.map(page => page.data) }),
+					getNextPageParam: (lastPage, _, { pageIndex, pageSize }) => {
+						return pageIndex * pageSize < lastPage.total ? { pageIndex: pageIndex + 1, pageSize } : null;
+					},
+					initialPageParam: { pageSize: 20, pageIndex: 0 },
+				}}
+				renderMaxDisplayedValuesLabel={count => `+${count}`}
+			/>
+		);
+	},
+};
+
+export const ValueMode: StoryObj<
+	MultiSelectWithInfiniteQueryProps<
+		{ data: ComboboxData; total: number },
+		Error,
+		string[],
+		{ pageSize: number; pageIndex: number }
+	>
+> = {
+	args: {
+		...MaxDisplayedValues.args,
+		maxDisplayedValues: 2,
+	},
+	render: (
+		props: MultiSelectWithInfiniteQueryProps<
+			{ data: ComboboxData; total: number },
+			Error,
+			string[],
+			{ pageSize: number; pageIndex: number }
+		>
+	) => {
+		return (
+			<MultiSelect
+				{...props}
+				getData={({ pageParam }, { search }) => {
+					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
+						setTimeout(() => {
+							resolve({
+								data: (search
+									? data.filter(value => (value as ComboboxItem).label.toLowerCase().includes(search.toLowerCase()))
+									: data
+								).slice(pageParam.pageIndex * pageParam.pageSize, (pageParam.pageIndex + 1) * pageParam.pageSize),
+								total: 50,
+							});
+						}, 1000);
+					});
+				}}
+				infinite
+				mode='texts'
+				queryOptions={{
+					queryKey: ['WithQuery'],
+					select: ({ pageParams, pages }) => ({ pageParams, pages: pages.map(page => page.data) }),
+					getNextPageParam: (lastPage, _, { pageIndex, pageSize }) => {
+						return pageIndex * pageSize < lastPage.total ? { pageIndex: pageIndex + 1, pageSize } : null;
+					},
+					initialPageParam: { pageSize: 20, pageIndex: 0 },
+				}}
+				renderMaxDisplayedValuesLabel={count => `, +${count}`}
+				size='xs'
 			/>
 		);
 	},
