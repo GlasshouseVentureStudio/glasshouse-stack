@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.3.8
+
+### Patch Changes
+
+- Hide text container if there is no value
+
 ## 0.3.7
 
 ### Patch Changes
