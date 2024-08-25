@@ -105,10 +105,7 @@ export const AddOption = ({ data, onCreate, onCreateError, onCreateSuccess, vali
 		<Button
 			fullWidth
 			leftSection={<IconPlus size={14} />}
-			onClick={e => {
-				e.stopPropagation();
-				open();
-			}}
+			onClick={open}
 			size='xs'
 			variant='subtle'
 		>

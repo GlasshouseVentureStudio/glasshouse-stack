@@ -235,7 +235,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 						classNames={resolvedClassNames}
 						error={error}
 						onBlur={event => {
-							searchable && combobox.closeDropdown();
+							searchable && !creatable && combobox.closeDropdown();
 							setSearch(_value !== null ? (optionsLockup[_value]?.label ?? '') : '');
 							onBlur?.(event);
 						}}
