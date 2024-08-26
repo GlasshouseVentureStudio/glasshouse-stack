@@ -1,10 +1,16 @@
 # @glasshouse/components
 
+## 0.3.13
+
+### Patch changes
+
+- Fix input height when multiselect mode is text and floating input is set to true
+
 ## 0.3.12
 
 ### Patch Changes
 
-- - Fix issue: Select dropdown is closed when clicking 'Add new' option
+- Fix issue: Select dropdown is closed when clicking 'Add new' option
 
 ## 0.3.11
 
