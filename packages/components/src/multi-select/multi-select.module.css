@@ -37,6 +37,7 @@
 		left: var(--input-padding-inline-start);
 		right: var(--input-padding-inline-end);
 		background-color: var(--input-bg);
+		height: auto;
 
 		transition:
 			opacity 150ms ease,
