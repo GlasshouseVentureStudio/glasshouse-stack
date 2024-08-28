@@ -35,7 +35,7 @@ export interface SelectBaseProps extends MantineSelectProps {
 }
 
 export interface SelectWithQueryProps<TQueryFnData = unknown, TError = Error, TQueryKey extends QueryKey = QueryKey>
-	extends Omit<SelectBaseProps, 'data'> {
+	extends Omit<SelectBaseProps, 'data' | 'onOptionSubmit'> {
 	getData: (
 		context: {
 			queryKey: TQueryKey;
@@ -47,6 +47,7 @@ export interface SelectWithQueryProps<TQueryFnData = unknown, TError = Error, TQ
 		params: { search?: string }
 	) => TQueryFnData | Promise<TQueryFnData>;
 	infinite?: false;
+	onOptionSubmit?: (value: string, options?: ComboboxData, data?: TQueryFnData) => void;
 	queryOptions: Omit<UseQueryOptions<TQueryFnData, TError, ComboboxData, TQueryKey>, 'queryFn'>;
 }
 
@@ -55,7 +56,7 @@ export interface SelectWithInfiniteQueryProps<
 	TError = Error,
 	TQueryKey extends QueryKey = QueryKey,
 	TPageParam = unknown,
-> extends Omit<SelectBaseProps, 'data'> {
+> extends Omit<SelectBaseProps, 'data' | 'onOptionSubmit'> {
 	getData: (
 		context: QueryFunctionContext<TQueryKey, TPageParam>,
 		params: { search?: string }
@@ -65,6 +66,7 @@ export interface SelectWithInfiniteQueryProps<
 		UndefinedInitialDataInfiniteOptions<TQueryFnData, TError, InfiniteData<ComboboxData>, TQueryKey, TPageParam>,
 		'queryFn'
 	>;
+	onOptionSubmit?: (value: string, options?: ComboboxData, data?: TQueryFnData) => void;
 	scrollThreshold?: number;
 }
 

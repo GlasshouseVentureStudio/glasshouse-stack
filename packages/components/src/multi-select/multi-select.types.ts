@@ -176,6 +176,7 @@ export interface MultiSelectWithQueryProps<
 	) => TQueryFnData | Promise<TQueryFnData>;
 	infinite?: false;
 	queryOptions: Omit<UseQueryOptions<TQueryFnData, TError, ComboboxData, TQueryKey>, 'queryFn'>;
+	onOptionSubmit?: (value: string, options?: ComboboxData, data?: TQueryFnData) => void;
 }
 
 export interface MultiSelectWithInfiniteQueryProps<
@@ -194,6 +195,7 @@ export interface MultiSelectWithInfiniteQueryProps<
 		'queryFn'
 	>;
 	scrollThreshold?: number;
+	onOptionSubmit?: (value: string, options?: ComboboxData, data?: TQueryFnData) => void;
 }
 
 interface MultiSelectWithoutQueryProps extends MultiSelectBaseProps {

@@ -1,7 +1,8 @@
 import { type ForwardedRef, forwardRef, useCallback, useRef, useState } from 'react';
 import { type ScrollAreaProps } from '@mantine/core';
 import { useDebouncedValue, useMergedRef } from '@mantine/hooks';
-import { keepPreviousData, type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
+import { type InfiniteData, keepPreviousData, type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
+import omit from 'lodash.omit';
 
 import { MultiSelectBase } from './multi-select.base';
 import { type MultiSelectWithInfiniteQueryProps } from './multi-select.types';
@@ -17,6 +18,7 @@ function MultiSelectWithInfiniteQueryComponent<
 		dropdownLoading,
 		getData,
 		loading,
+		onOptionSubmit,
 		onSearchChange,
 		queryOptions,
 		scrollAreaProps,
@@ -38,12 +40,13 @@ function MultiSelectWithInfiniteQueryComponent<
 		fetchNextPage,
 	} = useInfiniteQuery({
 		placeholderData: keepPreviousData,
-		...queryOptions,
+		...omit(queryOptions, 'select'),
 		queryKey: [...queryOptions.queryKey, debouncedSearch] as unknown as TQueryKey,
 		queryFn: context => getData(context, { search }),
 	});
+	const options = queryData ? queryOptions.select?.(queryData as InfiniteData<TQueryFnData, TPageParam>) : undefined;
 
-	const data = queryData?.pages.flatMap(page => page);
+	const data = options?.pages.flatMap(page => page);
 
 	const handleScrollPositionChange: ScrollAreaProps['onScrollPositionChange'] = useCallback(
 		(position: { x: number; y: number }) => {
@@ -72,6 +75,7 @@ function MultiSelectWithInfiniteQueryComponent<
 			defaultSearchValue={defaultSearchValue}
 			dropdownLoading={isFetchingNextPage || dropdownLoading}
 			loading={isFetching || loading}
+			onOptionSubmit={value => onOptionSubmit?.(value, data)}
 			onSearchChange={value => {
 				setSearch(value);
 				onSearchChange?.(value);

@@ -1,7 +1,8 @@
 import { type ForwardedRef, forwardRef, useCallback, useRef, useState } from 'react';
 import { type ScrollAreaProps } from '@mantine/core';
 import { useDebouncedValue, useMergedRef } from '@mantine/hooks';
-import { type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
+import { type InfiniteData, type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
+import omit from 'lodash.omit';
 
 import { SelectBase } from './select.base';
 import { type SelectWithInfiniteQueryProps } from './select.types';
@@ -17,6 +18,7 @@ function SelectWithInfiniteQueryComponent<
 		dropdownLoading,
 		getData,
 		loading,
+		onOptionSubmit,
 		onSearchChange,
 		queryOptions,
 		scrollAreaProps,
@@ -37,12 +39,14 @@ function SelectWithInfiniteQueryComponent<
 		hasNextPage,
 		fetchNextPage,
 	} = useInfiniteQuery({
-		...queryOptions,
+		...omit(queryOptions, 'select'),
 		queryKey: [...queryOptions.queryKey, debouncedSearch] as unknown as TQueryKey,
 		queryFn: context => getData(context, { search }),
 	});
 
-	const data = queryData?.pages.flatMap(page => page);
+	const options = queryData ? queryOptions.select?.(queryData as InfiniteData<TQueryFnData, TPageParam>) : undefined;
+
+	const data = options?.pages.flatMap(page => page);
 
 	const handleScrollPositionChange: ScrollAreaProps['onScrollPositionChange'] = useCallback(
 		(position: { x: number; y: number }) => {
@@ -71,6 +75,7 @@ function SelectWithInfiniteQueryComponent<
 			defaultSearchValue={defaultSearchValue}
 			dropdownLoading={isFetchingNextPage || dropdownLoading}
 			loading={isFetching || loading}
+			onOptionSubmit={value => onOptionSubmit?.(value, data)}
 			onSearchChange={value => {
 				setSearch(value);
 				onSearchChange?.(value);
