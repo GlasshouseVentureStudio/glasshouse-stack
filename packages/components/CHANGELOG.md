@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.3.15
+
+### Patch Changes
+
+- chore: some updates for Select
+
 ## 0.3.14
 
 ### Patch Changes
