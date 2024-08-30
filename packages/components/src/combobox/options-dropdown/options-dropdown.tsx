@@ -172,7 +172,7 @@ export function OptionsDropdown({
 
 	const shouldFilter = typeof search === 'string';
 	const filteredData = shouldFilter
-		? (filter ?? defaultOptionsFilter)({
+		? (filter ? filter : defaultOptionsFilter)({
 				options: data,
 				search: filterOptions ? search : '',
 				limit: limit ?? Infinity,

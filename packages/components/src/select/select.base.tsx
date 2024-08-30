@@ -96,6 +96,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 	}, [data]);
 
 	const parsedData = useMemo(() => getParsedComboboxData(internalData), [internalData]);
+
 	const optionsLockup = useMemo(() => getOptionsLockup(parsedData), [parsedData]);
 	const _id = useId(id);
 
@@ -182,7 +183,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 		checkIconPosition,
 		data: parsedData,
 		filter,
-		filterOptions: searchable ? selectedOption?.label !== search : false,
+		filterOptions: searchable && selectedOption?.label !== search,
 		hidden: readOnly ? readOnly : disabled,
 		hiddenWhenEmpty: !nothingFoundMessage,
 		labelId: others.label ? `${_id}-label` : undefined,
@@ -206,7 +207,9 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 		const nextValue = optionLockup ? optionLockup.value : null;
 
 		nextValue !== _value && setValue(nextValue, optionLockup);
-		!controlled && setSearch(typeof nextValue === 'string' ? (optionLockup?.label ?? '') : '');
+		const optionLockupLabel = optionLockup?.label ? optionLockup.label : '';
+
+		!controlled && setSearch(typeof nextValue === 'string' ? optionLockupLabel : '');
 		combobox.closeDropdown();
 	};
 

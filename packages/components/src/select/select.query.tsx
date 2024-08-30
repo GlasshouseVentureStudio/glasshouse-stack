@@ -1,4 +1,4 @@
-import { type ForwardedRef, forwardRef, useState } from 'react';
+import { type ForwardedRef, forwardRef, useMemo, useState } from 'react';
 import { useDebouncedValue } from '@mantine/hooks';
 import { type QueryKey, useQuery } from '@tanstack/react-query';
 import omit from 'lodash.omit';
@@ -27,7 +27,7 @@ function SelectWithQueryComponent<TQueryFnData = unknown, TError = Error, TQuery
 		queryFn: context => getData(context, { search }),
 	});
 
-	const options = data ? (queryOptions.select?.(data) ?? []) : [];
+	const options = useMemo(() => (data ? (queryOptions.select?.(data) ?? []) : []), [data, queryOptions]);
 
 	return (
 		<SelectBase
