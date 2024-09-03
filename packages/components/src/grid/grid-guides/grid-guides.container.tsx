@@ -11,11 +11,7 @@ import { type GridGuidesContainerProps } from './grid-guides.types';
  */
 export const GridGuidesContainer = ({ rows, columns, hideGuides, responsiveClipSpans }: GridGuidesContainerProps) => {
 	const areRowsEqual =
-		typeof rows.base === rows.xs &&
-		rows.xs === rows.sm &&
-		rows.sm === rows.md &&
-		rows.md === rows.lg &&
-		rows.xl === rows.lg;
+		rows.base === rows.xs && rows.xs === rows.sm && rows.sm === rows.md && rows.md === rows.lg && rows.xl === rows.lg;
 
 	const areColumnsEqual =
 		columns.base === columns.xs &&

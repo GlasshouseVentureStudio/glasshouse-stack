@@ -81,11 +81,6 @@ export interface GridGuidesVariablesProps extends BaseGridProps, GridCellProps {
 	 * Selector for the grid guide variables.
 	 */
 	selector: string;
-
-	/**
-	 * Index of the grid guide.
-	 */
-	index: number;
 }
 
 export type GridGuideStylesNames = 'guide';
@@ -101,11 +96,6 @@ export type GridGuideFactory = Factory<{
  * Properties for a grid guide block.
  */
 export interface GridGuideProps extends BoxProps, CompoundStylesApiProps<GridGuideFactory>, ElementProps<'div'> {
-	/**
-	 * Index of the grid guide block.
-	 */
-	index: number;
-
 	/**
 	 * Column index of the grid guide block.
 	 */

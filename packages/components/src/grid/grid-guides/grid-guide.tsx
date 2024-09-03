@@ -31,10 +31,10 @@ export const GridGuide = factory<GridGuideFactory>((_props, ref) => {
 			ref={ref}
 			mod={[
 				{
-					'data-column-index': columnIndex + 1,
-					'data-hide-bottom-border': hideBottomBorder,
-					'data-hide-right-border': hideRightBorder,
-					'data-row-index': rowIndex + 1,
+					'column-index': columnIndex + 1,
+					'hide-bottom-border': hideBottomBorder,
+					'hide-right-border': hideRightBorder,
+					'row-index': rowIndex + 1,
 					mod,
 				},
 			]}

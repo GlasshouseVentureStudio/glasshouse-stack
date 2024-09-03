@@ -71,7 +71,6 @@ export const GridGuides = factory<GridGuidesFactory>((_props, ref) => {
 						hiddenFrom={hiddenFrom}
 						hideBottomBorder={hideBottomBorder}
 						hideRightBorder={hideRightBorder}
-						index={index}
 						rowIndex={rowIndex}
 						visibleFrom={visibleFrom}
 					/>

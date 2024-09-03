@@ -52,7 +52,20 @@ const varsResolver = createVarsResolver<GridFactory>((theme, { guideWidth, guide
  */
 export const Grid = polymorphicFactory<GridFactory>((_props, ref) => {
 	const props = useProps('GridSystem', defaultProps, _props);
-	const { className, classNames, columns, rows, children, hideGuides, style, styles, ...others } = props;
+	const {
+		className,
+		classNames,
+		columns,
+		rows,
+		children,
+		hideGuides,
+		style,
+		styles,
+		guideColor,
+		guideWidth,
+		mod,
+		...others
+	} = props;
 
 	const getStyles = useStyles<GridFactory>({
 		name: 'GridSystem',
@@ -139,6 +152,13 @@ export const Grid = polymorphicFactory<GridFactory>((_props, ref) => {
 				{...getStyles('root', { className: responsiveClassName })}
 				{...others}
 				component='section'
+				mod={[
+					{
+						'guide-width': guideWidth,
+						'guide-color': guideColor,
+					},
+					mod,
+				]}
 			>
 				{children}
 				<GridGuidesContainer
