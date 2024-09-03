@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.4.0
+
+### Minor Changes
+
+- feat(grid): refactor grid to use mantine core utilities and theming, moving away from using tailwind
+
 ## 0.3.16
 
 ### Patch Changes
