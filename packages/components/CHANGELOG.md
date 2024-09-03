@@ -1,5 +1,12 @@
 # @glasshouse/components
 
+## 0.4.2
+
+### Patch Changes
+
+- feat(grid): refactor grid to use mantine core utilities and theming, moving away from using tailwind
+- chore(grid): apply border radius, cell padding styles; additional stories for new props
+
 ## 0.4.1
 
 ### Patch Changes
