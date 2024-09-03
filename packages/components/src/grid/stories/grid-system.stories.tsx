@@ -4,8 +4,9 @@ import { Select, Stack } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
 
 import { Grid } from '../grid';
+import { type GridProps } from '../grid.types';
 
-const meta: Meta<typeof Grid> = {
+const meta: Meta<GridProps> = {
 	title: 'Components/Grid',
 	component: Grid,
 	tags: ['autodocs'],
@@ -134,25 +135,53 @@ export const HideGuides: GridStory = {
 };
 
 /**
- * Unstable: not finished development.
+ * `Grid` is a polymorphic component - its default root element is `section`, but it can be changed to any other element or component with `component` prop.
  */
-export const WithGridSystem: GridStory = {
+export const PolymorphicComponent: GridStory = {
 	args: {
 		className: 'gvs-flex gvs-items-center gvs-justify-center gvs-p-5',
 	},
 	render: ({ className }) => (
-		<Grid.System unstable_useContainer>
-			<Grid
-				columns={3}
-				rows={2}
+		<Grid
+			columns={3}
+			rows={2}
+		>
+			<Grid.Cell
+				className={className}
+				component='p'
 			>
-				<Grid.Cell className={className}>1</Grid.Cell>
-				<Grid.Cell className={className}>2</Grid.Cell>
-				<Grid.Cell className={className}>3</Grid.Cell>
-				<Grid.Cell className={className}>4</Grid.Cell>
-				<Grid.Cell className={className}>5</Grid.Cell>
-				<Grid.Cell className={className}>6</Grid.Cell>
-			</Grid>
-		</Grid.System>
+				1
+			</Grid.Cell>
+			<Grid.Cell
+				className={className}
+				component='p'
+			>
+				2
+			</Grid.Cell>
+			<Grid.Cell
+				className={className}
+				component='p'
+			>
+				3
+			</Grid.Cell>
+			<Grid.Cell
+				className={className}
+				component='p'
+			>
+				4
+			</Grid.Cell>
+			<Grid.Cell
+				className={className}
+				component='p'
+			>
+				5
+			</Grid.Cell>
+			<Grid.Cell
+				className={className}
+				component='p'
+			>
+				6
+			</Grid.Cell>
+		</Grid>
 	),
 };

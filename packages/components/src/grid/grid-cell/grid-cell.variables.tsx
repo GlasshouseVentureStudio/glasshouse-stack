@@ -8,17 +8,17 @@ import {
 	useMantineTheme,
 } from '@mantine/core';
 
-import { type GridVariablesProps } from './grid.types';
+import { type GridCellVariablesProps } from './grid-cell.types';
 
 /**
- * Inject responsive grid variables into the component styles.
+ * Inject responsive grid cell variables into the component styles.
  */
-export const GridVariables = ({ columns, rows, selector }: GridVariablesProps) => {
+export const GridCellVariables = ({ column, row, selector }: GridCellVariablesProps) => {
 	const theme = useMantineTheme();
 
 	const baseStyles: Record<string, string | undefined> = filterProps({
-		'--grid-columns': getBaseValue(columns)?.toString(),
-		'--grid-rows': getBaseValue(rows)?.toString(),
+		'--grid-column': getBaseValue(column)?.toString(),
+		'--grid-row': getBaseValue(row)?.toString(),
 	});
 
 	const queries = keys(theme.breakpoints).reduce<Record<string, Record<string, unknown>>>((acc, breakpoint) => {
@@ -26,12 +26,12 @@ export const GridVariables = ({ columns, rows, selector }: GridVariablesProps) =
 			acc[breakpoint] = {};
 		}
 
-		if (typeof columns === 'object' && columns[breakpoint] !== undefined) {
-			acc[breakpoint]['--grid-columns'] = columns[breakpoint];
+		if (typeof column === 'object' && column[breakpoint] !== undefined) {
+			acc[breakpoint]['--grid-column'] = column[breakpoint];
 		}
 
-		if (typeof rows === 'object' && rows[breakpoint] !== undefined) {
-			acc[breakpoint]['--grid-rows'] = rows[breakpoint];
+		if (typeof row === 'object' && row[breakpoint] !== undefined) {
+			acc[breakpoint]['--grid-row'] = row[breakpoint];
 		}
 
 		return acc;

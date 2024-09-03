@@ -1,57 +1,73 @@
-.gridSystem {
-	--max-width: 1080px;
-	--min-width: 368px;
-	--guide-width: 1px;
-	--horizontal-margin: 2rem;
-	--grid-system-width: 100vw;
-	display: flex;
+.root {
+	--grid-width: clamp(
+		calc(var(--grid-min-width) - var(--grid-guide-width)),
+		calc(var(--grid-grid-system-width) - var(--grid-guide-width) - (var(--grid-horizontal-margin) * 2)),
+		calc(var(--grid-max-width) - var(--grid-guide-width))
+	);
+	--column-width: calc(var(--grid-width) / var(--grid-columns));
+	--row-height: calc(var(--grid-height) / var(--grid-rows));
+	--grid-guide-color: var(--mantine-color-default-border);
+
+	--grid-padding-xs: rem(14px);
+	--grid-padding-sm: rem(18px);
+	--grid-padding-md: rem(22px);
+	--grid-padding-lg: rem(26px);
+	--grid-padding-xl: rem(32px);
+
+	width: var(--grid-width);
+	height: var(--grid-height);
+	display: grid;
 	position: relative;
-	flex-direction: column;
-	max-width: var(--max-width);
-	min-width: var(--min-width);
-	margin-top: var(--guide-width);
-	margin-left: var(--guide-width);
+	grid-template-columns: repeat(var(--grid-columns), var(--grid-column-width));
+	grid-template-rows: repeat(var(--grid-rows), var(--grid-row-height));
 
 	&::before {
 		position: absolute;
 		inset: 0;
-		left: calc(-1 * var(--guide-width));
-		top: calc(-1 * var(--guide-width));
+		left: calc(-1 * var(--grid-guide-width));
+		top: calc(-1 * var(--grid-guide-width));
 		content: '';
-		border: var(--guide-width) solid var(--guide-color);
+		border: var(--grid-guide-width) solid var(--grid-guide-color);
 		pointer-events: none;
 	}
 
 	[data-grid] {
-		border-bottom: var(--guide-width) solid var(--guide-color);
+		border-bottom: var(--grid-guide-width) solid var(--grid-guide-color);
 	}
-}
 
-.grid {
-	--width: clamp(
-		calc(var(--min-width) - var(--guide-width)),
-		calc(var(--grid-system-width) - var(--guide-width) - (var(--horizontal-margin) * 2)),
-		calc(var(--max-width) - var(--guide-width))
-	);
-	width: var(--width);
-	height: var(--height);
-	display: grid;
-	position: relative;
-	--column-width: calc(var(--width) / var(--grid-columns));
-	--row-height: calc(var(--height) / var(--grid-rows));
-	grid-template-columns: repeat(var(--grid-columns), var(--column-width));
-	grid-template-rows: repeat(var(--grid-rows), var(--row-height));
-}
+	.cell {
+		z-index: 2;
+		grid-column: var(--grid-column);
+		grid-row: var(--grid-row);
+		margin-bottom: var(--grid-guide-width);
+		margin-right: var(--grid-guide-width);
+		overflow: hidden;
+		padding: 0.5rem;
+	}
 
-.unstable_gridSystemWrapper {
-	width: 100%;
-	display: inherit;
-	justify-content: inherit;
-	align-items: inherit;
-	container-type: inline-size;
+	.guides {
+		pointer-events: none;
+		z-index: 1;
+		display: contents;
 
-	.gridSystem {
-		--horizontal-margin: 0px;
-		--grid-system-width: calc(100cqw);
+		.guide {
+			position: absolute;
+			inset: 0;
+			grid-column-start: var(--x);
+			grid-column-end: span 1;
+			grid-row-start: var(--y);
+			grid-row-end: span 1;
+			border: var(--grid-guide-width) solid var(--grid-guide-color);
+			border-left: none;
+			border-top: none;
+
+			&:where([data-hide-bottom-border]) {
+				border-bottom: none;
+			}
+
+			&:where([data-hide-right-border]) {
+				border-right: none;
+			}
+		}
 	}
 }
