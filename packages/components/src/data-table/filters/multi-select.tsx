@@ -69,12 +69,12 @@ export const MultiSelectFilter = <TData extends MRT_RowData, TValue = unknown>({
 		>
 			<TextInput
 				leftSection={<IconSearch />}
-				placeholder='Search'
-				value={searchValue}
-				width='100%'
 				onChange={e => {
 					setSearchValue(e.target.value);
 				}}
+				placeholder='Search'
+				value={searchValue}
+				width='100%'
 			/>
 			<ScrollArea.Autosize
 				mah='40vh'
@@ -82,11 +82,11 @@ export const MultiSelectFilter = <TData extends MRT_RowData, TValue = unknown>({
 				type='always'
 			>
 				<Checkbox.Group
-					value={value}
 					onChange={value => {
 						column.setFilterValue(value);
 						setValue(value);
 					}}
+					value={value}
 				>
 					<Stack mt='xs'>
 						{data
@@ -111,11 +111,11 @@ export const MultiSelectFilter = <TData extends MRT_RowData, TValue = unknown>({
 					color='black'
 					fw={600}
 					mx='auto'
-					variant='subtle'
 					onClick={() => {
 						setValue([]);
 						column.setFilterValue([]);
 					}}
+					variant='subtle'
 				>
 					Clear all
 				</Button>

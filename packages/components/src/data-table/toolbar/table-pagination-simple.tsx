@@ -2,9 +2,9 @@ import { Box, Group, Pagination, type PaginationProps, Select, Text } from '@man
 import { clsx } from 'clsx';
 import { type MRT_RowData } from 'mantine-react-table';
 
+import { type DataTableInstance } from '../data-table.types';
 import { resolveComponentProps } from '../data-table.utils';
 
-import { DataTableInstance } from '../data-table.types';
 import classes from './table-pagination-simple.module.css';
 
 const defaultRowsPerPage = [5, 10, 15, 20, 25, 30, 50, 100].map(x => x.toString());
@@ -66,11 +66,11 @@ export const TablePaginationSimple = <TData extends MRT_RowData>({
 	return (
 		<Box className={clsx('mrt-table-pagination', classes.root, needsTopMargin && classes['with-top-margin'])}>
 			<Pagination.Root
-				total={numberOfPages}
-				value={pageIndex + 1}
 				onChange={newPageIndex => {
 					setPageIndex(newPageIndex - 1);
 				}}
+				total={numberOfPages}
+				value={pageIndex + 1}
 				{...rest}
 			>
 				<Group gap={2}>
@@ -109,13 +109,13 @@ export const TablePaginationSimple = <TData extends MRT_RowData>({
 						aria-labelledby='rpp-label'
 						className={classes.pagesize}
 						data={paginationProps.rowsPerPageOptions ?? defaultRowsPerPage}
+						onChange={(value: null | string) => {
+							setPageSize(Number(value!));
+						}}
 						rightSection={<IconChevronDown />}
 						value={pageSize.toString()}
 						variant='unstyled'
 						w={64}
-						onChange={(value: null | string) => {
-							setPageSize(Number(value!));
-						}}
 					/>
 				</Group>
 			)}

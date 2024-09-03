@@ -8,6 +8,7 @@ import {
 	type ScrollAreaProps,
 } from '@mantine/core';
 import { type VirtualItem } from '@tanstack/react-virtual';
+// eslint-disable-next-line import/no-unresolved -- lodash is not a dependency, only using `@types/lodash` for types.
 import { type Dictionary } from 'lodash';
 
 import { type ListSlots, type ListVariantProps } from './list.styles';

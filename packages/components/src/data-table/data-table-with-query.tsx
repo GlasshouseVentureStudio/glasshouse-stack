@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo, useState } from 'react';
 import { keepPreviousData, type QueryKey, useQuery } from '@tanstack/react-query';
 import omit from 'lodash.omit';
 import {
@@ -8,10 +9,9 @@ import {
 	type MRT_RowData,
 	type MRT_SortingState,
 } from 'mantine-react-table';
-import { useMemo, useState } from 'react';
 
-import { DataTableBase } from './data-table-base';
 import { type DataTableWithQueryProps } from './data-table.types';
+import { DataTableBase } from './data-table-base';
 
 const DEFAULT_PAGESIZE = 10;
 
