@@ -1,5 +1,12 @@
 # @glasshouse/components
 
+## 0.3.16
+
+### Patch Changes
+
+- - Update logic for "Select All" option
+  - Auto focus on text area input when editing a cell
+
 ## 0.3.15
 
 ### Patch Changes
