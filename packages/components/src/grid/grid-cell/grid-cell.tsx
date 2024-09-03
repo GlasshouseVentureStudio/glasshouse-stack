@@ -1,5 +1,5 @@
 import { cn } from '@glasshouse/utils';
-import { Box, factory, useProps, useRandomClassName } from '@mantine/core';
+import { Box, polymorphicFactory, useProps, useRandomClassName } from '@mantine/core';
 
 import { useGridContext } from '../grid.context';
 import { type GridCellFactory, type GridCellProps } from './grid-cell.types';
@@ -18,7 +18,7 @@ const defaultProps: Partial<GridCellProps> = {};
  * @param {number} props.row - The row index of the grid cell.
  * @returns {JSX.Element} The rendered grid cell component.
  */
-export const GridCell = factory<GridCellFactory>((_props, ref) => {
+export const GridCell = polymorphicFactory<GridCellFactory>((_props, ref) => {
 	const props = useProps('GridCell', defaultProps, _props);
 	const { className, column, row, ...others } = props;
 

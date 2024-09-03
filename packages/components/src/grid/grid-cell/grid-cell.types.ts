@@ -2,7 +2,7 @@ import {
 	type BoxProps,
 	type CompoundStylesApiProps,
 	type ElementProps,
-	type Factory,
+	type PolymorphicFactory,
 	type StyleProp,
 } from '@mantine/core';
 
@@ -23,11 +23,13 @@ export interface GridCellProps extends BoxProps, CompoundStylesApiProps<GridCell
 	row?: StyleProp<number | string>;
 }
 
-export type GridCellFactory = Factory<{
+export type GridCellFactory = PolymorphicFactory<{
 	props: GridCellProps;
 	ref: HTMLDivElement;
 	stylesNames: GridCellStylesNames;
 	compound: true;
+	defaultComponent: 'div';
+	defaultRef: HTMLDivElement;
 }>;
 
 /**

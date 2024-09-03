@@ -56,10 +56,17 @@ export interface GridProps extends BaseGridProps, BoxProps, StylesApiProps<GridF
 	 * Width of the guide.
 	 */
 	guideWidth?: string | number;
-	/** Key of `theme.colors` or any valid CSS color, `theme.primaryColor` by default */
+	/**
+	 * Key of `theme.colors` or any valid CSS color, `theme.primaryColor` by default
+	 */
 	guideColor?: MantineColor;
-	/** Key of `theme.radius` or any valid CSS value to set `border-radius`, `theme.defaultRadius` by default */
+	/**
+	 * Key of `theme.radius` or any valid CSS value to set `border-radius`, `theme.defaultRadius` by default
+	 */
 	radius?: MantineRadius;
+	/**
+	 * Padding for the grid cell.
+	 */
 	cellPadding?: MantineSize;
 }
 

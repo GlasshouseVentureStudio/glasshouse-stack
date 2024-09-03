@@ -8,16 +8,17 @@
 	--row-height: calc(var(--grid-height) / var(--grid-rows));
 	--grid-guide-color: var(--mantine-color-default-border);
 
-	--grid-padding-xs: rem(14px);
-	--grid-padding-sm: rem(18px);
-	--grid-padding-md: rem(22px);
-	--grid-padding-lg: rem(26px);
-	--grid-padding-xl: rem(32px);
+	--grid-cell-padding-xs: rem(8px);
+	--grid-cell-padding-sm: rem(16px);
+	--grid-cell-padding-md: rem(24px);
+	--grid-cell-padding-lg: rem(32px);
+	--grid-cell-padding-xl: rem(48px);
 
 	width: var(--grid-width);
 	height: var(--grid-height);
 	display: grid;
 	position: relative;
+	border-radius: var(--grid-radius);
 	grid-template-columns: repeat(var(--grid-columns), var(--grid-column-width));
 	grid-template-rows: repeat(var(--grid-rows), var(--grid-row-height));
 
@@ -28,46 +29,43 @@
 		top: calc(-1 * var(--grid-guide-width));
 		content: '';
 		border: var(--grid-guide-width) solid var(--grid-guide-color);
+		border-radius: var(--grid-radius);
 		pointer-events: none;
 	}
+}
 
-	[data-grid] {
-		border-bottom: var(--grid-guide-width) solid var(--grid-guide-color);
+.cell {
+	z-index: 2;
+	grid-column: var(--grid-column);
+	grid-row: var(--grid-row);
+	margin-bottom: var(--grid-guide-width);
+	margin-right: var(--grid-guide-width);
+	overflow: hidden;
+	padding: var(--grid-cell-padding, var(--grid-cell-padding-md));
+}
+
+.guides {
+	pointer-events: none;
+	z-index: 1;
+	display: contents;
+}
+
+.guide {
+	position: absolute;
+	inset: 0;
+	grid-column-start: var(--x);
+	grid-column-end: span 1;
+	grid-row-start: var(--y);
+	grid-row-end: span 1;
+	border: var(--grid-guide-width) solid var(--grid-guide-color);
+	border-left: none;
+	border-top: none;
+
+	&:where([data-hide-bottom-border]) {
+		border-bottom: none;
 	}
 
-	.cell {
-		z-index: 2;
-		grid-column: var(--grid-column);
-		grid-row: var(--grid-row);
-		margin-bottom: var(--grid-guide-width);
-		margin-right: var(--grid-guide-width);
-		overflow: hidden;
-		padding: 0.5rem;
-	}
-
-	.guides {
-		pointer-events: none;
-		z-index: 1;
-		display: contents;
-
-		.guide {
-			position: absolute;
-			inset: 0;
-			grid-column-start: var(--x);
-			grid-column-end: span 1;
-			grid-row-start: var(--y);
-			grid-row-end: span 1;
-			border: var(--grid-guide-width) solid var(--grid-guide-color);
-			border-left: none;
-			border-top: none;
-
-			&:where([data-hide-bottom-border]) {
-				border-bottom: none;
-			}
-
-			&:where([data-hide-right-border]) {
-				border-right: none;
-			}
-		}
+	&:where([data-hide-right-border]) {
+		border-right: none;
 	}
 }
