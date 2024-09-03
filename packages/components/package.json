@@ -19,7 +19,7 @@
 		"gvs-components.svg"
 	],
 	"scripts": {
-		"build": "tsup --tsconfig ./tsconfig.json --dts --clean && pnpm build:tailwind && pnpm run copy:css",
+		"build": "tsup --tsconfig ./tsconfig.json --dts --clean && pnpm build:tailwind",
 		"build:tailwind": "tailwindcss -i ./src/styles.css -o ./dist/tailwind.css",
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
 		"copy:css": "node -e \"require('fs').cpSync('./node_modules/mantine-react-table/styles.css', './dist/data-table/styles.css');\"",
