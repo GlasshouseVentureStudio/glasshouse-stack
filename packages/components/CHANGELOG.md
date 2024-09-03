@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.4.4
+
+### Patch Changes
+
+- Fix prop does not recognize on a DOM element error
+
 ## 0.4.3
 
 ### Patch Changes
