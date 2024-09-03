@@ -26,14 +26,14 @@
 	],
 	"prettier": "./prettier",
 	"dependencies": {
-		"@next/eslint-plugin-next": "^14.2.5",
+		"@next/eslint-plugin-next": "^14.2.7",
 		"@typescript-eslint/eslint-plugin": "^7.18.0",
 		"@typescript-eslint/parser": "^7.18.0",
 		"@vercel/style-guide": "^6.0.0",
 		"eslint-config-prettier": "^9.1.0",
-		"eslint-config-turbo": "^2.0.12",
+		"eslint-config-turbo": "^2.1.1",
 		"eslint-plugin-simple-import-sort": "^12.1.1",
-		"prettier-plugin-packagejson": "^2.5.1",
+		"prettier-plugin-packagejson": "^2.5.2",
 		"stylelint-config-prettier-scss": "^1.0.0",
 		"stylelint-config-rational-order": "^0.1.2",
 		"stylelint-config-sass-guidelines": "^12.0.0",
@@ -41,9 +41,9 @@
 	},
 	"devDependencies": {
 		"eslint": "^8.57.0",
-		"postcss": "^8.4.41",
+		"postcss": "^8.4.44",
 		"prettier": "^3.3.3",
-		"stylelint": "^16.8.1",
+		"stylelint": "^16.9.0",
 		"typescript": "^5.5.4"
 	},
 	"peerDependencies": {

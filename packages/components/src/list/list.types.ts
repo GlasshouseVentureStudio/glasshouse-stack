@@ -256,7 +256,7 @@ export interface ListItemProps extends PolymorphicComponentProps<'li', BoxProps>
 	/**
 	 * The virtual row associated with the list item.
 	 */
-	virtualRow: VirtualItem<Element>;
+	virtualRow: VirtualItem;
 
 	/**
 	 * Indicates whether the list item is active or not.
@@ -271,7 +271,7 @@ export interface ListGroupHeaderProps extends PolymorphicComponentProps<'li', Bo
 	/**
 	 * The virtual row associated with the ListGroupHeader.
 	 */
-	virtualRow: VirtualItem<Element>;
+	virtualRow: VirtualItem;
 
 	/**
 	 * The orientation of the ListGroupHeader.

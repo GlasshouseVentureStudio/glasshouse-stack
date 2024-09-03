@@ -113,7 +113,7 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 
 	const isActiveSticky = (index: number) => activeStickyIndexRef.current === index && stickyGroupHeader;
 
-	const renderInnerItem = (item: T | ListGroupHeaderType<T>, index: number, virtualRow: VirtualItem<Element>) => {
+	const renderInnerItem = (item: T | ListGroupHeaderType<T>, index: number, virtualRow: VirtualItem) => {
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- `renderItem` is required
 		if (!renderItem) {
 			throw new Error('List: `renderItem` is required');
