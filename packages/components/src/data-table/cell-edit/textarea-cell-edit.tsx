@@ -50,9 +50,9 @@ export function useEditTextArea<TData extends Record<string, unknown>>(props: Pr
 	};
 
 	const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-		if (event.key === 'Enter') {
+		if (event.key === 'Enter' && !event.shiftKey) {
 			event.preventDefault();
-			handleBlur();
+			void handleBlur();
 		}
 	};
 
@@ -63,8 +63,17 @@ export const TextAreaCellEdit = <TData extends MRT_RowData>(props: PropsTextArea
 	const { cell, column, row, table, onSaveValue, ...rest } = props;
 	const { value, handleOnChange, handleBlur, onKeyDown } = useEditTextArea({ cell, column, row, table, onSaveValue });
 
+	const editInputRefs = table.refs.editInputRefs;
+
 	return (
 		<Textarea
+			ref={node => {
+				if (node) {
+					//@ts-expect-error -- use ref only for focus so we can ignore the diff between HTMLTextAreaElement and HTMLInputElement
+					editInputRefs.current[cell.id] = node;
+				}
+			}}
+			autosize
 			onBlur={handleBlur}
 			onChange={event => {
 				handleOnChange(event.target.value);

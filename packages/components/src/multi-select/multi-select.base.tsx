@@ -20,7 +20,7 @@ import omit from 'lodash.omit';
 import { XIcon } from 'lucide-react';
 
 import { useProps } from '../../hooks/use-props';
-import { type OptionsData, OptionsDropdown } from '../combobox/options-dropdown';
+import { OptionsDropdown, SELECT_ALL_VALUE } from '../combobox/options-dropdown';
 import { isLabelValueList, isOptionsGroupList } from '../combobox/options-dropdown/is-option-group-list';
 import { type MultiSelectBaseProps } from './multi-select.types';
 import { filterPickedValues } from './multi-select.utils';
@@ -33,8 +33,6 @@ const defaultProps: Partial<MultiSelectBaseProps> = {
 	checkIconPosition: 'left',
 	hiddenInputValuesDivider: ',',
 };
-
-const SELECT_ALL_VALUE = 'all';
 
 function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRef<HTMLInputElement>) {
 	const props = useProps('MultiSelect', defaultProps, _props);
@@ -172,59 +170,24 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	const filteredData = filterPickedValues({ data: parsedData, value: _value });
 
-	const extraOptions = useMemo<ComboboxItem[]>(
-		() => [
-			...(canSelectAll
-				? [
-						{
-							label: selectAllLabel ?? 'Select All',
-							value: SELECT_ALL_VALUE,
-						},
-					]
-				: []),
-		],
-		[canSelectAll, selectAllLabel]
-	);
-
-	//get list options based on data and props
-	const allOptions = useMemo<OptionsData>(() => {
-		const data = hidePickedOptions ? filteredData : parsedData;
-		const isGroup = isOptionsGroupList(data);
-
-		if (isGroup) {
-			return [
-				{
-					group: '',
-					items: extraOptions,
-				},
-				...data,
-			];
-		}
-
-		return [...extraOptions, ...data];
-	}, [parsedData, extraOptions, filteredData, hidePickedOptions]);
-
 	//use for reference for set value of group options
 	const flatOptionsData = useMemo<ComboboxItem[]>(() => {
 		const data = hidePickedOptions ? filteredData : parsedData;
 
 		if (isOptionsGroupList(data)) {
-			return [
-				...extraOptions,
-				...data.reduce((acc: ComboboxItem[], group) => {
-					return [...acc, ...group.items];
-				}, []),
-			];
+			return data.reduce((acc: ComboboxItem[], group) => {
+				return [...acc, ...group.items];
+			}, []);
 		}
 
 		if (isLabelValueList(data)) {
-			return [...extraOptions, ...data];
+			return data;
 		}
 
 		return [];
-	}, [parsedData, extraOptions, filteredData, hidePickedOptions]);
+	}, [parsedData, filteredData, hidePickedOptions]);
 
-	const optionsLockup = getOptionsLockup(allOptions);
+	const optionsLockup = getOptionsLockup(parsedData);
 
 	const getStyles = useStyles<MultiSelectFactory>({
 		name: 'MultiSelect',
@@ -361,14 +324,14 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		const optionsLockupValue = optionsLockup[val]?.value;
 
 		//select all items when select 'All' option
-		if (val === SELECT_ALL_VALUE && !_value.includes(SELECT_ALL_VALUE)) {
+		if (val === SELECT_ALL_VALUE && _value.length !== flatOptionsData.length) {
 			setValue(flatOptionsData.map(item => item.value));
 		}
 		//deselect all items when deselect 'All' option
-		else if (val === SELECT_ALL_VALUE && _value.includes(SELECT_ALL_VALUE)) {
+		else if (val === SELECT_ALL_VALUE && _value.length === flatOptionsData.length) {
 			setValue([]);
 		} else if (optionsLockupValue && _value.includes(optionsLockupValue)) {
-			setValue(_value.filter(v => v !== optionsLockupValue && v !== SELECT_ALL_VALUE));
+			setValue(_value.filter(v => v !== optionsLockupValue));
 			onRemove?.(optionsLockupValue);
 		} else if (optionsLockupValue && _value.length < (maxValues ?? Infinity)) {
 			setValue([..._value, optionsLockupValue]);
@@ -488,12 +451,13 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 				</Combobox.DropdownTarget>
 				<OptionsDropdown
 					aria-label={label ? undefined : others['aria-label']}
+					canSelectAll={canSelectAll}
 					checkIconPosition={checkIconPosition}
 					combobox={combobox}
 					creatable={creatable}
 					creatablePosition={creatablePosition}
 					createInputValidator={createInputValidator}
-					data={allOptions}
+					data={hidePickedOptions ? filteredData : parsedData}
 					filter={filter}
 					filterOptions={searchable}
 					hidden={readOnly ? readOnly : disabled}
@@ -520,6 +484,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 					renderOptions={renderOptions}
 					scrollAreaProps={scrollAreaProps}
 					search={_searchValue}
+					selectAllLabel={selectAllLabel}
 					unstyled={unstyled}
 					value={_value}
 					withCheckIcon={withCheckIcon}

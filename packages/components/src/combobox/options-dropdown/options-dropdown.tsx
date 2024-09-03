@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary -- needed to reduce number of var */
-import { type ReactNode, type ReactPortal } from 'react';
+import { type ReactNode, type ReactPortal, useMemo } from 'react';
 import {
 	Center,
 	Combobox,
@@ -20,6 +20,7 @@ import { CheckIcon } from 'lucide-react';
 
 import { AddOption } from '../add-option';
 import { isComboboxDataEmpty } from './is-combobox-data-empty';
+import { isOptionsGroupList } from './is-option-group-list';
 import { validateOptions } from './validate-options';
 
 import classes from './options-dropdown.module.css';
@@ -39,8 +40,11 @@ export interface OptionsGroup {
 
 export type OptionsData = (ComboboxItem | OptionsGroup)[];
 
+export const SELECT_ALL_VALUE = 'all';
+
 interface OptionProps {
 	data: ComboboxItem | OptionsGroup;
+	optionsLength?: number;
 	withCheckIcon?: boolean;
 	value?: string | string[] | null;
 	checkIconPosition?: 'left' | 'right';
@@ -48,13 +52,25 @@ interface OptionProps {
 	renderOption?: (input: ComboboxLikeRenderOptionInput<ComboboxItem>) => React.ReactNode;
 }
 
-function isValueChecked(value: string | string[] | undefined | null, optionValue: string) {
+function isValueChecked(value: string | string[] | undefined | null, optionValue: string, optionsLength: number) {
+	if (optionValue === SELECT_ALL_VALUE) {
+		return optionsLength === value?.length;
+	}
+
 	return Array.isArray(value) ? value.includes(optionValue) : value === optionValue;
 }
 
-function Option({ data, withCheckIcon, value, checkIconPosition, unstyled, renderOption }: OptionProps) {
+function Option({
+	data,
+	withCheckIcon,
+	value,
+	checkIconPosition,
+	unstyled,
+	renderOption,
+	optionsLength = 0,
+}: OptionProps) {
 	if (!isOptionsGroup(data)) {
-		const checked = isValueChecked(value, data.value);
+		const checked = isValueChecked(value, data.value, optionsLength);
 		const check = withCheckIcon && checked && <CheckIcon className={classes.optionsDropdownCheckIcon} />;
 
 		const defaultContent = (
@@ -99,6 +115,7 @@ export interface OptionsDropdownProps {
 	'aria-label': string | undefined;
 	checkIconPosition?: 'left' | 'right';
 	combobox: ComboboxStore;
+	canSelectAll?: boolean;
 	creatable?: boolean;
 	createInputValidator?: (value: string) => Exclude<ReactNode, false | ReactPortal | undefined>;
 	creatablePosition?: 'header' | 'footer' | 'inline';
@@ -132,11 +149,13 @@ export interface OptionsDropdownProps {
 	withCheckIcon?: boolean;
 	withScrollArea: boolean | undefined;
 	style?: React.CSSProperties;
+	selectAllLabel?: string;
 }
 
 export function OptionsDropdown({
 	'aria-label': ariaLabel,
 	checkIconPosition,
+	canSelectAll,
 	combobox,
 	creatable,
 	createInputValidator,
@@ -167,6 +186,7 @@ export function OptionsDropdown({
 	withCheckIcon = false,
 	withScrollArea = true,
 	style,
+	selectAllLabel,
 }: OptionsDropdownProps) {
 	validateOptions(data);
 
@@ -180,17 +200,45 @@ export function OptionsDropdown({
 		: data;
 	const isEmpty = isComboboxDataEmpty(filteredData) && !loading;
 
-	const options = filteredData.map(item => (
-		<Option
-			key={isOptionsGroup(item) ? item.group : item.value}
-			checkIconPosition={checkIconPosition}
-			data={item}
-			renderOption={renderOption}
-			unstyled={unstyled}
-			value={value}
-			withCheckIcon={withCheckIcon}
-		/>
-	));
+	//use to determine if select all is checked
+	const optionsLength = useMemo(
+		() =>
+			isOptionsGroupList(filteredData)
+				? filteredData.reduce((acc, group) => acc + group.items.length, 0)
+				: filteredData.length,
+		[filteredData]
+	);
+
+	const options = [
+		...(canSelectAll && filteredData.length > 0
+			? [
+					<Option
+						key='all'
+						checkIconPosition={checkIconPosition}
+						data={{
+							label: selectAllLabel ?? 'Select All',
+							value: SELECT_ALL_VALUE,
+						}}
+						optionsLength={optionsLength}
+						renderOption={renderOption}
+						unstyled={unstyled}
+						value={value}
+						withCheckIcon={withCheckIcon}
+					/>,
+				]
+			: []),
+		...filteredData.map(item => (
+			<Option
+				key={isOptionsGroup(item) ? item.group : item.value}
+				checkIconPosition={checkIconPosition}
+				data={item}
+				renderOption={renderOption}
+				unstyled={unstyled}
+				value={value}
+				withCheckIcon={withCheckIcon}
+			/>
+		)),
+	];
 
 	const skeleton =
 		loadingType === 'skeleton' ? (
