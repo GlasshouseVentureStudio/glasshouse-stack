@@ -68,6 +68,10 @@ export interface GridProps extends BaseGridProps, BoxProps, StylesApiProps<GridF
 	 * Padding for the grid cell.
 	 */
 	cellPadding?: MantineSize;
+	/**
+	 * Option to add border to the root element, default `true`.
+	 */
+	rootBorder?: boolean;
 }
 
 export type GridFactory = PolymorphicFactory<{

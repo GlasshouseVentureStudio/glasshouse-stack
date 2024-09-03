@@ -28,9 +28,14 @@
 		left: calc(-1 * var(--grid-guide-width));
 		top: calc(-1 * var(--grid-guide-width));
 		content: '';
-		border: var(--grid-guide-width) solid var(--grid-guide-color);
 		border-radius: var(--grid-radius);
 		pointer-events: none;
+	}
+
+	&:where([data-root-border]) {
+		&::before {
+			border: var(--grid-guide-width) solid var(--grid-guide-color);
+		}
 	}
 }
 

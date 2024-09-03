@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks -- safe */
-import { useState } from 'react';
 import {
 	ColorSwatch,
 	Group,
@@ -14,6 +13,7 @@ import {
 } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
 import { CheckIcon } from 'lucide-react';
+import { useState } from 'react';
 
 import { Grid } from '../grid';
 import { type GridProps } from '../grid.types';
@@ -316,6 +316,27 @@ export const CellPadding: GridStory = {
 			</Stack>
 		);
 	},
+};
+
+/**
+ * Remove root element border using `rootBorder` prop.
+ */
+export const WithoutRootBorder: GridStory = {
+	render: args => (
+		<Grid
+			{...args}
+			columns={3}
+			rows={2}
+			rootBorder={false}
+		>
+			<Grid.Cell>1</Grid.Cell>
+			<Grid.Cell>2</Grid.Cell>
+			<Grid.Cell>3</Grid.Cell>
+			<Grid.Cell>4</Grid.Cell>
+			<Grid.Cell>5</Grid.Cell>
+			<Grid.Cell>6</Grid.Cell>
+		</Grid>
+	),
 };
 
 /**

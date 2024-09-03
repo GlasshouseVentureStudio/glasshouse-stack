@@ -64,6 +64,7 @@ export const Grid = polymorphicFactory<GridFactory>((_props, ref) => {
 		guideColor,
 		guideWidth,
 		mod,
+		rootBorder = true,
 		...others
 	} = props;
 
@@ -156,6 +157,7 @@ export const Grid = polymorphicFactory<GridFactory>((_props, ref) => {
 					{
 						'guide-width': guideWidth,
 						'guide-color': guideColor,
+						'root-border': rootBorder,
 					},
 					mod,
 				]}
