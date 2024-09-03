@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.4.3
+
+### Patch Changes
+
+- Tweak tsup config, build script
+
 ## 0.4.2
 
 ### Patch Changes
