@@ -1,6 +1,6 @@
 {
 	"name": "@glasshouse/style-guide",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"private": false,
 	"description": "Glasshouse's engineering style guide",
 	"homepage": "https://github.com/GlasshouseVentureStudio/glasshouse-stack/tree/main/packages/style-guide",

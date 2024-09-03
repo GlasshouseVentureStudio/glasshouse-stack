@@ -1,5 +1,11 @@
 # @glasshouse/utils
 
+## 0.2.4
+
+### Patch Changes
+
+- Bump dependencies version
+
 ## 0.2.3
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @glasshouse/components
 
+## 0.4.1
+
+### Patch Changes
+
+- Bump dependencies version
+- Updated dependencies
+  - @glasshouse/utils@0.2.4
+
 ## 0.4.0
 
 ### Minor Changes
