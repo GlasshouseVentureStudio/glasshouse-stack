@@ -358,45 +358,15 @@ importers:
       '@glasshouse/utils':
         specifier: workspace:*
         version: link:../utils
-      '@mantine/carousel':
-        specifier: '>=7.12.2'
-        version: 7.12.2(@mantine/core@7.12.2(@mantine/hooks@7.12.2(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.12.2(react@18.3.1))(embla-carousel-react@8.2.0(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@mantine/charts':
-        specifier: '>=7.12.2'
-        version: 7.12.2(@mantine/core@7.12.2(@mantine/hooks@7.12.2(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.12.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(recharts@2.12.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      '@mantine/code-highlight':
-        specifier: '>=7.12.2'
-        version: 7.12.2(@mantine/core@7.12.2(@mantine/hooks@7.12.2(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.12.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mantine/core':
         specifier: '>=7.12.2'
         version: 7.12.2(@mantine/hooks@7.12.2(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@mantine/dates':
-        specifier: '>=7.12.2'
-        version: 7.12.2(@mantine/core@7.12.2(@mantine/hooks@7.12.2(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.12.2(react@18.3.1))(dayjs@1.11.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@mantine/dropzone':
-        specifier: '>=7.12.2'
-        version: 7.12.2(@mantine/core@7.12.2(@mantine/hooks@7.12.2(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.12.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mantine/form':
         specifier: '>=7.12.2'
         version: 7.12.2(react@18.3.1)
       '@mantine/hooks':
         specifier: '>=7.12.2'
         version: 7.12.2(react@18.3.1)
-      '@mantine/modals':
-        specifier: '>=7.12.2'
-        version: 7.12.2(@mantine/core@7.12.2(@mantine/hooks@7.12.2(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.12.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@mantine/notifications':
-        specifier: '>=7.12.2'
-        version: 7.12.2(@mantine/core@7.12.2(@mantine/hooks@7.12.2(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.12.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@mantine/nprogress':
-        specifier: '>=7.12.2'
-        version: 7.12.2(@mantine/core@7.12.2(@mantine/hooks@7.12.2(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.12.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@mantine/spotlight':
-        specifier: '>=7.12.2'
-        version: 7.12.2(@mantine/core@7.12.2(@mantine/hooks@7.12.2(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.12.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@mantine/tiptap':
-        specifier: '>=7.12.2'
-        version: 7.12.2(@mantine/core@7.12.2(@mantine/hooks@7.12.2(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.12.2(react@18.3.1))(@tiptap/extension-link@2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/pm@2.6.6))(@tiptap/react@2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/pm@2.6.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tabler/icons-react':
         specifier: ^3.14.0
         version: 3.14.0(react@18.3.1)
@@ -409,27 +379,9 @@ importers:
       '@tanstack/react-virtual':
         specifier: ^3.10.6
         version: 3.10.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@tiptap/extension-link':
-        specifier: '>=2.5.1'
-        version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/pm@2.6.6)
-      '@tiptap/pm':
-        specifier: '>=2.5.1'
-        version: 2.6.6
-      '@tiptap/react':
-        specifier: '>=2.5.1'
-        version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/pm@2.6.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@tiptap/starter-kit':
-        specifier: '>=2.5.1'
-        version: 2.6.6
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      dayjs:
-        specifier: '>=1.11.11'
-        version: 1.11.13
-      embla-carousel-react:
-        specifier: ^8.2.0
-        version: 8.2.0(react@18.3.1)
       lodash.chunk:
         specifier: ^4.2.0
         version: 4.2.0
@@ -466,21 +418,9 @@ importers:
       lodash.uniqby:
         specifier: ^4.7.0
         version: 4.7.0
-      lucide-react:
-        specifier: '>=0.429.0'
-        version: 0.438.0(react@18.3.1)
       mantine-react-table:
         specifier: 2.0.0-beta.6
         version: 2.0.0-beta.6(@mantine/core@7.12.2(@mantine/hooks@7.12.2(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/dates@7.12.2(@mantine/core@7.12.2(@mantine/hooks@7.12.2(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.12.2(react@18.3.1))(dayjs@1.11.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.12.2(react@18.3.1))(@tabler/icons-react@3.14.0(react@18.3.1))(clsx@2.1.1)(dayjs@1.11.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react:
-        specifier: '>=18.3.1'
-        version: 18.3.1
-      react-dom:
-        specifier: '>=18.3.1'
-        version: 18.3.1(react@18.3.1)
-      recharts:
-        specifier: '>=2.12.7'
-        version: 2.12.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tailwind-merge:
         specifier: ^2.5.2
         version: 2.5.2
@@ -494,6 +434,9 @@ importers:
       '@glasshouse/style-guide':
         specifier: workspace:*
         version: link:../style-guide
+      '@mantine/notifications':
+        specifier: ^7.12.2
+        version: 7.12.2(@mantine/core@7.12.2(@mantine/hooks@7.12.2(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.12.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/react':
         specifier: ^8.2.9
         version: 8.2.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.2.9(@babel/preset-env@7.25.4(@babel/core@7.25.2)))(typescript@5.5.4)
@@ -545,9 +488,21 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
+      dayjs:
+        specifier: '>=1.11.11'
+        version: 1.11.13
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
+      lucide-react:
+        specifier: '>=0.429.0'
+        version: 0.438.0(react@18.3.1)
+      react:
+        specifier: '>=18.3.1'
+        version: 18.3.1
+      react-dom:
+        specifier: '>=18.3.1'
+        version: 18.3.1(react@18.3.1)
       tailwindcss:
         specifier: ^3.4.10
         version: 3.4.10
