@@ -24,7 +24,7 @@
 		"@mantine/spotlight": "^7.12.2",
 		"@mantine/tiptap": "^7.12.2",
 		"@tabler/icons-react": "^3.14.0",
-		"@tanstack/react-query": "^5.53.3",
+		"@tanstack/react-query": "^5.54.1",
 		"@tiptap/extension-link": "^2.6.6",
 		"@tiptap/react": "^2.6.6",
 		"@tiptap/starter-kit": "^2.6.6",
@@ -37,7 +37,7 @@
 	},
 	"devDependencies": {
 		"@glasshouse/style-guide": "workspace:*",
-		"@types/node": "^20.16.3",
+		"@types/node": "^20.16.4",
 		"@types/react": "^18.3.5",
 		"@types/react-dom": "^18.3.0",
 		"eslint": "^8.57.0",
