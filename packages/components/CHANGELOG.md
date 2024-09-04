@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.4.7
+
+### Patch Changes
+
+- Remove unused peer dependencies
+
 ## 0.4.6
 
 ### Patch Changes
