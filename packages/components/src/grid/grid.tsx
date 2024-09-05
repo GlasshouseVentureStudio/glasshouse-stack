@@ -174,4 +174,5 @@ export const Grid = polymorphicFactory<GridFactory>((_props, ref) => {
 	);
 });
 
+Grid.displayName = '@glasshouse/components/Grid';
 Grid.Cell = GridCell;
