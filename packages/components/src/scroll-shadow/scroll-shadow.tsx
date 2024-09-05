@@ -19,25 +19,25 @@ import { useMergedRef } from '@mantine/hooks';
 
 import classes from './scroll-shadow.module.css';
 
-export type ScrollAreaShadowStylesNames = 'root' | 'viewport';
-export interface ScrollAreaShadowCssVariables {
+export type ScrollShadowStylesNames = 'root' | 'viewport';
+export interface ScrollShadowCssVariables {
 	root: '--scrollarea-shadow-size';
 }
 
-export type ScrollAreaShadowFactory = PolymorphicFactory<{
-	props: ScrollAreaShadowProps;
-	stylesNames: ScrollAreaShadowStylesNames;
-	vars: ScrollAreaShadowCssVariables;
+export type ScrollShadowFactory = PolymorphicFactory<{
+	props: ScrollShadowProps;
+	stylesNames: ScrollShadowStylesNames;
+	vars: ScrollShadowCssVariables;
 	defaultComponent: 'div';
 	defaultRef: HTMLDivElement;
 	staticComponents: {
-		Autosized: typeof ScrollAreaShadowAutosized;
+		Autosized: typeof ScrollShadowAutosized;
 	};
 }>;
 
-export interface ScrollAreaShadowProps
+export interface ScrollShadowProps
 	extends BoxProps,
-		StylesApiProps<ScrollAreaShadowFactory>,
+		StylesApiProps<ScrollShadowFactory>,
 		ElementProps<'div'>,
 		UseDataScrollOverflowProps {
 	orientation?: 'vertical' | 'horizontal';
@@ -48,18 +48,18 @@ export interface ScrollAreaShadowProps
 	size?: number;
 }
 
-const varsResolver = createVarsResolver<ScrollAreaShadowFactory>((_, { size }) => ({
+const varsResolver = createVarsResolver<ScrollShadowFactory>((_, { size }) => ({
 	root: {
 		'--scrollarea-shadow-size': rem(size),
 	},
 }));
 
-const defaultProps: Partial<ScrollAreaProps & ScrollAreaShadowProps> = {
+const defaultProps: Partial<ScrollAreaProps & ScrollShadowProps> = {
 	size: 40,
 };
 
-export const ScrollAreaShadow = polymorphicFactory<ScrollAreaShadowFactory & ScrollAreaFactory>((_props, ref) => {
-	const props = useProps('ScrollAreaShadow', defaultProps, _props);
+export const ScrollShadow = polymorphicFactory<ScrollShadowFactory & ScrollAreaFactory>((_props, ref) => {
+	const props = useProps('ScrollShadow', defaultProps, _props);
 
 	const {
 		children,
@@ -88,8 +88,8 @@ export const ScrollAreaShadow = polymorphicFactory<ScrollAreaShadowFactory & Scr
 		...others
 	} = props;
 
-	const getStyles = useStyles<ScrollAreaShadowFactory>({
-		name: 'ScrollAreaShadow',
+	const getStyles = useStyles<ScrollShadowFactory>({
+		name: 'ScrollShadow',
 		props,
 		classes,
 		className,
@@ -143,71 +143,69 @@ export const ScrollAreaShadow = polymorphicFactory<ScrollAreaShadowFactory & Scr
 	);
 });
 
-export const ScrollAreaShadowAutosized = polymorphicFactory<ScrollAreaShadowFactory & ScrollAreaFactory>(
-	(_props, ref) => {
-		const props = useProps('ScrollAreaShadowAutosized', defaultProps, _props);
+export const ScrollShadowAutosized = polymorphicFactory<ScrollShadowFactory & ScrollAreaFactory>((_props, ref) => {
+	const props = useProps('ScrollShadowAutosized', defaultProps, _props);
 
-		const {
-			children,
-			classNames,
-			styles,
-			scrollbarSize,
-			scrollHideDelay,
-			type,
-			dir,
-			offsetScrollbars,
-			viewportRef,
-			onScrollPositionChange,
-			unstyled,
-			variant,
-			viewportProps,
-			scrollbars,
-			style,
-			vars,
-			onBottomReached,
-			orientation = 'vertical',
-			offset,
-			visibility,
-			isEnabled,
-			onVisibilityChange,
-			...others
-		} = props;
+	const {
+		children,
+		classNames,
+		styles,
+		scrollbarSize,
+		scrollHideDelay,
+		type,
+		dir,
+		offsetScrollbars,
+		viewportRef,
+		onScrollPositionChange,
+		unstyled,
+		variant,
+		viewportProps,
+		scrollbars,
+		style,
+		vars,
+		onBottomReached,
+		orientation = 'vertical',
+		offset,
+		visibility,
+		isEnabled,
+		onVisibilityChange,
+		...others
+	} = props;
 
-		return (
-			<Box
-				{...others}
-				ref={ref}
-				style={[{ display: 'flex', overflow: 'auto' }, style]}
-			>
-				<Box style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-					<ScrollAreaShadow
-						classNames={classNames}
-						dir={dir}
-						isEnabled={isEnabled}
-						offset={offset}
-						offsetScrollbars={offsetScrollbars}
-						onBottomReached={onBottomReached}
-						onScrollPositionChange={onScrollPositionChange}
-						onVisibilityChange={onVisibilityChange}
-						orientation={orientation}
-						scrollbars={scrollbars}
-						scrollbarSize={scrollbarSize}
-						scrollHideDelay={scrollHideDelay}
-						styles={styles}
-						type={type}
-						unstyled={unstyled}
-						variant={variant}
-						vars={vars}
-						viewportProps={viewportProps}
-						viewportRef={viewportRef}
-						visibility={visibility}
-					>
-						{children}
-					</ScrollAreaShadow>
-				</Box>
+	return (
+		<Box
+			{...others}
+			ref={ref}
+			style={[{ display: 'flex', overflow: 'auto' }, style]}
+		>
+			<Box style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+				<ScrollShadow
+					classNames={classNames}
+					dir={dir}
+					isEnabled={isEnabled}
+					offset={offset}
+					offsetScrollbars={offsetScrollbars}
+					onBottomReached={onBottomReached}
+					onScrollPositionChange={onScrollPositionChange}
+					onVisibilityChange={onVisibilityChange}
+					orientation={orientation}
+					scrollbars={scrollbars}
+					scrollbarSize={scrollbarSize}
+					scrollHideDelay={scrollHideDelay}
+					styles={styles}
+					type={type}
+					unstyled={unstyled}
+					variant={variant}
+					vars={vars}
+					viewportProps={viewportProps}
+					viewportRef={viewportRef}
+					visibility={visibility}
+				>
+					{children}
+				</ScrollShadow>
 			</Box>
-		);
-	}
-);
+		</Box>
+	);
+});
 
-ScrollAreaShadow.Autosized = ScrollAreaShadowAutosized;
+ScrollShadow.Autosized = ScrollShadowAutosized;
