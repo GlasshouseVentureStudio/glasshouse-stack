@@ -1,17 +1,18 @@
-import { type OmitComponentProps, type SlotsToClasses } from '@glasshouse/utils';
 import {
 	type BoxProps,
+	type ElementProps,
+	type Factory,
 	type LoaderProps,
 	type LoadingOverlayProps,
+	type MantineRadius,
 	type PaginationProps,
-	type PolymorphicComponentProps,
 	type ScrollAreaProps,
+	type StylesApiProps,
 } from '@mantine/core';
-import { type VirtualItem } from '@tanstack/react-virtual';
 // eslint-disable-next-line import/no-unresolved -- lodash is not a dependency, only using `@types/lodash` for types.
 import { type Dictionary } from 'lodash';
 
-import { type ListSlots, type ListVariantProps } from './list.styles';
+import { type ScrollShadowProps } from '../scroll-shadow';
 
 /**
  * Represents the type for a list group header.
@@ -33,8 +34,31 @@ export interface ListGroupHeaderType<T> {
 	items: T[];
 }
 
-type OmittedComponentProps<E extends React.ElementType> = Omit<React.ComponentPropsWithoutRef<E>, 'style' | 'onChange'>;
-type OmittedScrollAreaProps = OmitComponentProps<ScrollAreaProps, 'classNames' | 'className' | 'onChange'>;
+export type ListStylesNames =
+	| 'root'
+	| 'scrollArea'
+	| 'item'
+	| 'list'
+	| 'header'
+	| 'footer'
+	| 'loader'
+	| 'empty'
+	| 'paginationWrapper'
+	| 'bottomLoaderWrapper'
+	| 'groupHeader';
+
+export interface ListCssVariables {
+	root: '--list-radius';
+}
+
+export type ListFactory<T extends object> = Factory<{
+	props: ListProps<T>;
+	ref: HTMLDivElement;
+	stylesNames: ListStylesNames;
+	cssVariables: ListCssVariables;
+}>;
+
+export type ListOrientation = 'vertical' | 'horizontal';
 
 /**
  * Props for the List component.
@@ -42,9 +66,27 @@ type OmittedScrollAreaProps = OmitComponentProps<ScrollAreaProps, 'classNames' |
  * @template T - The type of items in the list.
  */
 export interface ListProps<T extends object>
-	extends OmittedComponentProps<'div'>,
-		OmittedScrollAreaProps,
-		ListVariantProps {
+	extends Omit<BoxProps, 'onChange'>,
+		StylesApiProps<ListFactory<T>>,
+		Omit<ElementProps<'div'>, 'onChange'> {
+	radius?: MantineRadius;
+	scrollShadowProps?: ScrollShadowProps;
+	orientation?: ListOrientation;
+
+	/**
+	 * Whether the list should have root border.
+	 */
+	withBorder?: boolean;
+
+	/**
+	 * Whether the list should have item border.
+	 */
+	withItemBorder?: boolean;
+
+	/**
+	 * Whether the list should be infinite.
+	 */
+	infinite?: boolean;
 	/**
 	 * An array of items to render in the list.
 	 */
@@ -105,11 +147,6 @@ export interface ListProps<T extends object>
 	getActiveItem?: (item: T, index: number) => boolean;
 
 	/**
-	 * Optional CSS class names for different slots of the List component.
-	 */
-	classNames?: SlotsToClasses<ListSlots>;
-
-	/**
 	 * An optional function to handle click events on list items.
 	 *
 	 * @param event - The click event.
@@ -117,11 +154,6 @@ export interface ListProps<T extends object>
 	 * @param index - The index of the clicked item in the list.
 	 */
 	onItemClick?: (event: React.MouseEvent, item: T, index: number) => void;
-
-	/**
-	 * Whether the list should have a border.
-	 */
-	bordered?: boolean;
 
 	/**
 	 * Props for the viewport of the ScrollArea component.
@@ -249,46 +281,3 @@ export type PaginationConfig = Omit<PaginationProps, ''> & {
 	 */
 	pageSize?: number;
 };
-
-/**
- * Represents the props for a list item component.
- */
-export interface ListItemProps extends PolymorphicComponentProps<'li', BoxProps> {
-	/**
-	 * The virtual row associated with the list item.
-	 */
-	virtualRow: VirtualItem;
-
-	/**
-	 * Indicates whether the list item is active or not.
-	 */
-	active?: boolean;
-}
-
-/**
- * Props for the ListGroupHeader component.
- */
-export interface ListGroupHeaderProps extends PolymorphicComponentProps<'li', BoxProps> {
-	/**
-	 * The virtual row associated with the ListGroupHeader.
-	 */
-	virtualRow: VirtualItem;
-
-	/**
-	 * The orientation of the ListGroupHeader.
-	 * Can be either 'vertical' or 'horizontal'.
-	 */
-	orientation: 'vertical' | 'horizontal';
-
-	/**
-	 * A function that determines if the ListGroupHeader at the given index should be sticky.
-	 * Returns `true` if the ListGroupHeader should be sticky, `false` otherwise.
-	 */
-	isSticky: (index: number) => boolean | undefined;
-
-	/**
-	 * A function that determines if the ListGroupHeader at the given index is actively sticky.
-	 * Returns `true` if the ListGroupHeader is actively sticky, `false` otherwise.
-	 */
-	isActiveSticky: (index: number) => boolean | undefined;
-}

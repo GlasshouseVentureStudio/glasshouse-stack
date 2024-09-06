@@ -1,22 +1,42 @@
 'use client';
 
 import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
-import { cn } from '@glasshouse/utils';
-import { Box, Loader, LoadingOverlay, Pagination, ScrollArea, Stack, Text } from '@mantine/core';
+import {
+	Box,
+	createVarsResolver,
+	getRadius,
+	type GetStylesApi,
+	Loader,
+	LoadingOverlay,
+	Pagination,
+	rem,
+	Text,
+	useProps,
+	useStyles,
+} from '@mantine/core';
 import { defaultRangeExtractor, type Range, useVirtualizer, type VirtualItem } from '@tanstack/react-virtual';
-import cx from 'clsx';
 import findIndex from 'lodash.findindex';
 import map from 'lodash.map';
-import omit from 'lodash.omit';
-import { twMerge } from 'tailwind-merge';
 
-import { ListGroupHeader } from './group-header';
-import { list } from './list.styles.js';
-import { type ListGroupHeaderType, type ListProps } from './list.types';
+import { ScrollShadow } from '../scroll-shadow';
+import { ListProvider } from './list.context';
+import { type ListFactory, type ListGroupHeaderType, type ListProps } from './list.types';
 import { isListGroupHeader } from './list.utils';
+import { ListGroupHeader } from './list-group-header';
 import { ListItem } from './list-item';
 
-const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRef<HTMLDivElement>) => {
+import classes from './list.module.css';
+
+const varsResolver = <T extends object>() =>
+	createVarsResolver<ListFactory<T>>((_, { radius }) => ({
+		root: {
+			'--list-radius': radius ? getRadius(radius) : undefined,
+		},
+	}));
+
+const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedRef<HTMLDivElement>) => {
+	const props = useProps('List', {}, _props);
+
 	const {
 		className,
 		classNames,
@@ -25,9 +45,6 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		itemKey,
 		getActiveItem: getActiveItemProp,
 		onItemClick,
-		bordered,
-		scrollAreaClassNames,
-		viewportProps,
 		estimateItemSize = () => 40,
 		estimateGroupHeaderSize = () => 20,
 		header,
@@ -51,23 +68,27 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		},
 		bottomLoading,
 		onEndReachedThreshold = '256px',
+		infinite = true,
+		withBorder = true,
+		withItemBorder = true,
+		vars,
+		scrollShadowProps,
+		style,
+		styles,
 		...rest
 	} = props;
 
-	const {
-		root,
-		scrollArea,
-		item: itemStyles,
-		list: listStyles,
-		header: headerStyles,
-		footer: footerStyles,
-		empty,
-		loader,
-		pagination: paginationStyles,
-		bottomLoaderWrapper,
-	} = list({ bordered, stickyHeader, stickyFooter, orientation });
-
-	const baseStyles = twMerge(cx(className, classNames?.root));
+	const getStyles = useStyles<ListFactory<T>>({
+		name: 'List',
+		props,
+		classes,
+		className,
+		classNames,
+		style,
+		styles,
+		vars,
+		varsResolver: varsResolver<T>(),
+	});
 
 	// =============== Handle selection =============== //
 	const [value, setValue] = useState<T | T[] | undefined>(valueProp);
@@ -109,8 +130,6 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		findIndex(data, item => isListGroupHeader(item) && item.title === group)
 	);
 
-	const isSticky = (index: number) => groupHeaderIndexes.includes(index);
-
 	const isActiveSticky = (index: number) => activeStickyIndexRef.current === index && stickyGroupHeader;
 
 	const renderInnerItem = (item: T | ListGroupHeaderType<T>, index: number, virtualRow: VirtualItem) => {
@@ -139,11 +158,10 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 			return (
 				<ListGroupHeader
 					key={key}
-					className={itemStyles({ className: classNames?.item })}
-					isActiveSticky={isActiveSticky}
-					isSticky={isSticky}
 					orientation={orientation}
+					sticky={isActiveSticky(virtualRow.index)}
 					virtualRow={virtualRow}
+					withItemBorder={withItemBorder}
 				>
 					{renderGroupHeader(item)}
 				</ListGroupHeader>
@@ -154,11 +172,12 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 			<ListItem
 				key={key}
 				active={getActiveItem(item, index)}
-				className={itemStyles({ className: classNames?.item })}
 				onClick={event => {
 					handleItemClick(event, item, index);
 				}}
+				orientation={orientation}
 				virtualRow={virtualRow}
+				withItemBorder={withItemBorder}
 			>
 				{renderItem(item, index, getActiveItem(item, index))}
 			</ListItem>
@@ -195,16 +214,25 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		rangeExtractor,
 	});
 
+	const listSize = rowVirtualizer.getTotalSize();
+
 	const items = rowVirtualizer.getVirtualItems().map(row => renderInnerItem(data[row.index] as T, row.index, row));
+
+	const isEmpty = !items.length;
 
 	const renderInnerLoader = () => {
 		if (renderLoader) {
-			if (loading) return <Box className={loader({ className: classNames?.loader })}>{renderLoader()}</Box>;
+			if (loading) return <Box {...getStyles('loader')}>{renderLoader()}</Box>;
 
 			return null;
 		}
 
-		return <LoadingOverlay visible={loading} />;
+		return (
+			<LoadingOverlay
+				{...getStyles('loader')}
+				visible={loading}
+			/>
+		);
 	};
 
 	const renderInnerEmpty = () => {
@@ -215,22 +243,10 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 		return <Text>No items</Text>;
 	};
 
-	const childrenContent = items.length ? (
-		<Box
-			className={listStyles({ className: classNames?.list })}
-			component='ul'
-			style={{ '--list-size': `${rowVirtualizer.getTotalSize()}px` }}
-		>
-			{items}
-		</Box>
-	) : (
-		<Box className={empty({ className: classNames?.empty })}>{renderInnerEmpty()}</Box>
-	);
-
 	const paginationPosition = pagination?.position ?? 'bottom';
 
 	const paginationContent = pagination ? (
-		<Box className={paginationStyles({ className: classNames?.pagination })}>
+		<Box {...getStyles('paginationWrapper')}>
 			<Pagination {...pagination} />
 		</Box>
 	) : null;
@@ -265,40 +281,91 @@ const ListInner = <T extends object>(props: ListProps<T>, ref: React.ForwardedRe
 	}, [onEndReached, onEndReachedThreshold]);
 
 	const bottomContent = bottomLoading ? (
-		<Box className={bottomLoaderWrapper({ className: classNames?.bottomLoaderWrapper })}>
+		<Box {...getStyles('bottomLoaderWrapper')}>
 			<Loader {...bottomLoaderProps} />
 		</Box>
 	) : null;
 
-	const headerContent = header ? <Box className={headerStyles({ className: classNames?.header })}>{header}</Box> : null;
-	const footerContent = footer ? <Box className={footerStyles({ className: classNames?.footer })}>{footer}</Box> : null;
+	const headerContent = header ? (
+		<Box
+			mod={{
+				orientation,
+				'sticky-header': stickyHeader,
+			}}
+			{...getStyles('header')}
+		>
+			{header}
+		</Box>
+	) : null;
+
+	const footerContent = footer ? (
+		<Box
+			mod={{
+				orientation,
+				'sticky-footer': stickyFooter,
+			}}
+			{...getStyles('footer')}
+		>
+			{footer}
+		</Box>
+	) : null;
 
 	return (
-		<Stack className={root({ className: baseStyles })}>
-			{paginationPosition === 'top' ? paginationContent : null}
-			<ScrollArea
+		<ListProvider value={{ getStyles: getStyles as unknown as GetStylesApi<ListFactory<object>> }}>
+			<Box
 				ref={ref}
-				className={scrollArea({ className: classNames?.scrollArea })}
-				classNames={{
-					thumb: cn('z-10', typeof scrollAreaClassNames === 'object' && scrollAreaClassNames.thumb),
-					...scrollAreaClassNames,
-				}}
-				viewportProps={{
-					...viewportProps,
-					tabIndex: 0,
-				}}
-				viewportRef={scrollRef}
-				{...omit(rest, 'onChange', 'value')}
+				mod={[
+					{
+						orientation,
+						infinite,
+						'with-border': withBorder,
+					},
+				]}
+				{...getStyles('root')}
+				{...rest}
 			>
-				{renderInnerLoader()}
-				{headerContent}
-				{childrenContent}
-				{bottomContent}
-				{footerContent}
-				<Box ref={bottomRef} />
-			</ScrollArea>
-			{paginationPosition === 'bottom' ? paginationContent : null}
-		</Stack>
+				{paginationPosition === 'top' ? paginationContent : null}
+				<ScrollShadow
+					mod={[
+						{
+							orientation,
+							'with-border': withBorder,
+						},
+					]}
+					viewportRef={scrollRef}
+					{...getStyles('scrollArea', {
+						className: scrollShadowProps?.className,
+						classNames: scrollShadowProps?.classNames,
+						style: scrollShadowProps?.style,
+						styles: scrollShadowProps?.styles,
+					})}
+					{...scrollShadowProps}
+				>
+					{renderInnerLoader()}
+					{headerContent}
+					<Box
+						component='ul'
+						mod={{
+							orientation,
+						}}
+						// className={listStyles()}
+						// style={{ '--list-size': `${rowVirtualizer.getTotalSize()}px` }}
+						{...getStyles('list', {
+							style: {
+								'--list-size': rem(listSize),
+							},
+						})}
+					>
+						{items}
+					</Box>
+					{isEmpty ? <Box {...getStyles('empty')}>{renderInnerEmpty()}</Box> : null}
+					{bottomContent}
+					{footerContent}
+					<Box ref={bottomRef} />
+				</ScrollShadow>
+				{paginationPosition === 'bottom' ? paginationContent : null}
+			</Box>
+		</ListProvider>
 	);
 };
 

@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks -- valid for stories */
-import { useState } from 'react';
 import { faker } from '@faker-js/faker';
 import { Box, Checkbox, Group, Paper, Radio, Stack, Switch, Text, Title } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
 import { expect, fn, userEvent, within } from '@storybook/test';
 import chunk from 'lodash.chunk';
 import groupBy from 'lodash.groupby';
+import { useState } from 'react';
+import data from './fake.json';
 
 import { List } from '../list';
 import { type PaginationConfig } from '../list.types';
@@ -28,7 +29,7 @@ const meta: Meta<typeof List<DataType>> = {
 
 export default meta;
 
-const data = Array.from({ length: 1000 })
+const fakerData = Array.from({ length: 1 })
 	.map(() => ({
 		id: faker.string.uuid(),
 		name: faker.person.firstName(),
@@ -36,7 +37,7 @@ const data = Array.from({ length: 1000 })
 	}))
 	.sort((a, b) => a.name.localeCompare(b.name));
 
-type DataType = (typeof data)[number];
+type DataType = (typeof fakerData)[number];
 type ListStory = StoryObj<typeof meta>;
 
 /**
@@ -45,6 +46,7 @@ type ListStory = StoryObj<typeof meta>;
 export const Default: ListStory = {
 	args: {
 		data: data.slice(0, 20),
+		radius: 'md',
 		itemKey: 'id',
 		estimateItemSize: () => 52,
 		renderItem: item => (
@@ -67,7 +69,8 @@ export const Default: ListStory = {
 export const NoBorder: ListStory = {
 	args: {
 		...Default.args,
-		bordered: false,
+		withBorder: false,
+		withItemBorder: false,
 	},
 };
 
@@ -98,13 +101,16 @@ export const OnItemClick: ListStory = {
 };
 
 /**
- * `List` is built with [ScrollArea](https://mantine.dev/core/scroll-area/).
+ * `List` is built with `ScrollShadow` component, which can be customized using `scrollShadowProps` prop.
  */
-export const ScrollArea: ListStory = {
+export const ScrollShadow: ListStory = {
 	args: {
 		...Default.args,
 		classNames: {
 			root: 'gvs-h-60',
+		},
+		scrollShadowProps: {
+			shadowSize: 'xl',
 		},
 	},
 };
@@ -113,12 +119,12 @@ export const Horizontal: ListStory = {
 	args: {
 		...Default.args,
 		orientation: 'horizontal',
-		classNames: {
-			list: 'gvs-h-20',
-		},
 		estimateItemSize: () => 240,
+		classNames: {
+			list: '!gvs-h-20',
+		},
 		renderItem: item => (
-			<Box className='gvs-flex gvs-h-full gvs-w-60 gvs-flex-col gvs-justify-center gvs-px-3 gvs-py-1'>
+			<Box className='gvs-flex gvs-w-60 gvs-h-full gvs-flex-col gvs-justify-center gvs-px-3 gvs-py-1'>
 				<Title
 					className='gvs-line-clamp-1 gvs-font-semibold'
 					order={5}
@@ -263,15 +269,13 @@ export const Grouped: ListStory = {
 		data,
 		groupByFn: items => groupBy(items, item => item.name.toLowerCase()[0]),
 		renderGroupHeader: header => (
-			<Box
-				bg='blue'
-				className='gvs-px-3 gvs-font-bold gvs-uppercase'
-			>
+			<Box className='gvs-px-3 gvs-font-bold gvs-uppercase gvs-py-2'>
 				{header.title} {`(${header.items.length} items)`}
 			</Box>
 		),
 		className: 'gvs-h-96',
 		stickyGroupHeader: false,
+		estimateGroupHeaderSize: () => 41,
 	},
 	render: args => {
 		const [sticky, setSticky] = useState(args.stickyGroupHeader);
