@@ -5,9 +5,10 @@ import {
 	type BoxProps,
 	createVarsResolver,
 	type ElementProps,
+	getSize,
+	type MantineSize,
 	type PolymorphicFactory,
 	polymorphicFactory,
-	rem,
 	ScrollArea,
 	type ScrollAreaFactory,
 	type ScrollAreaProps,
@@ -35,28 +36,25 @@ export type ScrollShadowFactory = PolymorphicFactory<{
 	};
 }>;
 
+type ScrollShadowOrientation = 'vertical' | 'horizontal';
+
 export interface ScrollShadowProps
 	extends BoxProps,
 		StylesApiProps<ScrollShadowFactory>,
 		ElementProps<'div'>,
 		UseDataScrollOverflowProps {
-	orientation?: 'vertical' | 'horizontal';
-	/**
-	 * The shadow size in pixels.
-	 * @default 40
-	 */
-	size?: number;
+	orientation?: ScrollShadowOrientation;
+	/** Width or height of the shadow, numbers are converted to rem, `'md'` by default */
+	shadowSize?: MantineSize | (string & Record<string, unknown>) | number;
 }
 
-const varsResolver = createVarsResolver<ScrollShadowFactory>((_, { size }) => ({
+const varsResolver = createVarsResolver<ScrollShadowFactory>((_, { shadowSize }) => ({
 	root: {
-		'--scrollarea-shadow-size': rem(size),
+		'--scrollarea-shadow-size': getSize(shadowSize, 'scrollarea-shadow-size'),
 	},
 }));
 
-const defaultProps: Partial<ScrollAreaProps & ScrollShadowProps> = {
-	size: 40,
-};
+const defaultProps: Partial<ScrollAreaProps & ScrollShadowProps> = {};
 
 export const ScrollShadow = polymorphicFactory<ScrollShadowFactory & ScrollAreaFactory>((_props, ref) => {
 	const props = useProps('ScrollShadow', defaultProps, _props);

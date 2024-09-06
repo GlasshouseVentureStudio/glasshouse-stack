@@ -1,14 +1,26 @@
 .root {
-	--scrollarea-shadow-size: rem(40px);
+	--scrollarea-shadow-size-xs: rem(20px);
+	--scrollarea-shadow-size-sm: rem(40px);
+	--scrollarea-shadow-size-md: rem(60px);
+	--scrollarea-shadow-size-lg: rem(80px);
+	--scrollarea-shadow-size-xl: rem(120px);
 }
 
 .viewport {
 	&[data-top-scroll='true'] {
-		mask-image: linear-gradient(0deg, #000 calc(100% - var(--scrollarea-shadow-size)), transparent);
+		mask-image: linear-gradient(
+			0deg,
+			#000 calc(100% - var(--scrollarea-shadow-size, var(--scrollarea-shadow-size-md))),
+			transparent
+		);
 	}
 
 	&[data-bottom-scroll='true'] {
-		mask-image: linear-gradient(180deg, #000 calc(100% - var(--scrollarea-shadow-size)), transparent);
+		mask-image: linear-gradient(
+			180deg,
+			#000 calc(100% - var(--scrollarea-shadow-size, var(--scrollarea-shadow-size-md))),
+			transparent
+		);
 	}
 
 	&[data-top-bottom-scroll='true'] {
@@ -16,18 +28,26 @@
 			#000,
 			#000,
 			transparent 0,
-			#000 var(--scrollarea-shadow-size),
-			#000 calc(100% - var(--scrollarea-shadow-size)),
+			#000 var(--scrollarea-shadow-size, var(--scrollarea-shadow-size-md)),
+			#000 calc(100% - var(--scrollarea-shadow-size, var(--scrollarea-shadow-size-md))),
 			transparent
 		);
 	}
 
 	&[data-left-scroll='true'] {
-		mask-image: linear-gradient(270deg, #000 calc(100% - var(--scrollarea-shadow-size)), transparent);
+		mask-image: linear-gradient(
+			270deg,
+			#000 calc(100% - var(--scrollarea-shadow-size, var(--scrollarea-shadow-size-md))),
+			transparent
+		);
 	}
 
 	&[data-right-scroll='true'] {
-		mask-image: linear-gradient(90deg, #000 calc(100% - var(--scrollarea-shadow-size)), transparent);
+		mask-image: linear-gradient(
+			90deg,
+			#000 calc(100% - var(--scrollarea-shadow-size, var(--scrollarea-shadow-size-md))),
+			transparent
+		);
 	}
 
 	&[data-left-right-scroll='true'] {
@@ -36,8 +56,8 @@
 			#000,
 			#000,
 			transparent 0,
-			#000 var(--scrollarea-shadow-size),
-			#000 calc(100% - var(--scrollarea-shadow-size)),
+			#000 var(--scrollarea-shadow-size, var(--scrollarea-shadow-size-md)),
+			#000 calc(100% - var(--scrollarea-shadow-size, var(--scrollarea-shadow-size-md))),
 			transparent
 		);
 	}
