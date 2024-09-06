@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.0
+
+### Minor Changes
+
+- Refactor list component to use mantine utilities
+
 ## 0.5.0
 
 ### Minor Changes
