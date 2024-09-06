@@ -19,7 +19,7 @@
 ### Minor Changes
 
 - Remove table actions column shadow
-  New component: ScrollShadow and ScrollShadow.Autosized
+- New component: ScrollShadow and ScrollShadow.Autosized
 
 ### Patch Changes
 
