@@ -3,7 +3,7 @@
 [![Storybook](https://img.shields.io/badge/storybook-storybook?style=for-the-badge&logo=storybook&logoColor=ffffff&color=ff4785)](https://main--668b65bdcf16256d1a25e70c.chromatic.com)
 [![Chromatic Library](https://img.shields.io/badge/chromatic%20library-chromatic?style=for-the-badge&logo=chromatic&logoColor=ffffff&color=fc521f)](https://www.chromatic.com/library?appId=668b65bdcf16256d1a25e70c&branch=main)
 
-This package contains the core React components used by Glasshouse developers.
+This package contains the core React components used by Glasshouse developers, most of the components are built from Mantine components and utilities.
 
 ## Installation
 
