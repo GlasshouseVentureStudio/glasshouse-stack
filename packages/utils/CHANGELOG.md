@@ -1,5 +1,11 @@
 # @glasshouse/utils
 
+## 0.2.6
+
+### Patch Changes
+
+- Update package info
+
 ## 0.2.5
 
 ### Patch Changes
