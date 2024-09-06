@@ -1,5 +1,12 @@
 # @glasshouse/utils
 
+## 0.2.5
+
+### Patch Changes
+
+- Remove table actions column shadow
+  New component: ScrollShadow and ScrollShadow.Autosized
+
 ## 0.2.4
 
 ### Patch Changes
