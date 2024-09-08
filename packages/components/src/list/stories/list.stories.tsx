@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks -- valid for stories */
 import { faker } from '@faker-js/faker';
-import { Box, Checkbox, Group, Paper, Radio, Stack, Switch, Text, Title } from '@mantine/core';
+import { Box, Checkbox, Group, Paper, Radio, rem, Stack, Switch, Text, Title } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
 import { expect, fn, userEvent, within } from '@storybook/test';
 import chunk from 'lodash.chunk';
@@ -18,13 +18,21 @@ const meta: Meta<typeof List<DataType>> = {
 	decorators: [
 		render => (
 			<Paper
-				className='gvs-p-5'
+				p={rem(20)}
 				radius={0}
 			>
 				{render()}
 			</Paper>
 		),
 	],
+	args: {
+		virtualized: true,
+		radius: 'md',
+		orientation: 'vertical',
+	},
+	argTypes: {
+		data: { control: false },
+	},
 };
 
 export default meta;
@@ -40,9 +48,7 @@ const fakerData = Array.from({ length: 1 })
 type DataType = (typeof fakerData)[number];
 type ListStory = StoryObj<typeof meta>;
 
-/**
- * Renders a list with the provided data.
- */
+/** Renders a list with the provided data. */
 export const Default: ListStory = {
 	args: {
 		data: data.slice(0, 20),
@@ -109,6 +115,7 @@ export const ScrollShadow: ListStory = {
 		classNames: {
 			root: 'gvs-h-60',
 		},
+		data,
 		scrollShadowProps: {
 			shadowSize: 'xl',
 		},
@@ -249,14 +256,24 @@ export const Empty: ListStory = {
 	},
 };
 
-/**
- * List is virtualized by default using [`@tanstack/react-virtual`](https://tanstack.com/virtual/latest/docs/framework/react/react-virtual).
- */
+/** List is virtualized by default using [`@tanstack/react-virtual`](https://tanstack.com/virtual/latest/docs/framework/react/react-virtual). Virtualization can be disabled using `virtualized` props. */
 export const Virtualized: ListStory = {
 	args: {
 		...Default.args,
 		data,
+		virtualized: true,
 		className: 'gvs-h-96',
+	},
+	render: ({ virtualized, ...args }) => {
+		const data = virtualized ? args.data : args.data.slice(0, 100);
+
+		return (
+			<List
+				{...args}
+				virtualized={virtualized}
+				data={data}
+			/>
+		);
 	},
 };
 

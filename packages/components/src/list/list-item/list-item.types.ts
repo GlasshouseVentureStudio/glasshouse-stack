@@ -13,19 +13,16 @@ export type ListItemFactory = Factory<{
 	compound: true;
 }>;
 
-/**
- * Represents the props for a list item component.
- */
+/** Represents the props for a list item component. */
 export interface ListItemProps extends BoxProps, CompoundStylesApiProps<ListItemFactory>, ElementProps<'li'> {
-	/**
-	 * The virtual row associated with the list item.
-	 */
-	virtualRow: VirtualItem;
-
-	/**
-	 * Indicates whether the list item is active or not.
-	 */
+	/** Indicates whether the list item is active or not. */
 	active?: boolean;
+	/** The virtual row associated with the list item. */
+	virtualRow?: VirtualItem;
+	/** The orientation of the component. Can be either `vertical` or `horizontal`. */
 	orientation?: ListOrientation;
+	/** Indicates whether the component has an item border or not. */
 	withItemBorder?: boolean;
+	/** Indicates whether the component is virtualized or not. */
+	virtualized?: boolean;
 }

@@ -69,29 +69,20 @@ export interface ListProps<T extends object>
 	extends Omit<BoxProps, 'onChange'>,
 		StylesApiProps<ListFactory<T>>,
 		Omit<ElementProps<'div'>, 'onChange'> {
+	/** The radius of the list root element. */
 	radius?: MantineRadius;
+	/** Props for `ScrollShadow` component. */
 	scrollShadowProps?: ScrollShadowProps;
+	/** List scrolling orientiation. */
 	orientation?: ListOrientation;
-
-	/**
-	 * Whether the list should have root border.
-	 */
+	/** Whether the list should have root border. */
 	withBorder?: boolean;
-
-	/**
-	 * Whether the list should have item border.
-	 */
+	/** Whether the list should have item border. */
 	withItemBorder?: boolean;
-
-	/**
-	 * Whether the list should be infinite.
-	 */
+	/** Whether the list should be infinite scrolling. */
 	infinite?: boolean;
-	/**
-	 * An array of items to render in the list.
-	 */
+	/**An array of items to render in the list.*/
 	data: T[];
-
 	/**
 	 * A function that renders each item in the list.
 	 *
@@ -99,9 +90,7 @@ export interface ListProps<T extends object>
 	 * @param index - The index of the item in the list.
 	 * @param style - The CSS styles to apply to the rendered item.
 	 * @returns The React node representing the rendered item.
-	 */
-	renderItem: (item: T, index: number, active?: boolean) => React.ReactNode;
-
+	 */ renderItem: (item: T, index: number, active?: boolean) => React.ReactNode;
 	/**
 	 * A function that renders the group header for each group in the list.
 	 *
@@ -109,7 +98,6 @@ export interface ListProps<T extends object>
 	 * @returns The React node representing the rendered group header.
 	 */
 	renderGroupHeader?: (header: ListGroupHeaderType<T>) => React.ReactNode;
-
 	/**
 	 * A function to estimate the size of each item in the list.
 	 *
@@ -118,7 +106,6 @@ export interface ListProps<T extends object>
 	 * @returns The estimated size of the item.
 	 */
 	estimateItemSize: (item: T, index: number) => number;
-
 	/**
 	 * A function to estimate the size of each group header in the list.
 	 *
@@ -127,7 +114,6 @@ export interface ListProps<T extends object>
 	 * @returns The estimated size of the group header.
 	 */
 	estimateGroupHeaderSize?: (item: ListGroupHeaderType<T>, index: number) => number;
-
 	/**
 	 * An optional function to extract a unique key for each item in the list.
 	 *
@@ -136,7 +122,6 @@ export interface ListProps<T extends object>
 	 * @returns The key for the item.
 	 */
 	itemKey: keyof T | ((item: T, index: number) => string | number);
-
 	/**
 	 * An optional function to determine if an item is active.
 	 *
@@ -145,7 +130,6 @@ export interface ListProps<T extends object>
 	 * @returns True if the item is active, false otherwise.
 	 */
 	getActiveItem?: (item: T, index: number) => boolean;
-
 	/**
 	 * An optional function to handle click events on list items.
 	 *
@@ -154,47 +138,22 @@ export interface ListProps<T extends object>
 	 * @param index - The index of the clicked item in the list.
 	 */
 	onItemClick?: (event: React.MouseEvent, item: T, index: number) => void;
-
-	/**
-	 * Props for the viewport of the ScrollArea component.
-	 */
+	/** Props for the viewport of the ScrollArea component. */
 	viewportProps?: ScrollAreaProps['viewportProps'];
-
-	/**
-	 * CSS class names for the ScrollArea component.
-	 */
+	/** CSS class names for the ScrollArea component. */
 	scrollAreaClassNames?: ScrollAreaProps['classNames'];
-
-	/**
-	 * The header content of the list.
-	 */
+	/** The header content of the list. */
 	header?: React.ReactNode;
-
-	/**
-	 * The footer content of the list.
-	 */
+	/** The footer content of the list. */
 	footer?: React.ReactNode;
-
-	/**
-	 * Whether the header should be sticky.
-	 */
+	/** Whether the header should be sticky. */
 	stickyHeader?: boolean;
-
-	/**
-	 * Whether the footer should be sticky.
-	 */
+	/** Whether the footer should be sticky. */
 	stickyFooter?: boolean;
-
-	/**
-	 * Whether the list is loading more items.
-	 */
+	/** Whether the list is loading more items. */
 	loading?: boolean;
-
-	/**
-	 * Props for the LoadingOverlay component.
-	 */
+	/** Props for the LoadingOverlay component. */
 	loadingOverlay?: LoadingOverlayProps;
-
 	/**
 	 * A function that returns an object with keys of the groups and values of the items in that group.
 	 *
@@ -202,67 +161,42 @@ export interface ListProps<T extends object>
 	 * @returns An object with keys of the groups and values of the items in that group.
 	 */
 	groupByFn?: (items: T[]) => Dictionary<T[]>;
-
-	/**
-	 * Whether the group headers should be sticky.
-	 */
+	/** Whether the group headers should be sticky. */
 	stickyGroupHeader?: boolean;
-
-	/**
-	 * Whether the list items are selectable.
-	 */
+	/** Whether the list items are selectable. */
 	selectable?: boolean;
-
-	/**
-	 * The currently selected value.
-	 */
+	/** The currently selected value. */
 	value?: T;
-
 	/**
 	 * A callback function that is called when the selected value changes.
 	 *
 	 * @param value - The new selected value.
 	 */
 	onChange?: (value: T) => void;
-
 	/**
 	 * A function that renders the loader component when the list is loading.
 	 *
 	 * @returns The React node representing the loader component.
 	 */
 	renderLoader?: () => React.ReactNode;
-
 	/**
 	 * A function that renders the empty state component when the list is empty.
 	 *
 	 * @returns The React node representing the empty state component.
 	 */
 	renderEmpty?: () => React.ReactNode;
-
-	/**
-	 * Configuration for pagination.
-	 */
+	/** Configuration for pagination. */
 	pagination?: PaginationConfig;
-
-	/**
-	 * A function that is called when the end of the list is reached.
-	 */
+	/** A function that is called when the end of the list is reached. */
 	onEndReached?: () => void;
-
-	/**
-	 * How far from the end the trailing edge of the list must be from the end of the content to trigger the `onEndReached` callback. Can have values similar to the CSS `margin` property, e.g. `"10px 20px 30px 40px"` (top, right, bottom, left). Default `256px`.
-	 */
+	/** How far from the end the trailing edge of the list must be from the end of the content to trigger the `onEndReached` callback. Can have values similar to the CSS `margin` property, e.g. `"10px 20px 30px 40px"` (top, right, bottom, left). Default `256px`. */
 	onEndReachedThreshold?: string;
-
-	/**
-	 * Props for the bottom loader component.
-	 */
+	/** Props for the bottom loader component. */
 	bottomLoaderProps?: LoaderProps;
-
-	/**
-	 * Whether the list is loading more items at the bottom.
-	 */
+	/** Whether the list is loading more items at the bottom. */
 	bottomLoading?: boolean;
+	/** Whether the list is virtualized by `@tanstack/react-virtual`. */
+	virtualized?: boolean;
 }
 
 /**
@@ -275,9 +209,6 @@ export type PaginationConfig = Omit<PaginationProps, ''> & {
 	 * - 'bottom': Display the pagination component at the bottom.
 	 */
 	position?: 'top' | 'bottom';
-
-	/**
-	 * The number of items to display per page.
-	 */
+	/** The number of items to display per page. */
 	pageSize?: number;
 };

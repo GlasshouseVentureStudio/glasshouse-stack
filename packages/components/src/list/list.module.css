@@ -29,23 +29,34 @@
 
 	&:where([data-orientation='vertical']) {
 		width: 100%;
-		height: var(--list-size);
+
+		&:where([data-virtualized]) {
+			height: var(--list-size);
+		}
 	}
 
 	&:where([data-orientation='horizontal']) {
 		height: 100%;
-		width: var(--list-size);
+
+		&:where([data-virtualized]) {
+			width: var(--list-size);
+		}
 	}
 }
 
 .item {
-	left: 0;
-	top: 0;
-	position: absolute;
+	&:where([data-infinite]) {
+		left: 0;
+		top: 0;
+		position: absolute;
+	}
 
 	&:where([data-orientation='vertical']) {
 		width: 100%;
-		transform: translateY(var(--list-item-start));
+
+		&:where([data-infinite]) {
+			transform: translateY(var(--list-item-start));
+		}
 
 		&:where([data-with-item-border]) {
 			border-bottom: rem(1px) solid var(--mantine-color-default-border);
@@ -58,7 +69,10 @@
 
 	&:where([data-orientation='horizontal']) {
 		height: 100%;
-		transform: translateX(var(--list-item-start));
+
+		&:where([data-infinite]) {
+			transform: translateX(var(--list-item-start));
+		}
 
 		&:where([data-with-item-border]) {
 			border-right: rem(1px) solid var(--mantine-color-default-border);
@@ -71,9 +85,11 @@
 }
 
 .groupHeader {
-	left: 0;
-	top: 0;
-	position: absolute;
+	&:where([data-infinite]) {
+		left: 0;
+		top: 0;
+		position: absolute;
+	}
 
 	&:where([data-sticky]) {
 		z-index: 10;
@@ -82,7 +98,10 @@
 
 	&:where([data-orientation='vertical']):not([data-sticky]) {
 		width: 100%;
-		transform: translateY(var(--list-item-start));
+
+		&:where([data-infinite]) {
+			transform: translateY(var(--list-item-start));
+		}
 
 		&:where([data-with-item-border]) {
 			border-bottom: rem(1px) solid var(--mantine-color-default-border);
@@ -95,7 +114,10 @@
 
 	&:where([data-orientation='horizontal']):not([data-sticky]) {
 		height: 100%;
-		transform: translateX(var(--list-item-start));
+
+		&:where([data-infinite]) {
+			transform: translateX(var(--list-item-start));
+		}
 
 		&:where([data-with-item-border]) {
 			border-right: rem(1px) solid var(--mantine-color-default-border);

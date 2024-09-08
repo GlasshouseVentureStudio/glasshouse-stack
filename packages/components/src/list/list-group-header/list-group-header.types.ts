@@ -20,17 +20,14 @@ export interface ListGroupHeaderProps
 	extends BoxProps,
 		CompoundStylesApiProps<ListGroupHeaderFactory>,
 		ElementProps<'li'> {
-	/**
-	 * The virtual row associated with the ListGroupHeader.
-	 */
-	virtualRow: VirtualItem;
-
-	/**
-	 * The orientation of the ListGroupHeader.
-	 * Can be either 'vertical' or 'horizontal'.
-	 */
+	/** The orientation of the component. Can be either `vertical` or `horizontal`. */
 	orientation: ListOrientation;
-
+	/** The virtual row associated with the ListGroupHeader.*/
+	virtualRow?: VirtualItem;
+	/** Indicates whether the component has an item border or not. */
 	withItemBorder?: boolean;
+	/** Indicates whether the component is sticky or not. */
 	sticky?: boolean;
+	/** Indicates whether the component is virtualized or not. */
+	virtualized?: boolean;
 }
