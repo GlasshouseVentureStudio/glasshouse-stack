@@ -21,24 +21,24 @@ export interface UseDataScrollOverflowProps {
 	 *
 	 * @default "both"
 	 */
-	overflowCheck?: ScrollOverflowCheck;
+	shadowOverflowCheck?: ScrollOverflowCheck;
 	/**
 	 * Controlled visible state. Passing "auto" will make the shadow visible only when the scroll reaches the edge.
 	 * use "left" / "right" for horizontal scroll and "top" / "bottom" for vertical scroll.
 	 * @default "auto"
 	 */
-	visibility?: ScrollOverflowVisibility;
+	shadowVisibility?: ScrollOverflowVisibility;
 	/**
 	 * Enables or disables the overflow checking mechanism.
 	 * @default true
 	 */
-	isEnabled?: boolean;
+	shadowEnabled?: boolean;
 	/**
 	 * Defines a buffer or margin within which we won't treat the scroll as reaching the edge.
 	 *
 	 * @default 0 - meaning the check will behave exactly at the edge.
 	 */
-	offset?: number;
+	shadowOffset?: number;
 	/**
 	 * List of dependencies to update the overflow check.
 	 */
@@ -46,7 +46,7 @@ export interface UseDataScrollOverflowProps {
 	/**
 	 * Callback to be called when the overflow state changes.
 	 *
-	 * @param visibility ScrollOverflowVisibility
+	 * @param shadowVisibility ScrollOverflowVisibility
 	 */
 	onVisibilityChange?: (overflow: ScrollOverflowVisibility) => void;
 }
@@ -54,20 +54,20 @@ export interface UseDataScrollOverflowProps {
 export function useDataScrollOverflow(props: UseDataScrollOverflowProps = {}) {
 	const {
 		domRef,
-		isEnabled = true,
-		overflowCheck = 'vertical',
-		visibility = 'auto',
-		offset = 0,
+		shadowEnabled = true,
+		shadowOverflowCheck = 'vertical',
+		shadowVisibility = 'auto',
+		shadowOffset = 0,
 		onVisibilityChange,
 		updateDeps = [],
 	} = props;
 
-	const visibleRef = useRef<ScrollOverflowVisibility>(visibility);
+	const visibleRef = useRef<ScrollOverflowVisibility>(shadowVisibility);
 
 	useEffect(() => {
 		const el = domRef?.current;
 
-		if (!el || !isEnabled) return;
+		if (!el || !shadowEnabled) return;
 
 		const setAttributes = (
 			direction: string,
@@ -76,7 +76,7 @@ export function useDataScrollOverflow(props: UseDataScrollOverflowProps = {}) {
 			prefix: string,
 			suffix: string
 		) => {
-			if (visibility === 'auto') {
+			if (shadowVisibility === 'auto') {
 				const both = `${prefix}${capitalize(suffix)}Scroll`;
 
 				if (hasBefore && hasAfter) {
@@ -105,12 +105,12 @@ export function useDataScrollOverflow(props: UseDataScrollOverflowProps = {}) {
 			];
 
 			for (const { type, prefix, suffix } of directions) {
-				if (overflowCheck === type || overflowCheck === 'both') {
-					const hasBefore = type === 'vertical' ? el.scrollTop > offset : el.scrollLeft > offset;
+				if (shadowOverflowCheck === type || shadowOverflowCheck === 'both') {
+					const hasBefore = type === 'vertical' ? el.scrollTop > shadowOffset : el.scrollLeft > shadowOffset;
 					const hasAfter =
 						type === 'vertical'
-							? el.scrollTop + el.clientHeight + offset < el.scrollHeight
-							: el.scrollLeft + el.clientWidth + offset < el.scrollWidth;
+							? el.scrollTop + el.clientHeight + shadowOffset < el.scrollHeight
+							: el.scrollLeft + el.clientWidth + shadowOffset < el.scrollWidth;
 
 					setAttributes(type, hasBefore, hasAfter, prefix, suffix);
 				}
@@ -128,18 +128,18 @@ export function useDataScrollOverflow(props: UseDataScrollOverflowProps = {}) {
 		el.addEventListener('scroll', checkOverflow);
 
 		// controlled
-		if (visibility !== 'auto') {
+		if (shadowVisibility !== 'auto') {
 			clearOverflow();
 
-			if (visibility === 'both') {
-				el.dataset.topBottomScroll = String(overflowCheck === 'vertical');
-				el.dataset.leftRightScroll = String(overflowCheck === 'horizontal');
+			if (shadowVisibility === 'both') {
+				el.dataset.topBottomScroll = String(shadowOverflowCheck === 'vertical');
+				el.dataset.leftRightScroll = String(shadowOverflowCheck === 'horizontal');
 			} else {
 				el.dataset.topBottomScroll = 'false';
 				el.dataset.leftRightScroll = 'false';
 
 				['top', 'bottom', 'left', 'right'].forEach(attr => {
-					el.dataset[`${attr}Scroll`] = String(visibility === attr);
+					el.dataset[`${attr}Scroll`] = String(shadowVisibility === attr);
 				});
 			}
 		}
@@ -148,7 +148,7 @@ export function useDataScrollOverflow(props: UseDataScrollOverflowProps = {}) {
 			el.removeEventListener('scroll', checkOverflow);
 			clearOverflow();
 		};
-	}, [...updateDeps, isEnabled, visibility, overflowCheck, onVisibilityChange, domRef]);
+	}, [...updateDeps, shadowEnabled, shadowVisibility, shadowOverflowCheck, onVisibilityChange, domRef]);
 }
 
 export type UseDataScrollOverflowReturn = ReturnType<typeof useDataScrollOverflow>;

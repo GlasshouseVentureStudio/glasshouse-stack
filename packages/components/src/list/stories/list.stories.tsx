@@ -118,6 +118,9 @@ export const ScrollShadow: ListStory = {
 		data,
 		scrollShadowProps: {
 			shadowSize: 'xl',
+			scrollbarSize: rem(6),
+			offsetScrollbars: 'y',
+			type: 'always',
 		},
 	},
 };

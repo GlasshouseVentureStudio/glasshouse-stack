@@ -6,7 +6,6 @@ import {
 	type LoadingOverlayProps,
 	type MantineRadius,
 	type PaginationProps,
-	type ScrollAreaProps,
 	type StylesApiProps,
 } from '@mantine/core';
 import { type PartialKeys, type VirtualizerOptions } from '@tanstack/react-virtual';
@@ -139,10 +138,6 @@ export interface ListProps<T extends object>
 	 * @param index - The index of the clicked item in the list.
 	 */
 	onItemClick?: (event: React.MouseEvent, item: T, index: number) => void;
-	/** Props for the viewport of the ScrollArea component. */
-	viewportProps?: ScrollAreaProps['viewportProps'];
-	/** CSS class names for the ScrollArea component. */
-	scrollAreaClassNames?: ScrollAreaProps['classNames'];
 	/** The header content of the list. */
 	header?: React.ReactNode;
 	/** The footer content of the list. */

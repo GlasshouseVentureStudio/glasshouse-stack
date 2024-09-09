@@ -1,52 +1,21 @@
 import { useRef } from 'react';
-import { cn, useDataScrollOverflow, type UseDataScrollOverflowProps } from '@glasshouse/utils';
+import { cn, useDataScrollOverflow } from '@glasshouse/utils';
 import {
 	Box,
-	type BoxProps,
 	createVarsResolver,
-	type ElementProps,
 	getSize,
-	type MantineSize,
-	type PolymorphicFactory,
 	polymorphicFactory,
 	ScrollArea,
 	type ScrollAreaFactory,
 	type ScrollAreaProps,
-	type StylesApiProps,
 	useProps,
 	useStyles,
 } from '@mantine/core';
 import { useMergedRef } from '@mantine/hooks';
 
+import { type ScrollShadowFactory, type ScrollShadowProps } from './scroll-shadow.types';
+
 import classes from './scroll-shadow.module.css';
-
-export type ScrollShadowStylesNames = 'root' | 'viewport';
-export interface ScrollShadowCssVariables {
-	root: '--scrollarea-shadow-size';
-}
-
-export type ScrollShadowFactory = PolymorphicFactory<{
-	props: ScrollShadowProps;
-	stylesNames: ScrollShadowStylesNames;
-	vars: ScrollShadowCssVariables;
-	defaultComponent: 'div';
-	defaultRef: HTMLDivElement;
-	staticComponents: {
-		Autosized: typeof ScrollShadowAutosized;
-	};
-}>;
-
-type ScrollShadowOrientation = 'vertical' | 'horizontal';
-
-export interface ScrollShadowProps
-	extends BoxProps,
-		StylesApiProps<ScrollShadowFactory>,
-		ElementProps<'div'>,
-		UseDataScrollOverflowProps {
-	orientation?: ScrollShadowOrientation;
-	/** Width or height of the shadow, numbers are converted to rem, `'md'` by default */
-	shadowSize?: MantineSize | (string & Record<string, unknown>) | number;
-}
 
 const varsResolver = createVarsResolver<ScrollShadowFactory>((_, { shadowSize }) => ({
 	root: {
@@ -79,9 +48,9 @@ export const ScrollShadow = polymorphicFactory<ScrollShadowFactory & ScrollAreaF
 		vars,
 		onBottomReached,
 		orientation = 'vertical',
-		offset,
-		visibility,
-		isEnabled,
+		shadowOffset,
+		shadowVisibility,
+		shadowEnabled,
 		onVisibilityChange,
 		shadowSize,
 		mod,
@@ -106,12 +75,12 @@ export const ScrollShadow = polymorphicFactory<ScrollShadowFactory & ScrollAreaF
 
 	useDataScrollOverflow({
 		domRef,
-		offset,
-		visibility,
-		isEnabled,
+		shadowOffset,
+		shadowVisibility,
+		shadowEnabled,
 		onVisibilityChange,
 		updateDeps: [children],
-		overflowCheck: orientation,
+		shadowOverflowCheck: orientation,
 	});
 
 	return (
@@ -166,9 +135,9 @@ export const ScrollShadowAutosized = polymorphicFactory<ScrollShadowFactory & Sc
 		vars,
 		onBottomReached,
 		orientation = 'vertical',
-		offset,
-		visibility,
-		isEnabled,
+		shadowOffset,
+		shadowVisibility,
+		shadowEnabled,
 		onVisibilityChange,
 		shadowSize,
 		...others
@@ -184,11 +153,9 @@ export const ScrollShadowAutosized = polymorphicFactory<ScrollShadowFactory & Sc
 				<ScrollShadow
 					classNames={classNames}
 					dir={dir}
-					isEnabled={isEnabled}
 					mod={{
 						'shadow-size': shadowSize,
 					}}
-					offset={offset}
 					offsetScrollbars={offsetScrollbars}
 					onBottomReached={onBottomReached}
 					onScrollPositionChange={onScrollPositionChange}
@@ -197,6 +164,9 @@ export const ScrollShadowAutosized = polymorphicFactory<ScrollShadowFactory & Sc
 					scrollbars={scrollbars}
 					scrollbarSize={scrollbarSize}
 					scrollHideDelay={scrollHideDelay}
+					shadowEnabled={shadowEnabled}
+					shadowOffset={shadowOffset}
+					shadowVisibility={shadowVisibility}
 					styles={styles}
 					type={type}
 					unstyled={unstyled}
@@ -204,7 +174,6 @@ export const ScrollShadowAutosized = polymorphicFactory<ScrollShadowFactory & Sc
 					vars={vars}
 					viewportProps={viewportProps}
 					viewportRef={viewportRef}
-					visibility={visibility}
 				>
 					{children}
 				</ScrollShadow>
