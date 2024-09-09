@@ -75,7 +75,7 @@
 }
 
 .groupHeader {
-	&:where([data-infinite]) {
+	&:where([data-virtualized]) {
 		left: 0;
 		top: 0;
 		position: absolute;
