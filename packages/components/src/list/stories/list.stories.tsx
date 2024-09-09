@@ -121,6 +121,7 @@ export const ScrollShadow: ListStory = {
 			scrollbarSize: rem(6),
 			offsetScrollbars: 'y',
 			type: 'always',
+			shadowVisibility: 'bottom',
 		},
 	},
 };
@@ -289,13 +290,16 @@ export const Grouped: ListStory = {
 		data,
 		groupByFn: items => groupBy(items, item => item.name.toLowerCase()[0]),
 		renderGroupHeader: header => (
-			<Box className='gvs-px-3 gvs-font-bold gvs-uppercase gvs-py-2'>
+			<Box className='gvs-px-3 gvs-font-bold gvs-uppercase gvs-py-2 gvs-bg-white'>
 				{header.title} {`(${header.items.length} items)`}
 			</Box>
 		),
 		className: 'gvs-h-96',
 		stickyGroupHeader: false,
 		estimateGroupHeaderSize: () => 41,
+		scrollShadowProps: {
+			shadowVisibility: 'bottom',
+		},
 	},
 	render: args => {
 		const [sticky, setSticky] = useState(args.stickyGroupHeader);

@@ -82,19 +82,23 @@
 
 		&:where([data-orientation='vertical']) {
 			width: 100%;
-			transform: translateY(var(--list-item-start));
+
+			&:not([data-sticky]) {
+				transform: translateY(var(--list-item-start));
+			}
 		}
 
 		&:where([data-orientation='horizontal']) {
 			height: 100%;
-			transform: translateX(var(--list-item-start));
+
+			&:not([data-sticky]) {
+				transform: translateX(var(--list-item-start));
+			}
 		}
 	}
 
 	&:where([data-sticky]) {
 		z-index: 1;
-		left: 0;
-		top: 0;
 		position: sticky;
 	}
 

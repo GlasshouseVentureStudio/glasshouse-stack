@@ -15,6 +15,7 @@ const config: StorybookConfig = {
 		'../src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
 		'../../../packages/components/src/**/*.mdx',
 		'../../../packages/components/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+		'../../../packages/components/CHANGELOG.md',
 	],
 	addons: [
 		getAbsolutePath('@storybook/addon-links'),
