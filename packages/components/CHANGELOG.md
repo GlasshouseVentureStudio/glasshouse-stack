@@ -1,5 +1,18 @@
 # @glasshouse/components
 
+## 0.6.4
+
+### Patch Changes
+
+- Updated dependencies
+  - @glasshouse/utils@0.2.7
+
+## 0.6.3
+
+### Patch Changes
+
+- Update scroll shadow types
+
 ## 0.6.2
 
 ### Patch Changes

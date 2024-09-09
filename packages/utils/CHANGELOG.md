@@ -1,5 +1,11 @@
 # @glasshouse/utils
 
+## 0.2.7
+
+### Patch Changes
+
+- Update use data scroll overflow hook types
+
 ## 0.2.6
 
 ### Patch Changes
