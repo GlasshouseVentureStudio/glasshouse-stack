@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.2
+
+### Patch Changes
+
+- Add virtualized props to `List` for disabling virtualization.
+
 ## 0.6.1
 
 ### Patch Changes
