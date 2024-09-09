@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.5
+
+### Patch Changes
+
+- Fix group header css data attribute
+
 ## 0.6.4
 
 ### Patch Changes
