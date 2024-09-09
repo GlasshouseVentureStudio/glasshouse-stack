@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.6
+
+### Patch Changes
+
+- Fix list group header style
+
 ## 0.6.5
 
 ### Patch Changes
