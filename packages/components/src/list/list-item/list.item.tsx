@@ -21,10 +21,23 @@ export const ListItem = factory<ListItemFactory>((_props, ref) => {
 		children,
 		orientation,
 		withItemBorder,
+		virtualized,
 		...others
 	} = props;
 
 	const { getStyles } = useListContext();
+
+	const virtualizedStyles = virtualized ? { '--list-item-start': rem(virtualRow?.start) } : {};
+
+	const elementStyles = getStyles('item', {
+		className,
+		classNames,
+		style: {
+			...virtualizedStyles,
+			...style,
+		},
+		styles,
+	});
 
 	return (
 		<Box
@@ -34,19 +47,12 @@ export const ListItem = factory<ListItemFactory>((_props, ref) => {
 				{
 					orientation,
 					active,
+					virtualized,
 					'with-item-border': withItemBorder,
 				},
 				mod,
 			]}
-			{...getStyles('item', {
-				className,
-				classNames,
-				style: {
-					'--list-item-start': rem(virtualRow.start),
-					...style,
-				},
-				styles,
-			})}
+			{...elementStyles}
 			{...others}
 		>
 			{children}

@@ -75,6 +75,8 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 		scrollShadowProps,
 		style,
 		styles,
+		virtualized = true,
+		virtualizerOptions,
 		...rest
 	} = props;
 
@@ -132,10 +134,22 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 
 	const isActiveSticky = (index: number) => activeStickyIndexRef.current === index && stickyGroupHeader;
 
-	const renderInnerItem = (item: T | ListGroupHeaderType<T>, index: number, virtualRow: VirtualItem) => {
+	const renderInnerItem = (item: T | ListGroupHeaderType<T>, index: number, virtualRow?: VirtualItem) => {
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- `renderItem` is required
 		if (!renderItem) {
 			throw new Error('List: `renderItem` is required');
+		}
+
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- `estimateItemSize` is required
+		if (virtualized && !estimateItemSize) {
+			throw new Error('List: `estimateItemSize` is required for `infinite` is `true`');
+		}
+
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- `estimateGroupHeaderSize` is required
+		if (virtualized && groupByFn && !estimateGroupHeaderSize) {
+			throw new Error(
+				'List: `estimateGroupHeaderSize` is required for `infinite` is `true` and `groupByFn` is defined'
+			);
 		}
 
 		let key: string | number | undefined;
@@ -155,11 +169,16 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 		if (isListGroupHeader(item)) {
 			if (!renderGroupHeader) throw new Error('List: `renderGroupHeader` is required.');
 
+			const virtualIndex = virtualRow?.index ?? 0;
+
+			const _index = virtualized ? virtualIndex : index;
+
 			return (
 				<ListGroupHeader
 					key={key}
 					orientation={orientation}
-					sticky={isActiveSticky(virtualRow.index)}
+					sticky={isActiveSticky(_index)}
+					virtualized={virtualized}
 					virtualRow={virtualRow}
 					withItemBorder={withItemBorder}
 				>
@@ -176,6 +195,7 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 					handleItemClick(event, item, index);
 				}}
 				orientation={orientation}
+				virtualized={virtualized}
 				virtualRow={virtualRow}
 				withItemBorder={withItemBorder}
 			>
@@ -188,16 +208,13 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 	const scrollRef = useRef<HTMLDivElement>(null);
 	const bottomRef = useRef<HTMLDivElement>(null);
 
-	const rangeExtractor = useCallback(
-		(range: Range) => {
-			activeStickyIndexRef.current = [...groupHeaderIndexes].reverse().find(index => range.startIndex >= index) ?? 0;
+	const rangeExtractor = (range: Range) => {
+		activeStickyIndexRef.current = [...groupHeaderIndexes].reverse().find(index => range.startIndex >= index) ?? 0;
 
-			const next = new Set([activeStickyIndexRef.current, ...defaultRangeExtractor(range)]);
+		const next = new Set([activeStickyIndexRef.current, ...defaultRangeExtractor(range)]);
 
-			return [...next].sort((a, b) => a - b);
-		},
-		[groupHeaderIndexes]
-	);
+		return [...next].sort((a, b) => a - b);
+	};
 
 	const rowVirtualizer = useVirtualizer({
 		horizontal: orientation === 'horizontal',
@@ -212,11 +229,18 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 		},
 		overscan: 5,
 		rangeExtractor,
+		enabled: virtualized,
+		...virtualizerOptions,
 	});
 
 	const listSize = rowVirtualizer.getTotalSize();
 
-	const items = rowVirtualizer.getVirtualItems().map(row => renderInnerItem(data[row.index] as T, row.index, row));
+	const virtualizedItems = rowVirtualizer
+		.getVirtualItems()
+		.map(row => renderInnerItem(data[row.index] as T, row.index, row));
+	const normalItems = data.map((item, index) => renderInnerItem(item, index));
+
+	const items = virtualized ? virtualizedItems : normalItems;
 
 	const isEmpty = !items.length;
 
@@ -310,6 +334,16 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 		</Box>
 	) : null;
 
+	const listVirtualizedStyles = virtualized
+		? {
+				'--list-size': rem(listSize),
+			}
+		: {};
+
+	const listStyles = getStyles('list', {
+		style: listVirtualizedStyles,
+	});
+
 	return (
 		<ListProvider value={{ getStyles: getStyles as unknown as GetStylesApi<ListFactory<object>> }}>
 			<Box
@@ -347,14 +381,9 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 						component='ul'
 						mod={{
 							orientation,
+							virtualized,
 						}}
-						// className={listStyles()}
-						// style={{ '--list-size': `${rowVirtualizer.getTotalSize()}px` }}
-						{...getStyles('list', {
-							style: {
-								'--list-size': rem(listSize),
-							},
-						})}
+						{...listStyles}
 					>
 						{items}
 					</Box>
@@ -369,7 +398,5 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 	);
 };
 
-/**
- * A component that renders a list of items.
- */
+/** Renders a list component with various features such as selection, grouping, pagination, and virtualization by default.*/
 export const List = forwardRef(ListInner);

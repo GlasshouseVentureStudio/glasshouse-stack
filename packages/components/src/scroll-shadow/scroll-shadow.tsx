@@ -83,6 +83,8 @@ export const ScrollShadow = polymorphicFactory<ScrollShadowFactory & ScrollAreaF
 		visibility,
 		isEnabled,
 		onVisibilityChange,
+		shadowSize,
+		mod,
 		...others
 	} = props;
 
@@ -120,6 +122,7 @@ export const ScrollShadow = polymorphicFactory<ScrollShadowFactory & ScrollAreaF
 				viewport: getStyles('viewport').className,
 			}}
 			dir={dir}
+			mod={[{ 'shadow-size': shadowSize }, mod]}
 			offsetScrollbars={offsetScrollbars}
 			onBottomReached={onBottomReached}
 			onScrollPositionChange={onScrollPositionChange}
@@ -167,6 +170,7 @@ export const ScrollShadowAutosized = polymorphicFactory<ScrollShadowFactory & Sc
 		visibility,
 		isEnabled,
 		onVisibilityChange,
+		shadowSize,
 		...others
 	} = props;
 
@@ -181,6 +185,9 @@ export const ScrollShadowAutosized = polymorphicFactory<ScrollShadowFactory & Sc
 					classNames={classNames}
 					dir={dir}
 					isEnabled={isEnabled}
+					mod={{
+						'shadow-size': shadowSize,
+					}}
 					offset={offset}
 					offsetScrollbars={offsetScrollbars}
 					onBottomReached={onBottomReached}

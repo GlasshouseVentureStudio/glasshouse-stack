@@ -19,16 +19,19 @@ export const ListGroupHeader = polymorphicFactory<ListGroupHeaderFactory>((_prop
 		withItemBorder,
 		mod,
 		virtualRow,
+		virtualized,
 		...others
 	} = props;
 
 	const { getStyles } = useListContext();
 
+	const virtualizedStyles = virtualized ? { '--list-item-start': rem(virtualRow?.start) } : {};
+
 	const elementStyles = getStyles('groupHeader', {
 		className,
 		classNames,
 		style: {
-			'--list-item-start': rem(virtualRow.start),
+			...virtualizedStyles,
 			...style,
 		},
 		styles,
@@ -42,6 +45,7 @@ export const ListGroupHeader = polymorphicFactory<ListGroupHeaderFactory>((_prop
 				{
 					orientation,
 					sticky,
+					virtualized,
 					'with-item-border': withItemBorder,
 				},
 				mod,

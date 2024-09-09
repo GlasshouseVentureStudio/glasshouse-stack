@@ -39,28 +39,32 @@
 }
 
 .item {
-	left: 0;
-	top: 0;
-	position: absolute;
+	&:where([data-virtualized]) {
+		left: 0;
+		top: 0;
+		position: absolute;
 
-	&:where([data-orientation='vertical']) {
-		width: 100%;
-		transform: translateY(var(--list-item-start));
+		&:where([data-orientation='vertical']) {
+			width: 100%;
+			transform: translateY(var(--list-item-start));
+		}
 
-		&:where([data-with-item-border]) {
+		&:where([data-orientation='horizontal']) {
+			height: 100%;
+			transform: translateX(var(--list-item-start));
+		}
+	}
+
+	&:where([data-with-item-border]) {
+		&:where([data-orientation='vertical']) {
 			border-bottom: rem(1px) solid var(--mantine-color-default-border);
 
 			&:last-of-type {
 				border-bottom: none;
 			}
 		}
-	}
 
-	&:where([data-orientation='horizontal']) {
-		height: 100%;
-		transform: translateX(var(--list-item-start));
-
-		&:where([data-with-item-border]) {
+		&:where([data-orientation='horizontal']) {
 			border-right: rem(1px) solid var(--mantine-color-default-border);
 
 			&:last-of-type {
@@ -71,33 +75,39 @@
 }
 
 .groupHeader {
-	left: 0;
-	top: 0;
-	position: absolute;
+	&:where([data-infinite]) {
+		left: 0;
+		top: 0;
+		position: absolute;
+
+		&:where([data-orientation='vertical']) {
+			width: 100%;
+			transform: translateY(var(--list-item-start));
+		}
+
+		&:where([data-orientation='horizontal']) {
+			height: 100%;
+			transform: translateX(var(--list-item-start));
+		}
+	}
 
 	&:where([data-sticky]) {
-		z-index: 10;
+		z-index: 1;
+		left: 0;
+		top: 0;
 		position: sticky;
 	}
 
-	&:where([data-orientation='vertical']):not([data-sticky]) {
-		width: 100%;
-		transform: translateY(var(--list-item-start));
-
-		&:where([data-with-item-border]) {
+	&:where([data-with-item-border]) {
+		&:where([data-orientation='vertical']) {
 			border-bottom: rem(1px) solid var(--mantine-color-default-border);
 
 			&:last-of-type {
 				border-bottom: none;
 			}
 		}
-	}
 
-	&:where([data-orientation='horizontal']):not([data-sticky]) {
-		height: 100%;
-		transform: translateX(var(--list-item-start));
-
-		&:where([data-with-item-border]) {
+		&:where([data-orientation='horizontal']) {
 			border-right: rem(1px) solid var(--mantine-color-default-border);
 
 			&:last-of-type {
