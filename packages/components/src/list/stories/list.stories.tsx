@@ -261,7 +261,7 @@ export const Virtualized: ListStory = {
 	args: {
 		...Default.args,
 		data,
-		virtualized: true,
+		virtualized: false,
 		className: 'gvs-h-96',
 	},
 	render: ({ virtualized, ...args }) => {
@@ -337,6 +337,7 @@ export const Selectable: ListStory = {
 					checked={active}
 					data-testid={item.name}
 					id={item.id}
+					readOnly
 				/>
 				<Box className='gvs-line-clamp-1 gvs-flex gvs-h-8 gvs-items-center'>
 					<label htmlFor={item.id}>{item.name}</label>
@@ -401,7 +402,6 @@ export const Pagination: ListStory = {
 		data,
 		pagination: {
 			total: chunk(data, 20).length,
-			pageSize: 10,
 			position: 'bottom',
 		},
 		classNames: {

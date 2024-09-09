@@ -25,13 +25,13 @@ export const ListGroupHeader = polymorphicFactory<ListGroupHeaderFactory>((_prop
 
 	const { getStyles } = useListContext();
 
-	const infiniteStyle = virtualized ? { '--list-item-start': rem(virtualRow?.start) } : {};
+	const virtualizedStyles = virtualized ? { '--list-item-start': rem(virtualRow?.start) } : {};
 
 	const elementStyles = getStyles('groupHeader', {
 		className,
 		classNames,
 		style: {
-			...infiniteStyle,
+			...virtualizedStyles,
 			...style,
 		},
 		styles,

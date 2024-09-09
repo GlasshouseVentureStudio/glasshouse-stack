@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import {
 	Box,
 	createVarsResolver,
@@ -34,14 +34,6 @@ const varsResolver = <T extends object>() =>
 		},
 	}));
 
-/**
- * Renders a list component with various features such as selection, grouping, pagination, and virtualization.
- *
- * @template T - The type of the items in the list.
- * @param _props - The props for the list component.
- * @param ref - The ref for the list component.
- * @returns The rendered list component.
- */
 const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedRef<HTMLDivElement>) => {
 	const props = useProps('List', {}, _props);
 
@@ -84,6 +76,7 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 		style,
 		styles,
 		virtualized = true,
+		virtualizerOptions,
 		...rest
 	} = props;
 
@@ -139,107 +132,89 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 		findIndex(data, item => isListGroupHeader(item) && item.title === group)
 	);
 
-	const isActiveSticky = useCallback(
-		(index: number) => activeStickyIndexRef.current === index && stickyGroupHeader,
-		[stickyGroupHeader]
-	);
+	const isActiveSticky = (index: number) => activeStickyIndexRef.current === index && stickyGroupHeader;
 
-	const renderInnerItem = useCallback(
-		(item: T | ListGroupHeaderType<T>, index: number, virtualRow?: VirtualItem) => {
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- `renderItem` is required
-			if (!renderItem) {
-				throw new Error('List: `renderItem` is required');
-			}
+	const renderInnerItem = (item: T | ListGroupHeaderType<T>, index: number, virtualRow?: VirtualItem) => {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- `renderItem` is required
+		if (!renderItem) {
+			throw new Error('List: `renderItem` is required');
+		}
 
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- `estimateItemSize` is required
-			if (virtualized && !estimateItemSize) {
-				throw new Error('List: `estimateItemSize` is required for `infinite` is `true`');
-			}
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- `estimateItemSize` is required
+		if (virtualized && !estimateItemSize) {
+			throw new Error('List: `estimateItemSize` is required for `infinite` is `true`');
+		}
 
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- `estimateGroupHeaderSize` is required
-			if (virtualized && groupByFn && !estimateGroupHeaderSize) {
-				throw new Error(
-					'List: `estimateGroupHeaderSize` is required for `infinite` is `true` and `groupByFn` is defined'
-				);
-			}
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- `estimateGroupHeaderSize` is required
+		if (virtualized && groupByFn && !estimateGroupHeaderSize) {
+			throw new Error(
+				'List: `estimateGroupHeaderSize` is required for `infinite` is `true` and `groupByFn` is defined'
+			);
+		}
 
-			let key: string | number | undefined;
+		let key: string | number | undefined;
 
-			if (isListGroupHeader(item)) {
-				key = item.title;
-			} else if (typeof itemKey === 'function') {
-				key = itemKey(item, index);
-			} else if (itemKey) {
-				key = item[itemKey] as string | number;
-			}
+		if (isListGroupHeader(item)) {
+			key = item.title;
+		} else if (typeof itemKey === 'function') {
+			key = itemKey(item, index);
+		} else if (itemKey) {
+			key = item[itemKey] as string | number;
+		}
 
-			if (!key) {
-				key = `list-item-${index}`;
-			}
+		if (!key) {
+			key = `list-item-${index}`;
+		}
 
-			if (isListGroupHeader(item)) {
-				const index = virtualRow?.index ?? 0;
+		if (isListGroupHeader(item)) {
+			if (!renderGroupHeader) throw new Error('List: `renderGroupHeader` is required.');
 
-				return (
-					<ListGroupHeader
-						key={key}
-						orientation={orientation}
-						sticky={isActiveSticky(index)}
-						virtualized={virtualized}
-						virtualRow={virtualRow}
-						withItemBorder={withItemBorder}
-					>
-						{renderGroupHeader?.(item)}
-					</ListGroupHeader>
-				);
-			}
+			const virtualIndex = virtualRow?.index ?? 0;
+
+			const _index = virtualized ? virtualIndex : index;
 
 			return (
-				<ListItem
+				<ListGroupHeader
 					key={key}
-					active={getActiveItem(item, index)}
-					onClick={event => {
-						handleItemClick(event, item, index);
-					}}
 					orientation={orientation}
+					sticky={isActiveSticky(_index)}
 					virtualized={virtualized}
 					virtualRow={virtualRow}
 					withItemBorder={withItemBorder}
 				>
-					{renderItem(item, index, getActiveItem(item, index))}
-				</ListItem>
+					{renderGroupHeader(item)}
+				</ListGroupHeader>
 			);
-		},
-		[
-			estimateGroupHeaderSize,
-			estimateItemSize,
-			getActiveItem,
-			groupByFn,
-			handleItemClick,
-			isActiveSticky,
-			itemKey,
-			orientation,
-			renderGroupHeader,
-			renderItem,
-			virtualized,
-			withItemBorder,
-		]
-	);
+		}
+
+		return (
+			<ListItem
+				key={key}
+				active={getActiveItem(item, index)}
+				onClick={event => {
+					handleItemClick(event, item, index);
+				}}
+				orientation={orientation}
+				virtualized={virtualized}
+				virtualRow={virtualRow}
+				withItemBorder={withItemBorder}
+			>
+				{renderItem(item, index, getActiveItem(item, index))}
+			</ListItem>
+		);
+	};
 	// =============== Handle data items =============== //
 
 	const scrollRef = useRef<HTMLDivElement>(null);
 	const bottomRef = useRef<HTMLDivElement>(null);
 
-	const rangeExtractor = useCallback(
-		(range: Range) => {
-			activeStickyIndexRef.current = [...groupHeaderIndexes].reverse().find(index => range.startIndex >= index) ?? 0;
+	const rangeExtractor = (range: Range) => {
+		activeStickyIndexRef.current = [...groupHeaderIndexes].reverse().find(index => range.startIndex >= index) ?? 0;
 
-			const next = new Set([activeStickyIndexRef.current, ...defaultRangeExtractor(range)]);
+		const next = new Set([activeStickyIndexRef.current, ...defaultRangeExtractor(range)]);
 
-			return [...next].sort((a, b) => a - b);
-		},
-		[groupHeaderIndexes]
-	);
+		return [...next].sort((a, b) => a - b);
+	};
 
 	const rowVirtualizer = useVirtualizer({
 		horizontal: orientation === 'horizontal',
@@ -254,19 +229,18 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 		},
 		overscan: 5,
 		rangeExtractor,
+		enabled: virtualized,
+		...virtualizerOptions,
 	});
 
 	const listSize = rowVirtualizer.getTotalSize();
 
-	const virtualizedItems = useMemo(
-		() => rowVirtualizer.getVirtualItems().map(row => renderInnerItem(data[row.index] as T, row.index, row)),
-		[data, renderInnerItem, rowVirtualizer]
-	);
+	const virtualizedItems = rowVirtualizer
+		.getVirtualItems()
+		.map(row => renderInnerItem(data[row.index] as T, row.index, row));
+	const normalItems = data.map((item, index) => renderInnerItem(item, index));
 
-	const items = useMemo(
-		() => (virtualized ? virtualizedItems : data.map((item, index) => renderInnerItem(item, index))),
-		[data, renderInnerItem, virtualized, virtualizedItems]
-	);
+	const items = virtualized ? virtualizedItems : normalItems;
 
 	const isEmpty = !items.length;
 
@@ -360,7 +334,12 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 		</Box>
 	) : null;
 
-	const listVirtualizedStyles = virtualized ? { '--list-size': rem(listSize) } : {};
+	const listVirtualizedStyles = virtualized
+		? {
+				'--list-size': rem(listSize),
+			}
+		: {};
+
 	const listStyles = getStyles('list', {
 		style: listVirtualizedStyles,
 	});
@@ -419,5 +398,5 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 	);
 };
 
-/** Renders a list component with various features such as selection, grouping, pagination, and virtualization by default. */
+/** Renders a list component with various features such as selection, grouping, pagination, and virtualization by default.*/
 export const List = forwardRef(ListInner);

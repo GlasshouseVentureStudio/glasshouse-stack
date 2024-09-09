@@ -29,52 +29,42 @@
 
 	&:where([data-orientation='vertical']) {
 		width: 100%;
-
-		&:where([data-virtualized]) {
-			height: var(--list-size);
-		}
+		height: var(--list-size);
 	}
 
 	&:where([data-orientation='horizontal']) {
 		height: 100%;
-
-		&:where([data-virtualized]) {
-			width: var(--list-size);
-		}
+		width: var(--list-size);
 	}
 }
 
 .item {
-	&:where([data-infinite]) {
+	&:where([data-virtualized]) {
 		left: 0;
 		top: 0;
 		position: absolute;
-	}
 
-	&:where([data-orientation='vertical']) {
-		width: 100%;
-
-		&:where([data-infinite]) {
+		&:where([data-orientation='vertical']) {
+			width: 100%;
 			transform: translateY(var(--list-item-start));
 		}
 
-		&:where([data-with-item-border]) {
+		&:where([data-orientation='horizontal']) {
+			height: 100%;
+			transform: translateX(var(--list-item-start));
+		}
+	}
+
+	&:where([data-with-item-border]) {
+		&:where([data-orientation='vertical']) {
 			border-bottom: rem(1px) solid var(--mantine-color-default-border);
 
 			&:last-of-type {
 				border-bottom: none;
 			}
 		}
-	}
 
-	&:where([data-orientation='horizontal']) {
-		height: 100%;
-
-		&:where([data-infinite]) {
-			transform: translateX(var(--list-item-start));
-		}
-
-		&:where([data-with-item-border]) {
+		&:where([data-orientation='horizontal']) {
 			border-right: rem(1px) solid var(--mantine-color-default-border);
 
 			&:last-of-type {
@@ -89,37 +79,35 @@
 		left: 0;
 		top: 0;
 		position: absolute;
-	}
 
-	&:where([data-sticky]) {
-		z-index: 10;
-		position: sticky;
-	}
-
-	&:where([data-orientation='vertical']):not([data-sticky]) {
-		width: 100%;
-
-		&:where([data-infinite]) {
+		&:where([data-orientation='vertical']) {
+			width: 100%;
 			transform: translateY(var(--list-item-start));
 		}
 
-		&:where([data-with-item-border]) {
+		&:where([data-orientation='horizontal']) {
+			height: 100%;
+			transform: translateX(var(--list-item-start));
+		}
+	}
+
+	&:where([data-sticky]) {
+		z-index: 1;
+		left: 0;
+		top: 0;
+		position: sticky;
+	}
+
+	&:where([data-with-item-border]) {
+		&:where([data-orientation='vertical']) {
 			border-bottom: rem(1px) solid var(--mantine-color-default-border);
 
 			&:last-of-type {
 				border-bottom: none;
 			}
 		}
-	}
 
-	&:where([data-orientation='horizontal']):not([data-sticky]) {
-		height: 100%;
-
-		&:where([data-infinite]) {
-			transform: translateX(var(--list-item-start));
-		}
-
-		&:where([data-with-item-border]) {
+		&:where([data-orientation='horizontal']) {
 			border-right: rem(1px) solid var(--mantine-color-default-border);
 
 			&:last-of-type {

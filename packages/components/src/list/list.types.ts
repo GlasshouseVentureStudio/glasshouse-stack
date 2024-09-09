@@ -9,6 +9,7 @@ import {
 	type ScrollAreaProps,
 	type StylesApiProps,
 } from '@mantine/core';
+import { type PartialKeys, type VirtualizerOptions } from '@tanstack/react-virtual';
 // eslint-disable-next-line import/no-unresolved -- lodash is not a dependency, only using `@types/lodash` for types.
 import { type Dictionary } from 'lodash';
 
@@ -197,7 +198,26 @@ export interface ListProps<T extends object>
 	bottomLoading?: boolean;
 	/** Whether the list is virtualized by `@tanstack/react-virtual`. */
 	virtualized?: boolean;
+	/** Options for the virtualizer. See [`@tanstack/react-virtual`](https://tanstack.com/virtual/latest/docs/api/virtualizer). */
+	virtualizerOptions?: ListVirtualizerOptions;
 }
+
+type OmittedVirtualizerKeys =
+	| 'horizontal'
+	| 'count'
+	| 'getScrollElement'
+	| 'estimateSize'
+	| 'overscan'
+	| 'rangeExtractor'
+	| 'enabled';
+
+export type ListVirtualizerOptions = Omit<
+	PartialKeys<
+		VirtualizerOptions<HTMLDivElement, Element>,
+		'observeElementRect' | 'observeElementOffset' | 'scrollToFn'
+	>,
+	OmittedVirtualizerKeys
+>;
 
 /**
  * Configuration options for pagination.
@@ -209,6 +229,4 @@ export type PaginationConfig = Omit<PaginationProps, ''> & {
 	 * - 'bottom': Display the pagination component at the bottom.
 	 */
 	position?: 'top' | 'bottom';
-	/** The number of items to display per page. */
-	pageSize?: number;
 };

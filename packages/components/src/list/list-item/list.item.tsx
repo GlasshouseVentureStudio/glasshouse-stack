@@ -27,13 +27,13 @@ export const ListItem = factory<ListItemFactory>((_props, ref) => {
 
 	const { getStyles } = useListContext();
 
-	const infiniteStyle = virtualized ? { '--list-item-start': rem(virtualRow?.start) } : {};
+	const virtualizedStyles = virtualized ? { '--list-item-start': rem(virtualRow?.start) } : {};
 
 	const elementStyles = getStyles('item', {
 		className,
 		classNames,
 		style: {
-			...infiniteStyle,
+			...virtualizedStyles,
 			...style,
 		},
 		styles,
