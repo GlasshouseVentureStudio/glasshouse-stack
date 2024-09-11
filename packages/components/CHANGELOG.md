@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.7
+
+### Patch Changes
+
+- Add missing export for scrollshadow
+
 ## 0.6.6
 
 ### Patch Changes
