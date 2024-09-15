@@ -4,6 +4,6 @@
 	"exclude": ["dist", "build", "node_modules"],
 	"files": ["src/types/declarations.d.ts"],
 	"compilerOptions": {
-		"typeRoots": []
+		"declarationDir": "./dist/lib"
 	}
 }

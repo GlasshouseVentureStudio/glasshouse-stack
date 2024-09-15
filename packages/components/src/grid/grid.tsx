@@ -1,13 +1,13 @@
 'use client';
 
-import { Children, isValidElement, useMemo } from 'react';
+import { Children, type ForwardedRef, forwardRef, isValidElement, useMemo } from 'react';
 import {
 	Box,
+	createPolymorphicComponent,
 	createVarsResolver,
 	getRadius,
 	getSize,
 	getThemeColor,
-	polymorphicFactory,
 	rem,
 	useProps,
 	useRandomClassName,
@@ -18,8 +18,10 @@ import { GridProvider } from './grid.context';
 import { type ClipSpan, type GridFactory, type GridProps } from './grid.types';
 import { convertToSpan, mergeGridProps, restrictResponsiveProp } from './grid.utils';
 import { GridVariables } from './grid.variables';
-import { GridCell, type GridCellProps } from './grid-cell';
-import { GridGuidesContainer, type GridGuidesVariablesProps } from './grid-guides';
+import { GridCell } from './grid-cell/grid-cell';
+import { type GridCellProps } from './grid-cell/grid-cell.types';
+import { GridGuidesContainer } from './grid-guides/grid-guides.container';
+import { type GridGuidesVariablesProps } from './grid-guides/grid-guides.types';
 
 import classes from './grid.module.css';
 
@@ -50,7 +52,7 @@ const varsResolver = createVarsResolver<GridFactory>((theme, { guideWidth, guide
  *
  * This component is based from Vercel's Geist Design System `Grid` component.
  */
-export const Grid = polymorphicFactory<GridFactory>((_props, ref) => {
+const GridInner = (_props: GridProps, ref: ForwardedRef<HTMLElement>) => {
 	const props = useProps('GridSystem', defaultProps, _props);
 	const {
 		className,
@@ -172,7 +174,20 @@ export const Grid = polymorphicFactory<GridFactory>((_props, ref) => {
 			</Box>
 		</GridProvider>
 	);
-});
+};
 
-Grid.displayName = '@glasshouse/components/Grid';
+interface GridStaticComponents {
+	Cell: typeof GridCell;
+}
+
+/**
+ * Renders a grid system with customizable columns and rows. Built on top of Mantine's `SimpleGrid` component.
+ *
+ * This component is based from Vercel's Geist Design System `Grid` component.
+ */
+const Grid = createPolymorphicComponent<'section', GridProps, GridStaticComponents>(forwardRef(GridInner));
+
+Grid.displayName = 'Grid';
 Grid.Cell = GridCell;
+
+export { Grid };

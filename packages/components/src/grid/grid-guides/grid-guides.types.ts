@@ -7,7 +7,7 @@ import {
 } from '@mantine/core';
 
 import { type BaseGridProps, type ClipSpan, type GridPosition, type RestrictedResponsiveProp } from '../grid.types';
-import { type GridCellProps } from '../grid-cell';
+import { type GridCellProps } from '../grid-cell/grid-cell.types';
 
 /**
  * Properties for grid guides.

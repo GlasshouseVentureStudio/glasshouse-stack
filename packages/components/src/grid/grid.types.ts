@@ -10,7 +10,7 @@ import {
 } from '@mantine/core';
 
 import { type restrictResponsiveProp } from './grid.utils';
-import { type GridCell } from './grid-cell';
+import { type GridCell } from './grid-cell/grid-cell';
 
 /**
  * Base properties for the grid.

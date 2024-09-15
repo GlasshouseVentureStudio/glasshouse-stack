@@ -7,24 +7,34 @@
 		"url": "https://github.com/GlasshouseVentureStudio/glasshouse-stack/tree/main/packages/components"
 	},
 	"license": "MIT",
-	"sideEffects": false,
+	"sideEffects": [
+		"*.css"
+	],
 	"type": "module",
 	"exports": {
 		".": {
 			"source": "./src/index.ts",
-			"import": "./dist/index.js",
-			"require": "./dist/index.cjs"
+			"import": {
+				"types": "./dist/esm/index.d.ts",
+				"default": "./dist/esm/index.js"
+			},
+			"require": {
+				"types": "./dist/cjs/index.d.cts",
+				"require": "./dist/cjs/index.cjs"
+			}
 		},
-		"./styles.css": "./dist/index.css",
-		"./tailwind.css": "./dist/tailwind.css",
-		"./data-table.css": "./dist/data-table/styles.css"
+		"./styles.css": "./dist/esm/index.css",
+		"./tailwind.css": "./dist/esm/tailwind.css"
 	},
+	"main": "./dist/cjs/index.cjs",
+	"module": "./dist/esm/index.js",
+	"types": "./dist/esm/index.d.ts",
 	"files": [
 		"dist/**",
 		"gvs-components.svg"
 	],
 	"scripts": {
-		"build": "tsup --tsconfig ./tsconfig.json --dts --clean && pnpm build:tailwind",
+		"build": "tsup --tsconfig ./tsconfig.json --clean && pnpm build:tailwind",
 		"build:tailwind": "tailwindcss -i ./src/styles.css -o ./dist/tailwind.css",
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
 		"copy:css": "node -e \"require('fs').cpSync('./node_modules/mantine-react-table/styles.css', './dist/data-table/styles.css');\"",
@@ -34,6 +44,9 @@
 	},
 	"dependencies": {
 		"@glasshouse/utils": "workspace:*",
+		"@mantine/core": "^7.12.2",
+		"@mantine/form": "^7.12.2",
+		"@mantine/hooks": "^7.12.2",
 		"@tabler/icons-react": "^3.14.0",
 		"@tanstack/react-query": "^5.54.1",
 		"@tanstack/react-table": "^8.20.5",
@@ -76,12 +89,14 @@
 		"@types/lodash.uniqby": "^4.7.9",
 		"@types/react": "^18.3.5",
 		"@types/react-dom": "^18.3.0",
+		"@types/uuid": "^10.0.0",
 		"dayjs": ">=1.11.11",
 		"eslint": "^8.57.0",
 		"lucide-react": ">=0.429.0",
 		"tailwindcss": "^3.4.10",
 		"tsup": "^8.2.4",
-		"typescript": "^5.5.4"
+		"typescript": "^5.5.4",
+		"uuid": "^10.0.0"
 	},
 	"peerDependencies": {
 		"@mantine/core": ">=7.12.2",

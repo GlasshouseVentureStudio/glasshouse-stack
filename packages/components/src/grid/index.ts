@@ -1,7 +1,16 @@
-export * from './grid';
-export * from './grid.context';
-export * from './grid.types';
-export * from './grid.utils';
-export * from './grid.variables';
-export * from './grid-cell';
-export * from './grid-guides';
+export { Grid } from './grid';
+export type {
+	GridCssVariables,
+	GridFactory,
+	GridPosition,
+	GridProps,
+	GridStylesNames,
+	GridVariablesProps,
+} from './grid.types';
+export { GridCell } from './grid-cell/grid-cell';
+export type {
+	GridCellFactory,
+	GridCellProps,
+	GridCellStylesNames,
+	GridCellVariablesProps,
+} from './grid-cell/grid-cell.types';
