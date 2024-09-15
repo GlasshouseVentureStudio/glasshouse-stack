@@ -1,13 +1,28 @@
 import { faker } from '@faker-js/faker';
-import { ActionIcon, Button, Combobox, type ComboboxData, type ComboboxItem, Group, Stack } from '@mantine/core';
+import {
+	ActionIcon,
+	Button,
+	Combobox,
+	type ComboboxData,
+	type ComboboxItem,
+	Fieldset,
+	Grid,
+	Group,
+	Stack,
+	TextInput,
+} from '@mantine/core';
 import { Notifications, notifications } from '@mantine/notifications';
 import type { Meta, StoryObj } from '@storybook/react';
 import { IconCheck, IconChevronLeft, IconChevronRight, IconThumbUp } from '@tabler/icons-react';
+import { v4 } from 'uuid';
 
 import { Select } from './select';
 import { type SelectProps, type SelectWithInfiniteQueryProps } from './select.types';
 
+import { useForm } from '@mantine/form';
 import '@mantine/notifications/styles.css';
+import { MinusIcon, PlusIcon } from 'lucide-react';
+import { useState } from 'react';
 
 const meta: Meta = {
 	title: 'Components/Select',
@@ -342,3 +357,267 @@ export const WithInfiniteQuery: StoryObj<
 		);
 	},
 };
+
+interface FormFields {
+	contacts: {
+		name: string;
+		phone: string;
+		email: string;
+		person: string;
+		key: string;
+	}[];
+}
+
+interface UsersParams {
+	limit?: number;
+	skip?: number;
+	q?: string;
+}
+
+const getUsers = async (params: UsersParams) => {
+	const searchParams = new URLSearchParams(params as unknown as Record<string, string>);
+
+	const url = params ? `https://dummyjson.com/users/search?${searchParams.toString()}` : 'https://dummyjson.com/users';
+
+	return fetch(url).then(response => response.json() as Promise<UsersResponse>);
+};
+
+export const FormUsage: StoryObj<
+	SelectWithInfiniteQueryProps<UsersResponse, Error, string[], { pageSize: number; pageIndex: number }>
+> = {
+	args: {
+		dropdownLoadingType: 'skeleton',
+	},
+	render: (
+		props: SelectWithInfiniteQueryProps<UsersResponse, Error, string[], { pageSize: number; pageIndex: number }>
+	) => {
+		const form = useForm<FormFields>({
+			initialValues: {
+				contacts: [
+					{
+						name: '',
+						phone: '',
+						email: '',
+						person: '',
+						key: '',
+					},
+				],
+			},
+		});
+
+		const handleAdd = () => {
+			form.insertListItem('contacts', {
+				name: '',
+				email: '',
+				phone: '',
+				person: '',
+				key: v4(),
+			});
+		};
+
+		const [contacts, setContacts] = useState<FormFields>();
+
+		const handleSubmit = (values: FormFields) => {
+			setContacts(values);
+		};
+
+		return (
+			<Stack>
+				<form onSubmit={form.onSubmit(handleSubmit)}>
+					<ActionIcon onClick={handleAdd}>
+						<PlusIcon />
+					</ActionIcon>
+					<Stack>
+						{form.values.contacts.map((contact, index) => (
+							<Fieldset
+								key={contact.key}
+								variant='unstyled'
+								classNames={{
+									legend: 'mb-1',
+									root: 'mb-3',
+								}}
+							>
+								<Group
+									gap='xs'
+									wrap='nowrap'
+								>
+									<Grid columns={4}>
+										<Grid.Col span={1}>
+											<TextInput
+												placeholder='Name'
+												{...form.getInputProps(`contacts.${index}.name`)}
+											/>
+										</Grid.Col>
+										<Grid.Col span={1}>
+											<TextInput
+												placeholder='Phone number'
+												{...form.getInputProps(`contacts.${index}.phone`)}
+											/>
+										</Grid.Col>
+										<Grid.Col span={1}>
+											<TextInput
+												placeholder='Email address'
+												{...form.getInputProps(`contacts.${index}.email`)}
+											/>
+										</Grid.Col>
+										<Grid.Col span={1}>
+											<Select
+												{...props}
+												{...form.getInputProps(`contacts.${index}.person`)}
+												clearable
+												getData={({ pageParam }, { search = '' }) =>
+													getUsers({ ...pageParam, q: search.toLowerCase() })
+												}
+												infinite
+												placeholder='MultiSelect person'
+												queryOptions={{
+													queryKey: ['WithQuery'],
+													select: ({ pageParams, pages }) => ({
+														pageParams,
+														pages: pages.map(page =>
+															page.users.map(user => ({
+																label: `${user.firstName} ${user.lastName}`,
+																value: user.username,
+															}))
+														),
+													}),
+													getNextPageParam: (lastPage, _ap, { skip, limit }) => {
+														if (skip + limit < lastPage.total) {
+															return {
+																skip: skip + limit,
+																limit,
+															};
+														}
+
+														return undefined;
+													},
+													initialPageParam: {
+														limit: 20,
+														skip: 0,
+													},
+												}}
+												searchable
+											/>
+										</Grid.Col>
+									</Grid>
+									<Group
+										gap='xs'
+										wrap='nowrap'
+									>
+										<ActionIcon
+											color='red'
+											disabled={index === 0}
+											opacity={index === 0 ? 0 : undefined}
+											size='xs'
+											variant='subtle'
+											onClick={() => {
+												form.removeListItem('contacts', index);
+											}}
+										>
+											<MinusIcon size={14} />
+										</ActionIcon>
+									</Group>
+								</Group>
+							</Fieldset>
+						))}
+						<Button
+							w={160}
+							type='submit'
+						>
+							Submit
+						</Button>
+					</Stack>
+				</form>
+				<Stack>
+					{contacts?.contacts.map(contact => (
+						<Group>
+							<span>{contact.name}</span>
+							<span>{contact.phone}</span>
+							<span>{contact.email}</span>
+							<span>{contact.person}</span>
+						</Group>
+					))}
+				</Stack>
+			</Stack>
+		);
+	},
+};
+
+interface UsersResponse {
+	users: User[];
+	total: number;
+	skip: number;
+	limit: number;
+}
+
+interface User {
+	id: number;
+	firstName: string;
+	lastName: string;
+	maidenName: string;
+	age: number;
+	gender: string;
+	email: string;
+	phone: string;
+	username: string;
+	password: string;
+	birthDate: string;
+	image: string;
+	bloodGroup: string;
+	height: number;
+	weight: number;
+	eyeColor: string;
+	hair: Hair;
+	ip: string;
+	address: Address;
+	macAddress: string;
+	university: string;
+	bank: Bank;
+	company: Company;
+	ein: string;
+	ssn: string;
+	userAgent: string;
+	crypto: Crypto;
+	role: string;
+}
+
+interface Crypto {
+	coin: string;
+	wallet: string;
+	network: string;
+}
+
+interface Company {
+	department: string;
+	name: string;
+	title: string;
+	address: Address;
+}
+
+interface Bank {
+	cardExpire: string;
+	cardNumber: string;
+	cardType: string;
+	currency: string;
+	iban: string;
+}
+
+interface Address {
+	address: string;
+	city: string;
+	state: string;
+	stateCode: string;
+	postalCode: string;
+	coordinates: Coordinates;
+	country: string;
+}
+
+interface Coordinates {
+	lat: number;
+	lng: number;
+}
+
+interface Hair {
+	color: string;
+	type: string;
+}

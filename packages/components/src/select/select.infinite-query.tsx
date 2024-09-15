@@ -1,5 +1,11 @@
 import { type ForwardedRef, forwardRef, useCallback, useRef, useState } from 'react';
-import { type ScrollAreaProps } from '@mantine/core';
+import {
+	type ComboboxItem,
+	getOptionsLockup,
+	getParsedComboboxData,
+	type OptionsFilter,
+	type ScrollAreaProps,
+} from '@mantine/core';
 import { useDebouncedValue, useMergedRef } from '@mantine/hooks';
 import { type InfiniteData, type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 import omit from 'lodash.omit';
@@ -24,6 +30,10 @@ function SelectWithInfiniteQueryComponent<
 		scrollAreaProps,
 		scrollThreshold = 0.25,
 		searchValue,
+		infinite,
+		mod,
+		searchable,
+		filter,
 		...props
 	}: SelectWithInfiniteQueryProps<TQueryFnData, TError, TQueryKey, TPageParam>,
 	ref: ForwardedRef<HTMLInputElement>
@@ -32,6 +42,12 @@ function SelectWithInfiniteQueryComponent<
 	const [debouncedSearch] = useDebouncedValue(search, 300);
 	const viewportRef = useRef<HTMLDivElement>(null);
 	const mergedRef = useMergedRef(viewportRef, scrollAreaProps?.viewportRef);
+
+	const [selectedOption, setSelectedOption] = useState<ComboboxItem>();
+
+	/** Disable filter if search value equals selected option label. */
+	const filterOptions = searchable && selectedOption?.label !== search;
+
 	const {
 		data: queryData,
 		isFetching,
@@ -41,7 +57,7 @@ function SelectWithInfiniteQueryComponent<
 	} = useInfiniteQuery({
 		...omit(queryOptions, 'select'),
 		queryKey: [...queryOptions.queryKey, debouncedSearch] as unknown as TQueryKey,
-		queryFn: context => getData(context, { search }),
+		queryFn: context => getData(context, { search: filterOptions ? search : undefined }),
 	});
 
 	const options = queryData ? queryOptions.select?.(queryData as InfiniteData<TQueryFnData, TPageParam>) : undefined;
@@ -67,6 +83,31 @@ function SelectWithInfiniteQueryComponent<
 		[fetchNextPage, hasNextPage, isFetching, scrollAreaProps, scrollThreshold]
 	);
 
+	const handleOptionSubmit = useCallback(
+		(value: string) => {
+			onOptionSubmit?.(value, data);
+
+			const parsed = getParsedComboboxData(data);
+			const optionLockup = getOptionsLockup(parsed);
+			const selected = optionLockup[value];
+
+			setSelectedOption(selected);
+		},
+		[data, onOptionSubmit]
+	);
+
+	const handleSearchChange = useCallback(
+		(value: string) => {
+			setSearch(value);
+			onSearchChange?.(value);
+		},
+		[onSearchChange]
+	);
+
+	const optionsFilter = useCallback<OptionsFilter>(({ options }) => {
+		return options;
+	}, []);
+
 	return (
 		<SelectBase
 			{...props}
@@ -74,18 +115,18 @@ function SelectWithInfiniteQueryComponent<
 			data={data}
 			defaultSearchValue={defaultSearchValue}
 			dropdownLoading={isFetchingNextPage || dropdownLoading}
+			filter={filter ? filter : optionsFilter}
 			loading={isFetching || loading}
-			onOptionSubmit={value => onOptionSubmit?.(value, data)}
-			onSearchChange={value => {
-				setSearch(value);
-				onSearchChange?.(value);
-			}}
+			mod={[{ infinite }, mod]}
+			onOptionSubmit={handleOptionSubmit}
+			onSearchChange={handleSearchChange}
 			scrollAreaProps={{
 				...scrollAreaProps,
 				onScrollPositionChange: handleScrollPositionChange,
 				viewportRef: mergedRef,
 			}}
-			searchValue={searchValue}
+			searchable={searchable}
+			searchValue={searchValue ?? search}
 		/>
 	);
 }

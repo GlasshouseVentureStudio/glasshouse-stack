@@ -213,6 +213,9 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 		combobox.closeDropdown();
 	};
 
+	/** Disable filter if search value equals selected option label. */
+	const filterOptions = searchable && selectedOption?.label !== search;
+
 	return (
 		<>
 			<Combobox
@@ -239,7 +242,13 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 						error={error}
 						onBlur={event => {
 							searchable && !creatable && combobox.closeDropdown();
-							setSearch(_value !== null ? (optionsLockup[_value]?.label ?? '') : '');
+
+							// Before it would reset the search value if the selectedOption is falsy.
+							// Reset search value if value is empty.
+							if (!value) {
+								setSearch('');
+							}
+
 							onBlur?.(event);
 						}}
 						onChange={event => {
@@ -269,6 +278,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 					creatable={creatable}
 					creatablePosition={creatablePosition}
 					createInputValidator={createInputValidator}
+					filterOptions={filterOptions}
 					loading={dropdownLoading}
 					loadingType={dropdownLoadingType}
 					onCreate={onCreate}
@@ -297,4 +307,6 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 	);
 }
 
-export const SelectBase = forwardRef(SelectBaseComponent);
+const SelectBase = forwardRef(SelectBaseComponent);
+
+export { SelectBase };
