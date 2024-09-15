@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.8
+
+### Patch Changes
+
+- Fix `Grid` polymorphic types not exported correctly, `Select` search query
+
 ## 0.6.7
 
 ### Patch Changes
