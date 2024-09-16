@@ -24,7 +24,7 @@
 			}
 		},
 		"./styles.css": "./dist/esm/index.css",
-		"./tailwind.css": "./dist/esm/tailwind.css"
+		"./tailwind.css": "./dist/tailwind.css"
 	},
 	"main": "./dist/cjs/index.cjs",
 	"module": "./dist/esm/index.js",

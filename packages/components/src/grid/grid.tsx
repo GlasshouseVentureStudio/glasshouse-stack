@@ -52,7 +52,7 @@ const varsResolver = createVarsResolver<GridFactory>((theme, { guideWidth, guide
  *
  * This component is based from Vercel's Geist Design System `Grid` component.
  */
-const GridInner = (_props: GridProps, ref: ForwardedRef<HTMLElement>) => {
+const GridComponent = (_props: GridProps, ref: ForwardedRef<HTMLElement>) => {
 	const props = useProps('GridSystem', defaultProps, _props);
 	const {
 		className,
@@ -185,7 +185,7 @@ interface GridStaticComponents {
  *
  * This component is based from Vercel's Geist Design System `Grid` component.
  */
-const Grid = createPolymorphicComponent<'section', GridProps, GridStaticComponents>(forwardRef(GridInner));
+const Grid = createPolymorphicComponent<'section', GridProps, GridStaticComponents>(forwardRef(GridComponent));
 
 Grid.displayName = 'Grid';
 Grid.Cell = GridCell;
