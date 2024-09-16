@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.9
+
+### Patch Changes
+
+- Fix tailwind css file export
+
 ## 0.6.8
 
 ### Patch Changes
