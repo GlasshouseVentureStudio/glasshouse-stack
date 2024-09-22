@@ -39,7 +39,7 @@ export const Default: ScrollShadowStory = {
 	},
 	render: args => (
 		<ScrollShadow {...args}>
-			<Stack p={20}>
+			<Stack px={20}>
 				<Title>Charizard (Pokémon)</Title>{' '}
 				<Text>Charizard description from Bulbapedia Charizard is a draconic, bipedal Pokémon.</Text>
 				<Text>{paragraph}</Text>
@@ -58,7 +58,7 @@ export const Horizontal: ScrollShadowStory = {
 	render: args => (
 		<ScrollShadow {...args}>
 			<Stack
-				p={20}
+				px={20}
 				w={1000}
 			>
 				<Title>Charizard (Pokémon)</Title>{' '}
@@ -91,7 +91,7 @@ export const ShadowSize: ScrollShadowStory = {
 						{...args}
 						shadowSize={size}
 					>
-						<Stack p={20}>
+						<Stack px={20}>
 							<Title>Charizard (Pokémon)</Title>{' '}
 							<Text>Charizard description from Bulbapedia Charizard is a draconic, bipedal Pokémon.</Text>
 							<Text>{paragraph}</Text>

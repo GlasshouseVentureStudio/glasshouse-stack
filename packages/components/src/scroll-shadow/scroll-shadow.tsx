@@ -1,19 +1,22 @@
-import { useRef } from 'react';
+import { type ForwardedRef, forwardRef, useRef } from 'react';
 import { cn, useDataScrollOverflow } from '@glasshouse/utils';
 import {
 	Box,
+	createPolymorphicComponent,
 	createVarsResolver,
 	getSize,
-	polymorphicFactory,
 	ScrollArea,
-	type ScrollAreaFactory,
 	type ScrollAreaProps,
 	useProps,
 	useStyles,
 } from '@mantine/core';
 import { useMergedRef } from '@mantine/hooks';
 
-import { type ScrollShadowFactory, type ScrollShadowProps } from './scroll-shadow.types';
+import {
+	type ScrollShadowFactory,
+	type ScrollShadowProps,
+	type ScrollShadowStaticComponents,
+} from './scroll-shadow.types';
 
 import classes from './scroll-shadow.module.css';
 
@@ -25,7 +28,7 @@ const varsResolver = createVarsResolver<ScrollShadowFactory>((_, { shadowSize })
 
 const defaultProps: Partial<ScrollAreaProps & ScrollShadowProps> = {};
 
-export const ScrollShadow = polymorphicFactory<ScrollShadowFactory & ScrollAreaFactory>((_props, ref) => {
+const ScrollShadowComponent = (_props: ScrollShadowProps & ScrollAreaProps, ref: ForwardedRef<HTMLDivElement>) => {
 	const props = useProps('ScrollShadow', defaultProps, _props);
 
 	const {
@@ -111,10 +114,19 @@ export const ScrollShadow = polymorphicFactory<ScrollShadowFactory & ScrollAreaF
 			{children}
 		</ScrollArea>
 	);
-});
+};
 
-export const ScrollShadowAutosized = polymorphicFactory<ScrollShadowFactory & ScrollAreaFactory>((_props, ref) => {
-	const props = useProps('ScrollShadowAutosized', defaultProps, _props);
+export const ScrollShadow = createPolymorphicComponent<
+	'div',
+	ScrollShadowProps & ScrollAreaProps,
+	ScrollShadowStaticComponents
+>(forwardRef(ScrollShadowComponent));
+
+const ScrollShadowAutosizeComponent = (
+	_props: ScrollShadowProps & ScrollAreaProps,
+	ref: ForwardedRef<HTMLDivElement>
+) => {
+	const props = useProps('ScrollShadowAutosize', defaultProps, _props);
 
 	const {
 		children,
@@ -180,6 +192,12 @@ export const ScrollShadowAutosized = polymorphicFactory<ScrollShadowFactory & Sc
 			</Box>
 		</Box>
 	);
-});
+};
 
-ScrollShadow.Autosized = ScrollShadowAutosized;
+export const ScrollShadowAutosize = createPolymorphicComponent<
+	'div',
+	ScrollShadowProps & ScrollAreaProps,
+	ScrollShadowStaticComponents
+>(forwardRef(ScrollShadowAutosizeComponent));
+
+ScrollShadow.Autosize = ScrollShadowAutosize;

@@ -4,6 +4,8 @@
 	"exclude": ["dist", "build", "node_modules"],
 	"files": ["src/types/declarations.d.ts"],
 	"compilerOptions": {
-		"declarationDir": "./dist/lib"
+		"declarationDir": "./dist/lib",
+		"declarationMap": true,
+		"declaration": true
 	}
 }

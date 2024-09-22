@@ -10,12 +10,16 @@ import {
 	type StylesApiProps,
 } from '@mantine/core';
 
-import { type ScrollShadowAutosized } from './scroll-shadow';
+import { type ScrollShadowAutosize } from './scroll-shadow';
 
 export type ScrollShadowStylesNames = ScrollAreaStylesNames;
 
 export interface ScrollShadowCssVariables extends ScrollAreaCssVariables {
 	root: '--scrollarea-shadow-size' & ScrollAreaCssVariables['root'];
+}
+
+export interface ScrollShadowStaticComponents {
+	Autosize: typeof ScrollShadowAutosize;
 }
 
 export type ScrollShadowFactory = PolymorphicFactory<{
@@ -25,7 +29,7 @@ export type ScrollShadowFactory = PolymorphicFactory<{
 	defaultComponent: 'div';
 	defaultRef: HTMLDivElement;
 	staticComponents: {
-		Autosized: typeof ScrollShadowAutosized;
+		Autosized: typeof ScrollShadowAutosize;
 	};
 }>;
 
