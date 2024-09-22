@@ -22,6 +22,7 @@ import { XIcon } from 'lucide-react';
 import { useProps } from '../../hooks/use-props';
 import { OptionsDropdown, SELECT_ALL_VALUE } from '../combobox/options-dropdown';
 import { isLabelValueList, isOptionsGroupList } from '../combobox/options-dropdown/is-option-group-list';
+import { MaxDisplayedValuesPill } from './multi-select.max-displayed-values-pill';
 import { type MultiSelectBaseProps } from './multi-select.types';
 import { filterPickedValues } from './multi-select.utils';
 
@@ -76,6 +77,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		loading,
 		maxDropdownHeight,
 		maxValues,
+		maxDisplayedValuesTooltipType,
 		mod,
 		name,
 		nothingFoundMessage,
@@ -118,6 +120,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		withAsterisk,
 		withCheckIcon,
 		withErrorStyles,
+		withMaxDisplayedValuesTooltip = true,
 		withScrollArea,
 		wrapperProps,
 		canSelectAll,
@@ -263,17 +266,6 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	const showMaxDisplayedValuesLabel = _value.length > maxDisplayedValues;
 
-	const renderMaxDisplayedPillValuesLabel = useCallback(
-		() => (
-			<Pill style={{ flexShrink: 0, flexGrow: 0, minWidth: 'auto' }}>
-				{renderMaxDisplayedValuesLabel
-					? renderMaxDisplayedValuesLabel(_value.length)
-					: `+${_value.length - (maxDisplayedValues - 1)} more`}
-			</Pill>
-		),
-		[_value.length, maxDisplayedValues, renderMaxDisplayedValuesLabel]
-	);
-
 	const values = _value.slice(0, isMaxDisplayedValues).map((item, index) => (
 		<Pill
 			// eslint-disable-next-line react/no-array-index-key -- ensure key is unique
@@ -412,7 +404,20 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 						>
 							{mode === 'pills' ? values : textValues}
 
-							{showMaxDisplayedValuesLabel && mode === 'pills' ? renderMaxDisplayedPillValuesLabel() : null}
+							{showMaxDisplayedValuesLabel && mode === 'pills' ? (
+								<MaxDisplayedValuesPill
+									maxDisplayedValues={maxDisplayedValues}
+									maxDisplayedValuesTooltipType={maxDisplayedValuesTooltipType ?? mode}
+									onRemove={value => {
+										setValue(_value.filter(i => value !== i));
+										onRemove?.(value);
+									}}
+									optionsLockup={optionsLockup}
+									renderMaxDisplayedValuesLabel={renderMaxDisplayedValuesLabel}
+									values={_value}
+									withMaxDisplayedValuesTooltip={withMaxDisplayedValuesTooltip}
+								/>
+							) : null}
 
 							<Combobox.EventsTarget autoComplete={autoComplete}>
 								<PillsInput.Field

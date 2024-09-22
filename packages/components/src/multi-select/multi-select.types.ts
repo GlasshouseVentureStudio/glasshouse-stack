@@ -157,6 +157,14 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	 * Limit number of pill lines when `mode` is `pills`, only works when `lineClamp` is `1`.
 	 */
 	lineClamp?: number;
+	/**
+	 * Whether to show tooltip with remaining values when maxDisplayedValues is specify
+	 */
+	withMaxDisplayedValuesTooltip?: boolean;
+	/**
+	 *	What to display inside remaining values tooltip
+	 */
+	maxDisplayedValuesTooltipType?: 'pills' | 'texts';
 }
 
 export interface MultiSelectWithQueryProps<
