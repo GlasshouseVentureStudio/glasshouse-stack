@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.10
+
+### Patch Changes
+
+- feat(components): multi select can show tooltip for remaining values when max displayed values used
+
 ## 0.6.9
 
 ### Patch Changes
