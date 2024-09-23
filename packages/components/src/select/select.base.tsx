@@ -239,6 +239,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 						rightSectionPointerEvents={rightSectionPointerEvents ?? (clearButton ? 'all' : 'none')}
 						{...others}
 						classNames={resolvedClassNames}
+						disabled={disabled}
 						error={error}
 						onBlur={event => {
 							searchable && !creatable && combobox.closeDropdown();
