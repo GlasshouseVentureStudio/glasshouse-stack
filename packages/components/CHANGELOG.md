@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.12
+
+### Patch Changes
+
+- -- Add disabled prop for input component in SelectBase
+
 ## 0.6.11
 
 ### Patch Changes
