@@ -1,3 +1,8 @@
+.input {
+	display: flex;
+	align-items: center;
+}
+
 .pillsList {
 	> span {
 		transition:
@@ -5,7 +10,7 @@
 			transform 150ms ease;
 	}
 
-	&:where([data-line-clamp='true']) {
+	&:where([data-line-clamp]) {
 		text-overflow: ellipsis;
 		/* display: -webkit-box; */
 		-webkit-line-clamp: var(--text-line-clamp);
@@ -16,11 +21,12 @@
 		> * {
 			flex-grow: 1;
 			min-width: 0;
+			max-width: max-content;
 		}
 	}
 
-	&[data-floating='true'] {
-		&:has(:focus-visible)[data-hasvalue='true'] {
+	&:where([data-floating]):where([data-searchable]) {
+		&:has(:focus-visible) {
 			> span {
 				transform: translateY(-100%);
 				opacity: 0;
@@ -30,7 +36,7 @@
 }
 
 .inputField {
-	&[data-floating='true'] {
+	&[data-floating] {
 		position: absolute;
 		top: var(--input-padding-y, 0rem);
 		bottom: var(--input-padding-y, 0rem);
@@ -43,12 +49,12 @@
 			opacity 150ms ease,
 			transform 150ms ease;
 
-		&[data-hasvalue='true'] {
+		&:where([data-hasvalue]) {
 			transform: translateY(100%);
 			opacity: 0;
 		}
 
-		&:focus-visible {
+		&:focus-visible:where([data-searchable]) {
 			opacity: 1;
 			transform: translateY(0);
 		}

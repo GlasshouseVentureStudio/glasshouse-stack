@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { faker } from '@faker-js/faker';
 import {
 	ActionIcon,
@@ -15,6 +14,7 @@ import {
 import { notifications } from '@mantine/notifications';
 import type { Meta, StoryObj } from '@storybook/react';
 import { IconCheck, IconChevronLeft, IconChevronRight, IconThumbUp } from '@tabler/icons-react';
+import { useState } from 'react';
 
 import { MultiSelect } from '../multi-select';
 import { type MultiSelectProps, type MultiSelectWithInfiniteQueryProps } from '../multi-select.types';
@@ -544,6 +544,7 @@ export const FloatingInput: StoryObj<
 		const [lineClamp, setLineClamp] = useState<number | string>(1);
 		const [maxDisplayedValues, setMaxDisplayedValues] = useState<number | string>(2);
 		const [floating, setFloating] = useState(true);
+		const [searchable, setSearchable] = useState(true);
 
 		return (
 			<Stack>
@@ -577,9 +578,18 @@ export const FloatingInput: StoryObj<
 							setFloating(event.currentTarget.checked);
 						}}
 					/>
+					<Switch
+						checked={searchable}
+						label='Searchable'
+						onChange={event => {
+							setSearchable(event.currentTarget.checked);
+						}}
+					/>
 				</Group>
 				<MultiSelect
 					{...props}
+					size='xs'
+					searchable={searchable}
 					floatingInput={floating}
 					getData={({ pageParam }, { search }) => {
 						return new Promise<{ data: ComboboxData; total: number }>(resolve => {
@@ -610,5 +620,20 @@ export const FloatingInput: StoryObj<
 				/>
 			</Stack>
 		);
+	},
+};
+
+export const WithSelectAll: StoryObj<
+	MultiSelectWithInfiniteQueryProps<
+		{ data: ComboboxData; total: number },
+		Error,
+		string[],
+		{ pageSize: number; pageIndex: number }
+	>
+> = {
+	...FloatingInput,
+	args: {
+		...MaxDisplayedValues.args,
+		allowSelectAll: true,
 	},
 };

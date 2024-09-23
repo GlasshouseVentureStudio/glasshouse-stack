@@ -1,4 +1,5 @@
 import { type ForwardedRef, forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
+import { cn } from '@glasshouse/utils';
 import {
 	Combobox,
 	type ComboboxItem,
@@ -10,7 +11,9 @@ import {
 	type MultiSelectFactory,
 	Pill,
 	PillsInput,
+	rem,
 	Text,
+	Tooltip,
 	useCombobox,
 	useResolvedStylesApi,
 	useStyles,
@@ -124,12 +127,14 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		withScrollArea,
 		wrapperProps,
 		canSelectAll,
+		allowSelectAll = false,
 		selectAllLabel,
-		maxDisplayedValues = 999,
+		maxDisplayedValues,
 		renderMaxDisplayedValuesLabel,
 		mode = 'pills',
 		floatingInput,
 		lineClamp,
+		tooltipProps,
 		...others
 	} = props;
 
@@ -262,11 +267,12 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	const inputRightSection = clearButton ? clearButton : _rightSection;
 
-	const isMaxDisplayedValues = maxDisplayedValues === _value.length ? maxDisplayedValues : maxDisplayedValues - 1;
+	const valuesToDisplay =
+		maxDisplayedValues && (maxDisplayedValues === _value.length ? maxDisplayedValues : maxDisplayedValues - 1);
 
-	const showMaxDisplayedValuesLabel = _value.length > maxDisplayedValues;
+	const showMaxDisplayedValuesLabel = maxDisplayedValues ? _value.length > maxDisplayedValues : false;
 
-	const values = _value.slice(0, isMaxDisplayedValues).map((item, index) => (
+	const values = (maxDisplayedValues ? _value.slice(0, valuesToDisplay) : _value).map((item, index) => (
 		<Pill
 			// eslint-disable-next-line react/no-array-index-key -- ensure key is unique
 			key={`${item}-${index}`}
@@ -283,29 +289,44 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		</Pill>
 	));
 
-	const renderMaxDisplayedTextValuesLabel = useCallback(
-		() =>
-			renderMaxDisplayedValuesLabel
+	const renderMaxDisplayedTextValuesLabel = useCallback(() => {
+		if (maxDisplayedValues) {
+			return renderMaxDisplayedValuesLabel
 				? renderMaxDisplayedValuesLabel(_value.length)
-				: `, +${_value.length - (maxDisplayedValues - 1)} more`,
-		[_value.length, maxDisplayedValues, renderMaxDisplayedValuesLabel]
-	);
+				: `, +${_value.length - (maxDisplayedValues - 1)} more`;
+		}
+	}, [_value.length, maxDisplayedValues, renderMaxDisplayedValuesLabel]);
+
+	const tooltipTextContent = maxDisplayedValues
+		? _value
+				.slice(maxDisplayedValues - 1)
+				.map(value => optionsLockup[value]?.label ?? value)
+				.join(', ')
+		: undefined;
 
 	const textValues =
 		_value.length > 0 ? (
-			<Text
-				fz='var(--input-fz, var(--input-fz, var(--mantine-font-size-sm)))'
-				lineClamp={lineClamp}
-				span
-				unstyled={unstyled}
-				{...getStyles('pill')}
+			<Tooltip
+				inline
+				label={tooltipTextContent}
+				maw={rem(320)}
+				multiline
+				{...tooltipProps}
 			>
-				{_value
-					.slice(0, isMaxDisplayedValues)
-					.map(item => optionsLockup[item]?.label ?? item)
-					.join(', ')}
-				{showMaxDisplayedValuesLabel ? renderMaxDisplayedTextValuesLabel() : null}
-			</Text>
+				<Text
+					fz='var(--input-fz, var(--input-fz, var(--mantine-font-size-sm)))'
+					lineClamp={lineClamp}
+					span
+					unstyled={unstyled}
+					{...getStyles('pill')}
+				>
+					{_value
+						.slice(0, valuesToDisplay)
+						.map(item => optionsLockup[item]?.label ?? item)
+						.join(', ')}
+					{showMaxDisplayedValuesLabel ? renderMaxDisplayedTextValuesLabel() : null}
+				</Text>
+			</Tooltip>
 		) : null;
 
 	const handleValueSelect = (val: string) => {
@@ -353,8 +374,10 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 							multiline: true,
 						}}
 						className={className}
-						classNames={resolvedClassNames}
-						data-expanded={combobox.dropdownOpened || undefined}
+						classNames={{
+							...resolvedClassNames,
+							input: cn(classes.input, resolvedClassNames.input),
+						}}
 						description={description}
 						descriptionProps={descriptionProps}
 						disabled={disabled}
@@ -369,7 +392,12 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 						leftSectionPointerEvents={leftSectionPointerEvents}
 						leftSectionProps={leftSectionProps}
 						leftSectionWidth={leftSectionWidth}
-						mod={mod}
+						mod={[
+							{
+								expanded: combobox.dropdownOpened || undefined,
+							},
+							mod,
+						]}
 						multiline
 						onClick={() => {
 							searchable ? combobox.openDropdown() : combobox.toggleDropdown();
@@ -391,10 +419,13 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 						wrapperProps={wrapperProps}
 					>
 						<Pill.Group
-							data-floating={floatingInput}
-							data-hasvalue={_value.length > 0 && floatingInput}
-							data-line-clamp={lineClamp === 1 && floatingInput}
 							disabled={disabled}
+							mod={{
+								floating: floatingInput,
+								hasvalue: _value.length > 0 && floatingInput,
+								searchable,
+								'line-clamp': lineClamp === 1 && floatingInput,
+							}}
 							unstyled={unstyled}
 							{...getStyles('pillsList', {
 								style: {
@@ -423,10 +454,13 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 								<PillsInput.Field
 									{...omit(rest, 'type')}
 									ref={ref}
-									data-floating={floatingInput}
-									data-hasvalue={_value.length > 0 && floatingInput}
 									disabled={disabled}
 									id={_id}
+									mod={{
+										floating: floatingInput,
+										hasvalue: _value.length > 0 && floatingInput,
+										searchable,
+									}}
 									onBlur={event => {
 										onBlur?.(event);
 										!creatable && combobox.closeDropdown();
@@ -455,8 +489,9 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 					</PillsInput>
 				</Combobox.DropdownTarget>
 				<OptionsDropdown
+					allowSelectAll={allowSelectAll || canSelectAll}
 					aria-label={label ? undefined : others['aria-label']}
-					canSelectAll={canSelectAll}
+					canSelectAll={allowSelectAll || canSelectAll}
 					checkIconPosition={checkIconPosition}
 					combobox={combobox}
 					creatable={creatable}

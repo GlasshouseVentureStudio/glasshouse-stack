@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { type ComboboxItem, Group, Pill, Tooltip } from '@mantine/core';
+import { type ComboboxItem, Group, Pill, rem, Tooltip, type TooltipProps } from '@mantine/core';
 
 interface MaxDisplayedValuesPillProps {
 	maxDisplayedValues?: number;
@@ -10,6 +10,7 @@ interface MaxDisplayedValuesPillProps {
 	renderMaxDisplayedValuesLabel?: (count: number) => React.ReactNode;
 	values?: string[];
 	withMaxDisplayedValuesTooltip?: boolean;
+	tooltipProps?: TooltipProps;
 }
 
 export const MaxDisplayedValuesPill = ({
@@ -21,6 +22,7 @@ export const MaxDisplayedValuesPill = ({
 	readOnly,
 	values = [],
 	withMaxDisplayedValuesTooltip,
+	tooltipProps,
 }: MaxDisplayedValuesPillProps) => {
 	const [keepTooltipOpened, setKeepTooltipOpened] = useState(false);
 
@@ -62,8 +64,10 @@ export const MaxDisplayedValuesPill = ({
 						: tooltipTextContent}
 				</Group>
 			}
+			maw={rem(480)}
 			multiline
 			offset={4}
+			{...tooltipProps}
 			opened={keepTooltipOpened ? keepTooltipOpened : undefined}
 		>
 			<Pill style={{ flexShrink: 0, flexGrow: 0, minWidth: 'auto' }}>

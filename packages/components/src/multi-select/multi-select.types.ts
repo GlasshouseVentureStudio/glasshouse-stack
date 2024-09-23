@@ -4,6 +4,7 @@ import {
 	type ComboboxParsedItem,
 	type ComboboxStore,
 	type MultiSelectProps as MantineMultiSelectProps,
+	type TooltipProps,
 } from '@mantine/core';
 import {
 	type InfiniteData,
@@ -34,29 +35,15 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	 * @returns A ReactNode excluding false, ReactPortal, or undefined.
 	 */
 	createInputValidator?: (value: string) => Exclude<ReactNode, false | ReactPortal | undefined>;
-
-	/**
-	 * Position where the creatable input should be rendered.
-	 * Can be 'header', 'footer', or 'inline'.
+	/** Position where the creatable input should be rendered. Can be `header`, `footer`, or `inline`.
 	 */
 	creatablePosition?: 'header' | 'footer' | 'inline';
-
-	/**
-	 * Indicates if the dropdown is loading.
-	 */
+	/** Indicates if the dropdown is loading. */
 	dropdownLoading?: boolean;
-
-	/**
-	 * Type of loading indicator to show in the dropdown.
-	 * Can be 'skeleton', 'overlay', or 'loader'.
-	 */
+	/** Type of loading indicator to show in the dropdown. Can be `skeleton`, `overlay`, or `loader`. */
 	dropdownLoadingType?: 'skeleton' | 'overlay' | 'loader';
-
-	/**
-	 * Indicates if the component is in a loading state.
-	 */
+	/** Indicates if the component is in a loading state. */
 	loading?: boolean;
-
 	/**
 	 * Callback function when a new item is created.
 	 * @param value - The value of the new item.
@@ -67,41 +54,35 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	) =>
 		| Exclude<ReactNode, false | ReactPortal | undefined>
 		| Promise<Exclude<ReactNode, false | ReactPortal | undefined>>;
-
 	/**
 	 * Callback function when there is an error creating a new item.
 	 * @param value - The value of the new item.
 	 * @param error - The error that occurred.
 	 */
 	onCreateError?: (value: string, error: Error) => void;
-
 	/**
 	 * Callback function when a new item is successfully created.
 	 * @param value - The value of the new item.
 	 */
 	onCreateSuccess?: (value: string) => void;
-
 	/**
 	 * Function to render the dropdown.
 	 * @param props - The properties for rendering the dropdown.
 	 * @returns A ReactNode to render as the dropdown.
 	 */
 	renderDropdown?: (props: { data: ComboboxParsedItem[]; options: ReactNode }) => ReactNode;
-
 	/**
 	 * Function to render the footer of the dropdown.
 	 * @param props - The properties for rendering the footer.
 	 * @returns A ReactNode to render as the footer.
 	 */
 	renderFooter?: (props: { combobox: ComboboxStore; data: ComboboxParsedItem[] }) => ReactNode;
-
 	/**
 	 * Function to render the header of the dropdown.
 	 * @param props - The properties for rendering the header.
 	 * @returns A ReactNode to render as the header.
 	 */
 	renderHeader?: (props: { combobox: ComboboxStore; data: ComboboxParsedItem[] }) => ReactNode;
-
 	/**
 	 * Function to render the options in the dropdown.
 	 * @param data - The parsed items to render.
@@ -109,19 +90,16 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	 * @returns A ReactNode to render as the options.
 	 */
 	renderOptions?: (data: ComboboxParsedItem[], options: ReactNode) => ReactNode;
-
 	/**
 	 * Indicates if the "select all" option is available.
+	 * @deprecated Use `allowSelectAll` instead.
 	 */
 	canSelectAll?: boolean;
-
-	/**
-	 * Label for the "select all" option.
-	 */
+	/** Indicates if the "select all" option is available. */
+	allowSelectAll?: boolean;
+	/** Label for the "select all" option. */
 	selectAllLabel?: string;
-	/**
-	 * Limit max number of values that can be displayed in input. Default `999`.
-	 */
+	/** Limit max number of values that can be displayed in input. Default `999`. */
 	maxDisplayedValues?: number;
 	/**
 	 * Label for max displayed values. Default is blank.
@@ -145,9 +123,7 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	 * - `texts`: Selected items are displayed as plain text.
 	 */
 	mode?: 'pills' | 'texts';
-	/**
-	 * Hide search when values are selected and hide values when search is focused.
-	 */
+	/** Hide search when values are selected and hide values when search is focused. */
 	floatingInput?: boolean;
 	/**
 	 * Only works when `floatingInput` is `true`.
@@ -157,14 +133,12 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	 * Limit number of pill lines when `mode` is `pills`, only works when `lineClamp` is `1`.
 	 */
 	lineClamp?: number;
-	/**
-	 * Whether to show tooltip with remaining values when maxDisplayedValues is specify
-	 */
+	/** Whether to show tooltip with remaining values when maxDisplayedValues is specify */
 	withMaxDisplayedValuesTooltip?: boolean;
-	/**
-	 *	What to display inside remaining values tooltip
-	 */
+	/** What to display inside remaining values tooltip */
 	maxDisplayedValuesTooltipType?: 'pills' | 'texts';
+	/** Tooltip props for max displayed values label. Default `true`. */
+	tooltipProps?: TooltipProps;
 }
 
 export interface MultiSelectWithQueryProps<

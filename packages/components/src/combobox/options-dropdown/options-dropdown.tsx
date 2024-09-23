@@ -116,6 +116,7 @@ export interface OptionsDropdownProps {
 	checkIconPosition?: 'left' | 'right';
 	combobox: ComboboxStore;
 	canSelectAll?: boolean;
+	allowSelectAll?: boolean;
 	creatable?: boolean;
 	createInputValidator?: (value: string) => Exclude<ReactNode, false | ReactPortal | undefined>;
 	creatablePosition?: 'header' | 'footer' | 'inline';
@@ -156,6 +157,7 @@ export function OptionsDropdown({
 	'aria-label': ariaLabel,
 	checkIconPosition,
 	canSelectAll,
+	allowSelectAll = false,
 	combobox,
 	creatable,
 	createInputValidator,
@@ -210,7 +212,7 @@ export function OptionsDropdown({
 	);
 
 	const options = [
-		...(canSelectAll && filteredData.length > 0
+		...((allowSelectAll || canSelectAll) && filteredData.length > 0
 			? [
 					<Option
 						key='all'
