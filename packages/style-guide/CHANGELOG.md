@@ -1,5 +1,11 @@
 # @glasshouse/style-guide
 
+## 0.1.7
+
+### Patch Changes
+
+- Add tanstack query eslint plugin
+
 ## 0.1.6
 
 ### Patch Changes

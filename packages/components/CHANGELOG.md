@@ -1,5 +1,12 @@
 # @glasshouse/components
 
+## 0.6.11
+
+### Patch Changes
+
+- Tweak multiselect, fix scrollshadow type
+  - @glasshouse/utils@0.2.7
+
 ## 0.6.10
 
 ### Patch Changes
