@@ -43,6 +43,7 @@
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "^1.8.0",
+		"@glasshouse/style-guide": "workspace:*",
 		"@storybook/addon-a11y": "^8.2.9",
 		"@storybook/addon-coverage": "^1.0.4",
 		"@storybook/addon-essentials": "^8.2.9",
@@ -73,6 +74,7 @@
 		"recharts": "^2.12.7",
 		"storybook": "^8.2.9",
 		"storybook-dark-mode": "^4.0.2",
+		"stylelint": "^16.9.0",
 		"tailwindcss": "^3.4.10",
 		"typescript": "^5.5.4",
 		"vite": "^5.4.3"

@@ -26,32 +26,41 @@
 	],
 	"prettier": "./prettier",
 	"dependencies": {
-		"@next/eslint-plugin-next": "^14.2.7",
+		"@next/eslint-plugin-next": "^14.2.13",
 		"@tanstack/eslint-plugin-query": "^5.57.1",
 		"@typescript-eslint/eslint-plugin": "^7.18.0",
 		"@typescript-eslint/parser": "^7.18.0",
 		"@vercel/style-guide": "^6.0.0",
 		"eslint-config-prettier": "^9.1.0",
-		"eslint-config-turbo": "^2.1.1",
+		"eslint-config-turbo": "^2.1.2",
 		"eslint-plugin-simple-import-sort": "^12.1.1",
 		"prettier-plugin-packagejson": "^2.5.2",
+		"stylelint-config-css-modules": "^4.4.0",
+		"stylelint-config-prettier": "^9.0.5",
 		"stylelint-config-prettier-scss": "^1.0.0",
-		"stylelint-config-rational-order": "^0.1.2",
-		"stylelint-config-sass-guidelines": "^12.0.0",
+		"stylelint-config-recess-order": "^5.1.1",
+		"stylelint-config-sass-guidelines": "^12.1.0",
+		"stylelint-config-standard": "^36.0.1",
 		"stylelint-config-standard-scss": "^13.1.0"
 	},
 	"devDependencies": {
-		"eslint": "^8.57.0",
-		"postcss": "^8.4.44",
+		"eslint": "^8.57.1",
+		"postcss": "^8.4.47",
 		"prettier": "^3.3.3",
 		"stylelint": "^16.9.0",
-		"typescript": "^5.5.4"
+		"typescript": "^5.6.2"
 	},
 	"peerDependencies": {
 		"@next/eslint-plugin-next": ">=12.3.0 <15.0.0-0",
 		"@vercel/style-guide": ">=6.0.0 <7",
 		"eslint": ">=8.48.0 <9",
 		"prettier": ">=3.0.0 <4",
+		"stylelint-config-prettier": ">=9.0.5",
+		"stylelint-config-prettier-scss": ">=1.0.0",
+		"stylelint-config-recess-order": ">=5.1.1",
+		"stylelint-config-sass-guidelines": ">=12.1.0",
+		"stylelint-config-standard": ">=36.0.1",
+		"stylelint-config-standard-scss": ">=13.1.0",
 		"typescript": ">=4.8.0 <6"
 	},
 	"peerDependenciesMeta": {

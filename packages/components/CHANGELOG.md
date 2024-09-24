@@ -1,10 +1,16 @@
 # @glasshouse/components
 
+## 0.6.13
+
+### Patch Changes
+
+- Add deprecated `bordered` props for backward compatibility
+
 ## 0.6.12
 
 ### Patch Changes
 
-- -- Add disabled prop for input component in SelectBase
+- Add disabled prop for input component in SelectBase
 
 ## 0.6.11
 

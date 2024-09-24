@@ -1,9 +1,11 @@
 {
 	"extends": [
+		"stylelint-config-standard",
 		"stylelint-config-standard-scss",
-		"stylelint-config-prettier-scss",
+		"stylelint-config-css-modules",
 		"stylelint-config-sass-guidelines",
-		"stylelint-config-rational-order"
+		"stylelint-config-recess-order",
+		"stylelint-config-prettier-scss"
 	],
 	"rules": {
 		"max-nesting-depth": [
