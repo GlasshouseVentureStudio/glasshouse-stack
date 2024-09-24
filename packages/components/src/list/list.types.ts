@@ -73,6 +73,10 @@ export interface ListProps<T extends object>
 	radius?: MantineRadius;
 	/** Props for `ScrollShadow` component. */
 	scrollShadowProps?: ScrollShadowProps;
+	/** Whether the list is bordered.
+	 * @deprecated Use `withBorder` or `withItemBorder` instead.
+	 */
+	bordered?: boolean;
 	/** List scrolling orientiation. */
 	orientation?: ListOrientation;
 	/** Whether the list should have root border. */
