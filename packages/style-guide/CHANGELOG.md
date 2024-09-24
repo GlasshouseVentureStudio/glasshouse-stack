@@ -1,5 +1,11 @@
 # @glasshouse/style-guide
 
+## 0.2.0
+
+### Minor Changes
+
+- Add additional stylelint rules
+
 ## 0.1.7
 
 ### Patch Changes

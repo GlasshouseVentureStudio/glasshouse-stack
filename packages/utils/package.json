@@ -1,6 +1,6 @@
 {
 	"name": "@glasshouse/utils",
-	"version": "0.2.7",
+	"version": "0.2.8",
 	"homepage": "https://github.com/GlasshouseVentureStudio/glasshouse-stack/tree/main/packages/utils",
 	"repository": {
 		"type": "git",

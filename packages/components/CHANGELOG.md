@@ -1,5 +1,12 @@
 # @glasshouse/components
 
+## 0.6.14
+
+### Patch Changes
+
+- Updated dependencies
+  - @glasshouse/utils@0.2.8
+
 ## 0.6.13
 
 ### Patch Changes
