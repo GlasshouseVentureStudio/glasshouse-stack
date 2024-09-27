@@ -10,15 +10,15 @@
 	position: relative;
 	border-radius: var(--list-radius, var(--mantine-radius-md, 0.25rem));
 
-	&:where([data-orientation='vertical']) {
+	&[data-orientation='vertical'] {
 		width: 100%;
 	}
 
-	&:where([data-orientation='horizontal']) {
+	&[data-orientation='horizontal'] {
 		height: 100%;
 	}
 
-	&:where([data-with-border]) {
+	&[data-with-border] {
 		border: rem(1px) solid var(--mantine-color-default-border);
 	}
 }
@@ -27,36 +27,36 @@
 	position: relative;
 	border-radius: var(--list-radius, var(--mantine-radius-md, 0.25rem));
 
-	&:where([data-orientation='vertical']) {
+	&[data-orientation='vertical'] {
 		width: 100%;
 		height: var(--list-size);
 	}
 
-	&:where([data-orientation='horizontal']) {
+	&[data-orientation='horizontal'] {
 		height: 100%;
 		width: var(--list-size);
 	}
 }
 
 .item {
-	&:where([data-virtualized]) {
+	&[data-virtualized] {
 		left: 0;
 		top: 0;
 		position: absolute;
 
-		&:where([data-orientation='vertical']) {
+		&[data-orientation='vertical'] {
 			width: 100%;
 			transform: translateY(var(--list-item-start));
 		}
 
-		&:where([data-orientation='horizontal']) {
+		&[data-orientation='horizontal'] {
 			height: 100%;
 			transform: translateX(var(--list-item-start));
 		}
 	}
 
-	&:where([data-with-item-border]) {
-		&:where([data-orientation='vertical']) {
+	&[data-with-item-border] {
+		&[data-orientation='vertical'] {
 			border-bottom: rem(1px) solid var(--mantine-color-default-border);
 
 			&:last-of-type {
@@ -64,7 +64,7 @@
 			}
 		}
 
-		&:where([data-orientation='horizontal']) {
+		&[data-orientation='horizontal'] {
 			border-right: rem(1px) solid var(--mantine-color-default-border);
 
 			&:last-of-type {
@@ -75,12 +75,12 @@
 }
 
 .groupHeader {
-	&:where([data-virtualized]) {
+	&[data-virtualized] {
 		left: 0;
 		top: 0;
 		position: absolute;
 
-		&:where([data-orientation='vertical']) {
+		&[data-orientation='vertical'] {
 			width: 100%;
 
 			&:not([data-sticky]) {
@@ -88,7 +88,7 @@
 			}
 		}
 
-		&:where([data-orientation='horizontal']) {
+		&[data-orientation='horizontal'] {
 			height: 100%;
 
 			&:not([data-sticky]) {
@@ -97,13 +97,13 @@
 		}
 	}
 
-	&:where([data-sticky]) {
+	&[data-sticky] {
 		z-index: 1;
 		position: sticky;
 	}
 
-	&:where([data-with-item-border]) {
-		&:where([data-orientation='vertical']) {
+	&[data-with-item-border] {
+		&[data-orientation='vertical'] {
 			border-bottom: rem(1px) solid var(--mantine-color-default-border);
 
 			&:last-of-type {
@@ -111,7 +111,7 @@
 			}
 		}
 
-		&:where([data-orientation='horizontal']) {
+		&[data-orientation='horizontal'] {
 			border-right: rem(1px) solid var(--mantine-color-default-border);
 
 			&:last-of-type {
@@ -122,30 +122,30 @@
 }
 
 .header {
-	&:where([data-sticky-header]) {
+	&[data-sticky-header] {
 		position: sticky;
 		z-index: 1;
 
-		&:where([data-orientation='vertical']) {
+		&[data-orientation='vertical'] {
 			top: 0;
 		}
 
-		&:where([data-orientation='horizontal']) {
+		&[data-orientation='horizontal'] {
 			left: 0;
 		}
 	}
 }
 
 .footer {
-	&:where([data-sticky-footer]) {
+	&[data-sticky-footer] {
 		position: sticky;
 		z-index: 1;
 
-		&:where([data-orientation='vertical']) {
+		&[data-orientation='vertical'] {
 			bottom: 0;
 		}
 
-		&:where([data-orientation='horizontal']) {
+		&[data-orientation='horizontal'] {
 			right: 0;
 		}
 	}

@@ -10,7 +10,7 @@
 			transform 150ms ease;
 	}
 
-	&:where([data-line-clamp]) {
+	&[data-line-clamp] {
 		text-overflow: ellipsis;
 		/* display: -webkit-box; */
 		-webkit-line-clamp: var(--text-line-clamp);
@@ -25,7 +25,7 @@
 		}
 	}
 
-	&:where([data-floating]):where([data-searchable]) {
+	&[data-floating][data-searchable] {
 		&:has(:focus-visible) {
 			> span {
 				transform: translateY(-100%);
@@ -49,12 +49,12 @@
 			opacity 150ms ease,
 			transform 150ms ease;
 
-		&:where([data-hasvalue]) {
+		&[data-hasvalue] {
 			transform: translateY(100%);
 			opacity: 0;
 		}
 
-		&:focus-visible:where([data-searchable]) {
+		&:focus-visible[data-searchable] {
 			opacity: 1;
 			transform: translateY(0);
 		}
