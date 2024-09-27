@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.15
+
+### Patch Changes
+
+- Raise css styles specificity
+
 ## 0.6.14
 
 ### Patch Changes
