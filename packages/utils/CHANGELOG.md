@@ -1,5 +1,11 @@
 # @glasshouse/utils
 
+## 0.2.9
+
+### Patch Changes
+
+- Add use previous hook based on mantine hook of the same name.
+
 ## 0.2.8
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @glasshouse/components
 
+## 0.6.17
+
+### Patch Changes
+
+- Fix a bug where search value is not return to previous value on blur
+  Fix a bug where searching with query causes search value to return to previous value on due to empty data
+- Updated dependencies
+  - @glasshouse/utils@0.2.9
+
 ## 0.6.16
 
 ### Patch Changes
