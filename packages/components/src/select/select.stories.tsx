@@ -44,6 +44,7 @@ export const Basic: StoryObj<SelectProps> = {
 		w: 256,
 		placeholder: 'Select person',
 		clearable: true,
+		searchable: true,
 	},
 };
 
@@ -469,6 +470,7 @@ export const FormUsage: StoryObj<
 													getUsers({ ...pageParam, q: search.toLowerCase() })
 												}
 												infinite
+												nothingFoundMessage='Nothing found'
 												placeholder='MultiSelect person'
 												queryOptions={{
 													queryKey: ['WithQuery'],

@@ -1,4 +1,4 @@
-import { type ForwardedRef, forwardRef, useCallback, useRef, useState } from 'react';
+import { type ForwardedRef, forwardRef, useCallback, useMemo, useRef, useState } from 'react';
 import {
 	type ComboboxItem,
 	getOptionsLockup,
@@ -27,7 +27,7 @@ function SelectWithInfiniteQueryComponent<
 		onOptionSubmit,
 		onSearchChange,
 		queryOptions,
-		scrollAreaProps,
+		scrollAreaProps: scrollAreaPropsProp,
 		scrollThreshold = 0.25,
 		searchValue,
 		infinite,
@@ -41,7 +41,7 @@ function SelectWithInfiniteQueryComponent<
 	const [search, setSearch] = useState(defaultSearchValue ?? searchValue);
 	const [debouncedSearch] = useDebouncedValue(search, 300);
 	const viewportRef = useRef<HTMLDivElement>(null);
-	const mergedRef = useMergedRef(viewportRef, scrollAreaProps?.viewportRef);
+	const mergedRef = useMergedRef(viewportRef, scrollAreaPropsProp?.viewportRef);
 
 	const [selectedOption, setSelectedOption] = useState<ComboboxItem>();
 
@@ -62,7 +62,7 @@ function SelectWithInfiniteQueryComponent<
 
 	const options = queryData ? queryOptions.select?.(queryData as InfiniteData<TQueryFnData, TPageParam>) : undefined;
 
-	const data = options?.pages.flatMap(page => page);
+	const data = useMemo(() => options?.pages.flatMap(page => page) ?? [], [options?.pages]);
 
 	const handleScrollPositionChange: ScrollAreaProps['onScrollPositionChange'] = useCallback(
 		(position: { x: number; y: number }) => {
@@ -78,9 +78,9 @@ function SelectWithInfiniteQueryComponent<
 				}
 			}
 
-			scrollAreaProps?.onScrollPositionChange?.(position);
+			scrollAreaPropsProp?.onScrollPositionChange?.(position);
 		},
-		[fetchNextPage, hasNextPage, isFetching, scrollAreaProps, scrollThreshold]
+		[fetchNextPage, hasNextPage, isFetching, scrollAreaPropsProp, scrollThreshold]
 	);
 
 	const handleOptionSubmit = useCallback(
@@ -104,9 +104,16 @@ function SelectWithInfiniteQueryComponent<
 		[onSearchChange]
 	);
 
+	/** Disable internal filtering when using query */
 	const optionsFilter = useCallback<OptionsFilter>(({ options }) => {
 		return options;
 	}, []);
+
+	const scrollAreaProps: ScrollAreaProps = {
+		onScrollPositionChange: handleScrollPositionChange,
+		viewportRef: mergedRef,
+		...scrollAreaPropsProp,
+	};
 
 	return (
 		<SelectBase
@@ -114,17 +121,13 @@ function SelectWithInfiniteQueryComponent<
 			ref={ref}
 			data={data}
 			defaultSearchValue={defaultSearchValue}
-			dropdownLoading={isFetchingNextPage || dropdownLoading}
+			dropdownLoading={isFetchingNextPage || isFetching || dropdownLoading}
 			filter={filter ? filter : optionsFilter}
 			loading={isFetching || loading}
 			mod={[{ infinite }, mod]}
 			onOptionSubmit={handleOptionSubmit}
 			onSearchChange={handleSearchChange}
-			scrollAreaProps={{
-				...scrollAreaProps,
-				onScrollPositionChange: handleScrollPositionChange,
-				viewportRef: mergedRef,
-			}}
+			scrollAreaProps={scrollAreaProps}
 			searchable={searchable}
 			searchValue={searchValue ?? search}
 		/>

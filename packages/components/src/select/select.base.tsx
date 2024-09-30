@@ -1,4 +1,5 @@
 import { type ForwardedRef, forwardRef, useEffect, useMemo, useState } from 'react';
+import { usePrevious } from '@glasshouse/utils';
 import {
 	Combobox,
 	type ComboboxItem,
@@ -12,7 +13,7 @@ import {
 	useCombobox,
 	useResolvedStylesApi,
 } from '@mantine/core';
-import { useId, usePrevious, useUncontrolled } from '@mantine/hooks';
+import { useId, useUncontrolled } from '@mantine/hooks';
 import omit from 'lodash.omit';
 
 import { useProps } from '../../hooks/use-props';
@@ -109,7 +110,8 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 	});
 
 	const selectedOption = typeof _value === 'string' ? optionsLockup[_value] : undefined;
-	const previousSelectedOption = usePrevious(selectedOption);
+
+	const previousSelectedOption = usePrevious(selectedOption, true);
 
 	const [search, setSearch] = useUncontrolled({
 		value: searchValue,
@@ -245,10 +247,10 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 						onBlur={event => {
 							searchable && !creatable && combobox.closeDropdown();
 
-							// Before it would reset the search value if the selectedOption is falsy.
-							// Reset search value if value is empty.
-							if (!value) {
+							if (!_value) {
 								setSearch('');
+							} else {
+								setSearch(optionsLockup[_value]?.label ?? '');
 							}
 
 							onBlur?.(event);

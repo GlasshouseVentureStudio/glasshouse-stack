@@ -43,7 +43,7 @@
 		"lint": "eslint \"src/**/*.ts*\""
 	},
 	"dependencies": {
-		"@glasshouse/utils": "workspace:*",
+		"@glasshouse/utils": "^0.2.8",
 		"@mantine/core": "^7.12.2",
 		"@mantine/form": "^7.12.2",
 		"@mantine/hooks": "^7.12.2",
@@ -70,7 +70,7 @@
 	},
 	"devDependencies": {
 		"@faker-js/faker": "^9.0.2",
-		"@glasshouse/style-guide": "workspace:*",
+		"@glasshouse/style-guide": "0.2.0",
 		"@mantine/notifications": "^7.12.2",
 		"@storybook/react": "^8.3.2",
 		"@storybook/test": "^8.3.2",
