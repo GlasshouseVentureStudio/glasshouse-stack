@@ -30,7 +30,7 @@
 		"lint-staged": "^15.2.10",
 		"prettier": "^3.3.3",
 		"prettier-plugin-packagejson": "^2.5.2",
-		"prettier-plugin-tailwindcss": "^0.6.6",
+		"prettier-plugin-tailwindcss": "^0.6.8",
 		"stylelint": "^16.9.0",
 		"turbo": "^2.1.2"
 	},
