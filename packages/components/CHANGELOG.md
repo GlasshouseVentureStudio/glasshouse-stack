@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.16
+
+### Patch Changes
+
+- fix: omit infinite from props passed down to input element in combobox components
+
 ## 0.6.15
 
 ### Patch Changes
