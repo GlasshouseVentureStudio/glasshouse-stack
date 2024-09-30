@@ -452,7 +452,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 
 							<Combobox.EventsTarget autoComplete={autoComplete}>
 								<PillsInput.Field
-									{...omit(rest, 'type')}
+									{...omit(rest, 'type', 'infinite')}
 									ref={ref}
 									disabled={disabled}
 									id={_id}

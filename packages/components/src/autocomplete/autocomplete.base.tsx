@@ -123,7 +123,7 @@ function AutocompleteBaseComponent(_props: AutocompleteBaseProps, ref: Forwarded
 			<Combobox.Target autoComplete={autoComplete}>
 				<InputBase
 					ref={ref}
-					{...omit(others, 'vars')}
+					{...omit(others, 'vars', 'infinite')}
 					__staticSelector='Autocomplete'
 					classNames={resolvedClassNames}
 					disabled={disabled}

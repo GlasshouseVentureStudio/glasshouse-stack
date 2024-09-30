@@ -13,6 +13,7 @@ import {
 	useResolvedStylesApi,
 } from '@mantine/core';
 import { useId, usePrevious, useUncontrolled } from '@mantine/hooks';
+import omit from 'lodash.omit';
 
 import { useProps } from '../../hooks/use-props';
 import { OptionsDropdown } from '../combobox/options-dropdown';
@@ -237,7 +238,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 						id={_id}
 						rightSection={loading ? <Loader size='xs' /> : inputRightSection}
 						rightSectionPointerEvents={rightSectionPointerEvents ?? (clearButton ? 'all' : 'none')}
-						{...others}
+						{...omit(others, 'infinite')}
 						classNames={resolvedClassNames}
 						disabled={disabled}
 						error={error}
