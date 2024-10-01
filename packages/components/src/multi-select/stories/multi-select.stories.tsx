@@ -616,7 +616,7 @@ export const FloatingInput: StoryObj<
 						},
 						initialPageParam: { pageSize: 20, pageIndex: 0 },
 					}}
-					renderMaxDisplayedValuesLabel={count => `+${count} more`}
+					renderMaxDisplayedValuesLabel={count => ` +${count} more`}
 				/>
 			</Stack>
 		);

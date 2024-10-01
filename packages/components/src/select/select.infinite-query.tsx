@@ -21,7 +21,6 @@ function SelectWithInfiniteQueryComponent<
 >(
 	{
 		defaultSearchValue,
-		dropdownLoading,
 		getData,
 		loading,
 		onOptionSubmit,
@@ -51,7 +50,6 @@ function SelectWithInfiniteQueryComponent<
 	const {
 		data: queryData,
 		isFetching,
-		isFetchingNextPage,
 		hasNextPage,
 		fetchNextPage,
 	} = useInfiniteQuery({
@@ -121,7 +119,6 @@ function SelectWithInfiniteQueryComponent<
 			ref={ref}
 			data={data}
 			defaultSearchValue={defaultSearchValue}
-			dropdownLoading={isFetchingNextPage || isFetching || dropdownLoading}
 			filter={filter ? filter : optionsFilter}
 			loading={isFetching || loading}
 			mod={[{ infinite }, mod]}

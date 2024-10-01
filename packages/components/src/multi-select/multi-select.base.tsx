@@ -7,7 +7,6 @@ import {
 	extractStyleProps,
 	getOptionsLockup,
 	getParsedComboboxData,
-	Loader,
 	type MultiSelectFactory,
 	Pill,
 	PillsInput,
@@ -57,7 +56,6 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		description,
 		descriptionProps,
 		disabled,
-		dropdownLoading,
 		dropdownLoadingType,
 		dropdownOpened,
 		error,
@@ -291,9 +289,9 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	const renderMaxDisplayedTextValuesLabel = useCallback(() => {
 		if (maxDisplayedValues) {
-			return renderMaxDisplayedValuesLabel
-				? renderMaxDisplayedValuesLabel(_value.length)
-				: `, +${_value.length - (maxDisplayedValues - 1)} more`;
+			const count = _value.length - (maxDisplayedValues - 1);
+
+			return renderMaxDisplayedValuesLabel ? renderMaxDisplayedValuesLabel(count) : `, +${count} more`;
 		}
 	}, [_value.length, maxDisplayedValues, renderMaxDisplayedValuesLabel]);
 
@@ -307,6 +305,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 	const textValues =
 		_value.length > 0 ? (
 			<Tooltip
+				disabled={!withMaxDisplayedValuesTooltip || !showMaxDisplayedValuesLabel}
 				inline
 				label={tooltipTextContent}
 				maw={rem(320)}
@@ -376,7 +375,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 						className={className}
 						classNames={{
 							...resolvedClassNames,
-							input: cn(classes.input, resolvedClassNames.input),
+							input: cn(classes.input, classes.pillsInput, resolvedClassNames.input),
 						}}
 						description={description}
 						descriptionProps={descriptionProps}
@@ -405,7 +404,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 						pointer={!searchable}
 						radius={radius}
 						required={required}
-						rightSection={loading ? <Loader size='xs' /> : inputRightSection}
+						rightSection={inputRightSection}
 						rightSectionPointerEvents={rightSectionPointerEvents ?? (clearButton ? 'all' : 'none')}
 						rightSectionProps={rightSectionProps}
 						rightSectionWidth={rightSectionWidth}
@@ -504,7 +503,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 					hiddenWhenEmpty={!nothingFoundMessage}
 					labelId={label ? `${_id}-label` : undefined}
 					limit={limit}
-					loading={dropdownLoading}
+					loading={loading}
 					loadingType={dropdownLoadingType}
 					maxDropdownHeight={maxDropdownHeight}
 					nothingFoundMessage={nothingFoundMessage}

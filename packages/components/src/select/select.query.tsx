@@ -72,7 +72,6 @@ function SelectWithQueryComponent<TQueryFnData = unknown, TError = Error, TQuery
 			ref={ref}
 			data={options}
 			defaultSearchValue={defaultSearchValue}
-			dropdownLoading={isFetching || loading}
 			filter={filter ? filter : optionsFilter}
 			loading={isFetching || loading}
 			onOptionSubmit={handleOptionSubmit}

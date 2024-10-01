@@ -38,10 +38,18 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	/** Position where the creatable input should be rendered. Can be `header`, `footer`, or `inline`.
 	 */
 	creatablePosition?: 'header' | 'footer' | 'inline';
-	/** Indicates if the dropdown is loading. */
+	/**
+	 * Indicates if the dropdown is loading.
+	 * @deprecated Use `loading` instead.
+	 */
 	dropdownLoading?: boolean;
-	/** Type of loading indicator to show in the dropdown. Can be `skeleton`, `overlay`, or `loader`. */
+	/**
+	 * Type of loading indicator to show in the dropdown. Can be `skeleton`, `overlay`, or `loader`.
+	 * @deprecated Use `loadingType` instead.
+	 */
 	dropdownLoadingType?: 'skeleton' | 'overlay' | 'loader';
+	/** Type of loading indicator to show in the dropdown. Can be `skeleton`, `overlay`, or `loader`. */
+	loadingType?: 'skeleton' | 'overlay' | 'loader';
 	/** Indicates if the component is in a loading state. */
 	loading?: boolean;
 	/**
@@ -178,6 +186,7 @@ export interface MultiSelectWithInfiniteQueryProps<
 	>;
 	scrollThreshold?: number;
 	onOptionSubmit?: (value: string, options?: ComboboxData, data?: TQueryFnData) => void;
+	disableLoading?: boolean;
 }
 
 interface MultiSelectWithoutQueryProps extends MultiSelectBaseProps {

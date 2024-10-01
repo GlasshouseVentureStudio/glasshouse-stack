@@ -15,7 +15,6 @@ function MultiSelectWithInfiniteQueryComponent<
 >(
 	{
 		defaultSearchValue,
-		dropdownLoading,
 		getData,
 		loading,
 		onOptionSubmit,
@@ -35,7 +34,6 @@ function MultiSelectWithInfiniteQueryComponent<
 	const {
 		data: queryData,
 		isFetching,
-		isFetchingNextPage,
 		hasNextPage,
 		fetchNextPage,
 	} = useInfiniteQuery({
@@ -73,7 +71,6 @@ function MultiSelectWithInfiniteQueryComponent<
 			ref={ref}
 			data={data}
 			defaultSearchValue={defaultSearchValue}
-			dropdownLoading={isFetchingNextPage || dropdownLoading}
 			loading={isFetching || loading}
 			onOptionSubmit={value => onOptionSubmit?.(value, data)}
 			onSearchChange={value => {

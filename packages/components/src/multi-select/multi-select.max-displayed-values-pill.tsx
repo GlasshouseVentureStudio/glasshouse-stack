@@ -14,7 +14,7 @@ interface MaxDisplayedValuesPillProps {
 }
 
 export const MaxDisplayedValuesPill = ({
-	maxDisplayedValues,
+	maxDisplayedValues = Infinity,
 	maxDisplayedValuesTooltipType = 'pills',
 	onRemove,
 	optionsLockup,
@@ -26,6 +26,8 @@ export const MaxDisplayedValuesPill = ({
 }: MaxDisplayedValuesPillProps) => {
 	const [keepTooltipOpened, setKeepTooltipOpened] = useState(false);
 
+	const count = values.length - (maxDisplayedValues - 1);
+
 	const tooltipTextContent = maxDisplayedValues
 		? values
 				.slice(maxDisplayedValues - 1)
@@ -33,10 +35,12 @@ export const MaxDisplayedValuesPill = ({
 				.join(', ')
 		: undefined;
 
+	const showMaxDisplayedValuesLabel = maxDisplayedValues ? values.length > maxDisplayedValues : false;
+
 	return maxDisplayedValues ? (
 		<Tooltip
 			closeDelay={300}
-			disabled={!withMaxDisplayedValuesTooltip}
+			disabled={!withMaxDisplayedValuesTooltip || !showMaxDisplayedValuesLabel}
 			label={
 				<Group
 					gap={4}
@@ -71,9 +75,7 @@ export const MaxDisplayedValuesPill = ({
 			opened={keepTooltipOpened ? keepTooltipOpened : undefined}
 		>
 			<Pill style={{ flexShrink: 0, flexGrow: 0, minWidth: 'auto' }}>
-				{renderMaxDisplayedValuesLabel
-					? renderMaxDisplayedValuesLabel(values.length)
-					: `+${values.length - (maxDisplayedValues - 1)} more`}
+				{renderMaxDisplayedValuesLabel ? renderMaxDisplayedValuesLabel(count) : `+${count} more`}
 			</Pill>
 		</Tooltip>
 	) : null;

@@ -7,7 +7,6 @@ import {
 	getOptionsLockup,
 	getParsedComboboxData,
 	InputBase,
-	Loader,
 	type OptionsDropdownProps,
 	type SelectFactory,
 	useCombobox,
@@ -45,8 +44,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 		defaultSearchValue,
 		defaultValue,
 		disabled,
-		dropdownLoading,
-		dropdownLoadingType = 'skeleton',
+		loadingType = 'skeleton',
 		dropdownOpened,
 		error,
 		filter,
@@ -238,7 +236,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 					<InputBase
 						ref={ref}
 						id={_id}
-						rightSection={loading ? <Loader size='xs' /> : inputRightSection}
+						rightSection={inputRightSection}
 						rightSectionPointerEvents={rightSectionPointerEvents ?? (clearButton ? 'all' : 'none')}
 						{...omit(others, 'infinite')}
 						classNames={resolvedClassNames}
@@ -283,8 +281,8 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 					creatablePosition={creatablePosition}
 					createInputValidator={createInputValidator}
 					filterOptions={filterOptions}
-					loading={dropdownLoading}
-					loadingType={dropdownLoadingType}
+					loading={loading}
+					loadingType={loadingType}
 					onCreate={onCreate}
 					onCreateError={onCreateError}
 					onCreateSuccess={value => {
