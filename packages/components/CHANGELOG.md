@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.18
+
+### Patch Changes
+
+- Refactor select and multiselect loading, tweak multiselect max displayed values.
+
 ## 0.6.17
 
 ### Patch Changes
