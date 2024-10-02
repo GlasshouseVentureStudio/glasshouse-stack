@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.22
+
+### Patch Changes
+
+- Remove console logs
+
 ## 0.6.21
 
 ### Patch Changes
