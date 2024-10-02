@@ -98,6 +98,9 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 	const parsedData = useMemo(() => getParsedComboboxData(internalData), [internalData]);
 
 	const optionsLockup = useMemo(() => getOptionsLockup(parsedData), [parsedData]);
+	/** Use previous options lockup which has data to ensure previous selected option from this option lockup is always there. */
+	const previousOptionsLockup = usePrevious(optionsLockup, true);
+
 	const _id = useId(id);
 
 	const [_value, setValue, controlled] = useUncontrolled({
@@ -108,8 +111,9 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 	});
 
 	const selectedOption = typeof _value === 'string' ? optionsLockup[_value] : undefined;
+	const previousSelected = typeof _value === 'string' ? previousOptionsLockup?.[_value] : undefined;
 
-	const previousSelectedOption = usePrevious(selectedOption, true);
+	const previousSelectedOption = usePrevious(previousSelected);
 
 	const [search, setSearch] = useUncontrolled({
 		value: searchValue,

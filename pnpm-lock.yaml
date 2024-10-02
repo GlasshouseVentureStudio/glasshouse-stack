@@ -597,6 +597,9 @@ importers:
       lodash.capitalize:
         specifier: ^4.2.1
         version: 4.2.1
+      lodash.isempty:
+        specifier: ^4.4.0
+        version: 4.4.0
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -613,6 +616,9 @@ importers:
       '@types/lodash.capitalize':
         specifier: ^4.2.9
         version: 4.2.9
+      '@types/lodash.isempty':
+        specifier: ^4.4.9
+        version: 4.4.9
       '@types/react':
         specifier: ^18.3.10
         version: 18.3.10
@@ -2452,6 +2458,9 @@ packages:
 
   '@types/lodash.groupby@4.6.9':
     resolution: {integrity: sha512-z2xtCX2ko7GrqORnnYea4+ksT7jZNAvaOcLd6mP9M7J09RHvJs06W8BGdQQAX8ARef09VQLdeRilSOcfHlDQJQ==}
+
+  '@types/lodash.isempty@4.4.9':
+    resolution: {integrity: sha512-DPSFfnT2JmZiAWNWOU8IRZws/Ha6zyGF5m06TydfsY+0dVoQqby2J61Na2QU4YtwiZ+moC6cJS6zWYBJq4wBVw==}
 
   '@types/lodash.isequal@4.5.8':
     resolution: {integrity: sha512-uput6pg4E/tj2LGxCZo9+y27JNyB2OZuuI/T5F+ylVDYuqICLG2/ktjxx0v6GvVntAf8TvEzeQLcV0ffRirXuA==}
@@ -4986,6 +4995,9 @@ packages:
 
   lodash.groupby@4.6.0:
     resolution: {integrity: sha512-5dcWxm23+VAoz+awKmBaiBvzox8+RqMgFhi7UvX9DHZr2HdxHXM/Wrf8cfKpsW37RNrvtPn6hSwNqurSILbmJw==}
+
+  lodash.isempty@4.4.0:
+    resolution: {integrity: sha512-oKMuF3xEeqDltrGMfDxAPGIVMSSRv8tbRSODbrs4KGsRRLEhrW8N8Rd4DRgB2+621hY8A8XwwrTVhXWpxFvMzg==}
 
   lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
@@ -9132,6 +9144,10 @@ snapshots:
     dependencies:
       '@types/lodash': 4.17.9
 
+  '@types/lodash.isempty@4.4.9':
+    dependencies:
+      '@types/lodash': 4.17.9
+
   '@types/lodash.isequal@4.5.8':
     dependencies:
       '@types/lodash': 4.17.9
@@ -12247,6 +12263,8 @@ snapshots:
   lodash.flattendeep@4.4.0: {}
 
   lodash.groupby@4.6.0: {}
+
+  lodash.isempty@4.4.0: {}
 
   lodash.isequal@4.5.0: {}
 
