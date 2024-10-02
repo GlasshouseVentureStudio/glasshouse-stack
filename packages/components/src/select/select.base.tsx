@@ -149,7 +149,6 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 
 	useEffect(() => {
 		if (value === null) {
-			console.log('useEffect: ', value);
 			setSearch('');
 		}
 
@@ -158,7 +157,6 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 			selectedOption &&
 			(previousSelectedOption?.value !== selectedOption.value || previousSelectedOption.label !== selectedOption.label)
 		) {
-			console.log('selectedOption: ', selectedOption.label);
 			setSearch(selectedOption.label);
 		}
 	}, [value, selectedOption, previousSelectedOption?.value, previousSelectedOption?.label, setSearch]);
