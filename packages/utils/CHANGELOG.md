@@ -1,5 +1,11 @@
 # @glasshouse/utils
 
+## 0.2.10
+
+### Patch Changes
+
+- Tweak use-previous is check if value is empty using lodash
+
 ## 0.2.9
 
 ### Patch Changes

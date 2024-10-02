@@ -1,5 +1,18 @@
 # @glasshouse/components
 
+## 0.6.20
+
+### Patch Changes
+
+- Fix combobox dropdown create new option function cause underlying form to submit
+
+## 0.6.19
+
+### Patch Changes
+
+- Updated dependencies
+  - @glasshouse/utils@0.2.10
+
 ## 0.6.18
 
 ### Patch Changes
