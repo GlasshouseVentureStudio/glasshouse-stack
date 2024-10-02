@@ -33,7 +33,7 @@ function MultiSelectWithInfiniteQueryComponent<
 	const mergedRef = useMergedRef(viewportRef, scrollAreaProps?.viewportRef);
 	const {
 		data: queryData,
-		isFetching,
+		isLoading,
 		hasNextPage,
 		fetchNextPage,
 	} = useInfiniteQuery({
@@ -53,7 +53,7 @@ function MultiSelectWithInfiniteQueryComponent<
 
 				if (
 					scrollHeight - position.y - clientHeight < clientHeight * (1 - scrollThreshold) &&
-					!isFetching &&
+					!isLoading &&
 					hasNextPage
 				) {
 					void fetchNextPage();
@@ -62,16 +62,16 @@ function MultiSelectWithInfiniteQueryComponent<
 
 			scrollAreaProps?.onScrollPositionChange?.(position);
 		},
-		[fetchNextPage, hasNextPage, isFetching, scrollAreaProps, scrollThreshold]
+		[fetchNextPage, hasNextPage, isLoading, scrollAreaProps, scrollThreshold]
 	);
 
 	return (
 		<MultiSelectBase
-			{...props}
+			{...omit(props, ['dropdownLoadingType', 'dropdownLoading'])}
 			ref={ref}
 			data={data}
 			defaultSearchValue={defaultSearchValue}
-			loading={isFetching || loading}
+			loading={isLoading || loading}
 			onOptionSubmit={value => onOptionSubmit?.(value, data)}
 			onSearchChange={value => {
 				setSearch(value);

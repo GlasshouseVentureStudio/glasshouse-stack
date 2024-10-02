@@ -49,7 +49,7 @@ function SelectWithInfiniteQueryComponent<
 
 	const {
 		data: queryData,
-		isFetching,
+		isLoading,
 		hasNextPage,
 		fetchNextPage,
 	} = useInfiniteQuery({
@@ -69,7 +69,7 @@ function SelectWithInfiniteQueryComponent<
 
 				if (
 					scrollHeight - position.y - clientHeight < clientHeight * (1 - scrollThreshold) &&
-					!isFetching &&
+					!isLoading &&
 					hasNextPage
 				) {
 					void fetchNextPage();
@@ -78,7 +78,7 @@ function SelectWithInfiniteQueryComponent<
 
 			scrollAreaPropsProp?.onScrollPositionChange?.(position);
 		},
-		[fetchNextPage, hasNextPage, isFetching, scrollAreaPropsProp, scrollThreshold]
+		[fetchNextPage, hasNextPage, isLoading, scrollAreaPropsProp, scrollThreshold]
 	);
 
 	const handleOptionSubmit = useCallback(
@@ -115,12 +115,12 @@ function SelectWithInfiniteQueryComponent<
 
 	return (
 		<SelectBase
-			{...props}
+			{...omit(props, ['dropdownLoadingType', 'dropdownLoading'])}
 			ref={ref}
 			data={data}
 			defaultSearchValue={defaultSearchValue}
 			filter={filter ? filter : optionsFilter}
-			loading={isFetching || loading}
+			loading={isLoading || loading}
 			mod={[{ infinite }, mod]}
 			onOptionSubmit={handleOptionSubmit}
 			onSearchChange={handleSearchChange}

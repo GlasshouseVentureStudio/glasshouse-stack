@@ -4,6 +4,7 @@ import {
 	type ComboboxParsedItem,
 	type ComboboxStore,
 	type MultiSelectProps as MantineMultiSelectProps,
+	type OptionsData,
 	type TooltipProps,
 } from '@mantine/core';
 import {
@@ -34,7 +35,7 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	 * @param value - The input value to validate.
 	 * @returns A ReactNode excluding false, ReactPortal, or undefined.
 	 */
-	createInputValidator?: (value: string) => Exclude<ReactNode, false | ReactPortal | undefined>;
+	createInputValidator?: (value: string, data: OptionsData) => Exclude<ReactNode, false | ReactPortal | undefined>;
 	/** Position where the creatable input should be rendered. Can be `header`, `footer`, or `inline`.
 	 */
 	creatablePosition?: 'header' | 'footer' | 'inline';

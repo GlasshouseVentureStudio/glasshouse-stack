@@ -245,7 +245,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 						onBlur={event => {
 							searchable && !creatable && combobox.closeDropdown();
 
-							if (!_value) {
+							if (_value === null) {
 								setSearch('');
 							} else {
 								setSearch(optionsLockup[_value]?.label ?? '');
@@ -290,6 +290,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 							{ value, label: value },
 							...(internalData as (string | ComboboxItem | ComboboxItemGroup)[]),
 						]);
+
 						onCreateSuccess?.(value);
 					}}
 					renderDropdown={renderDropdown}

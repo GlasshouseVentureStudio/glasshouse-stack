@@ -118,7 +118,7 @@ export interface OptionsDropdownProps {
 	canSelectAll?: boolean;
 	allowSelectAll?: boolean;
 	creatable?: boolean;
-	createInputValidator?: (value: string) => Exclude<ReactNode, false | ReactPortal | undefined>;
+	createInputValidator?: (value: string, data: OptionsData) => Exclude<ReactNode, false | ReactPortal | undefined>;
 	creatablePosition?: 'header' | 'footer' | 'inline';
 	data: OptionsData;
 	filter: OptionsFilter | undefined;
@@ -285,15 +285,19 @@ export function OptionsDropdown({
 		options
 	);
 
-	const addOptionInput = creatable ? (
-		<AddOption
-			data={data}
-			onCreate={onCreate}
-			onCreateError={onCreateError}
-			onCreateSuccess={onCreateSuccess}
-			validator={createInputValidator}
-		/>
-	) : null;
+	const addOptionInput = useMemo(
+		() =>
+			creatable && combobox.dropdownOpened ? (
+				<AddOption
+					data={data}
+					onCreate={onCreate}
+					onCreateError={onCreateError}
+					onCreateSuccess={onCreateSuccess}
+					validator={createInputValidator}
+				/>
+			) : null,
+		[combobox.dropdownOpened, creatable, createInputValidator, data, onCreate, onCreateError, onCreateSuccess]
+	);
 
 	const comboboxDropdown = (
 		<Combobox.Options

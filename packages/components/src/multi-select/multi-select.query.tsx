@@ -21,7 +21,7 @@ function MultiSelectWithQueryComponent<TQueryFnData = unknown, TError = Error, T
 ) {
 	const [search, setSearch] = useState(defaultSearchValue ?? searchValue);
 	const [debouncedSearch] = useDebouncedValue(search, 300);
-	const { data, isFetching } = useQuery({
+	const { data, isLoading } = useQuery({
 		placeholderData: keepPreviousData,
 		...omit(queryOptions, 'select'),
 		queryKey: [...queryOptions.queryKey, debouncedSearch] as unknown as TQueryKey,
@@ -32,11 +32,11 @@ function MultiSelectWithQueryComponent<TQueryFnData = unknown, TError = Error, T
 
 	return (
 		<MultiSelectBase
-			{...props}
+			{...omit(props, ['dropdownLoadingType', 'dropdownLoading'])}
 			ref={ref}
 			data={options}
 			defaultSearchValue={defaultSearchValue}
-			loading={isFetching || loading}
+			loading={isLoading || loading}
 			onOptionSubmit={value => onOptionSubmit?.(value, options, data)}
 			onSearchChange={value => {
 				if (props.searchable) {

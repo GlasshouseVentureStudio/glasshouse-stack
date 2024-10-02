@@ -3,6 +3,7 @@ import {
 	type ComboboxData,
 	type ComboboxParsedItem,
 	type ComboboxStore,
+	type OptionsData,
 	type SelectProps as MantineSelectProps,
 } from '@mantine/core';
 import {
@@ -22,7 +23,7 @@ export interface SelectBaseProps extends MantineSelectProps {
 	/** Indicates if new options can be created. */
 	creatable?: boolean;
 	/** Function to validate the input value when creating a new option. */
-	createInputValidator?: (value: string) => Exclude<ReactNode, false | ReactPortal | undefined>;
+	createInputValidator?: (value: string, data: OptionsData) => Exclude<ReactNode, false | ReactPortal | undefined>;
 	/** Position where the creatable input should be rendered. */
 	creatablePosition?: 'header' | 'footer' | 'inline';
 	/** @deprecated Use `loading` instead. Indicates if the dropdown is loading. */

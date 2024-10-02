@@ -471,7 +471,7 @@ export const FormUsage: StoryObj<
 												}
 												infinite
 												nothingFoundMessage='Nothing found'
-												placeholder='MultiSelect person'
+												placeholder='Select person'
 												queryOptions={{
 													queryKey: ['WithQuery'],
 													select: ({ pageParams, pages }) => ({
@@ -499,6 +499,7 @@ export const FormUsage: StoryObj<
 													},
 												}}
 												searchable
+												creatable
 											/>
 										</Grid.Col>
 									</Grid>

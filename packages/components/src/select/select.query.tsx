@@ -30,7 +30,7 @@ function SelectWithQueryComponent<TQueryFnData = unknown, TError = Error, TQuery
 	/** Disable filter if search value equals selected option label. */
 	const filterOptions = searchable && selectedOption?.label !== search;
 
-	const { data: queryData, isFetching } = useQuery({
+	const { data: queryData, isLoading } = useQuery({
 		...omit(queryOptions, 'select'),
 		queryKey: [...queryOptions.queryKey, debouncedSearch] as unknown as TQueryKey,
 		queryFn: context => getData(context, { search: filterOptions ? search : undefined }),
@@ -68,12 +68,12 @@ function SelectWithQueryComponent<TQueryFnData = unknown, TError = Error, TQuery
 
 	return (
 		<SelectBase
-			{...props}
+			{...omit(props, ['dropdownLoadingType', 'dropdownLoading'])}
 			ref={ref}
 			data={options}
 			defaultSearchValue={defaultSearchValue}
 			filter={filter ? filter : optionsFilter}
-			loading={isFetching || loading}
+			loading={isLoading || loading}
 			onOptionSubmit={handleOptionSubmit}
 			onSearchChange={handleSearchChange}
 			searchable={searchable}
