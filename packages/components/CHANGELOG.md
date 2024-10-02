@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.21
+
+### Patch Changes
+
+- Fix search value not reset to current selected option.
+
 ## 0.6.20
 
 ### Patch Changes
