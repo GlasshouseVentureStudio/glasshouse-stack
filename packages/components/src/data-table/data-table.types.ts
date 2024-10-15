@@ -92,6 +92,7 @@ export interface DataTableBaseProps<TData extends MRT_RowData>
 	paginationDisplayMode?: MRT_TableOptions<TData>['paginationDisplayMode'] | 'simple';
 	statesStorageKey?: string;
 	statesStorageProvider?: StateStorageProvider<TData>;
+	onDataChanged?: (data: TData[]) => void;
 }
 
 export interface DataTableWithQueryProps<

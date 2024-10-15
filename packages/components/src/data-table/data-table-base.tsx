@@ -76,6 +76,8 @@ export const DataTableBase = <TData extends MRT_RowData>({
 	renderBottomToolbar: renderBottomToolbarFromProps,
 	statesStorageProvider,
 	statesStorageKey,
+	data,
+	onDataChanged,
 	...props
 }: DataTableBaseProps<TData>) => {
 	const displayColumnDefOptions: DataTableBaseProps<TData>['displayColumnDefOptions'] = {
@@ -97,6 +99,13 @@ export const DataTableBase = <TData extends MRT_RowData>({
 			...displayColumnDefOptionsFromProps?.['mrt-row-select'],
 		},
 	};
+
+	useEffect(() => {
+		// Trigger the callback whenever the data changes
+		if (onDataChanged) {
+			onDataChanged(data);
+		}
+	}, [data, onDataChanged]);
 
 	const tableActionColumnDef = displayColumnDefOptionsFromProps?.['mrt-table-actions'];
 
@@ -319,6 +328,7 @@ export const DataTableBase = <TData extends MRT_RowData>({
 		positionActionsColumn,
 		renderBottomToolbar,
 		renderTopToolbar,
+		data,
 		...props,
 	});
 
