@@ -41,7 +41,7 @@ const varsResolver = createVarsResolver<GridFactory>((theme, { guideWidth, guide
 			'--grid-max-width': '600px',
 			'--grid-min-width': '300px',
 			'--grid-guide-color': guideColor ? getThemeColor(guideColor, theme) : undefined,
-			'--grid-radius': radius ? getRadius(radius) : undefined,
+			'--grid-radius': radius === undefined ? undefined : getRadius(radius),
 			'--grid-cell-padding': getSize(cellPadding, 'grid-cell-padding'),
 		},
 	};

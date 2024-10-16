@@ -9,5 +9,5 @@ module.exports = {
 	rules: {
 		camelcase: ['error', { allow: ['^MRT_'] }],
 	},
-	ignorePatterns: ['*.js', '*.stories.ts', '*.stories.tsx'],
+	ignorePatterns: ['*.js'],
 };

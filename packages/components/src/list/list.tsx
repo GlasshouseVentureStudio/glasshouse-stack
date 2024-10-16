@@ -30,7 +30,7 @@ import classes from './list.module.css';
 const varsResolver = <T extends object>() =>
 	createVarsResolver<ListFactory<T>>((_, { radius }) => ({
 		root: {
-			'--list-radius': radius ? getRadius(radius) : undefined,
+			'--list-radius': radius === undefined ? undefined : getRadius(radius),
 		},
 	}));
 

@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks -- valid for stories */
+import { useState } from 'react';
 import { faker } from '@faker-js/faker';
 import { Box, Checkbox, Group, Paper, Radio, rem, Stack, Switch, Text, Title } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
 import { expect, fn, userEvent, within } from '@storybook/test';
 import chunk from 'lodash.chunk';
 import groupBy from 'lodash.groupby';
-import { useState } from 'react';
-import data from './fake.json';
 
 import { List } from '../list';
 import { type PaginationConfig } from '../list.types';
+import data from './fake.json';
 
 const meta: Meta<typeof List<DataType>> = {
 	title: 'Components/Lists/List',
@@ -274,8 +274,8 @@ export const Virtualized: ListStory = {
 		return (
 			<List
 				{...args}
-				virtualized={virtualized}
 				data={data}
+				virtualized={virtualized}
 			/>
 		);
 	},
@@ -358,6 +358,7 @@ export const Selectable: ListStory = {
 		},
 		selectable: true,
 		onClick: fn(() => {
+			// eslint-disable-next-line no-console -- This is a demo
 			console.log('Item clicked');
 		}),
 	},
@@ -458,5 +459,13 @@ export const Pagination: ListStory = {
 				</Radio.Group>
 			</Stack>
 		);
+	},
+};
+
+export const Rounded: ListStory = {
+	...Default,
+	args: {
+		...Default.args,
+		radius: 'xl',
 	},
 };
