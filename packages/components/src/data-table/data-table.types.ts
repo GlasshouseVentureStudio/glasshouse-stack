@@ -1,4 +1,5 @@
 import { type FC } from 'react';
+import { type ProgressProps } from '@mantine/core';
 import {
 	type DefaultError,
 	type InfiniteData,
@@ -8,6 +9,7 @@ import {
 	type UseQueryOptions,
 } from '@tanstack/react-query';
 import {
+	type HTMLPropsRef,
 	type MRT_DisplayColumnDef,
 	type MRT_DisplayColumnIds,
 	type MRT_Icons,
@@ -149,3 +151,8 @@ export interface LoadMoreButtonProps {
 	onClick?: () => void;
 	hasNextPage?: boolean;
 }
+
+export type MantineReactTableMantineProgressProps<TData extends MRT_RowData> = (props: {
+	isTopToolbar: boolean;
+	table: MRT_TableInstance<TData>;
+}) => HTMLPropsRef<HTMLDivElement> & ProgressProps;

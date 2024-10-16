@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useInterval } from '@mantine/hooks';
 import { type DefaultError, type InfiniteData, type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 import omit from 'lodash.omit';
 import {
@@ -15,6 +16,7 @@ import {
 	type DataTableOptions,
 	type DataTableWithInfiniteQueryProps,
 	type LoadMoreButtonProps,
+	type MantineReactTableMantineProgressProps,
 } from './data-table.types';
 import { resolveComponentProps } from './data-table.utils';
 import { DataTableBase } from './data-table-base';
@@ -31,6 +33,7 @@ export const DataTableWithInfiniteQuery = <
 	queryOptions,
 	state,
 	mantineTableContainerProps: mantineTableContainerPropsFromProps,
+	mantineProgressProps: mantineProgressPropsFromProps,
 	initialState,
 	onColumnFiltersChange,
 	onPaginationChange,
@@ -52,6 +55,7 @@ export const DataTableWithInfiniteQuery = <
 
 	const {
 		data: queryData,
+		isLoading,
 		isFetching,
 		fetchNextPage,
 		isFetchingNextPage,
@@ -102,6 +106,45 @@ export const DataTableWithInfiniteQuery = <
 		}
 	}, [sorting]);
 
+	// Custom progress bar with random progress
+	const [progress, setProgress] = useState(0);
+
+	const interval = useInterval(() => {
+		setProgress(prev => {
+			const factor = prev < 90 ? 10 : 0;
+			const newProgress = Math.random() * factor;
+
+			return Math.min(prev + newProgress, 100);
+		});
+	}, 500);
+
+	useEffect(() => {
+		if (isFetchingNextPage) {
+			interval.start();
+		} else {
+			setProgress(0);
+			interval.stop();
+		}
+
+		return interval.stop;
+	}, [interval, isFetchingNextPage]);
+
+	const mantineProgressProps = useCallback<MantineReactTableMantineProgressProps<TData>>(
+		props => {
+			const resolvedProps = resolveComponentProps(props, mantineProgressPropsFromProps);
+
+			return {
+				variant: 'determinate',
+				value: progress,
+				transitionDuration: 500,
+				animated: false,
+				striped: false,
+				...resolvedProps,
+			};
+		},
+		[mantineProgressPropsFromProps, progress]
+	);
+
 	return (
 		<DataTableBase
 			{...props}
@@ -111,6 +154,7 @@ export const DataTableWithInfiniteQuery = <
 			enablePagination={false}
 			enableRowVirtualization
 			initialState={initialState}
+			mantineProgressProps={mantineProgressProps}
 			mantineTableContainerProps={mantineTableContainerProps}
 			manualPagination
 			onColumnFiltersChange={updater => {
@@ -130,13 +174,13 @@ export const DataTableWithInfiniteQuery = <
 				overscan: 20,
 			}}
 			state={{
-				isLoading: isFetching,
+				showSkeletons: isLoading,
 				showProgressBars: isFetchingNextPage,
 				...state,
 			}}
 			{...(enableLoadMoreButton && {
 				renderBottomToolbar: () =>
-					renderLoadMoreButton({ onClick: fetchNextPage, isFetching: isFetchingNextPage, hasNextPage }),
+					renderLoadMoreButton({ onClick: () => void fetchNextPage(), isFetching: isFetchingNextPage, hasNextPage }),
 			})}
 		/>
 	);

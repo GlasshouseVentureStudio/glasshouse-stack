@@ -233,7 +233,7 @@ const getInfiniteData: GetDataFn<
 				data: bigData.slice(pageParam.pageIndex * pageParam.pageSize, (pageParam.pageIndex + 1) * pageParam.pageSize),
 				total: 123456,
 			});
-		}, 400);
+		}, 10000);
 	});
 };
 

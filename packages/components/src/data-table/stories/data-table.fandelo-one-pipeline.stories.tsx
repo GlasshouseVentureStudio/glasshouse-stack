@@ -253,7 +253,7 @@ const getPipelineData: GetDataFn<Pipeline, PipelineData> = (_, tableState) => {
 					total: data.length,
 				},
 			});
-		}, 400);
+		}, 500);
 	});
 };
 
