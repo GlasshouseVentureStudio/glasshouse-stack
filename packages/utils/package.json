@@ -34,18 +34,18 @@
 		"lodash.capitalize": "^4.2.1",
 		"lodash.isempty": "^4.4.0",
 		"react": "^18.3.1",
-		"tailwind-merge": "^2.5.2",
+		"tailwind-merge": "^2.5.4",
 		"tailwind-variants": "^0.2.1"
 	},
 	"devDependencies": {
 		"@glasshouse/style-guide": "workspace:*",
 		"@types/lodash.capitalize": "^4.2.9",
 		"@types/lodash.isempty": "^4.4.9",
-		"@types/react": "^18.3.10",
-		"@types/react-dom": "^18.3.0",
+		"@types/react": "^18.3.11",
+		"@types/react-dom": "^18.3.1",
 		"eslint": "^8.57.1",
 		"tsup": "^8.3.0",
-		"typescript": "^5.6.2"
+		"typescript": "^5.6.3"
 	},
 	"publishConfig": {
 		"access": "public"

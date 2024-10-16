@@ -1,5 +1,12 @@
 # @glasshouse/components
 
+## 0.6.23
+
+### Patch Changes
+
+- fix(components): radius props for list and grid
+- chore(components): tweak data table loading states and visuals
+
 ## 0.6.22
 
 ### Patch Changes
