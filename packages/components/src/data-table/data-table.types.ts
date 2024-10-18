@@ -106,6 +106,7 @@ export interface DataTableWithQueryProps<
 	infinite?: false;
 	queryOptions: Omit<UseQueryOptions<TQueryFnData, TError, TData[], TQueryKey>, 'queryFn'>;
 	getRowCount?: (data?: TQueryFnData) => number;
+	onDataFetch?: (data?: TQueryFnData) => void;
 }
 
 export interface DataTableWithInfiniteQueryProps<
@@ -125,6 +126,7 @@ export interface DataTableWithInfiniteQueryProps<
 	scrollThreshold?: number | string;
 	enableLoadMoreButton?: boolean;
 	renderLoadMoreButton?: (props: LoadMoreButtonProps) => React.ReactNode;
+	onDataFetch?: (data?: InfiniteData<TQueryFnData, TPageParam>) => void;
 }
 
 interface DataTablePropsWithoutQuery<TData extends MRT_RowData, TQueryFnData = unknown>
