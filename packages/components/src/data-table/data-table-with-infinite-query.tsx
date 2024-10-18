@@ -41,6 +41,7 @@ export const DataTableWithInfiniteQuery = <
 	scrollThreshold = 0.25,
 	enableLoadMoreButton = false,
 	renderLoadMoreButton = (props: LoadMoreButtonProps) => <LoadMoreButton {...props} />,
+	onDataFetch,
 	...props
 }: DataTableWithInfiniteQueryProps<TData, TQueryFnData, TError, TQueryKey, TPageParam>) => {
 	const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -69,6 +70,10 @@ export const DataTableWithInfiniteQuery = <
 	const selectedQueryData = useMemo(() => queryData && queryOptions.select?.(queryData), [queryData, queryOptions]);
 
 	const data = useMemo(() => selectedQueryData?.pages.flat() ?? [], [selectedQueryData?.pages]);
+
+	useEffect(() => {
+		if (onDataFetch) onDataFetch(queryData);
+	}, [onDataFetch, queryData]);
 
 	const mantineTableContainerProps: DataTableOptions<TData>['mantineTableContainerProps'] = props => {
 		const resolvedProps = resolveComponentProps(props, mantineTableContainerPropsFromProps);

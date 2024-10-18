@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { keepPreviousData, type QueryKey, useQuery } from '@tanstack/react-query';
 import omit from 'lodash.omit';
 import {
@@ -29,6 +29,7 @@ export const DataTableWithQuery = <
 	onSortingChange,
 	queryOptions,
 	state,
+	onDataFetch,
 	...props
 }: DataTableWithQueryProps<TData, TQueryFnData, TError, TQueryKey>) => {
 	const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>(
@@ -45,6 +46,12 @@ export const DataTableWithQuery = <
 		queryKey: [...queryOptions.queryKey, columnFilters, pagination, sorting] as unknown as TQueryKey,
 		queryFn: context => getData(context, { columnFilters, pagination, sorting }),
 	});
+
+	useEffect(() => {
+		if (onDataFetch) {
+			onDataFetch(queryData);
+		}
+	}, [queryData, onDataFetch]);
 
 	const data = useMemo(() => (queryData && queryOptions.select?.(queryData)) ?? [], [queryData, queryOptions]);
 
