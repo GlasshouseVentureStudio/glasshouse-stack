@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.25
+
+### Patch Changes
+
+- Fix table storage set function missing storage key
+
 ## 0.6.24
 
 ### Patch Changes
