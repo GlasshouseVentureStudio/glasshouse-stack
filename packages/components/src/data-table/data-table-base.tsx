@@ -328,9 +328,9 @@ export const DataTableBase = <TData extends MRT_RowData>({
 		if (statesStorageProvider) {
 			const { set } = statesStorageProvider;
 
-			set(tableState);
+			set(tableState, statesStorageKey);
 		}
-	}, [statesStorageProvider, tableState]);
+	}, [statesStorageKey, statesStorageProvider, tableState]);
 
 	return <MantineReactTable table={table} />;
 };
