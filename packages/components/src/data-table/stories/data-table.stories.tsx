@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker';
-import { ActionIcon, Group } from '@mantine/core';
+import { ActionIcon } from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react';
-import { IconEdit, IconEye, IconTrash } from '@tabler/icons-react';
 import { type QueryKey } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import omit from 'lodash.omit';
+import { EyeIcon, PencilIcon, PinIcon, TrashIcon } from 'lucide-react';
 import { type MRT_ColumnDef } from 'mantine-react-table';
 
 import { TextAreaCellEdit } from '../cell-edit/textarea-cell-edit';
@@ -156,7 +156,8 @@ export const FullFeatures: StoryObj<DataTableProps<DataType>> = {
 		enableRowDragging: true,
 		enableRowNumbers: false,
 		enableRowOrdering: false,
-		enableRowPinning: false,
+		enableRowPinning: true,
+		rowPinningDisplayMode: 'top',
 		enableRowSelection: true,
 		enableRowVirtualization: false,
 		enableSelectAll: true,
@@ -171,27 +172,44 @@ export const FullFeatures: StoryObj<DataTableProps<DataType>> = {
 		enableTopToolbar: false,
 		positionActionsColumn: 'last',
 		renderRowActions: ({ table, row }) => (
-			<Group wrap='nowrap'>
-				<ActionIcon size='sm'>
-					<IconEye size={16} />
+			<ActionIcon.Group variant='default'>
+				<ActionIcon size='xs'>
+					<EyeIcon size={12} />
 				</ActionIcon>
 				<ActionIcon
 					onClick={() => {
 						table.setEditingRow(row);
 					}}
-					size='sm'
-					variant='outline'
+					size='xs'
 				>
-					<IconEdit size={16} />
+					<PencilIcon size={12} />
+				</ActionIcon>
+				<ActionIcon
+					onClick={() => {
+						row.pin('top');
+					}}
+					size='xs'
+				>
+					<PinIcon
+						className='gvs-rotate-180'
+						size={12}
+					/>
+				</ActionIcon>
+				<ActionIcon
+					onClick={() => {
+						row.pin('bottom');
+					}}
+					size='xs'
+				>
+					<PinIcon size={12} />
 				</ActionIcon>
 				<ActionIcon
 					color='red'
-					size='sm'
-					variant='outline'
+					size='xs'
 				>
-					<IconTrash size={16} />
+					<TrashIcon size={12} />
 				</ActionIcon>
-			</Group>
+			</ActionIcon.Group>
 		),
 	},
 	render: props => {
