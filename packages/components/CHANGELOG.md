@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.6.26
+
+### Patch Changes
+
+- Fix table draggable header cell overlap resize handle
+
 ## 0.6.25
 
 ### Patch Changes
