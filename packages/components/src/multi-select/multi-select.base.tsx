@@ -39,6 +39,7 @@ const defaultProps: Partial<MultiSelectBaseProps> = {
 
 function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRef<HTMLInputElement>) {
 	const props = useProps('MultiSelect', defaultProps, _props);
+
 	const {
 		checkIconPosition,
 		className,
@@ -174,6 +175,8 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		onChange: onSearchChange,
 	});
 
+	const [cumulativeValue, setCumulativeValue] = useState<ComboboxItem[]>([]);
+
 	const filteredData = filterPickedValues({ data: parsedData, value: _value });
 
 	//use for reference for set value of group options
@@ -265,6 +268,21 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	const inputRightSection = clearButton ? clearButton : _rightSection;
 
+	const getCumulativeValue = (value: string) => {
+		const option = optionsLockup[value];
+		const cumulativeOption = cumulativeValue.find(item => item.value === value);
+
+		if (option?.label) {
+			return option.label;
+		}
+
+		if (cumulativeOption?.label) {
+			return cumulativeOption.label;
+		}
+
+		return value;
+	};
+
 	const valuesToDisplay =
 		maxDisplayedValues && (maxDisplayedValues === _value.length ? maxDisplayedValues : maxDisplayedValues - 1);
 
@@ -283,7 +301,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 			withRemoveButton={!readOnly && !optionsLockup[item]?.disabled}
 			{...getStyles('pill')}
 		>
-			{optionsLockup[item]?.label ?? item}
+			{getCumulativeValue(item)}
 		</Pill>
 	));
 
@@ -298,7 +316,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 	const tooltipTextContent = maxDisplayedValues
 		? _value
 				.slice(maxDisplayedValues - 1)
-				.map(value => optionsLockup[value]?.label ?? value)
+				.map(getCumulativeValue)
 				.join(', ')
 		: undefined;
 
@@ -319,28 +337,37 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 					unstyled={unstyled}
 					{...getStyles('pill')}
 				>
-					{_value
-						.slice(0, valuesToDisplay)
-						.map(item => optionsLockup[item]?.label ?? item)
-						.join(', ')}
+					{_value.slice(0, valuesToDisplay).map(getCumulativeValue).join(', ')}
 					{showMaxDisplayedValuesLabel ? renderMaxDisplayedTextValuesLabel() : null}
 				</Text>
 			</Tooltip>
 		) : null;
 
-	const handleValueSelect = (val: string) => {
-		onOptionSubmit?.(val);
+	const handleOptionSubmit = (value: string) => {
+		onOptionSubmit?.(value);
 		setSearchValue('');
 		combobox.updateSelectedOptionIndex('selected');
 
-		const optionsLockupValue = optionsLockup[val]?.value;
+		const option = optionsLockup[value];
+
+		if (option) {
+			setCumulativeValue(prev => {
+				if (prev.find(item => item.value === value)) {
+					return prev;
+				}
+
+				return [...prev, option];
+			});
+		}
+
+		const optionsLockupValue = optionsLockup[value]?.value;
 
 		//select all items when select 'All' option
-		if (val === SELECT_ALL_VALUE && _value.length !== flatOptionsData.length) {
+		if (value === SELECT_ALL_VALUE && _value.length !== flatOptionsData.length) {
 			setValue(flatOptionsData.map(item => item.value));
 		}
 		//deselect all items when deselect 'All' option
-		else if (val === SELECT_ALL_VALUE && _value.length === flatOptionsData.length) {
+		else if (value === SELECT_ALL_VALUE && _value.length === flatOptionsData.length) {
 			setValue([]);
 		} else if (optionsLockupValue && _value.includes(optionsLockupValue)) {
 			setValue(_value.filter(v => v !== optionsLockupValue));
@@ -350,12 +377,18 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		}
 	};
 
+	useEffect(() => {
+		if (_value.length === 0) {
+			setCumulativeValue([]);
+		}
+	}, [_value.length]);
+
 	return (
 		<>
 			<Combobox
 				__staticSelector='MultiSelect'
 				classNames={resolvedClassNames}
-				onOptionSubmit={handleValueSelect}
+				onOptionSubmit={handleOptionSubmit}
 				readOnly={readOnly}
 				size={size}
 				store={combobox}

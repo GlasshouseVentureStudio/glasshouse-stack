@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks -- safe for stories */
+import { useState } from 'react';
 import { faker } from '@faker-js/faker';
 import {
 	ActionIcon,
@@ -14,7 +16,6 @@ import {
 import { notifications } from '@mantine/notifications';
 import type { Meta, StoryObj } from '@storybook/react';
 import { IconCheck, IconChevronLeft, IconChevronRight, IconThumbUp } from '@tabler/icons-react';
-import { useState } from 'react';
 
 import { MultiSelect } from '../multi-select';
 import { type MultiSelectProps, type MultiSelectWithInfiniteQueryProps } from '../multi-select.types';
@@ -30,6 +31,14 @@ const generateData = (length: number): ComboboxData =>
 		label: faker.person.fullName(),
 		value: faker.string.uuid(),
 	}));
+
+const getUsers = async (params?: UsersParams) => {
+	const searchParams = new URLSearchParams(params as unknown as Record<string, string>);
+
+	const url = params ? `https://dummyjson.com/users/search?${searchParams.toString()}` : 'https://dummyjson.com/users';
+
+	return fetch(url).then(response => response.json() as Promise<UsersResponse>);
+};
 
 export default meta;
 type MultiSelectStory = StoryObj<typeof meta>;
@@ -297,52 +306,38 @@ export const WithQuery: StoryObj<MultiSelectProps> = {
 };
 
 export const WithInfiniteQuery: StoryObj<
-	MultiSelectWithInfiniteQueryProps<
-		{ data: ComboboxData; total: number },
-		Error,
-		string[],
-		{ pageSize: number; pageIndex: number }
-	>
+	MultiSelectWithInfiniteQueryProps<UsersResponse, Error, string[], UsersParams>
 > = {
 	args: {
 		dropdownLoadingType: 'skeleton',
 	},
-	render: (
-		props: MultiSelectWithInfiniteQueryProps<
-			{ data: ComboboxData; total: number },
-			Error,
-			string[],
-			{ pageSize: number; pageIndex: number }
-		>
-	) => {
+	render: (props: MultiSelectWithInfiniteQueryProps<UsersResponse, Error, string[], UsersParams>) => {
 		return (
 			<MultiSelect
 				{...props}
 				clearable
 				getData={({ pageParam }, { search }) => {
-					console.log(search);
+					const { limit, skip } = pageParam;
 
-					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
-						setTimeout(() => {
-							resolve({
-								data: (search
-									? data.filter(value => (value as ComboboxItem).label.toLowerCase().includes(search.toLowerCase()))
-									: data
-								).slice(pageParam.pageIndex * pageParam.pageSize, (pageParam.pageIndex + 1) * pageParam.pageSize),
-								total: 50,
-							});
-						}, 1000);
-					});
+					return getUsers({ limit, skip, q: search ?? '' });
 				}}
 				infinite
 				placeholder='MultiSelect person'
 				queryOptions={{
 					queryKey: ['WithQuery'],
-					select: ({ pageParams, pages }) => ({ pageParams, pages: pages.map(page => page.data) }),
-					getNextPageParam: (lastPage, _, { pageIndex, pageSize }) => {
-						return pageIndex * pageSize < lastPage.total ? { pageIndex: pageIndex + 1, pageSize } : null;
+					select: ({ pageParams, pages }) => ({
+						pageParams,
+						pages: pages.map(page =>
+							page.users.map(user => ({
+								label: `${user.firstName} ${user.lastName}`,
+								value: user.id.toString(),
+							}))
+						),
+					}),
+					getNextPageParam: (lastPage, _, { skip, limit }) => {
+						return limit + skip < lastPage.total ? { skip: skip + limit, limit } : null;
 					},
-					initialPageParam: { pageSize: 20, pageIndex: 0 },
+					initialPageParam: { limit: 20, skip: 0 },
 				}}
 				searchable
 				w={256}
@@ -588,8 +583,6 @@ export const FloatingInput: StoryObj<
 				</Group>
 				<MultiSelect
 					{...props}
-					size='xs'
-					searchable={searchable}
 					floatingInput={floating}
 					getData={({ pageParam }, { search }) => {
 						return new Promise<{ data: ComboboxData; total: number }>(resolve => {
@@ -617,6 +610,8 @@ export const FloatingInput: StoryObj<
 						initialPageParam: { pageSize: 20, pageIndex: 0 },
 					}}
 					renderMaxDisplayedValuesLabel={count => ` +${count} more`}
+					searchable={searchable}
+					size='xs'
 				/>
 			</Stack>
 		);
@@ -637,3 +632,122 @@ export const WithSelectAll: StoryObj<
 		allowSelectAll: true,
 	},
 };
+
+interface UsersParams {
+	limit?: number;
+	skip?: number;
+	q?: string;
+}
+
+export interface UsersResponse {
+	users: User[];
+	total: number;
+	skip: number;
+	limit: number;
+}
+
+export interface User {
+	id: number;
+	firstName: string;
+	lastName: string;
+	maidenName: string;
+	age: number;
+	gender: Gender;
+	email: string;
+	phone: string;
+	username: string;
+	password: string;
+	birthDate: string;
+	image: string;
+	bloodGroup: string;
+	height: number;
+	weight: number;
+	eyeColor: string;
+	hair: Hair;
+	ip: string;
+	address: Address;
+	macAddress: string;
+	university: string;
+	bank: Bank;
+	company: Company;
+	ein: string;
+	ssn: string;
+	userAgent: string;
+	crypto: Crypto;
+	role: Role;
+}
+
+export interface Address {
+	address: string;
+	city: string;
+	state: string;
+	stateCode: string;
+	postalCode: string;
+	coordinates: Coordinates;
+	country: Country;
+}
+
+export interface Coordinates {
+	lat: number;
+	lng: number;
+}
+
+export enum Country {
+	UnitedStates = 'United States',
+}
+
+export interface Bank {
+	cardExpire: string;
+	cardNumber: string;
+	cardType: string;
+	currency: string;
+	iban: string;
+}
+
+export interface Company {
+	department: string;
+	name: string;
+	title: string;
+	address: Address;
+}
+
+export interface Crypto {
+	coin: Coin;
+	wallet: Wallet;
+	network: Network;
+}
+
+export enum Coin {
+	Bitcoin = 'Bitcoin',
+}
+
+export enum Network {
+	EthereumERC20 = 'Ethereum (ERC20)',
+}
+
+export enum Wallet {
+	The0Xb9Fc2Fe63B2A6C003F1C324C3Bfa53259162181A = '0xb9fc2fe63b2a6c003f1c324c3bfa53259162181a',
+}
+
+export enum Gender {
+	Female = 'female',
+	Male = 'male',
+}
+
+export interface Hair {
+	color: string;
+	type: Type;
+}
+
+export enum Type {
+	Curly = 'Curly',
+	Kinky = 'Kinky',
+	Straight = 'Straight',
+	Wavy = 'Wavy',
+}
+
+export enum Role {
+	Admin = 'admin',
+	Moderator = 'moderator',
+	User = 'user',
+}

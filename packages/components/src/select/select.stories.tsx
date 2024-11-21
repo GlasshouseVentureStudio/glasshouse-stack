@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks -- safe for stories */
+import { useState } from 'react';
 import { faker } from '@faker-js/faker';
 import {
 	ActionIcon,
@@ -11,18 +13,18 @@ import {
 	Stack,
 	TextInput,
 } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import { Notifications, notifications } from '@mantine/notifications';
 import type { Meta, StoryObj } from '@storybook/react';
 import { IconCheck, IconChevronLeft, IconChevronRight, IconThumbUp } from '@tabler/icons-react';
+import { MinusIcon, PlusIcon } from 'lucide-react';
+// eslint-disable-next-line import/named -- unsure why eslint is complaining
 import { v4 } from 'uuid';
 
 import { Select } from './select';
 import { type SelectProps, type SelectWithInfiniteQueryProps } from './select.types';
 
-import { useForm } from '@mantine/form';
 import '@mantine/notifications/styles.css';
-import { MinusIcon, PlusIcon } from 'lucide-react';
-import { useState } from 'react';
 
 const meta: Meta = {
 	title: 'Components/Select',
@@ -375,7 +377,7 @@ interface UsersParams {
 	q?: string;
 }
 
-const getUsers = async (params: UsersParams) => {
+const getUsers = async (params?: UsersParams) => {
 	const searchParams = new URLSearchParams(params as unknown as Record<string, string>);
 
 	const url = params ? `https://dummyjson.com/users/search?${searchParams.toString()}` : 'https://dummyjson.com/users';
@@ -432,11 +434,11 @@ export const FormUsage: StoryObj<
 						{form.values.contacts.map((contact, index) => (
 							<Fieldset
 								key={contact.key}
-								variant='unstyled'
 								classNames={{
 									legend: 'mb-1',
 									root: 'mb-3',
 								}}
+								variant='unstyled'
 							>
 								<Group
 									gap='xs'
@@ -466,6 +468,7 @@ export const FormUsage: StoryObj<
 												{...props}
 												{...form.getInputProps(`contacts.${index}.person`)}
 												clearable
+												creatable
 												getData={({ pageParam }, { search = '' }) =>
 													getUsers({ ...pageParam, q: search.toLowerCase() })
 												}
@@ -499,7 +502,6 @@ export const FormUsage: StoryObj<
 													},
 												}}
 												searchable
-												creatable
 											/>
 										</Grid.Col>
 									</Grid>
@@ -510,12 +512,12 @@ export const FormUsage: StoryObj<
 										<ActionIcon
 											color='red'
 											disabled={index === 0}
-											opacity={index === 0 ? 0 : undefined}
-											size='xs'
-											variant='subtle'
 											onClick={() => {
 												form.removeListItem('contacts', index);
 											}}
+											opacity={index === 0 ? 0 : undefined}
+											size='xs'
+											variant='subtle'
 										>
 											<MinusIcon size={14} />
 										</ActionIcon>
@@ -524,8 +526,8 @@ export const FormUsage: StoryObj<
 							</Fieldset>
 						))}
 						<Button
-							w={160}
 							type='submit'
+							w={160}
 						>
 							Submit
 						</Button>
@@ -533,7 +535,7 @@ export const FormUsage: StoryObj<
 				</form>
 				<Stack>
 					{contacts?.contacts.map(contact => (
-						<Group>
+						<Group key={contact.key}>
 							<span>{contact.name}</span>
 							<span>{contact.phone}</span>
 							<span>{contact.email}</span>

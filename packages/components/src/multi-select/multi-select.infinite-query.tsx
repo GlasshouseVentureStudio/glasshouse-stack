@@ -31,9 +31,11 @@ function MultiSelectWithInfiniteQueryComponent<
 	const [debouncedSearch] = useDebouncedValue(search, 300);
 	const viewportRef = useRef<HTMLDivElement>(null);
 	const mergedRef = useMergedRef(viewportRef, scrollAreaProps?.viewportRef);
+
 	const {
 		data: queryData,
 		isLoading,
+		isFetching,
 		hasNextPage,
 		fetchNextPage,
 	} = useInfiniteQuery({
@@ -42,6 +44,7 @@ function MultiSelectWithInfiniteQueryComponent<
 		queryKey: [...queryOptions.queryKey, debouncedSearch] as unknown as TQueryKey,
 		queryFn: context => getData(context, { search }),
 	});
+
 	const options = queryData ? queryOptions.select?.(queryData as InfiniteData<TQueryFnData, TPageParam>) : undefined;
 
 	const data = options?.pages.flatMap(page => page);
@@ -50,19 +53,16 @@ function MultiSelectWithInfiniteQueryComponent<
 		(position: { x: number; y: number }) => {
 			if (viewportRef.current) {
 				const { scrollHeight, clientHeight } = viewportRef.current;
+				const shouldFetch = scrollHeight - position.y - clientHeight < clientHeight * (1 - scrollThreshold);
 
-				if (
-					scrollHeight - position.y - clientHeight < clientHeight * (1 - scrollThreshold) &&
-					!isLoading &&
-					hasNextPage
-				) {
+				if (shouldFetch && (!isLoading || !isFetching) && hasNextPage) {
 					void fetchNextPage();
 				}
 			}
 
 			scrollAreaProps?.onScrollPositionChange?.(position);
 		},
-		[fetchNextPage, hasNextPage, isLoading, scrollAreaProps, scrollThreshold]
+		[fetchNextPage, hasNextPage, isFetching, isLoading, scrollAreaProps, scrollThreshold]
 	);
 
 	return (
