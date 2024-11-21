@@ -40,7 +40,11 @@ export const DataTableWithQuery = <
 	);
 	const [sorting, setSorting] = useState<MRT_SortingState>(initialState?.sorting ?? state?.sorting ?? []);
 
-	const { data: queryData, isLoading } = useQuery({
+	const {
+		data: queryData,
+		isLoading,
+		isFetching,
+	} = useQuery({
 		placeholderData: keepPreviousData,
 		...omit(queryOptions, 'select'),
 		queryKey: [...queryOptions.queryKey, columnFilters, pagination, sorting] as unknown as TQueryKey,
@@ -74,7 +78,8 @@ export const DataTableWithQuery = <
 			}}
 			rowCount={getRowCount ? getRowCount(queryData) : props.rowCount}
 			state={{
-				isLoading,
+				showSkeletons: isLoading,
+				isLoading: isFetching && !isLoading,
 				pagination,
 				sorting,
 				columnFilters,

@@ -262,7 +262,7 @@ export const FullFeatureWithQuery: StoryObj<DataTableProps<DataType>> = {
 	render: (props: DataTableProps<DataType>) => {
 		return (
 			<DataTable
-				{...props}
+				{...omit(props, 'data')}
 				columns={columns}
 				getData={getData}
 				getRowCount={data => data?.total ?? 0}

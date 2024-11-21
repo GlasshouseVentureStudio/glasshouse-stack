@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { ActionIcon, Button, Combobox, type ComboboxData, type ComboboxItem, Group, Stack } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import type { Meta, StoryObj } from '@storybook/react';
-import { IconCheck, IconChevronLeft, IconChevronRight, IconThumbUp } from '@tabler/icons-react';
+import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, ThumbsUpIcon } from 'lucide-react';
 
 import { Autocomplete } from './autocomplete';
 import { type AutocompleteProps, type AutocompleteWithInfiniteQueryProps } from './autocomplete.types';
@@ -42,9 +42,9 @@ export const RenderOption: StoryObj<AutocompleteProps> = {
 			>
 				<span>{option.value}</span>
 				{checked ? (
-					<IconThumbUp
+					<ThumbsUpIcon
 						size={16}
-						stroke={1.5}
+						stroke='1.5'
 					/>
 				) : null}
 			</Group>
@@ -110,7 +110,7 @@ export const RenderFooter: StoryObj<AutocompleteProps> = {
 									}}
 									variant='light'
 								>
-									<IconChevronLeft />
+									<ChevronLeftIcon />
 								</ActionIcon>
 								<ActionIcon
 									onClick={() => {
@@ -118,7 +118,7 @@ export const RenderFooter: StoryObj<AutocompleteProps> = {
 									}}
 									variant='light'
 								>
-									<IconChevronRight />
+									<ChevronRightIcon />
 								</ActionIcon>
 								<ActionIcon
 									onClick={() => {
@@ -126,7 +126,7 @@ export const RenderFooter: StoryObj<AutocompleteProps> = {
 									}}
 									variant='light'
 								>
-									<IconCheck />
+									<CheckIcon />
 								</ActionIcon>
 							</ActionIcon.Group>
 						</Stack>

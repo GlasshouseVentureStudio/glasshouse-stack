@@ -1,18 +1,18 @@
 import { ActionIcon, Anchor, Avatar, Box, Button, Group, MantineProvider, Paper, rem, Tooltip } from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-	IconCheckupList,
-	IconCircleCheck,
-	IconEdit,
-	IconEye,
-	IconNote,
-	IconPaperclip,
-	IconTrash,
-	IconVocabulary,
-} from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import orderBy from 'lodash.orderby';
 import uniqBy from 'lodash.uniqby';
+import {
+	CheckCircleIcon,
+	CheckSquareIcon,
+	EyeIcon,
+	NotebookIcon,
+	NotebookTabsIcon,
+	PaperclipIcon,
+	PencilIcon,
+	TrashIcon,
+} from 'lucide-react';
 import { createMRTColumnHelper, type MRT_ColumnDef, type MRT_TableState } from 'mantine-react-table';
 
 import { DataTable } from '../data-table';
@@ -455,20 +455,20 @@ export const FandeloOnePipeline: StoryObj<DataTableProps<Pipeline, PipelineData>
 				<Paper p={16}>
 					<Button.Group>
 						<Button
-							leftSection={<IconPaperclip />}
+							leftSection={<PaperclipIcon />}
 							radius='md'
 							variant='default'
 						>
 							Attachments
 						</Button>
 						<Button
-							leftSection={<IconCheckupList />}
+							leftSection={<CheckSquareIcon />}
 							variant='default'
 						>
 							Tasks
 						</Button>
 						<Button
-							leftSection={<IconNote />}
+							leftSection={<NotebookIcon />}
 							radius='md'
 							variant='default'
 						>
@@ -554,9 +554,9 @@ export const FandeloOnePipeline: StoryObj<DataTableProps<Pipeline, PipelineData>
 					size='xs'
 					variant='transparent'
 				>
-					<IconEye
+					<EyeIcon
 						size={16}
-						stroke={1.5}
+						stroke='1.5'
 					/>
 				</ActionIcon>
 				<ActionIcon
@@ -567,9 +567,9 @@ export const FandeloOnePipeline: StoryObj<DataTableProps<Pipeline, PipelineData>
 					size='xs'
 					variant='transparent'
 				>
-					<IconEdit
+					<PencilIcon
 						size={16}
-						stroke={1.5}
+						stroke='1.5'
 					/>
 				</ActionIcon>
 				<ActionIcon
@@ -577,9 +577,9 @@ export const FandeloOnePipeline: StoryObj<DataTableProps<Pipeline, PipelineData>
 					size='xs'
 					variant='transparent'
 				>
-					<IconVocabulary
+					<NotebookTabsIcon
 						size={16}
-						stroke={1.5}
+						stroke='1.5'
 					/>
 				</ActionIcon>
 				<ActionIcon
@@ -587,9 +587,9 @@ export const FandeloOnePipeline: StoryObj<DataTableProps<Pipeline, PipelineData>
 					size='xs'
 					variant='transparent'
 				>
-					<IconCircleCheck
+					<CheckCircleIcon
 						size={16}
-						stroke={1.5}
+						stroke='1.5'
 					/>
 				</ActionIcon>
 				<ActionIcon
@@ -597,9 +597,9 @@ export const FandeloOnePipeline: StoryObj<DataTableProps<Pipeline, PipelineData>
 					size='xs'
 					variant='transparent'
 				>
-					<IconTrash
+					<TrashIcon
 						size={16}
-						stroke={1.5}
+						stroke='1.5'
 					/>
 				</ActionIcon>
 			</Group>

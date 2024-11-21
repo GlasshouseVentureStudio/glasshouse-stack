@@ -14,7 +14,7 @@ import {
 	Stack,
 	TextInput,
 } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
+import { SearchIcon } from 'lucide-react';
 import { type MRT_Column, type MRT_RowData } from 'mantine-react-table';
 
 const getValue = (data: string | ComboboxItem | ComboboxItemGroup) => {
@@ -68,7 +68,7 @@ export const MultiSelectFilter = <TData extends MRT_RowData, TValue = unknown>({
 			w='calc(100% + 16px)'
 		>
 			<TextInput
-				leftSection={<IconSearch />}
+				leftSection={<SearchIcon />}
 				onChange={e => {
 					setSearchValue(e.target.value);
 				}}

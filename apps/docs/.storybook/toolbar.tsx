@@ -12,7 +12,7 @@ import {
 	useMantineColorScheme,
 	useMantineTheme,
 } from '@mantine/core';
-import { IconMoonStars, IconSun, IconSunMoon } from '@tabler/icons-react';
+import { MoonStarIcon, SunIcon, SunMoonIcon } from 'lucide-react';
 import { useState } from 'react';
 
 export const Toolbar = ({ onPrimaryColorChange }: { onPrimaryColorChange?: (color: MantineColor) => void }) => {
@@ -22,17 +22,17 @@ export const Toolbar = ({ onPrimaryColorChange }: { onPrimaryColorChange?: (colo
 		switch (colorScheme) {
 			case 'auto':
 				return {
-					icon: <IconSunMoon size={18} />,
+					icon: <SunIcon size={18} />,
 					color: 'teal',
 				};
 			case 'dark':
 				return {
-					icon: <IconMoonStars size={18} />,
+					icon: <MoonStarIcon size={18} />,
 					color: 'indigo',
 				};
 			case 'light':
 				return {
-					icon: <IconSun size={18} />,
+					icon: <SunMoonIcon size={18} />,
 					color: 'yellow',
 				};
 		}

@@ -11,8 +11,8 @@ import {
 } from '@mantine/core';
 import { isNotEmpty, useField } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import { IconCheck, IconPlus, IconX } from '@tabler/icons-react';
 import { useMutation } from '@tanstack/react-query';
+import { CheckIcon, PlusIcon, XIcon } from 'lucide-react';
 
 /** Props for the AddOption component. */
 interface AddOptionProps {
@@ -156,7 +156,7 @@ export const AddOption = ({
 					size='xs'
 					variant='subtle'
 				>
-					<IconX />
+					<XIcon />
 				</ActionIcon>
 				<ActionIcon
 					loading={isPending}
@@ -164,14 +164,14 @@ export const AddOption = ({
 					size='xs'
 					variant='subtle'
 				>
-					<IconCheck />
+					<CheckIcon />
 				</ActionIcon>
 			</Group>
 		</FocusTrap>
 	) : (
 		<Button
 			fullWidth
-			leftSection={<IconPlus size={14} />}
+			leftSection={<PlusIcon size={14} />}
 			onClick={open}
 			size='xs'
 			variant='subtle'
