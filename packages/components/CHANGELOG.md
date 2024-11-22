@@ -1,5 +1,14 @@
 # @glasshouse/components
 
+## 0.7.0
+
+### Minor Changes
+
+- feat: add virtualization to select and multiselect dropdown options list
+- refactor: use intersection observer instead of scroll handler for next page query fetching
+- fix: add another values array for referencing labels when data changes
+- chore: tweak data table loading
+
 ## 0.6.26
 
 ### Patch Changes
