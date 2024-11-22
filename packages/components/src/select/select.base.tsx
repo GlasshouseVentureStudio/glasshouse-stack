@@ -87,6 +87,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 		withCheckIcon,
 		withScrollArea,
 		onDropdownEndReached,
+		virtualized,
 		...others
 	} = props;
 
@@ -303,6 +304,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 					renderFooter={renderFooter}
 					renderHeader={renderHeader}
 					renderOptions={renderOptions}
+					virtualized={virtualized}
 				/>
 			</Combobox>
 			<Combobox.HiddenInput

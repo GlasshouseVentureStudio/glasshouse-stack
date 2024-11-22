@@ -4,6 +4,7 @@ import { faker } from '@faker-js/faker';
 import {
 	ActionIcon,
 	Button,
+	Checkbox,
 	Combobox,
 	type ComboboxData,
 	type ComboboxItem,
@@ -12,16 +13,21 @@ import {
 	Select,
 	Stack,
 	Switch,
+	Text,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import type { Meta, StoryObj } from '@storybook/react';
 import { IconCheck, IconChevronLeft, IconChevronRight, IconThumbUp } from '@tabler/icons-react';
 
 import { MultiSelect } from '../multi-select';
-import { type MultiSelectProps, type MultiSelectWithInfiniteQueryProps } from '../multi-select.types';
+import {
+	type MultiSelectBaseProps,
+	type MultiSelectProps,
+	type MultiSelectWithInfiniteQueryProps,
+} from '../multi-select.types';
 
 const meta: Meta<typeof MultiSelect> = {
-	title: 'Components/MultiSelect',
+	title: 'Components/Combobox/MultiSelect',
 	component: MultiSelect,
 	tags: ['autodocs', 'MultiSelect'],
 };
@@ -179,6 +185,7 @@ export const RenderFooter: StoryObj<MultiSelectProps> = {
 
 const data = generateData(50);
 
+/** Render the `MultiSelect` component with creatable options. */
 export const Creatable: StoryObj<MultiSelectProps> = {
 	args: {
 		creatable: true,
@@ -228,6 +235,7 @@ export const Creatable: StoryObj<MultiSelectProps> = {
 	},
 };
 
+/** Render the `MultiSelect` component with creatable options and asynchronous data mutation. */
 export const CreatableAsync: StoryObj<MultiSelectProps> = {
 	args: {
 		creatable: true,
@@ -279,6 +287,8 @@ export const CreatableAsync: StoryObj<MultiSelectProps> = {
 		);
 	},
 };
+
+/** Render the `MultiSelect` component with asynchronous data fetching using React Query. */
 export const WithQuery: StoryObj<MultiSelectProps> = {
 	render: () => {
 		return (
@@ -305,11 +315,13 @@ export const WithQuery: StoryObj<MultiSelectProps> = {
 	},
 };
 
+/** Implement infinite scrolling by enabling the infinite prop and providing a `getData` function for asynchronous data fetching with `queryOptions` prop. */
 export const WithInfiniteQuery: StoryObj<
 	MultiSelectWithInfiniteQueryProps<UsersResponse, Error, string[], UsersParams>
 > = {
 	args: {
 		dropdownLoadingType: 'skeleton',
+		virtualized: true,
 	},
 	render: (props: MultiSelectWithInfiniteQueryProps<UsersResponse, Error, string[], UsersParams>) => {
 		return (
@@ -346,6 +358,7 @@ export const WithInfiniteQuery: StoryObj<
 	},
 };
 
+/** Limit the number of visible selected values before collapsing into a "+# more" label using the `maxDisplayedValues` prop. */
 export const MaxDisplayedValues: StoryObj<
 	MultiSelectWithInfiniteQueryProps<
 		{ data: ComboboxData; total: number },
@@ -400,6 +413,7 @@ export const MaxDisplayedValues: StoryObj<
 	},
 };
 
+/** Customize the label that appears when the number of selected values exceeds the `maxDisplayedValues` limit using the `renderMaxDisplayedValuesLabel` prop. */
 export const RenderMaxDisplayedValuesLabel: StoryObj<
 	MultiSelectWithInfiniteQueryProps<
 		{ data: ComboboxData; total: number },
@@ -448,6 +462,7 @@ export const RenderMaxDisplayedValuesLabel: StoryObj<
 	},
 };
 
+/** Control how selected values are displayed by switching between 'pills' and 'texts' using `mode` prop. */
 export const ValueMode: StoryObj<
 	MultiSelectWithInfiniteQueryProps<
 		{ data: ComboboxData; total: number },
@@ -516,6 +531,16 @@ export const ValueMode: StoryObj<
 	},
 };
 
+/**
+ * Customize the `MultiSelect` component's input behavior and manage displayed values with interactive controls.
+ *
+ * It provides interactive controls to customize various aspects of the component:
+ *
+ * - `mode`: Switch between 'pills' and 'texts' display modes.
+ * - `lineClamp`: Adjust the number of lines displayed before truncating.
+ * - `maxDisplayedValues`: Limit the number of visible selected values before collapsing into a "+# more" label.
+ * - `floatingInput`: Toggle the floating input field on or off.
+ */
 export const FloatingInput: StoryObj<
 	MultiSelectWithInfiniteQueryProps<
 		{ data: ComboboxData; total: number },
@@ -618,6 +643,7 @@ export const FloatingInput: StoryObj<
 	},
 };
 
+/** Enable users to select or deselect all options by setting the `allowSelectAll` prop to true. This adds a "Select All" option at the top of the dropdown. */
 export const WithSelectAll: StoryObj<
 	MultiSelectWithInfiniteQueryProps<
 		{ data: ComboboxData; total: number },
@@ -630,6 +656,28 @@ export const WithSelectAll: StoryObj<
 	args: {
 		...MaxDisplayedValues.args,
 		allowSelectAll: true,
+	},
+};
+
+/**
+ * You can improve performance when handling large datasets by enabling virtualization with the `virtualized` prop. This renders only the visible options instead of the entire list.
+ */
+export const Virtualized: StoryObj<MultiSelectBaseProps> = {
+	args: {
+		virtualized: true,
+		data: generateData(1000),
+		searchable: true,
+		renderOption: ({ option, checked }) => (
+			<Group wrap='nowrap'>
+				<Checkbox
+					checked={checked}
+					readOnly
+				/>
+				<Text>{option.label}</Text>
+			</Group>
+		),
+		placeholder: 'Virtualized',
+		w: 256,
 	},
 };
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary -- needed to reduce number of var */
-import { type ReactNode, type ReactPortal, useEffect, useMemo, useRef } from 'react';
+import { forwardRef, type ReactNode, type ReactPortal, useEffect, useMemo, useRef } from 'react';
 import {
 	Box,
 	Center,
@@ -18,6 +18,7 @@ import {
 	Skeleton,
 } from '@mantine/core';
 import { useMergedRef } from '@mantine/hooks';
+import { useVirtualizer, type VirtualItem } from '@tanstack/react-virtual';
 import { clsx } from 'clsx';
 import { CheckIcon } from 'lucide-react';
 
@@ -63,56 +64,61 @@ function isValueChecked(value: string | string[] | undefined | null, optionValue
 	return Array.isArray(value) ? value.includes(optionValue) : value === optionValue;
 }
 
-function Option({
-	data,
-	withCheckIcon,
-	value,
-	checkIconPosition,
-	unstyled,
-	renderOption,
-	optionsLength = 0,
-}: OptionProps) {
-	if (!isOptionsGroup(data)) {
-		const checked = isValueChecked(value, data.value, optionsLength);
-		const check = withCheckIcon && checked && <CheckIcon className={classes.optionsDropdownCheckIcon} />;
+// eslint-disable-next-line react/display-name -- display name is not needed
+const Option = forwardRef<HTMLDivElement, OptionProps & { index?: number; virtualRow?: VirtualItem }>(
+	(
+		{ data, withCheckIcon, value, checkIconPosition, unstyled, renderOption, optionsLength = 0, virtualRow, index },
+		ref
+	) => {
+		if (!isOptionsGroup(data)) {
+			const checked = isValueChecked(value, data.value, optionsLength);
+			const check = withCheckIcon && checked && <CheckIcon className={classes.optionsDropdownCheckIcon} />;
+			const virtualized = Boolean(virtualRow);
 
-		const defaultContent = (
-			<>
-				{checkIconPosition === 'left' && check}
-				<span>{data.label}</span>
-				{checkIconPosition === 'right' && check}
-			</>
-		);
+			const defaultContent = (
+				<>
+					{checkIconPosition === 'left' && check}
+					<span>{data.label}</span>
+					{checkIconPosition === 'right' && check}
+				</>
+			);
 
-		return (
-			<Combobox.Option
-				active={checked}
-				aria-selected={checked}
-				className={clsx(classes.optionsDropdownOption && { [classes.optionsDropdownOption]: !unstyled })}
-				data-checked={checked || undefined}
-				data-reverse={checkIconPosition === 'right' || undefined}
-				disabled={data.disabled}
-				value={data.value}
-			>
-				{typeof renderOption === 'function' ? renderOption({ option: data, checked }) : defaultContent}
-			</Combobox.Option>
-		);
+			return (
+				<Combobox.Option
+					ref={ref}
+					active={checked}
+					aria-selected={checked}
+					className={clsx(classes.optionsDropdownOption && { [classes.optionsDropdownOption]: !unstyled })}
+					mod={{
+						checked,
+						index,
+						reverse: checkIconPosition === 'right',
+						disabled: data.disabled,
+						virtualized,
+					}}
+					value={data.value}
+				>
+					{typeof renderOption === 'function' ? renderOption({ option: data, checked }) : defaultContent}
+				</Combobox.Option>
+			);
+		}
+
+		const options = data.items.map(item => (
+			<Option
+				key={item.value}
+				checkIconPosition={checkIconPosition}
+				data={item}
+				index={index}
+				renderOption={renderOption}
+				unstyled={unstyled}
+				value={value}
+				withCheckIcon={withCheckIcon}
+			/>
+		));
+
+		return <Combobox.Group label={data.group}>{options}</Combobox.Group>;
 	}
-
-	const options = data.items.map(item => (
-		<Option
-			key={item.value}
-			checkIconPosition={checkIconPosition}
-			data={item}
-			renderOption={renderOption}
-			unstyled={unstyled}
-			value={value}
-			withCheckIcon={withCheckIcon}
-		/>
-	));
-
-	return <Combobox.Group label={data.group}>{options}</Combobox.Group>;
-}
+);
 
 export interface OptionsDropdownProps {
 	'aria-label': string | undefined;
@@ -156,6 +162,7 @@ export interface OptionsDropdownProps {
 	selectAllLabel?: string;
 	optionsBottomRef?: React.MutableRefObject<HTMLDivElement | null>;
 	onDropdownEndReached?: () => void;
+	virtualized?: boolean;
 }
 
 export function OptionsDropdown({
@@ -195,6 +202,7 @@ export function OptionsDropdown({
 	style,
 	selectAllLabel,
 	optionsBottomRef,
+	virtualized,
 	onDropdownEndReached,
 }: OptionsDropdownProps) {
 	validateOptions(data);
@@ -210,13 +218,14 @@ export function OptionsDropdown({
 	const isEmpty = isComboboxDataEmpty(filteredData) && !loading;
 
 	//use to determine if select all is checked
-	const optionsLength = useMemo(
-		() =>
-			isOptionsGroupList(filteredData)
-				? filteredData.reduce((acc, group) => acc + group.items.length, 0)
-				: filteredData.length,
-		[filteredData]
-	);
+	const optionsLength = isOptionsGroupList(filteredData)
+		? filteredData.reduce((acc, group) => acc + group.items.length, 0)
+		: filteredData.length;
+
+	const viewportRef = useRef<HTMLDivElement>(null);
+	const bottomRef = useRef<HTMLDivElement>(null);
+	const mergedViewportRef = useMergedRef(viewportRef, scrollAreaProps?.viewportRef);
+	const mergedBottomRef = useMergedRef(bottomRef, optionsBottomRef);
 
 	const options = [
 		...((allowSelectAll || canSelectAll) && filteredData.length > 0
@@ -249,6 +258,57 @@ export function OptionsDropdown({
 		)),
 	];
 
+	const count = allowSelectAll || canSelectAll ? filteredData.length + 1 : filteredData.length;
+
+	const virtualizer = useVirtualizer({
+		count,
+		getScrollElement: () => viewportRef.current,
+		estimateSize: () => 32,
+	});
+
+	const virtualizedItems = virtualizer.getVirtualItems().map(row => {
+		const { index } = row;
+		const item = filteredData[index] as unknown as ComboboxParsedItem;
+
+		return (
+			<Option
+				key={isOptionsGroup(item) ? item.group : item.value}
+				ref={virtualizer.measureElement}
+				checkIconPosition={checkIconPosition}
+				data={item}
+				index={allowSelectAll || canSelectAll ? index + 1 : index}
+				renderOption={renderOption}
+				unstyled={unstyled}
+				value={value}
+				virtualRow={row}
+				withCheckIcon={withCheckIcon}
+			/>
+		);
+	});
+
+	const virtualizedOptions = [
+		...((allowSelectAll || canSelectAll) && virtualizedItems.length > 0
+			? [
+					<Option
+						key='all'
+						ref={virtualizer.measureElement}
+						checkIconPosition={checkIconPosition}
+						data={{
+							label: selectAllLabel ?? 'Select All',
+							value: SELECT_ALL_VALUE,
+						}}
+						index={0}
+						optionsLength={optionsLength}
+						renderOption={renderOption}
+						unstyled={unstyled}
+						value={value}
+						withCheckIcon={withCheckIcon}
+					/>,
+				]
+			: []),
+		...virtualizedItems,
+	];
+
 	const skeleton =
 		loadingType === 'skeleton' ? (
 			<>
@@ -277,11 +337,6 @@ export function OptionsDropdown({
 		) : null;
 
 	const loadingComponent = skeleton ?? loader;
-
-	const viewportRef = useRef<HTMLDivElement>(null);
-	const bottomRef = useRef<HTMLDivElement>(null);
-	const mergedViewportRef = useMergedRef(viewportRef, scrollAreaProps?.viewportRef);
-	const mergedBottomRef = useMergedRef(bottomRef, optionsBottomRef);
 
 	/**
 	 * Handle on end reached.
@@ -322,9 +377,30 @@ export function OptionsDropdown({
 			{...scrollAreaProps}
 			viewportRef={mergedViewportRef}
 		>
-			{options}
+			{virtualized ? (
+				<Box
+					style={{
+						height: virtualizer.getTotalSize(),
+						width: '100%',
+						position: 'relative',
+					}}
+				>
+					<Box
+						style={{
+							position: 'absolute',
+							top: 0,
+							left: 0,
+							width: '100%',
+							transform: `translateY(${virtualizer.getVirtualItems()[0]?.start ?? 0}px)`,
+						}}
+					>
+						{virtualizedOptions}
+					</Box>
+				</Box>
+			) : (
+				options
+			)}
 			<Box ref={mergedBottomRef} />
-			{loading ? loadingComponent : null}
 		</ScrollArea.Autosize>
 	) : (
 		options
@@ -358,6 +434,8 @@ export function OptionsDropdown({
 			) : null}
 
 			{renderOptions ? renderOptions(filteredData, comboboxOptions) : comboboxOptions}
+
+			{loading ? loadingComponent : null}
 
 			{isEmpty && nothingFoundMessage ? <Combobox.Empty>{nothingFoundMessage}</Combobox.Empty> : null}
 

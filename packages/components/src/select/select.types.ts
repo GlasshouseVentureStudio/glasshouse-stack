@@ -52,11 +52,15 @@ export interface SelectBaseProps extends MantineSelectProps {
 	renderHeader?: (props: { combobox: ComboboxStore; data: ComboboxParsedItem[] }) => ReactNode;
 	/** Function to render the options in the dropdown. */
 	renderOptions?: (data: ComboboxParsedItem[], options: ReactNode) => ReactNode;
+	/** A callback function that is called when the dropdown's scroll reaches the end. Use this function to trigger actions like fetching the next page of data or loading more options when the user scrolls to the bottom of the list. */
 	onDropdownEndReached?: () => void;
+	/** A boolean that determines whether the options list should use virtualization. Enabling virtualization improves performance by rendering only the visible options instead of the entire list, which is beneficial for large datasets. */
+	virtualized?: boolean;
 }
 
 export interface SelectWithQueryProps<TQueryFnData = unknown, TError = Error, TQueryKey extends QueryKey = QueryKey>
 	extends Omit<SelectBaseProps, 'data' | 'onOptionSubmit'> {
+	/** A function that fetches data for the component. */
 	getData: (
 		context: {
 			queryKey: TQueryKey;
@@ -67,8 +71,10 @@ export interface SelectWithQueryProps<TQueryFnData = unknown, TError = Error, TQ
 		},
 		params: { search?: string }
 	) => TQueryFnData | Promise<TQueryFnData>;
+	/** A boolean indicating whether infinite scrolling is enabled. Set to `false` to disable infinite scrolling. */
 	infinite?: false;
 	onOptionSubmit?: (value: string, options?: ComboboxData, data?: TQueryFnData) => void;
+	/** Options for the `useQuery` hook from React Query, excluding the `queryFn`. */
 	queryOptions: Omit<UseQueryOptions<TQueryFnData, TError, ComboboxData, TQueryKey>, 'queryFn'>;
 }
 
@@ -78,11 +84,14 @@ export interface SelectWithInfiniteQueryProps<
 	TQueryKey extends QueryKey = QueryKey,
 	TPageParam = unknown,
 > extends Omit<SelectBaseProps, 'data' | 'onOptionSubmit'> {
+	/** A function that fetches data for the component. */
 	getData: (
 		context: QueryFunctionContext<TQueryKey, TPageParam>,
 		params: { search?: string }
 	) => TQueryFnData | Promise<TQueryFnData>;
+	/** A boolean indicating whether infinite scrolling is enabled. Set to `false` to disable infinite scrolling. */
 	infinite: true;
+	/** Configuration options for the `useInfiniteQuery` hook from React Query, excluding the `queryFn`. */
 	queryOptions: Omit<
 		UndefinedInitialDataInfiniteOptions<TQueryFnData, TError, InfiniteData<ComboboxData>, TQueryKey, TPageParam>,
 		'queryFn'

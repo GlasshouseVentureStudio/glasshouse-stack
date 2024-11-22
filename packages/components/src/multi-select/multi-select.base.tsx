@@ -136,6 +136,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		tooltipProps,
 		optionsBottomRef,
 		onDropdownEndReached,
+		virtualized,
 		...others
 	} = props;
 
@@ -563,6 +564,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 					selectAllLabel={selectAllLabel}
 					unstyled={unstyled}
 					value={_value}
+					virtualized={virtualized}
 					withCheckIcon={withCheckIcon}
 					withScrollArea={withScrollArea}
 					{...getStyles('option')}

@@ -27,7 +27,7 @@ import { type SelectProps, type SelectWithInfiniteQueryProps } from './select.ty
 import '@mantine/notifications/styles.css';
 
 const meta: Meta = {
-	title: 'Components/Select',
+	title: 'Components/Combobox/Select',
 	component: Select,
 	tags: ['autodocs', 'Select'],
 };
@@ -545,6 +545,16 @@ export const FormUsage: StoryObj<
 				</Stack>
 			</Stack>
 		);
+	},
+};
+
+export const Virtualized: StoryObj<SelectProps> = {
+	args: {
+		data: generateData(1000),
+		w: 256,
+		placeholder: 'Select person',
+		clearable: true,
+		virtualized: true,
 	},
 };
 

@@ -148,8 +148,12 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	maxDisplayedValuesTooltipType?: 'pills' | 'texts';
 	/** Tooltip props for max displayed values label. Default `true`. */
 	tooltipProps?: TooltipProps;
+	/** A React ref object pointing to the bottom element of the options list. */
 	optionsBottomRef?: React.MutableRefObject<HTMLDivElement | null>;
+	/** A callback function that is called when the dropdown's scroll reaches the end. Use this function to trigger actions like fetching the next page of data or loading more options when the user scrolls to the bottom of the list. */
 	onDropdownEndReached?: () => void;
+	/** A boolean that determines whether the options list should use virtualization. Enabling virtualization improves performance by rendering only the visible options instead of the entire list, which is beneficial for large datasets. */
+	virtualized?: boolean;
 }
 
 export interface MultiSelectWithQueryProps<
@@ -157,6 +161,7 @@ export interface MultiSelectWithQueryProps<
 	TError = Error,
 	TQueryKey extends QueryKey = QueryKey,
 > extends Omit<MultiSelectBaseProps, 'data'> {
+	/** A function that fetches data for the component. */
 	getData: (
 		context: {
 			queryKey: TQueryKey;
@@ -167,7 +172,9 @@ export interface MultiSelectWithQueryProps<
 		},
 		params: { search?: string }
 	) => TQueryFnData | Promise<TQueryFnData>;
+	/** A boolean indicating whether infinite scrolling is enabled. Set to `false` to disable infinite scrolling. */
 	infinite?: false;
+	/** Options for the `useQuery` hook from React Query, excluding the `queryFn`. */
 	queryOptions: Omit<UseQueryOptions<TQueryFnData, TError, ComboboxData, TQueryKey>, 'queryFn'>;
 	onOptionSubmit?: (value: string, options?: ComboboxData, data?: TQueryFnData) => void;
 }
@@ -178,22 +185,26 @@ export interface MultiSelectWithInfiniteQueryProps<
 	TQueryKey extends QueryKey = QueryKey,
 	TPageParam = unknown,
 > extends Omit<MultiSelectBaseProps, 'data'> {
+	/** A function that fetches data for the component. */
 	getData: (
 		context: QueryFunctionContext<TQueryKey, TPageParam>,
 		params: { search?: string }
 	) => TQueryFnData | Promise<TQueryFnData>;
+	/** A boolean indicating whether infinite scrolling is enabled. Set to `false` to disable infinite scrolling. */
 	infinite: true;
+	/** Configuration options for the `useInfiniteQuery` hook from React Query, excluding the `queryFn`. */
 	queryOptions: Omit<
 		UndefinedInitialDataInfiniteOptions<TQueryFnData, TError, InfiniteData<ComboboxData>, TQueryKey, TPageParam>,
 		'queryFn'
 	>;
 	onOptionSubmit?: (value: string, options?: ComboboxData, data?: TQueryFnData) => void;
+	/** An optional boolean to disable the loading state. When set to true, the component will not display a loading indicator during data fetching. */
 	disableLoading?: boolean;
 }
 
 interface MultiSelectWithoutQueryProps extends MultiSelectBaseProps {
 	getData?: undefined;
-	infinite?: undefined;
+	infinite?: false;
 	queryOptions?: undefined;
 }
 

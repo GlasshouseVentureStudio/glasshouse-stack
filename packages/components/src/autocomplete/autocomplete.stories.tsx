@@ -8,7 +8,7 @@ import { Autocomplete } from './autocomplete';
 import { type AutocompleteProps, type AutocompleteWithInfiniteQueryProps } from './autocomplete.types';
 
 const meta: Meta = {
-	title: 'Components/Autocomplete',
+	title: 'Components/Combobox/Autocomplete',
 	component: Autocomplete,
 	tags: ['autodocs', 'Autocomplete'],
 };
