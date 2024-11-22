@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary -- needed to reduce number of var */
-import { type ReactNode, type ReactPortal, useMemo } from 'react';
+import { type ReactNode, type ReactPortal, useEffect, useMemo, useRef } from 'react';
 import {
+	Box,
 	Center,
 	Combobox,
 	type ComboboxItem,
@@ -11,10 +12,12 @@ import {
 	isOptionsGroup,
 	Loader,
 	LoadingOverlay,
+	rem,
 	ScrollArea,
 	type ScrollAreaProps,
 	Skeleton,
 } from '@mantine/core';
+import { useMergedRef } from '@mantine/hooks';
 import { clsx } from 'clsx';
 import { CheckIcon } from 'lucide-react';
 
@@ -151,6 +154,8 @@ export interface OptionsDropdownProps {
 	withScrollArea: boolean | undefined;
 	style?: React.CSSProperties;
 	selectAllLabel?: string;
+	optionsBottomRef?: React.MutableRefObject<HTMLDivElement | null>;
+	onDropdownEndReached?: () => void;
 }
 
 export function OptionsDropdown({
@@ -189,6 +194,8 @@ export function OptionsDropdown({
 	withScrollArea = true,
 	style,
 	selectAllLabel,
+	optionsBottomRef,
+	onDropdownEndReached,
 }: OptionsDropdownProps) {
 	validateOptions(data);
 
@@ -245,7 +252,7 @@ export function OptionsDropdown({
 	const skeleton =
 		loadingType === 'skeleton' ? (
 			<>
-				{Array.from({ length: 4 }).map((_, index) => (
+				{Array.from({ length: 2 }).map((_, index) => (
 					<Combobox.Option
 						// eslint-disable-next-line react/no-array-index-key -- not important here
 						key={index}
@@ -253,7 +260,7 @@ export function OptionsDropdown({
 						value={`skeleton-${index}`}
 					>
 						<Skeleton
-							height='1.5em'
+							height={rem(18)}
 							visible
 							width={`${(Math.random() * (1 - 0.4) + 0.4) * 100}%`}
 						/>
@@ -271,14 +278,52 @@ export function OptionsDropdown({
 
 	const loadingComponent = skeleton ?? loader;
 
+	const viewportRef = useRef<HTMLDivElement>(null);
+	const bottomRef = useRef<HTMLDivElement>(null);
+	const mergedViewportRef = useMergedRef(viewportRef, scrollAreaProps?.viewportRef);
+	const mergedBottomRef = useMergedRef(bottomRef, optionsBottomRef);
+
+	/**
+	 * Handle on end reached.
+	 */
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			entries => {
+				const target = entries[0];
+
+				if (target?.isIntersecting) {
+					onDropdownEndReached?.();
+				}
+			},
+			{
+				root: viewportRef.current,
+				rootMargin: '96px',
+			}
+		);
+
+		const loader = bottomRef.current;
+
+		if (loader) {
+			observer.observe(loader);
+		}
+
+		return () => {
+			if (loader) {
+				observer.unobserve(loader);
+			}
+		};
+	}, [data, onDropdownEndReached]);
+
 	const comboboxOptions = withScrollArea ? (
 		<ScrollArea.Autosize
 			mah={maxDropdownHeight ?? 220}
 			scrollbarSize='var(--combobox-padding)'
 			type='scroll'
 			{...scrollAreaProps}
+			viewportRef={mergedViewportRef}
 		>
 			{options}
+			<Box ref={mergedBottomRef} />
 			{loading ? loadingComponent : null}
 		</ScrollArea.Autosize>
 	) : (
@@ -305,13 +350,17 @@ export function OptionsDropdown({
 			labelledBy={labelId}
 		>
 			{loadingType === 'overlay' && <LoadingOverlay visible={loading} />}
+
 			{renderHeader ? (
 				<Combobox.Header>{renderHeader({ combobox, data: filteredData })}</Combobox.Header>
 			) : creatablePosition === 'header' && addOptionInput ? (
 				<Combobox.Header>{addOptionInput}</Combobox.Header>
 			) : null}
+
 			{renderOptions ? renderOptions(filteredData, comboboxOptions) : comboboxOptions}
+
 			{isEmpty && nothingFoundMessage ? <Combobox.Empty>{nothingFoundMessage}</Combobox.Empty> : null}
+
 			{renderFooter ? (
 				<Combobox.Footer>{renderFooter({ combobox, data: filteredData })}</Combobox.Footer>
 			) : creatablePosition === 'footer' && addOptionInput ? (

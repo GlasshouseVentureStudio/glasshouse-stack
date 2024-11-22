@@ -148,6 +148,8 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	maxDisplayedValuesTooltipType?: 'pills' | 'texts';
 	/** Tooltip props for max displayed values label. Default `true`. */
 	tooltipProps?: TooltipProps;
+	optionsBottomRef?: React.MutableRefObject<HTMLDivElement | null>;
+	onDropdownEndReached?: () => void;
 }
 
 export interface MultiSelectWithQueryProps<
@@ -185,7 +187,6 @@ export interface MultiSelectWithInfiniteQueryProps<
 		UndefinedInitialDataInfiniteOptions<TQueryFnData, TError, InfiniteData<ComboboxData>, TQueryKey, TPageParam>,
 		'queryFn'
 	>;
-	scrollThreshold?: number;
 	onOptionSubmit?: (value: string, options?: ComboboxData, data?: TQueryFnData) => void;
 	disableLoading?: boolean;
 }

@@ -1,12 +1,6 @@
-import { type ForwardedRef, forwardRef, useCallback, useMemo, useRef, useState } from 'react';
-import {
-	type ComboboxItem,
-	getOptionsLockup,
-	getParsedComboboxData,
-	type OptionsFilter,
-	type ScrollAreaProps,
-} from '@mantine/core';
-import { useDebouncedValue, useMergedRef } from '@mantine/hooks';
+import { type ForwardedRef, forwardRef, useCallback, useMemo, useState } from 'react';
+import { type ComboboxItem, getOptionsLockup, getParsedComboboxData, type OptionsFilter } from '@mantine/core';
+import { useDebouncedValue } from '@mantine/hooks';
 import { type InfiniteData, type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 import omit from 'lodash.omit';
 
@@ -26,21 +20,18 @@ function SelectWithInfiniteQueryComponent<
 		onOptionSubmit,
 		onSearchChange,
 		queryOptions,
-		scrollAreaProps: scrollAreaPropsProp,
-		scrollThreshold = 0.25,
 		searchValue,
 		infinite,
 		mod,
 		searchable,
 		filter,
+		onDropdownEndReached,
 		...props
 	}: SelectWithInfiniteQueryProps<TQueryFnData, TError, TQueryKey, TPageParam>,
 	ref: ForwardedRef<HTMLInputElement>
 ) {
 	const [search, setSearch] = useState(defaultSearchValue ?? searchValue);
 	const [debouncedSearch] = useDebouncedValue(search, 300);
-	const viewportRef = useRef<HTMLDivElement>(null);
-	const mergedRef = useMergedRef(viewportRef, scrollAreaPropsProp?.viewportRef);
 
 	const [selectedOption, setSelectedOption] = useState<ComboboxItem>();
 
@@ -50,6 +41,7 @@ function SelectWithInfiniteQueryComponent<
 	const {
 		data: queryData,
 		isLoading,
+		isFetching,
 		hasNextPage,
 		fetchNextPage,
 	} = useInfiniteQuery({
@@ -61,25 +53,6 @@ function SelectWithInfiniteQueryComponent<
 	const options = queryData ? queryOptions.select?.(queryData as InfiniteData<TQueryFnData, TPageParam>) : undefined;
 
 	const data = useMemo(() => options?.pages.flatMap(page => page) ?? [], [options?.pages]);
-
-	const handleScrollPositionChange: ScrollAreaProps['onScrollPositionChange'] = useCallback(
-		(position: { x: number; y: number }) => {
-			if (viewportRef.current) {
-				const { scrollHeight, clientHeight } = viewportRef.current;
-
-				if (
-					scrollHeight - position.y - clientHeight < clientHeight * (1 - scrollThreshold) &&
-					!isLoading &&
-					hasNextPage
-				) {
-					void fetchNextPage();
-				}
-			}
-
-			scrollAreaPropsProp?.onScrollPositionChange?.(position);
-		},
-		[fetchNextPage, hasNextPage, isLoading, scrollAreaPropsProp, scrollThreshold]
-	);
 
 	const handleOptionSubmit = useCallback(
 		(value: string) => {
@@ -107,11 +80,13 @@ function SelectWithInfiniteQueryComponent<
 		return options;
 	}, []);
 
-	const scrollAreaProps: ScrollAreaProps = {
-		onScrollPositionChange: handleScrollPositionChange,
-		viewportRef: mergedRef,
-		...scrollAreaPropsProp,
-	};
+	const handleOnDropdownEndReached = useCallback(() => {
+		onDropdownEndReached?.();
+
+		if (hasNextPage) {
+			void fetchNextPage();
+		}
+	}, [fetchNextPage, hasNextPage, onDropdownEndReached]);
 
 	return (
 		<SelectBase
@@ -120,11 +95,11 @@ function SelectWithInfiniteQueryComponent<
 			data={data}
 			defaultSearchValue={defaultSearchValue}
 			filter={filter ? filter : optionsFilter}
-			loading={isLoading || loading}
+			loading={loading ?? (isLoading || isFetching)}
 			mod={[{ infinite }, mod]}
+			onDropdownEndReached={handleOnDropdownEndReached}
 			onOptionSubmit={handleOptionSubmit}
 			onSearchChange={handleSearchChange}
-			scrollAreaProps={scrollAreaProps}
 			searchable={searchable}
 			searchValue={searchValue ?? search}
 		/>

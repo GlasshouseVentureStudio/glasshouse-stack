@@ -1,6 +1,5 @@
-import { type ForwardedRef, forwardRef, useCallback, useRef, useState } from 'react';
-import { type ScrollAreaProps } from '@mantine/core';
-import { useDebouncedValue, useMergedRef } from '@mantine/hooks';
+import { type ForwardedRef, forwardRef, useState } from 'react';
+import { useDebouncedValue } from '@mantine/hooks';
 import { type InfiniteData, keepPreviousData, type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 import omit from 'lodash.omit';
 
@@ -20,17 +19,14 @@ function MultiSelectWithInfiniteQueryComponent<
 		onOptionSubmit,
 		onSearchChange,
 		queryOptions,
-		scrollAreaProps,
-		scrollThreshold = 0.25,
 		searchValue,
+		onDropdownEndReached,
 		...props
 	}: MultiSelectWithInfiniteQueryProps<TQueryFnData, TError, TQueryKey, TPageParam>,
 	ref: ForwardedRef<HTMLInputElement>
 ) {
 	const [search, setSearch] = useState(defaultSearchValue ?? searchValue);
 	const [debouncedSearch] = useDebouncedValue(search, 300);
-	const viewportRef = useRef<HTMLDivElement>(null);
-	const mergedRef = useMergedRef(viewportRef, scrollAreaProps?.viewportRef);
 
 	const {
 		data: queryData,
@@ -49,21 +45,13 @@ function MultiSelectWithInfiniteQueryComponent<
 
 	const data = options?.pages.flatMap(page => page);
 
-	const handleScrollPositionChange: ScrollAreaProps['onScrollPositionChange'] = useCallback(
-		(position: { x: number; y: number }) => {
-			if (viewportRef.current) {
-				const { scrollHeight, clientHeight } = viewportRef.current;
-				const shouldFetch = scrollHeight - position.y - clientHeight < clientHeight * (1 - scrollThreshold);
+	const handleDropdownEndReached = () => {
+		onDropdownEndReached?.();
 
-				if (shouldFetch && (!isLoading || !isFetching) && hasNextPage) {
-					void fetchNextPage();
-				}
-			}
-
-			scrollAreaProps?.onScrollPositionChange?.(position);
-		},
-		[fetchNextPage, hasNextPage, isFetching, isLoading, scrollAreaProps, scrollThreshold]
-	);
+		if (hasNextPage) {
+			void fetchNextPage();
+		}
+	};
 
 	return (
 		<MultiSelectBase
@@ -71,16 +59,12 @@ function MultiSelectWithInfiniteQueryComponent<
 			ref={ref}
 			data={data}
 			defaultSearchValue={defaultSearchValue}
-			loading={isLoading || loading}
+			loading={loading ?? (isLoading || isFetching)}
+			onDropdownEndReached={handleDropdownEndReached}
 			onOptionSubmit={value => onOptionSubmit?.(value, data)}
 			onSearchChange={value => {
 				setSearch(value);
 				onSearchChange?.(value);
-			}}
-			scrollAreaProps={{
-				...scrollAreaProps,
-				onScrollPositionChange: handleScrollPositionChange,
-				viewportRef: mergedRef,
 			}}
 			searchValue={searchValue}
 		/>

@@ -52,6 +52,7 @@ export interface SelectBaseProps extends MantineSelectProps {
 	renderHeader?: (props: { combobox: ComboboxStore; data: ComboboxParsedItem[] }) => ReactNode;
 	/** Function to render the options in the dropdown. */
 	renderOptions?: (data: ComboboxParsedItem[], options: ReactNode) => ReactNode;
+	onDropdownEndReached?: () => void;
 }
 
 export interface SelectWithQueryProps<TQueryFnData = unknown, TError = Error, TQueryKey extends QueryKey = QueryKey>
@@ -87,7 +88,6 @@ export interface SelectWithInfiniteQueryProps<
 		'queryFn'
 	>;
 	onOptionSubmit?: (value: string, options?: ComboboxData, data?: TQueryFnData) => void;
-	scrollThreshold?: number;
 }
 
 interface SelectPropsWithoutQuery extends SelectBaseProps {

@@ -134,6 +134,8 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		floatingInput,
 		lineClamp,
 		tooltipProps,
+		optionsBottomRef,
+		onDropdownEndReached,
 		...others
 	} = props;
 
@@ -549,6 +551,8 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 						]);
 						onCreateSuccess?.(value);
 					}}
+					onDropdownEndReached={onDropdownEndReached}
+					optionsBottomRef={optionsBottomRef}
 					renderDropdown={renderDropdown}
 					renderFooter={renderFooter}
 					renderHeader={renderHeader}

@@ -86,6 +86,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 		value,
 		withCheckIcon,
 		withScrollArea,
+		onDropdownEndReached,
 		...others
 	} = props;
 
@@ -297,6 +298,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 
 						onCreateSuccess?.(value);
 					}}
+					onDropdownEndReached={onDropdownEndReached}
 					renderDropdown={renderDropdown}
 					renderFooter={renderFooter}
 					renderHeader={renderHeader}
