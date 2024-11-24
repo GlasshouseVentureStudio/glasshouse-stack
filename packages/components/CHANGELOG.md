@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.7.1
+
+### Patch Changes
+
+- fix(components): ensure combobox item is not undefined, add virtualizer options prop
+
 ## 0.7.0
 
 ### Minor Changes
