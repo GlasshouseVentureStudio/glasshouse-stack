@@ -15,6 +15,7 @@ import {
 	type UndefinedInitialDataInfiniteOptions,
 	type UseQueryOptions,
 } from '@tanstack/react-query';
+import { type PartialKeys, type VirtualizerOptions } from '@tanstack/react-virtual';
 
 /**
  * Interface representing the base props for a multi-select component.
@@ -150,10 +151,21 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	tooltipProps?: TooltipProps;
 	/** A React ref object pointing to the bottom element of the options list. */
 	optionsBottomRef?: React.MutableRefObject<HTMLDivElement | null>;
-	/** A callback function that is called when the dropdown's scroll reaches the end. Use this function to trigger actions like fetching the next page of data or loading more options when the user scrolls to the bottom of the list. */
+	/**
+	 * A callback function that is called when the dropdown's scroll reaches the end.
+	 *
+	 * Use this function to trigger actions like fetching the next page of data or loading more options when the user scrolls to the bottom of the list. */
 	onDropdownEndReached?: () => void;
-	/** A boolean that determines whether the options list should use virtualization. Enabling virtualization improves performance by rendering only the visible options instead of the entire list, which is beneficial for large datasets. */
+	/** A boolean that determines whether the options list should use virtualization. */
 	virtualized?: boolean;
+
+	/** Options for the virtualizer.
+	 * @see https://tanstack.com/virtual/latest/docs/api/virtualizer
+	 */
+	virtualizerOptions?: PartialKeys<
+		VirtualizerOptions<HTMLDivElement, Element>,
+		'observeElementRect' | 'observeElementOffset' | 'scrollToFn'
+	>;
 }
 
 export interface MultiSelectWithQueryProps<

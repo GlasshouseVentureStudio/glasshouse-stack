@@ -18,6 +18,7 @@ import {
 import { notifications } from '@mantine/notifications';
 import type { Meta, StoryObj } from '@storybook/react';
 import { IconCheck, IconChevronLeft, IconChevronRight, IconThumbUp } from '@tabler/icons-react';
+import groupBy from 'lodash.groupby';
 
 import { MultiSelect } from '../multi-select';
 import {
@@ -325,35 +326,74 @@ export const WithInfiniteQuery: StoryObj<
 	},
 	render: (props: MultiSelectWithInfiniteQueryProps<UsersResponse, Error, string[], UsersParams>) => {
 		return (
-			<MultiSelect
-				{...props}
-				clearable
-				getData={({ pageParam }, { search }) => {
-					const { limit, skip } = pageParam;
+			<Group>
+				<MultiSelect
+					{...props}
+					clearable
+					getData={({ pageParam }, { search }) => {
+						const { limit, skip } = pageParam;
 
-					return getUsers({ limit, skip, q: search ?? '' });
-				}}
-				infinite
-				placeholder='MultiSelect person'
-				queryOptions={{
-					queryKey: ['WithQuery'],
-					select: ({ pageParams, pages }) => ({
-						pageParams,
-						pages: pages.map(page =>
-							page.users.map(user => ({
-								label: `${user.firstName} ${user.lastName}`,
-								value: user.id.toString(),
-							}))
-						),
-					}),
-					getNextPageParam: (lastPage, _, { skip, limit }) => {
-						return limit + skip < lastPage.total ? { skip: skip + limit, limit } : null;
-					},
-					initialPageParam: { limit: 20, skip: 0 },
-				}}
-				searchable
-				w={256}
-			/>
+						return getUsers({ limit, skip, q: search ?? '' });
+					}}
+					infinite
+					placeholder='MultiSelect person'
+					queryOptions={{
+						queryKey: ['WithQuery'],
+						select: ({ pageParams, pages }) => ({
+							pageParams,
+							pages: pages.map(page =>
+								page.users.map(user => ({
+									label: `${user.firstName} ${user.lastName}`,
+									value: user.id.toString(),
+								}))
+							),
+						}),
+						getNextPageParam: (lastPage, _, { skip, limit }) => {
+							return limit + skip < lastPage.total ? { skip: skip + limit, limit } : null;
+						},
+						initialPageParam: { limit: 20, skip: 0 },
+					}}
+					searchable
+					w={256}
+				/>
+				<MultiSelect
+					{...props}
+					clearable
+					getData={({ pageParam }, { search }) => {
+						const { limit, skip } = pageParam;
+
+						return getUsers({ limit, skip, q: search ?? '' });
+					}}
+					infinite
+					placeholder='MultiSelect person'
+					queryOptions={{
+						queryKey: ['WithQuery'],
+						select: ({ pageParams, pages }) => ({
+							pageParams,
+							pages: pages.map(page => {
+								const groups = groupBy(page.users, user => user.role);
+
+								return Object.keys(groups).map(group => {
+									return {
+										group,
+										items:
+											groups[group]?.map(user => ({
+												label: `${user.firstName} ${user.lastName}`,
+												value: user.id.toString(),
+											})) ?? [],
+									};
+								});
+							}),
+						}),
+						getNextPageParam: (lastPage, _, { skip, limit }) => {
+							return limit + skip < lastPage.total ? { skip: skip + limit, limit } : null;
+						},
+						initialPageParam: { limit: 20, skip: 0 },
+					}}
+					searchable
+					w={256}
+				/>
+			</Group>
 		);
 	},
 };
@@ -665,7 +705,6 @@ export const WithSelectAll: StoryObj<
 export const Virtualized: StoryObj<MultiSelectBaseProps> = {
 	args: {
 		virtualized: true,
-		data: generateData(1000),
 		searchable: true,
 		renderOption: ({ option, checked }) => (
 			<Group wrap='nowrap'>
@@ -678,6 +717,32 @@ export const Virtualized: StoryObj<MultiSelectBaseProps> = {
 		),
 		placeholder: 'Virtualized',
 		w: 256,
+	},
+	render: args => {
+		const fakes = Array.from({ length: 5000 }).map(() => ({
+			fullName: faker.person.fullName(),
+			jobTitle: faker.person.jobTitle(),
+			id: faker.string.uuid(),
+		}));
+		const data = fakes.map(({ fullName, id }) => ({ label: fullName, value: id }));
+		const grouped = groupBy(fakes, fake => fake.fullName[0]?.toUpperCase());
+		const groupedData = Object.keys(grouped).map(group => ({
+			group,
+			items: grouped[group]?.map(({ fullName, id }) => ({ label: fullName, value: id })) ?? [],
+		}));
+
+		return (
+			<Group>
+				<MultiSelect
+					data={data}
+					{...args}
+				/>
+				<MultiSelect
+					data={groupedData}
+					{...args}
+				/>
+			</Group>
+		);
 	},
 };
 

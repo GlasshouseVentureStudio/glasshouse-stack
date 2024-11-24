@@ -18,7 +18,7 @@ import {
 	Skeleton,
 } from '@mantine/core';
 import { useMergedRef } from '@mantine/hooks';
-import { useVirtualizer, type VirtualItem } from '@tanstack/react-virtual';
+import { type PartialKeys, useVirtualizer, type VirtualItem, type VirtualizerOptions } from '@tanstack/react-virtual';
 import { clsx } from 'clsx';
 import { CheckIcon } from 'lucide-react';
 
@@ -54,6 +54,10 @@ interface OptionProps {
 	checkIconPosition?: 'left' | 'right';
 	unstyled: boolean | undefined;
 	renderOption?: (input: ComboboxLikeRenderOptionInput<ComboboxItem>) => React.ReactNode;
+	/** Index of the option in the list for virtualized dynamic size. */
+	index?: number;
+	/** Virtualized row data. */
+	virtualRow?: VirtualItem;
 }
 
 function isValueChecked(value: string | string[] | undefined | null, optionValue: string, optionsLength: number) {
@@ -65,7 +69,7 @@ function isValueChecked(value: string | string[] | undefined | null, optionValue
 }
 
 // eslint-disable-next-line react/display-name -- display name is not needed
-const Option = forwardRef<HTMLDivElement, OptionProps & { index?: number; virtualRow?: VirtualItem }>(
+const Option = forwardRef<HTMLDivElement, OptionProps>(
 	(
 		{ data, withCheckIcon, value, checkIconPosition, unstyled, renderOption, optionsLength = 0, virtualRow, index },
 		ref
@@ -108,7 +112,6 @@ const Option = forwardRef<HTMLDivElement, OptionProps & { index?: number; virtua
 				key={item.value}
 				checkIconPosition={checkIconPosition}
 				data={item}
-				index={index}
 				renderOption={renderOption}
 				unstyled={unstyled}
 				value={value}
@@ -116,7 +119,15 @@ const Option = forwardRef<HTMLDivElement, OptionProps & { index?: number; virtua
 			/>
 		));
 
-		return <Combobox.Group label={data.group}>{options}</Combobox.Group>;
+		return (
+			<Combobox.Group
+				ref={ref}
+				data-index={index}
+				label={data.group}
+			>
+				{options}
+			</Combobox.Group>
+		);
 	}
 );
 
@@ -163,6 +174,14 @@ export interface OptionsDropdownProps {
 	optionsBottomRef?: React.MutableRefObject<HTMLDivElement | null>;
 	onDropdownEndReached?: () => void;
 	virtualized?: boolean;
+
+	/** Options for the virtualizer.
+	 * @see https://tanstack.com/virtual/latest/docs/api/virtualizer
+	 */
+	virtualizerOptions?: PartialKeys<
+		VirtualizerOptions<HTMLDivElement, Element>,
+		'observeElementRect' | 'observeElementOffset' | 'scrollToFn'
+	>;
 }
 
 export function OptionsDropdown({
@@ -204,6 +223,7 @@ export function OptionsDropdown({
 	optionsBottomRef,
 	virtualized,
 	onDropdownEndReached,
+	virtualizerOptions,
 }: OptionsDropdownProps) {
 	validateOptions(data);
 
@@ -264,13 +284,15 @@ export function OptionsDropdown({
 		count,
 		getScrollElement: () => viewportRef.current,
 		estimateSize: () => 32,
+		enabled: virtualized,
+		...virtualizerOptions,
 	});
 
 	const virtualizedItems = virtualizer.getVirtualItems().map(row => {
 		const { index } = row;
-		const item = filteredData[index] as unknown as ComboboxParsedItem;
+		const item = filteredData[index];
 
-		return (
+		return item ? (
 			<Option
 				key={isOptionsGroup(item) ? item.group : item.value}
 				ref={virtualizer.measureElement}
@@ -283,7 +305,7 @@ export function OptionsDropdown({
 				virtualRow={row}
 				withCheckIcon={withCheckIcon}
 			/>
-		);
+		) : null;
 	});
 
 	const virtualizedOptions = [
@@ -400,6 +422,9 @@ export function OptionsDropdown({
 			) : (
 				options
 			)}
+
+			{loading ? loadingComponent : null}
+
 			<Box ref={mergedBottomRef} />
 		</ScrollArea.Autosize>
 	) : (
@@ -434,8 +459,6 @@ export function OptionsDropdown({
 			) : null}
 
 			{renderOptions ? renderOptions(filteredData, comboboxOptions) : comboboxOptions}
-
-			{loading ? loadingComponent : null}
 
 			{isEmpty && nothingFoundMessage ? <Combobox.Empty>{nothingFoundMessage}</Combobox.Empty> : null}
 
