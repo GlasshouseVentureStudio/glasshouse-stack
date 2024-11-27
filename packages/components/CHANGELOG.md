@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.7.2
+
+### Patch Changes
+
+- Downgrade deps version
+
 ## 0.7.1
 
 ### Patch Changes
