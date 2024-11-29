@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.7.3
+
+### Patch Changes
+
+- chore(components/multi-select): add `maxDisplayedValuesSeparator` prop for joined text values
+
 ## 0.7.2
 
 ### Patch Changes
