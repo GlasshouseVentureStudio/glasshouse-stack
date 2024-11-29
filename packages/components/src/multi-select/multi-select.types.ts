@@ -149,6 +149,8 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	maxDisplayedValuesTooltipType?: 'pills' | 'texts';
 	/** Tooltip props for max displayed values label. Default `true`. */
 	tooltipProps?: TooltipProps;
+	/** Separator between displayed values when `mode` is `texts`. */
+	maxDisplayedValuesSeparator?: string;
 	/** A React ref object pointing to the bottom element of the options list. */
 	optionsBottomRef?: React.MutableRefObject<HTMLDivElement | null>;
 	/**

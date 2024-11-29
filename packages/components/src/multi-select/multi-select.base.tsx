@@ -123,6 +123,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		withCheckIcon,
 		withErrorStyles,
 		withMaxDisplayedValuesTooltip = true,
+		maxDisplayedValuesSeparator = ', ',
 		withScrollArea,
 		wrapperProps,
 		canSelectAll,
@@ -341,7 +342,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 					unstyled={unstyled}
 					{...getStyles('pill')}
 				>
-					{_value.slice(0, valuesToDisplay).map(getCumulativeValue).join(', ')}
+					{_value.slice(0, valuesToDisplay).map(getCumulativeValue).join(maxDisplayedValuesSeparator)}
 					{showMaxDisplayedValuesLabel ? renderMaxDisplayedTextValuesLabel() : null}
 				</Text>
 			</Tooltip>

@@ -21,6 +21,7 @@ import { IconCheck, IconChevronLeft, IconChevronRight, IconThumbUp } from '@tabl
 import groupBy from 'lodash.groupby';
 
 import { MultiSelect } from '../multi-select';
+import { MultiSelectBase } from '../multi-select.base';
 import {
 	type MultiSelectBaseProps,
 	type MultiSelectProps,
@@ -717,6 +718,8 @@ export const Virtualized: StoryObj<MultiSelectBaseProps> = {
 		),
 		placeholder: 'Virtualized',
 		w: 256,
+		allowSelectAll: true,
+		maxDisplayedValues: 3,
 	},
 	render: args => {
 		const fakes = Array.from({ length: 5000 }).map(() => ({
@@ -733,11 +736,11 @@ export const Virtualized: StoryObj<MultiSelectBaseProps> = {
 
 		return (
 			<Group>
-				<MultiSelect
+				<MultiSelectBase
 					data={data}
 					{...args}
 				/>
-				<MultiSelect
+				<MultiSelectBase
 					data={groupedData}
 					{...args}
 				/>
