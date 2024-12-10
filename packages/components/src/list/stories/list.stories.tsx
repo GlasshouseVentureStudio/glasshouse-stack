@@ -37,6 +37,7 @@ const meta: Meta<typeof List<DataType>> = {
 	decorators: [
 		render => (
 			<Paper
+				h='100%'
 				p={rem(20)}
 				radius={0}
 			>
@@ -62,9 +63,10 @@ type ListStory = StoryObj<typeof meta>;
 /** Renders a list with the provided data. */
 export const Default: ListStory = {
 	args: {
-		data: data.slice(0, 20),
+		data: data.slice(0, 10),
 		radius: 'md',
 		itemKey: 'id',
+		w: 420,
 		estimateItemSize: () => 52,
 		renderItem: item => (
 			<Box className='gvs-px-3 gvs-py-1'>
@@ -186,6 +188,9 @@ export const HeaderFooter: ListStory = {
 		className: 'gvs-h-80',
 		stickyHeader: true,
 		stickyFooter: false,
+		scrollShadowProps: {
+			shadowEnabled: false,
+		},
 	},
 	render: args => {
 		const [stickyHeader, setStickyHeader] = useState(args.stickyHeader);
@@ -279,7 +284,7 @@ export const Virtualized: ListStory = {
 	args: {
 		...Default.args,
 		data,
-		virtualized: false,
+		virtualized: true,
 		className: 'gvs-h-96',
 	},
 	render: ({ virtualized, ...args }) => {
@@ -303,17 +308,22 @@ export const Grouped: ListStory = {
 		...Default.args,
 		data,
 		groupByFn: items => groupBy(items, item => item.name.toLowerCase()[0]),
+
 		renderGroupHeader: header => (
 			<Box className='gvs-px-3 gvs-font-bold gvs-uppercase gvs-py-2 gvs-bg-white'>
 				{header.title} {`(${header.items.length} items)`}
 			</Box>
 		),
+
 		className: 'gvs-h-96',
 		stickyGroupHeader: false,
 		estimateGroupHeaderSize: () => 41,
+
 		scrollShadowProps: {
 			shadowVisibility: 'bottom',
 		},
+
+		virtualized: false,
 	},
 	render: args => {
 		const [sticky, setSticky] = useState(args.stickyGroupHeader);
@@ -494,7 +504,7 @@ export const Rounded: ListStory = {
 	...Default,
 	args: {
 		...Default.args,
-		radius: 'xl',
+		radius: 'lg',
 	},
 };
 
