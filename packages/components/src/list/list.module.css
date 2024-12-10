@@ -21,36 +21,80 @@
 	&[data-with-border] {
 		border: rem(1px) solid var(--mantine-color-default-border);
 	}
+
+	&[data-virtualized][data-measure-elements] {
+		&[data-orientation='vertical'] {
+			> div > div {
+				width: 100%;
+				height: var(--list-size);
+			}
+		}
+
+		> div > div {
+			position: relative;
+		}
+
+		&[data-orientation='horizontal'] {
+			> div > div {
+				height: 100%;
+				width: var(--list-size);
+			}
+		}
+	}
 }
 
 .list {
 	position: relative;
 	border-radius: var(--list-radius, var(--mantine-radius-md, 0.25rem));
 
-	&[data-orientation='vertical'] {
-		width: 100%;
-		height: var(--list-size);
-	}
+	&[data-virtualized] {
+		&[data-orientation='vertical']:not([data-measure-elements]) {
+			width: 100%;
+			height: var(--list-size);
+		}
 
-	&[data-orientation='horizontal'] {
-		height: 100%;
-		width: var(--list-size);
+		&[data-orientation='horizontal']:not([data-measure-elements]) {
+			height: 100%;
+			width: var(--list-size);
+		}
+
+		&[data-measure-elements] {
+			position: absolute;
+			top: 0;
+			left: 0;
+
+			&[data-orientation='vertical'] {
+				width: 100%;
+				transform: translateY(var(--list-start));
+			}
+
+			&[data-orientation='horizontal'] {
+				height: 100%;
+				transform: translateX(var(--list-start));
+			}
+		}
 	}
 }
 
 .item {
-	&[data-virtualized] {
+	&[data-orientation='vertical'] {
+		width: 100%;
+	}
+
+	&[data-orientation='horizontal'] {
+		height: 100%;
+	}
+
+	&[data-virtualized]:not([data-measure-element]) {
 		left: 0;
 		top: 0;
 		position: absolute;
 
 		&[data-orientation='vertical'] {
-			width: 100%;
 			transform: translateY(var(--list-item-start));
 		}
 
 		&[data-orientation='horizontal'] {
-			height: 100%;
 			transform: translateX(var(--list-item-start));
 		}
 	}
@@ -75,29 +119,31 @@
 }
 
 .groupHeader {
-	&[data-virtualized] {
+	&[data-orientation='vertical'] {
+		width: 100%;
+	}
+
+	&[data-orientation='horizontal'] {
+		height: 100%;
+	}
+
+	&[data-virtualized]:not([data-measure-element]) {
 		left: 0;
 		top: 0;
 		position: absolute;
 
-		&[data-orientation='vertical'] {
-			width: 100%;
-
-			&:not([data-sticky]) {
-				transform: translateY(var(--list-item-start));
-			}
+		&[data-orientation='vertical']:not([data-sticky]) {
+			transform: translateY(var(--list-item-start));
 		}
 
-		&[data-orientation='horizontal'] {
-			height: 100%;
-
-			&:not([data-sticky]) {
-				transform: translateX(var(--list-item-start));
-			}
+		&[data-orientation='horizontal']:not([data-sticky]) {
+			transform: translateX(var(--list-item-start));
 		}
 	}
 
 	&[data-sticky] {
+		left: 0;
+		top: 0;
 		z-index: 1;
 		position: sticky;
 	}

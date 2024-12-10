@@ -22,6 +22,7 @@ export const ListItem = factory<ListItemFactory>((_props, ref) => {
 		orientation,
 		withItemBorder,
 		virtualized,
+		measureElement,
 		...others
 	} = props;
 
@@ -45,10 +46,12 @@ export const ListItem = factory<ListItemFactory>((_props, ref) => {
 			component='li'
 			mod={[
 				{
+					index: virtualRow?.index,
 					orientation,
 					active,
 					virtualized,
 					'with-item-border': withItemBorder,
+					'measure-element': measureElement,
 				},
 				mod,
 			]}

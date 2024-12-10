@@ -30,4 +30,10 @@ export interface ListGroupHeaderProps
 	sticky?: boolean;
 	/** Indicates whether the component is virtualized or not. */
 	virtualized?: boolean;
+	/**
+	 * Enable dynamic element measurement for virtualized item.
+	 *
+	 * @see [Virtualizer - TanStack Virtual Docs](https://tanstack.com/virtual/latest/docs/api/virtualizer#measureelement).
+	 */
+	measureElement?: boolean;
 }

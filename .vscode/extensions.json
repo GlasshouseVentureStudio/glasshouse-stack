@@ -10,7 +10,6 @@
 		"visualstudioexptteam.vscodeintellicode-completions",
 		"atlassian.atlascode",
 		"aykutsarac.jsoncrack-vscode",
-		"mariusalchimavicius.json-to-ts",
 		"christian-kohler.path-intellisense",
 		"vunguyentuan.vscode-postcss",
 		"sibiraj-s.vscode-scss-formatter",
@@ -18,6 +17,7 @@
 		"stylelint.vscode-stylelint",
 		"bradlc.vscode-tailwindcss",
 		"eliostruyf.vscode-typescript-exportallmodules",
-		"inlang.vs-code-extension"
+		"inlang.vs-code-extension",
+		"doggy8088.quicktype-refresh"
 	]
 }

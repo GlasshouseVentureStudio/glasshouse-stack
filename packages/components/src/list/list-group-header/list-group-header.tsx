@@ -20,6 +20,7 @@ export const ListGroupHeader = polymorphicFactory<ListGroupHeaderFactory>((_prop
 		mod,
 		virtualRow,
 		virtualized,
+		measureElement,
 		...others
 	} = props;
 
@@ -43,10 +44,12 @@ export const ListGroupHeader = polymorphicFactory<ListGroupHeaderFactory>((_prop
 			component='li'
 			mod={[
 				{
+					index: virtualRow?.index,
 					orientation,
 					sticky,
 					virtualized,
 					'with-item-border': withItemBorder,
+					'measure-element': measureElement,
 				},
 				mod,
 			]}

@@ -1,15 +1,34 @@
 /* eslint-disable react-hooks/rules-of-hooks -- valid for stories */
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { faker } from '@faker-js/faker';
-import { Box, Checkbox, Group, Paper, Radio, rem, Stack, Switch, Text, Title } from '@mantine/core';
+import { Avatar, Box, Button, Checkbox, Group, Paper, Radio, rem, Stack, Switch, Text, Title } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
 import { expect, fn, userEvent, within } from '@storybook/test';
+import { type Virtualizer } from '@tanstack/react-virtual';
 import chunk from 'lodash.chunk';
 import groupBy from 'lodash.groupby';
 
 import { List } from '../list';
 import { type PaginationConfig } from '../list.types';
-import data from './fake.json';
+
+faker.seed(187);
+
+const data = Array.from({ length: 1000 }).map(() => ({
+	id: faker.string.ulid(),
+	name: faker.person.fullName(),
+	avatar: faker.datatype.boolean() ? faker.image.avatar() : undefined,
+	job: `${faker.person.jobDescriptor()} ${faker.person.jobTitle()}`,
+	company: {
+		name: faker.company.name(),
+		catchPhrase: faker.company.catchPhrase(),
+	},
+	location: {
+		city: faker.location.city(),
+		state: faker.location.state(),
+		country: faker.location.country(),
+	},
+	bio: faker.word.words({ count: { min: 10, max: 50 } }),
+}));
 
 const meta: Meta<typeof List<DataType>> = {
 	title: 'Components/Lists/List',
@@ -37,15 +56,7 @@ const meta: Meta<typeof List<DataType>> = {
 
 export default meta;
 
-const fakerData = Array.from({ length: 1 })
-	.map(() => ({
-		id: faker.string.uuid(),
-		name: faker.person.firstName(),
-		job: faker.person.jobTitle(),
-	}))
-	.sort((a, b) => a.name.localeCompare(b.name));
-
-type DataType = (typeof fakerData)[number];
+type DataType = (typeof data)[number];
 type ListStory = StoryObj<typeof meta>;
 
 /** Renders a list with the provided data. */
@@ -66,6 +77,9 @@ export const Default: ListStory = {
 				<Text className='gvs-line-clamp-1 gvs-text-sm gvs-text-gray-700'>{item.job}</Text>
 			</Box>
 		),
+	},
+	parameters: {
+		controls: { exclude: ['data'] },
 	},
 };
 
@@ -324,9 +338,20 @@ export const Grouped: ListStory = {
 
 const selectableData: DataType[] = Array.from({ length: 5 })
 	.map(() => ({
-		id: faker.string.uuid(),
+		id: faker.string.ulid(),
 		name: faker.person.fullName(),
-		job: faker.person.jobTitle(),
+		avatar: faker.datatype.boolean() ? faker.image.avatar() : undefined,
+		job: `${faker.person.jobDescriptor()} ${faker.person.jobTitle()}`,
+		company: {
+			name: faker.company.name(),
+			catchPhrase: faker.company.catchPhrase(),
+		},
+		location: {
+			city: faker.location.city(),
+			state: faker.location.state(),
+			country: faker.location.country(),
+		},
+		bio: faker.word.words({ count: { min: 10, max: 50 } }),
 	}))
 	.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -415,6 +440,9 @@ export const Pagination: ListStory = {
 		classNames: {
 			root: 'gvs-h-96',
 		},
+		scrollShadowProps: {
+			shadowEnabled: false,
+		},
 	},
 	render: args => {
 		const [position, setPosition] = useState<PaginationConfig['position']>('bottom');
@@ -467,5 +495,144 @@ export const Rounded: ListStory = {
 	args: {
 		...Default.args,
 		radius: 'xl',
+	},
+};
+
+/**
+ * Virtualized list with **dynamic** item sizes, enabled by setting `measureElements` prop to `true`. This means that each element's exact dimensions are unknown when rendered. An estimated dimension is used to get an a initial measurement, then this measurement is readjusted on the fly as each element is rendered.
+ *
+ * ***Sticky group header won't work with dynamic item sizes.***
+ */
+export const MeasureVirtualizedItems: ListStory = {
+	...Virtualized,
+	args: {
+		...Virtualized.args,
+		data,
+		virtualized: true,
+		measureElements: true,
+		w: 420,
+		h: 420,
+		estimateItemSize: () => 200,
+		stickyGroupHeader: false,
+		renderItem: item => (
+			<Stack
+				px={16}
+				py={10}
+			>
+				<Group
+					align='flex-start'
+					wrap='nowrap'
+				>
+					<Avatar
+						color='initials'
+						mt={6}
+						name={item.name}
+						src={item.avatar}
+					/>
+					<Stack
+						className='gvs-flex-1'
+						gap={0}
+					>
+						<Text
+							fw={700}
+							size='lg'
+						>
+							{item.name}
+						</Text>
+						<Text
+							c='dimmed'
+							size='xs'
+						>
+							<Text
+								fw={600}
+								span
+							>
+								{item.job}
+							</Text>{' '}
+							at{' '}
+							<Text
+								fw={600}
+								span
+							>
+								{item.company.name}
+							</Text>
+						</Text>
+						<Text
+							className='gvs-text-right'
+							component='em'
+							mt='xs'
+							size='xs'
+						>
+							- {item.company.catchPhrase}
+						</Text>
+					</Stack>
+				</Group>
+				<Text size='xs'>
+					{item.bio} {item.id}
+				</Text>
+			</Stack>
+		),
+	},
+	render: args => {
+		const ref = useRef<Virtualizer<HTMLDivElement, Element>>(null);
+		const count = data.length;
+
+		const [grouped, setGrouped] = useState(false);
+
+		return (
+			<Stack>
+				<Group gap='xs'>
+					<Button
+						onClick={() => {
+							ref.current?.scrollToIndex(0);
+						}}
+						size='xs'
+						variant='default'
+					>
+						Scroll to the start
+					</Button>
+					<Button
+						onClick={() => {
+							ref.current?.scrollToIndex(count / 2);
+						}}
+						size='xs'
+						variant='default'
+					>
+						Scroll to the middle
+					</Button>
+					<Button
+						onClick={() => {
+							ref.current?.scrollToIndex(count - 1);
+						}}
+						size='xs'
+						variant='default'
+					>
+						Scroll to the end
+					</Button>
+				</Group>
+				<Switch
+					checked={grouped}
+					label='Grouped'
+					onChange={event => {
+						setGrouped(event.currentTarget.checked);
+					}}
+				/>
+				<List
+					estimateGroupHeaderSize={grouped ? () => 40 : undefined}
+					groupByFn={grouped ? items => groupBy(items, item => item.location.country) : undefined}
+					renderGroupHeader={header => (
+						<Group
+							className='gvs-bg-white'
+							h={40}
+							px={10}
+						>
+							<Text fw={600}>{header.title}</Text>
+						</Group>
+					)}
+					virtualizerRef={ref}
+					{...args}
+				/>
+			</Stack>
+		);
 	},
 };

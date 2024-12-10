@@ -1,3 +1,4 @@
+import { type Ref } from 'react';
 import {
 	type BoxProps,
 	type ElementProps,
@@ -8,7 +9,7 @@ import {
 	type PaginationProps,
 	type StylesApiProps,
 } from '@mantine/core';
-import { type PartialKeys, type VirtualizerOptions } from '@tanstack/react-virtual';
+import { type PartialKeys, type Virtualizer, type VirtualizerOptions } from '@tanstack/react-virtual';
 // eslint-disable-next-line import/no-unresolved -- lodash is not a dependency, only using `@types/lodash` for types.
 import { type Dictionary } from 'lodash';
 
@@ -39,6 +40,7 @@ export type ListStylesNames =
 	| 'scrollArea'
 	| 'item'
 	| 'list'
+	| 'list-wrapper'
 	| 'header'
 	| 'footer'
 	| 'loader'
@@ -197,8 +199,25 @@ export interface ListProps<T extends object>
 	bottomLoading?: boolean;
 	/** Whether the list is virtualized by `@tanstack/react-virtual`. */
 	virtualized?: boolean;
-	/** Options for the virtualizer. See [`@tanstack/react-virtual`](https://tanstack.com/virtual/latest/docs/api/virtualizer). */
+	/**
+	 * Options for the virtualizer.
+	 *
+	 * @see [Virtualizer - TanStack Virtual Docs](https://tanstack.com/virtual/latest/docs/api/virtualizer).
+	 */
 	virtualizerOptions?: ListVirtualizerOptions;
+	/**
+	 * Enable dynamic elements measurement for virtualized items.
+	 *
+	 * @see [Virtualizer - TanStack Virtual Docs](https://tanstack.com/virtual/latest/docs/api/virtualizer#measureelement).
+	 */
+	measureElements?: boolean;
+	/**
+	 * Ref to access the Virtualizer instance.
+	 *
+	 * Allows external components to interact with the virtualizer, enabling functionalities
+	 * like programmatically scrolling or measuring items within the list.
+	 */
+	virtualizerRef?: Ref<Partial<Virtualizer<HTMLDivElement, Element>>>;
 }
 
 type OmittedVirtualizerKeys =

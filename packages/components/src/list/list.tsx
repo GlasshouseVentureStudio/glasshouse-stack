@@ -1,8 +1,9 @@
 'use client';
 
-import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import {
 	Box,
+	type BoxMod,
 	createVarsResolver,
 	getRadius,
 	type GetStylesApi,
@@ -77,6 +78,8 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 		styles,
 		virtualized = true,
 		virtualizerOptions,
+		measureElements,
+		virtualizerRef,
 		...rest
 	} = props;
 
@@ -166,6 +169,8 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 			key = `list-item-${index}`;
 		}
 
+		const measureRef = measureElements ? virtualizer.measureElement : undefined;
+
 		if (isListGroupHeader(item)) {
 			if (!renderGroupHeader) throw new Error('List: `renderGroupHeader` is required.');
 
@@ -176,6 +181,8 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 			return (
 				<ListGroupHeader
 					key={key}
+					ref={measureRef}
+					measureElement={measureElements}
 					orientation={orientation}
 					sticky={isActiveSticky(_index)}
 					virtualized={virtualized}
@@ -190,7 +197,9 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 		return (
 			<ListItem
 				key={key}
+				ref={measureRef}
 				active={getActiveItem(item, index)}
+				measureElement={measureElements}
 				onClick={event => {
 					handleItemClick(event, item, index);
 				}}
@@ -216,7 +225,7 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 		return [...next].sort((a, b) => a - b);
 	};
 
-	const rowVirtualizer = useVirtualizer({
+	const virtualizer = useVirtualizer({
 		horizontal: orientation === 'horizontal',
 		count: data.length,
 		getScrollElement: () => scrollRef.current,
@@ -227,17 +236,20 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 
 			return estimateItemSize(data[index] as T, index);
 		},
-		overscan: 5,
-		rangeExtractor,
+		overscan: 10,
+		rangeExtractor: groupByFn ? rangeExtractor : undefined,
 		enabled: virtualized,
 		...virtualizerOptions,
 	});
 
-	const listSize = rowVirtualizer.getTotalSize();
+	useImperativeHandle(virtualizerRef, () => virtualizer);
 
-	const virtualizedItems = rowVirtualizer
+	const listSize = virtualizer.getTotalSize();
+
+	const virtualizedItems = virtualizer
 		.getVirtualItems()
 		.map(row => renderInnerItem(data[row.index] as T, row.index, row));
+
 	const normalItems = data.map((item, index) => renderInnerItem(item, index));
 
 	const items = virtualized ? virtualizedItems : normalItems;
@@ -334,38 +346,39 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 		</Box>
 	) : null;
 
-	const listVirtualizedStyles = virtualized
+	const listVirtualizedVars = virtualized
 		? {
 				'--list-size': rem(listSize),
 			}
 		: {};
 
-	const listStyles = getStyles('list', {
-		style: listVirtualizedStyles,
-	});
+	const virtualizedWithMeasureListVars =
+		virtualized && measureElements
+			? {
+					'--list-start': rem(virtualizer.getVirtualItems()[0]?.start ?? 0),
+				}
+			: {};
+
+	const mod: BoxMod = {
+		orientation,
+		infinite,
+		virtualized,
+		'with-border': withBorder,
+		'measure-elements': measureElements,
+	};
 
 	return (
 		<ListProvider value={{ getStyles: getStyles as unknown as GetStylesApi<ListFactory<object>> }}>
 			<Box
 				ref={ref}
-				mod={[
-					{
-						orientation,
-						infinite,
-						'with-border': withBorder,
-					},
-				]}
+				__vars={{ ...listVirtualizedVars, ...virtualizedWithMeasureListVars }}
+				mod={mod}
 				{...getStyles('root')}
 				{...rest}
 			>
 				{paginationPosition === 'top' ? paginationContent : null}
 				<ScrollShadow
-					mod={[
-						{
-							orientation,
-							'with-border': withBorder,
-						},
-					]}
+					mod={mod}
 					viewportRef={scrollRef}
 					{...getStyles('scrollArea', {
 						className: scrollShadowProps?.className,
@@ -379,11 +392,8 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 					{headerContent}
 					<Box
 						component='ul'
-						mod={{
-							orientation,
-							virtualized,
-						}}
-						{...listStyles}
+						{...getStyles('list')}
+						mod={mod}
 					>
 						{items}
 					</Box>
