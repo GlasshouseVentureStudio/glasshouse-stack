@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.7.4
+
+### Patch Changes
+
+- feat(components/list): add `measureElements` prop for dynamic size list items
+
 ## 0.7.3
 
 ### Patch Changes
