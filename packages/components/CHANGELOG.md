@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.7.5
+
+### Patch Changes
+
+- fix(components/combobox): infinite loop caused by virtual items
+
 ## 0.7.4
 
 ### Patch Changes
