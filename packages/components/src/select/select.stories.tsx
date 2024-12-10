@@ -30,6 +30,11 @@ const meta: Meta = {
 	title: 'Components/Combobox/Select',
 	component: Select,
 	tags: ['autodocs', 'Select'],
+	parameters: {
+		controls: {
+			exclude: ['data'],
+		},
+	},
 };
 
 const generateData = (length: number): ComboboxData =>
@@ -555,6 +560,7 @@ export const Virtualized: StoryObj<SelectProps> = {
 		placeholder: 'Select person',
 		clearable: true,
 		virtualized: true,
+		searchable: true,
 	},
 };
 

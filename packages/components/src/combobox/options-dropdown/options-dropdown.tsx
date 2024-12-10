@@ -284,7 +284,7 @@ export function OptionsDropdown({
 		count,
 		getScrollElement: () => viewportRef.current,
 		estimateSize: () => 32,
-		enabled: virtualized,
+		enabled: virtualized && combobox.dropdownOpened,
 		...virtualizerOptions,
 	});
 
