@@ -1,5 +1,16 @@
 # @glasshouse/components
 
+## 0.8.0
+
+### Minor Changes
+
+- Bump dependencies version, raise React minimum version to 19 and Next's to 15
+
+### Patch Changes
+
+- Updated dependencies
+  - @glasshouse/utils@0.3.0
+
 ## 0.7.5
 
 ### Patch Changes

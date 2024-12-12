@@ -1,6 +1,6 @@
 {
 	"name": "@glasshouse/components",
-	"version": "0.7.5",
+	"version": "0.8.0",
 	"homepage": "https://github.com/GlasshouseVentureStudio/glasshouse-stack/tree/main/packages/components",
 	"repository": {
 		"type": "git",
@@ -63,7 +63,7 @@
 	},
 	"devDependencies": {
 		"@faker-js/faker": "^9.3.0",
-		"@glasshouse/style-guide": "0.2.0",
+		"@glasshouse/style-guide": "workspace:*",
 		"@storybook/react": "^8.4.7",
 		"@storybook/test": "^8.4.7",
 		"@storybook/test-runner": "^0.20.1",
