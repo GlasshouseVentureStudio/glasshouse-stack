@@ -5,7 +5,7 @@ import isEmpty from 'lodash.isempty';
  * @see https://mantine.dev/hooks/use-previous/
  */
 export const usePrevious = <T>(value: T, checkFalsy?: boolean): T | undefined => {
-	const ref = useRef<T>();
+	const ref = useRef<T>(undefined);
 
 	useEffect(() => {
 		if (checkFalsy && (!value || isEmpty(value))) {

@@ -132,6 +132,10 @@
 		top: 0;
 		position: absolute;
 
+		&[data-sticky] {
+			position: sticky;
+		}
+
 		&[data-orientation='vertical']:not([data-sticky]) {
 			transform: translateY(var(--list-item-start));
 		}
@@ -226,4 +230,22 @@
 	align-items: center;
 	justify-content: center;
 	padding: 2.5rem;
+}
+
+.endElement {
+	&[data-virtualized][data-measure-elements] {
+		position: absolute;
+
+		&[data-orientation='vertical'] {
+			left: 0;
+			right: 0;
+			top: var(--list-size);
+		}
+
+		&[data-orientation='horizontal'] {
+			top: 0;
+			bottom: 0;
+			left: var(--list-size);
+		}
+	}
 }

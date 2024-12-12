@@ -1,8 +1,8 @@
 'use client';
 
-import { useCallback } from 'react';
 import { List } from '@glasshouse/components';
 import { Avatar, Group, Paper, Stack, Text } from '@mantine/core';
+import { useCallback } from 'react';
 
 import { type User } from './list-demo';
 

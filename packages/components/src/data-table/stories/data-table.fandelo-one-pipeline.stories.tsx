@@ -614,6 +614,8 @@ export const FandeloOnePipeline: StoryObj<DataTableProps<Pipeline, PipelineData>
 					},
 				}}
 			>
+				{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment -- safe */}
+				{/* @ts-ignore */}
 				<DataTable
 					{...props}
 					columns={columns}

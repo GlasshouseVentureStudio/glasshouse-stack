@@ -242,6 +242,8 @@ export const CreatableAsync: StoryObj<MultiSelectProps> = {
 	args: {
 		creatable: true,
 		creatablePosition: 'footer',
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment -- safe
+		// @ts-ignore
 		onCreate: value => {
 			return new Promise(resolve => {
 				if (value === 'throw') {

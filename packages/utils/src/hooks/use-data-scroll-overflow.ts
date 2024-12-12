@@ -12,7 +12,7 @@ export interface UseDataScrollOverflowProps {
 	/**
 	 * The reference to the DOM element on which we're checking overflow.
 	 */
-	domRef?: React.RefObject<HTMLElement>;
+	domRef?: React.RefObject<HTMLElement | null>;
 	/**
 	 * Determines the direction of overflow to check.
 	 * - "horizontal" will check for overflow on the x-axis.

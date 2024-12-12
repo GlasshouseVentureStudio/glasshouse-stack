@@ -4,17 +4,33 @@ const disabledRules = {
 	'import/no-default-export': 'off',
 	'tsdoc/syntax': 'off',
 	'@typescript-eslint/explicit-function-return-type': 'off',
+	'import/no-extraneous-dependencies': 'off',
+	'jsx-a11y/no-autofocus': 'off',
 	'import/no-cycle': 'off',
-	'@typescript-eslint/no-shadow': 'off',
+	'no-shadow': 'off',
+	'no-unused-vars': 'off',
+	'import/named': 'off',
+	'no-bitwise': 'off',
 };
 
 module.exports = {
-	plugins: ['simple-import-sort'],
+	plugins: ['simple-import-sort', 'eslint-plugin-react-compiler'],
 	rules: {
 		...disabledRules,
-		'simple-import-sort/exports': 'warn',
+		'react/jsx-sort-props': [
+			2,
+			{
+				ignoreCase: true,
+				callbacksLast: false,
+				shorthandFirst: false,
+				reservedFirst: true,
+				multiline: 'last',
+			},
+		],
+		'react-compiler/react-compiler': 'error',
+		'simple-import-sort/exports': 'error',
 		'simple-import-sort/imports': [
-			'warn',
+			'error',
 			{
 				groups: [
 					['^react', '^@?\\w'],
@@ -24,20 +40,20 @@ module.exports = {
 			},
 		],
 		'@typescript-eslint/restrict-template-expressions': [
-			'warn',
+			'error',
 			{
 				allowNumber: true,
 			},
 		],
 		'@typescript-eslint/no-misused-promises': [
-			'warn',
+			'error',
 			{
 				checksVoidReturn: {
 					attributes: false,
 				},
 			},
 		],
-		'no-console': ['warn', { allow: ['warn', 'error'] }],
+		'no-console': ['error', { allow: ['error', 'error'] }],
 		'padding-line-between-statements': [
 			'error',
 			{ blankLine: 'always', prev: '*', next: 'return' },

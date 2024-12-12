@@ -4,9 +4,8 @@ import { Inter } from 'next/font/google';
 
 import { Providers } from './providers';
 
-import '@mantine/core/styles.css';
 import '@glasshouse/components/styles.css';
-import '@glasshouse/components/tailwind.css';
+import '@mantine/core/styles.css';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });

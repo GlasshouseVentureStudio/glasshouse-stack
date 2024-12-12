@@ -23,5 +23,5 @@ module.exports = {
 	singleAttributePerLine: true,
 	singleQuote: true,
 	trailingComma: 'es5',
-	plugins: ['prettier-plugin-packagejson'],
+	plugins: ['prettier-plugin-packagejson', 'prettier-plugin-tailwindcss', 'prettier-plugin-sort-json'],
 };

@@ -40,14 +40,14 @@ export type ListStylesNames =
 	| 'scrollArea'
 	| 'item'
 	| 'list'
-	| 'list-wrapper'
 	| 'header'
 	| 'footer'
 	| 'loader'
 	| 'empty'
 	| 'paginationWrapper'
 	| 'bottomLoaderWrapper'
-	| 'groupHeader';
+	| 'groupHeader'
+	| 'endElement';
 
 export interface ListCssVariables {
 	root: '--list-radius';

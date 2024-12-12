@@ -37,7 +37,7 @@ export const GridVariables = ({ columns, rows, selector }: GridVariablesProps) =
 		return acc;
 	}, {});
 
-	const sortedBreakpoints = getSortedBreakpoints(keys(queries), theme).filter(
+	const sortedBreakpoints = getSortedBreakpoints(keys(queries), theme.breakpoints).filter(
 		breakpoint => keys(queries[breakpoint.value] ?? {}).length > 0
 	);
 

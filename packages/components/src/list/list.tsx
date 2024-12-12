@@ -400,7 +400,11 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 					{isEmpty ? <Box {...getStyles('empty')}>{renderInnerEmpty()}</Box> : null}
 					{bottomContent}
 					{footerContent}
-					<Box ref={bottomRef} />
+					<Box
+						ref={bottomRef}
+						mod={mod}
+						{...getStyles('endElement')}
+					/>
 				</ScrollShadow>
 				{paginationPosition === 'bottom' ? paginationContent : null}
 			</Box>

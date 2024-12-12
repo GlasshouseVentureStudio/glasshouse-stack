@@ -646,3 +646,17 @@ export const MeasureVirtualizedItems: ListStory = {
 		);
 	},
 };
+
+/**
+ * `onEndReached` will be called once when the scroll position gets within `onEndReachedThreshold` from the logical end of the list.
+ */
+export const OnEndReached: ListStory = {
+	...MeasureVirtualizedItems,
+	args: {
+		...MeasureVirtualizedItems.args,
+		onEndReached: fn(() => {
+			// eslint-disable-next-line no-console -- This is a demo
+			console.log('On end reached');
+		}),
+	},
+};
