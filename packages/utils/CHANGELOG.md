@@ -1,5 +1,11 @@
 # @glasshouse/utils
 
+## 0.3.1
+
+### Patch Changes
+
+- Fix minor code style errors
+
 ## 0.3.0
 
 ### Minor Changes
