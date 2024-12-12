@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks -- safe */
+import { useState } from 'react';
 import {
 	ColorSwatch,
 	Group,
@@ -13,7 +14,6 @@ import {
 } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
 import { CheckIcon } from 'lucide-react';
-import { useState } from 'react';
 
 import { Grid } from '../grid';
 import { type GridProps } from '../grid.types';
@@ -326,8 +326,8 @@ export const WithoutRootBorder: GridStory = {
 		<Grid
 			{...args}
 			columns={3}
-			rows={2}
 			rootBorder={false}
+			rows={2}
 		>
 			<Grid.Cell>1</Grid.Cell>
 			<Grid.Cell>2</Grid.Cell>

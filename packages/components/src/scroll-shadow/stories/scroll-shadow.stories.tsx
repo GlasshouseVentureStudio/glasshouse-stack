@@ -1,6 +1,7 @@
-import { Card, MantineSize, Slider, Stack, Text, Title } from '@mantine/core';
-import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import { Card, type MantineSize, Slider, Stack, Text, Title } from '@mantine/core';
+import { type Meta, type StoryObj } from '@storybook/react';
+
 import { ScrollShadow } from '../scroll-shadow';
 
 const meta: Meta<typeof ScrollShadow> = {
@@ -10,8 +11,8 @@ const meta: Meta<typeof ScrollShadow> = {
 	decorators: [
 		renderChildren => (
 			<Card
-				withBorder
 				w={400}
+				withBorder
 			>
 				{renderChildren()}
 			</Card>
@@ -76,6 +77,7 @@ export const ShadowSize: ScrollShadowStory = {
 		h: 300,
 	},
 	render: args => {
+		// eslint-disable-next-line react-hooks/rules-of-hooks -- safe for stories
 		const [size, setSize] = useState<MantineSize | undefined>('md');
 
 		const _value = MARKS.find(mark => mark.label === size)?.value;
@@ -99,8 +101,8 @@ export const ShadowSize: ScrollShadowStory = {
 					</ScrollShadow>
 				</Card.Section>
 				<Card.Section
-					withBorder
 					p={8}
+					withBorder
 				>
 					<Stack gap={0}>
 						<Text size='xs'>Shadow size</Text>

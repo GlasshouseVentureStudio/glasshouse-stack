@@ -1,8 +1,8 @@
 'use client';
 
+import { useCallback } from 'react';
 import { List } from '@glasshouse/components';
 import { Avatar, Group, Paper, Stack, Text } from '@mantine/core';
-import { useCallback } from 'react';
 
 import { type User } from './list-demo';
 
@@ -14,14 +14,14 @@ export const ListDemoClient = ({ data }: { data: User[] }) => {
 	const renderItem = useCallback(
 		(item: User) => (
 			<Group
-				p={10}
-				justify='space-between'
 				h={62}
+				justify='space-between'
+				p={10}
 			>
 				<Group>
 					<Avatar
-						name={getFullName(item)}
 						color='initials'
+						name={getFullName(item)}
 					/>
 					<Stack gap={0}>
 						<Text>{`${item.firstName} ${item.lastName}`}</Text>
@@ -34,13 +34,13 @@ export const ListDemoClient = ({ data }: { data: User[] }) => {
 					</Stack>
 				</Group>
 				<Stack
-					gap={0}
 					align='flex-end'
+					gap={0}
 				>
 					<Text className='text-sm'>{item.company.title}</Text>
 					<Text
-						className='text-xs'
 						c='dimmed'
+						className='text-xs'
 					>
 						{item.company.department}
 					</Text>
@@ -55,9 +55,9 @@ export const ListDemoClient = ({ data }: { data: User[] }) => {
 			<List
 				className='h-full w-full'
 				data={data}
-				renderItem={renderItem}
 				estimateItemSize={() => 62}
 				itemKey='id'
+				renderItem={renderItem}
 			/>
 		</Paper>
 	);

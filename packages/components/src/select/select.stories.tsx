@@ -18,7 +18,6 @@ import { Notifications, notifications } from '@mantine/notifications';
 import type { Meta, StoryObj } from '@storybook/react';
 import { IconCheck, IconChevronLeft, IconChevronRight, IconThumbUp } from '@tabler/icons-react';
 import { MinusIcon, PlusIcon } from 'lucide-react';
-// eslint-disable-next-line import/named -- unsure why eslint is complaining
 import { v4 } from 'uuid';
 
 import { Select } from './select';

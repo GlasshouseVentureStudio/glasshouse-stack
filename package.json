@@ -10,6 +10,7 @@
 		"dev": "turbo dev --filter=@glasshouse/docs --filter=@glasshouse/components --filter=@glasshouse/utils",
 		"dev:demo": "turbo dev --filter=@glasshouse/demo --filter=@glasshouse/components --filter=@glasshouse/utils",
 		"lint": "turbo lint",
+		"lint:fix": "turbo lint:fix",
 		"prepare": "husky",
 		"prettier:check": "prettier --check \"**/*.{ts,tsx,md}\"",
 		"prettier:format": "prettier --write \"**/*.{ts,tsx,md}\"",

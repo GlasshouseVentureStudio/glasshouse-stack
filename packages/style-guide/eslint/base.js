@@ -17,16 +17,6 @@ module.exports = {
 	plugins: ['simple-import-sort', 'eslint-plugin-react-compiler'],
 	rules: {
 		...disabledRules,
-		'react/jsx-sort-props': [
-			2,
-			{
-				ignoreCase: true,
-				callbacksLast: false,
-				shorthandFirst: false,
-				reservedFirst: true,
-				multiline: 'last',
-			},
-		],
 		'react-compiler/react-compiler': 'error',
 		'simple-import-sort/exports': 'error',
 		'simple-import-sort/imports': [
@@ -53,7 +43,7 @@ module.exports = {
 				},
 			},
 		],
-		'no-console': ['error', { allow: ['error', 'error'] }],
+		'no-console': ['error', { allow: ['error', 'warn'] }],
 		'padding-line-between-statements': [
 			'error',
 			{ blankLine: 'always', prev: '*', next: 'return' },

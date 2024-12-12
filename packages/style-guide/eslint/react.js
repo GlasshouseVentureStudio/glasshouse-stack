@@ -48,6 +48,7 @@ module.exports = {
 		{ files: ['*.js?(x)', '*.ts?(x)'] },
 	],
 	rules: {
+		'@typescript-eslint/no-shadow': 'off',
 		'react/jsx-sort-props': [
 			2,
 			{

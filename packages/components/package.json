@@ -40,7 +40,8 @@
 		"copy:css": "node -e \"require('fs').cpSync('./node_modules/mantine-react-table/styles.css', './dist/data-table/styles.css');\"",
 		"dev": "tsup --dts --watch",
 		"dev:tailwind": "tailwindcss -i ./src/styles.css -o ./dist/tailwind.css --watch",
-		"lint": "eslint \"src/**/*.ts*\""
+		"lint": "eslint \"src/**/*.{ts,tsx}*\" --ignore-patern \"src/**/*.stories.{ts,tsx}\"",
+		"lint:fix": "eslint \"src/**/*.{ts,tsx}*\" --fix --ignore-pattern \"*.stories.tsx\""
 	},
 	"dependencies": {
 		"@glasshouse/utils": "workspace:*",

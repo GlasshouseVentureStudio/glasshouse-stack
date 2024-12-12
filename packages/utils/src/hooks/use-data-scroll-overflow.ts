@@ -132,6 +132,7 @@ export function useDataScrollOverflow(props: UseDataScrollOverflowProps = {}) {
 			clearOverflow();
 
 			if (shadowVisibility === 'both') {
+				// eslint-disable-next-line react-compiler/react-compiler
 				el.dataset.topBottomScroll = String(shadowOverflowCheck === 'vertical');
 				el.dataset.leftRightScroll = String(shadowOverflowCheck === 'horizontal');
 			} else {

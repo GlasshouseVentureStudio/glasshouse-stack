@@ -9,6 +9,7 @@
 		"chromatic": "chromatic --exit-zero-on-changes",
 		"dev": "storybook dev --no-open -p 3000",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+		"lint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --fix",
 		"preview": "vite preview",
 		"storybook": "storybook dev --no-open -p 3000",
 		"test-storybook": "test-storybook --url http://localhost:3000"

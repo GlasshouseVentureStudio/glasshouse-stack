@@ -27,7 +27,8 @@
 		"build": "tsup --dts",
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
 		"dev": "tsup --dts --watch",
-		"lint": "eslint \"src/**/*.ts*\""
+		"lint": "eslint \"src/**/*.{ts,tsx}*\"",
+		"lint:fix": "eslint \"src/**/*.{ts,tsx}*\" --fix"
 	},
 	"dependencies": {
 		"clsx": "^2.1.1",

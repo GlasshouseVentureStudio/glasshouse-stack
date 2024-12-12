@@ -10,7 +10,6 @@ import {
 	type StylesApiProps,
 } from '@mantine/core';
 import { type PartialKeys, type Virtualizer, type VirtualizerOptions } from '@tanstack/react-virtual';
-// eslint-disable-next-line import/no-unresolved -- lodash is not a dependency, only using `@types/lodash` for types.
 import { type Dictionary } from 'lodash';
 
 import { type ScrollShadowProps } from '../scroll-shadow';
