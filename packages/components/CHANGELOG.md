@@ -1,5 +1,13 @@
 # @glasshouse/components
 
+## 0.8.2
+
+### Patch Changes
+
+- Minor linting fixes
+- Updated dependencies
+  - @glasshouse/utils@0.3.2
+
 ## 0.8.1
 
 ### Patch Changes
