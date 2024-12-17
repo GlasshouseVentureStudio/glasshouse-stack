@@ -1,5 +1,11 @@
 # @glasshouse/style-guide
 
+## 1.0.2
+
+### Patch Changes
+
+- Fix variable is not defined
+
 ## 1.0.1
 
 ### Patch Changes
