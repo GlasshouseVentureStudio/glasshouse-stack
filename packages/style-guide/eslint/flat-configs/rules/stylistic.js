@@ -1,5 +1,11 @@
+const disabledRules = {
+	'tsdoc/syntax': 'off',
+};
+
+/** @type {import('eslint').Linter.Config} */
 module.exports = {
 	rules: {
+		...disabledRules,
 		/**
 		 * Require camel case names.
 		 *

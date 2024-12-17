@@ -47,6 +47,7 @@ module.exports = [
 				sourceType: 'module',
 			},
 		},
+		rules: disabledRules,
 	},
 	{
 		files: JAVASCRIPT_FILES,

@@ -9,6 +9,7 @@ const disabledRules = {
 	'import/no-unresolved': 'off',
 };
 
+/** @type {import('eslint').Linter.Config} */
 module.exports = {
 	rules: {
 		...disabledRules,

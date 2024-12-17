@@ -1,6 +1,7 @@
 // These share identical configuration options, so we want to keep them in sync.
 const noUnusedVarsConfig = require('../variables').rules['no-unused-vars'];
 
+/** @type {import('eslint').Linter.Config} */
 module.exports = {
 	rules: {
 		/**

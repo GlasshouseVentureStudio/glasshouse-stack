@@ -1,9 +1,14 @@
 /** Disabled for `eslint-plugin-simple-import-sort` compatibility. */
 const disabledRules = {
+	'import/named': 'off',
+	'import/no-cycle': 'off',
+	'import/no-default-export': 'off',
+	'import/no-extraneous-dependencies': 'off',
 	'import/order': 'off',
 	'sort-imports': 'off',
 };
 
+/** @type {import('eslint').Linter.Config} */
 module.exports = {
 	rules: {
 		...disabledRules,

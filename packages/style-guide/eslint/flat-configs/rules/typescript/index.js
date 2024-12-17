@@ -1,3 +1,4 @@
+/** @type {import('eslint').Linter.Config} */
 module.exports = {
 	rules: {
 		/**
@@ -96,12 +97,25 @@ module.exports = {
 		 *
 		 * Number is allowed because it is a common use case to use numbers in template literals.
 		 *
-		 * 🚫 Not fixable - https://typescript-eslint.io/rules/restrict-template-expressions/#allownumber
+		 * 🚫 Not fixable - https://typescript-eslint.io/rules/restrict-template-expressions/
 		 */
 		'@typescript-eslint/restrict-template-expressions': [
 			'error',
 			{
 				allowNumber: true,
+			},
+		],
+		/**
+		 * Disallow Promises in places not designed to handle them.
+		 *
+		 * 🚫 Not fixable - https://typescript-eslint.io/rules/no-misused-promises/
+		 */
+		'@typescript-eslint/no-misused-promises': [
+			'error',
+			{
+				checksVoidReturn: {
+					attributes: false,
+				},
 			},
 		],
 	},

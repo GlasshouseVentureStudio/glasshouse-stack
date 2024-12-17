@@ -1,16 +1,16 @@
 const disabledRules = {
-	'react/function-component-definition': 'off',
-	'import/order': 'off',
-	'import/no-default-export': 'off',
-	'tsdoc/syntax': 'off',
 	'@typescript-eslint/explicit-function-return-type': 'off',
-	'import/no-extraneous-dependencies': 'off',
-	'jsx-a11y/no-autofocus': 'off',
+	'import/named': 'off',
 	'import/no-cycle': 'off',
+	'import/no-default-export': 'off',
+	'import/no-extraneous-dependencies': 'off',
+	'import/order': 'off',
+	'jsx-a11y/no-autofocus': 'off',
+	'no-bitwise': 'off',
 	'no-shadow': 'off',
 	'no-unused-vars': 'off',
-	'import/named': 'off',
-	'no-bitwise': 'off',
+	'react/function-component-definition': 'off',
+	'tsdoc/syntax': 'off',
 };
 
 module.exports = {

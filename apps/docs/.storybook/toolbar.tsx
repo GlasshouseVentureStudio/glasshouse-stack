@@ -105,6 +105,7 @@ const ColorPickerPopover = ({ onChange }: { onChange?: (color: MantineColor) => 
 					withPicker={false}
 					onChange={value => {
 						const colorName = swatches.find(swatch => swatch.value === value)?.name;
+
 						if (colorName) onChange?.(colorName);
 					}}
 				/>
