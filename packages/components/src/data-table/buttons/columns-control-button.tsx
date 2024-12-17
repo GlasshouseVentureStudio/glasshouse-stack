@@ -1,4 +1,3 @@
-import React, { type FC } from 'react';
 import { ActionIcon, type ActionIconProps, Menu, Tooltip } from '@mantine/core';
 import { type HTMLPropsRef, type MRT_RowData, type MRT_TableInstance } from 'mantine-react-table';
 
@@ -20,7 +19,7 @@ export const ColumnsControlButton = <TData extends MRT_RowData>({
 		localization: { showHideColumns },
 	} = table.options;
 
-	const IconColumns = icons.IconColumns as FC;
+	const IconColumns = icons.IconColumns as React.FC;
 
 	return (
 		<Menu

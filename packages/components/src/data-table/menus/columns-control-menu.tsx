@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button, Flex, Menu } from '@mantine/core';
 import { getDefaultColumnOrderIds, type MRT_Column, type MRT_RowData } from 'mantine-react-table';
 
@@ -66,20 +66,20 @@ export const ColumnsControlMenu = <TData extends MRT_RowData>({ table }: { table
 						{enableHiding ? (
 							<Button
 								disabled={!getIsSomeColumnsVisible()}
+								variant='subtle'
 								onClick={() => {
 									handleToggleAllColumns(false);
 								}}
-								variant='subtle'
 							>
 								{localization.hideAll}
 							</Button>
 						) : null}
 						{enableColumnOrdering && withColumnDragHandles ? (
 							<Button
+								variant='subtle'
 								onClick={() => {
 									table.setColumnOrder(getDefaultColumnOrderIds(table.options));
 								}}
-								variant='subtle'
 							>
 								{localization.resetOrder}
 							</Button>
@@ -87,10 +87,10 @@ export const ColumnsControlMenu = <TData extends MRT_RowData>({ table }: { table
 						{enableColumnPinning && withColumnPinningButtons ? (
 							<Button
 								disabled={!getIsSomeColumnsPinned()}
+								variant='subtle'
 								onClick={() => {
 									table.resetColumnPinning(true);
 								}}
-								variant='subtle'
 							>
 								{localization.unpinAll}
 							</Button>
@@ -98,10 +98,10 @@ export const ColumnsControlMenu = <TData extends MRT_RowData>({ table }: { table
 						{enableHiding ? (
 							<Button
 								disabled={getIsAllColumnsVisible()}
+								variant='subtle'
 								onClick={() => {
 									handleToggleAllColumns(true);
 								}}
-								variant='subtle'
 							>
 								{localization.showAll}
 							</Button>

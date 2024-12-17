@@ -41,26 +41,29 @@ export const MaxDisplayedValuesPill = ({
 		<Tooltip
 			closeDelay={300}
 			disabled={!withMaxDisplayedValuesTooltip || !showMaxDisplayedValuesLabel}
+			maw={rem(480)}
+			multiline
+			offset={4}
 			label={
 				<Group
 					gap={4}
+					style={{ pointerEvents: 'auto' }}
 					onMouseEnter={() => {
 						setKeepTooltipOpened(true);
 					}}
 					onMouseLeave={() => {
 						setKeepTooltipOpened(false);
 					}}
-					style={{ pointerEvents: 'auto' }}
 				>
 					{maxDisplayedValuesTooltipType === 'pills'
 						? values.slice(maxDisplayedValues - 1).map(value => (
 								<Pill
 									key={value}
+									size='xs'
+									withRemoveButton={!readOnly && !optionsLockup?.[value]?.disabled}
 									onRemove={() => {
 										onRemove(value);
 									}}
-									size='xs'
-									withRemoveButton={!readOnly && !optionsLockup?.[value]?.disabled}
 								>
 									{optionsLockup?.[value]?.label ?? value}
 								</Pill>
@@ -68,9 +71,6 @@ export const MaxDisplayedValuesPill = ({
 						: tooltipTextContent}
 				</Group>
 			}
-			maw={rem(480)}
-			multiline
-			offset={4}
 			{...tooltipProps}
 			opened={keepTooltipOpened ? keepTooltipOpened : undefined}
 		>

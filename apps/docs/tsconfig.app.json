@@ -23,5 +23,5 @@
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true
 	},
-	"include": ["src"]
+	"include": ["src", "tailwind.config.ts", ".storybook/main.ts", ".storybook/preview.tsx", ".storybook/toolbar.tsx"]
 }

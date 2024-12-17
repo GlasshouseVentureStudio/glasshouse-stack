@@ -20,7 +20,7 @@ import {
 } from './data-table.types';
 import { resolveComponentProps } from './data-table.utils';
 import { DataTableBase } from './data-table-base';
-import LoadMoreButton from './toolbar/load-more-button';
+import { LoadMoreButton } from './toolbar/load-more-button';
 
 export const DataTableWithInfiniteQuery = <
 	TData extends MRT_RowData,
@@ -162,6 +162,7 @@ export const DataTableWithInfiniteQuery = <
 			mantineProgressProps={mantineProgressProps}
 			mantineTableContainerProps={mantineTableContainerProps}
 			manualPagination
+			rowVirtualizerInstanceRef={rowVirtualizerInstanceRef}
 			onColumnFiltersChange={updater => {
 				setColumnFilters(updater);
 				onColumnFiltersChange?.(updater);
@@ -174,7 +175,6 @@ export const DataTableWithInfiniteQuery = <
 				setSorting(updater);
 				onSortingChange?.(updater);
 			}}
-			rowVirtualizerInstanceRef={rowVirtualizerInstanceRef}
 			rowVirtualizerOptions={{
 				overscan: 20,
 			}}

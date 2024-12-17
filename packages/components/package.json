@@ -40,7 +40,7 @@
 		"copy:css": "node -e \"require('fs').cpSync('./node_modules/mantine-react-table/styles.css', './dist/data-table/styles.css');\"",
 		"dev": "tsup --dts --watch",
 		"dev:tailwind": "tailwindcss -i ./src/styles.css -o ./dist/tailwind.css --watch",
-		"lint": "eslint \"src/**/*.{ts,tsx}*\" --ignore-patern \"src/**/*.stories.{ts,tsx}\"",
+		"lint": "eslint \"src/**/*.{ts,tsx}*\" --ignore-pattern \"src/**/*.stories.{ts,tsx}\"",
 		"lint:fix": "eslint \"src/**/*.{ts,tsx}*\" --fix --ignore-pattern \"*.stories.tsx\""
 	},
 	"dependencies": {
@@ -84,7 +84,7 @@
 		"@types/react-dom": "^19.0.2",
 		"@types/uuid": "^10.0.0",
 		"dayjs": "^1.11.13",
-		"eslint": "^8.57.1",
+		"eslint": "^9.17.0",
 		"lucide-react": "^0.468.0",
 		"tailwindcss": "^3.4.16",
 		"tsup": "^8.3.5",

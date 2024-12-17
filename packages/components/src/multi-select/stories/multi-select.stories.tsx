@@ -140,26 +140,26 @@ export const RenderFooter: StoryObj<MultiSelectProps> = {
 						<Stack align='center'>
 							<ActionIcon.Group>
 								<ActionIcon
+									variant='light'
 									onClick={() => {
 										combobox.selectPreviousOption();
 									}}
-									variant='light'
 								>
 									<IconChevronLeft />
 								</ActionIcon>
 								<ActionIcon
+									variant='light'
 									onClick={() => {
 										combobox.selectNextOption();
 									}}
-									variant='light'
 								>
 									<IconChevronRight />
 								</ActionIcon>
 								<ActionIcon
+									variant='light'
 									onClick={() => {
 										combobox.clickSelectedOption();
 									}}
-									variant='light'
 								>
 									<IconCheck />
 								</ActionIcon>
@@ -216,6 +216,12 @@ export const Creatable: StoryObj<MultiSelectProps> = {
 			<MultiSelect
 				{...props}
 				clearable
+				infinite={false}
+				label='Basic'
+				mb={24}
+				placeholder='MultiSelect person'
+				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
+				w={256}
 				getData={() => {
 					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 						setTimeout(() => {
@@ -226,12 +232,6 @@ export const Creatable: StoryObj<MultiSelectProps> = {
 						}, 500);
 					});
 				}}
-				infinite={false}
-				label='Basic'
-				mb={24}
-				placeholder='MultiSelect person'
-				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
-				w={256}
 			/>
 		);
 	},
@@ -272,6 +272,11 @@ export const CreatableAsync: StoryObj<MultiSelectProps> = {
 			<MultiSelect
 				{...props}
 				clearable
+				infinite={false}
+				label='Async'
+				placeholder='MultiSelect person'
+				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
+				w={256}
 				getData={() => {
 					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 						setTimeout(() => {
@@ -282,11 +287,6 @@ export const CreatableAsync: StoryObj<MultiSelectProps> = {
 						}, 500);
 					});
 				}}
-				infinite={false}
-				label='Async'
-				placeholder='MultiSelect person'
-				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
-				w={256}
 			/>
 		);
 	},
@@ -298,6 +298,10 @@ export const WithQuery: StoryObj<MultiSelectProps> = {
 		return (
 			<MultiSelect
 				clearable
+				placeholder='MultiSelect person'
+				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
+				searchable
+				w={256}
 				getData={(_, { search }) => {
 					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 						setTimeout(() => {
@@ -310,10 +314,6 @@ export const WithQuery: StoryObj<MultiSelectProps> = {
 						}, 500);
 					});
 				}}
-				placeholder='MultiSelect person'
-				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
-				searchable
-				w={256}
 			/>
 		);
 	},
@@ -333,13 +333,15 @@ export const WithInfiniteQuery: StoryObj<
 				<MultiSelect
 					{...props}
 					clearable
+					infinite
+					placeholder='MultiSelect person'
+					searchable
+					w={256}
 					getData={({ pageParam }, { search }) => {
 						const { limit, skip } = pageParam;
 
 						return getUsers({ limit, skip, q: search ?? '' });
 					}}
-					infinite
-					placeholder='MultiSelect person'
 					queryOptions={{
 						queryKey: ['WithQuery'],
 						select: ({ pageParams, pages }) => ({
@@ -356,19 +358,19 @@ export const WithInfiniteQuery: StoryObj<
 						},
 						initialPageParam: { limit: 20, skip: 0 },
 					}}
-					searchable
-					w={256}
 				/>
 				<MultiSelect
 					{...props}
 					clearable
+					infinite
+					placeholder='MultiSelect person'
+					searchable
+					w={256}
 					getData={({ pageParam }, { search }) => {
 						const { limit, skip } = pageParam;
 
 						return getUsers({ limit, skip, q: search ?? '' });
 					}}
-					infinite
-					placeholder='MultiSelect person'
 					queryOptions={{
 						queryKey: ['WithQuery'],
 						select: ({ pageParams, pages }) => ({
@@ -393,8 +395,6 @@ export const WithInfiniteQuery: StoryObj<
 						},
 						initialPageParam: { limit: 20, skip: 0 },
 					}}
-					searchable
-					w={256}
 				/>
 			</Group>
 		);
@@ -429,6 +429,7 @@ export const MaxDisplayedValues: StoryObj<
 		return (
 			<MultiSelect
 				{...props}
+				infinite
 				getData={({ pageParam }, { search }) => {
 					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 						setTimeout(() => {
@@ -442,7 +443,6 @@ export const MaxDisplayedValues: StoryObj<
 						}, 1000);
 					});
 				}}
-				infinite
 				queryOptions={{
 					queryKey: ['WithQuery'],
 					select: ({ pageParams, pages }) => ({ pageParams, pages: pages.map(page => page.data) }),
@@ -477,6 +477,8 @@ export const RenderMaxDisplayedValuesLabel: StoryObj<
 		return (
 			<MultiSelect
 				{...props}
+				infinite
+				renderMaxDisplayedValuesLabel={count => `+${count}`}
 				getData={({ pageParam }, { search }) => {
 					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 						setTimeout(() => {
@@ -490,7 +492,6 @@ export const RenderMaxDisplayedValuesLabel: StoryObj<
 						}, 1000);
 					});
 				}}
-				infinite
 				queryOptions={{
 					queryKey: ['WithQuery'],
 					select: ({ pageParams, pages }) => ({ pageParams, pages: pages.map(page => page.data) }),
@@ -499,7 +500,6 @@ export const RenderMaxDisplayedValuesLabel: StoryObj<
 					},
 					initialPageParam: { pageSize: 20, pageIndex: 0 },
 				}}
-				renderMaxDisplayedValuesLabel={count => `+${count}`}
 			/>
 		);
 	},
@@ -531,19 +531,22 @@ export const ValueMode: StoryObj<
 		return (
 			<Stack>
 				<Select
+					label='Mode'
+					value={mode}
+					w={100}
 					data={[
 						{ label: 'Pills', value: 'pills' },
 						{ label: 'Texts', value: 'texts' },
 					]}
-					label='Mode'
 					onChange={value => {
 						setMode(value as 'pills' | 'texts');
 					}}
-					value={mode}
-					w={100}
 				/>
 				<MultiSelect
 					{...props}
+					infinite
+					mode={mode}
+					renderMaxDisplayedValuesLabel={count => `, +${count}`}
 					getData={({ pageParam }, { search }) => {
 						return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 							setTimeout(() => {
@@ -557,8 +560,6 @@ export const ValueMode: StoryObj<
 							}, 1000);
 						});
 					}}
-					infinite
-					mode={mode}
 					queryOptions={{
 						queryKey: ['WithQuery'],
 						select: ({ pageParams, pages }) => ({ pageParams, pages: pages.map(page => page.data) }),
@@ -567,7 +568,6 @@ export const ValueMode: StoryObj<
 						},
 						initialPageParam: { pageSize: 20, pageIndex: 0 },
 					}}
-					renderMaxDisplayedValuesLabel={count => `, +${count}`}
 				/>
 			</Stack>
 		);
@@ -613,16 +613,16 @@ export const FloatingInput: StoryObj<
 			<Stack>
 				<Group className='border'>
 					<Select
+						label='Mode'
+						value={mode}
+						w={100}
 						data={[
 							{ label: 'Pills', value: 'pills' },
 							{ label: 'Texts', value: 'texts' },
 						]}
-						label='Mode'
 						onChange={value => {
 							setMode(value as 'pills' | 'texts');
 						}}
-						value={mode}
-						w={100}
 					/>
 					<NumberInput
 						label='Line clamp'
@@ -652,6 +652,13 @@ export const FloatingInput: StoryObj<
 				<MultiSelect
 					{...props}
 					floatingInput={floating}
+					infinite
+					lineClamp={parseInt(lineClamp.toString())}
+					maxDisplayedValues={parseInt(maxDisplayedValues.toString())}
+					mode={mode}
+					renderMaxDisplayedValuesLabel={count => ` +${count} more`}
+					searchable={searchable}
+					size='xs'
 					getData={({ pageParam }, { search }) => {
 						return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 							setTimeout(() => {
@@ -665,10 +672,6 @@ export const FloatingInput: StoryObj<
 							}, 1000);
 						});
 					}}
-					infinite
-					lineClamp={parseInt(lineClamp.toString())}
-					maxDisplayedValues={parseInt(maxDisplayedValues.toString())}
-					mode={mode}
 					queryOptions={{
 						queryKey: ['WithQuery'],
 						select: ({ pageParams, pages }) => ({ pageParams, pages: pages.map(page => page.data) }),
@@ -677,9 +680,6 @@ export const FloatingInput: StoryObj<
 						},
 						initialPageParam: { pageSize: 20, pageIndex: 0 },
 					}}
-					renderMaxDisplayedValuesLabel={count => ` +${count} more`}
-					searchable={searchable}
-					size='xs'
 				/>
 			</Stack>
 		);

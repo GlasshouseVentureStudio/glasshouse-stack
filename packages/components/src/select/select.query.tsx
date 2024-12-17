@@ -7,7 +7,7 @@ import omit from 'lodash.omit';
 import { SelectBase } from './select.base';
 import { type SelectWithQueryProps } from './select.types';
 
-function SelectWithQueryComponent<TQueryFnData = unknown, TError = Error, TQueryKey extends QueryKey = QueryKey>(
+const SelectWithQueryComponent = <TQueryFnData = unknown, TError = Error, TQueryKey extends QueryKey = QueryKey>(
 	{
 		defaultSearchValue,
 		getData,
@@ -21,7 +21,7 @@ function SelectWithQueryComponent<TQueryFnData = unknown, TError = Error, TQuery
 		...props
 	}: SelectWithQueryProps<TQueryFnData, TError, TQueryKey>,
 	ref: ForwardedRef<HTMLInputElement>
-) {
+) => {
 	const [search, setSearch] = useState(defaultSearchValue ?? searchValue);
 	const [debouncedSearch] = useDebouncedValue(search, 300);
 
@@ -80,6 +80,6 @@ function SelectWithQueryComponent<TQueryFnData = unknown, TError = Error, TQuery
 			searchValue={searchValue}
 		/>
 	);
-}
+};
 
 export const SelectWithQuery = forwardRef(SelectWithQueryComponent);

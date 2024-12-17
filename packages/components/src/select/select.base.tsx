@@ -19,7 +19,7 @@ import { useProps } from '../../hooks/use-props';
 import { OptionsDropdown } from '../combobox/options-dropdown';
 import { type SelectBaseProps } from './select.types';
 
-function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInputElement>) {
+const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInputElement>) => {
 	const defaultProps: Partial<SelectBaseProps> = {
 		searchable: false,
 		withCheckIcon: true,
@@ -214,10 +214,12 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 
 		const nextValue = optionLockup ? optionLockup.value : null;
 
-		nextValue !== _value && setValue(nextValue, optionLockup);
+		if (nextValue !== _value) setValue(nextValue, optionLockup);
+
 		const optionLockupLabel = optionLockup?.label ? optionLockup.label : '';
 
-		!controlled && setSearch(typeof nextValue === 'string' ? optionLockupLabel : '');
+		if (!controlled) setSearch(typeof nextValue === 'string' ? optionLockupLabel : '');
+
 		combobox.closeDropdown();
 	};
 
@@ -249,8 +251,14 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 						classNames={resolvedClassNames}
 						disabled={disabled}
 						error={error}
+						pointer={!searchable}
+						readOnly={readOnly ? readOnly : !searchable}
+						size={size}
+						styles={resolvedStyles}
+						unstyled={unstyled}
+						value={search}
 						onBlur={event => {
-							searchable && !creatable && combobox.closeDropdown();
+							if (searchable && !creatable) combobox.closeDropdown();
 
 							if (_value === null) {
 								setSearch('');
@@ -263,22 +271,23 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 						onChange={event => {
 							setSearch(event.currentTarget.value);
 							combobox.openDropdown();
-							selectFirstOptionOnChange && combobox.selectFirstOption();
+
+							if (selectFirstOptionOnChange) combobox.selectFirstOption();
 						}}
 						onClick={event => {
-							searchable ? combobox.openDropdown() : combobox.toggleDropdown();
+							if (searchable) {
+								combobox.openDropdown();
+							} else {
+								combobox.toggleDropdown();
+							}
+
 							onClick?.(event);
 						}}
 						onFocus={event => {
-							searchable && combobox.openDropdown();
+							if (searchable) combobox.openDropdown();
+
 							onFocus?.(event);
 						}}
-						pointer={!searchable}
-						readOnly={readOnly ? readOnly : !searchable}
-						size={size}
-						styles={resolvedStyles}
-						unstyled={unstyled}
-						value={search}
 					/>
 				</Combobox.Target>
 				<OptionsDropdown
@@ -292,6 +301,13 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 					loadingType={loadingType}
 					onCreate={onCreate}
 					onCreateError={onCreateError}
+					onDropdownEndReached={onDropdownEndReached}
+					renderDropdown={renderDropdown}
+					renderFooter={renderFooter}
+					renderHeader={renderHeader}
+					renderOptions={renderOptions}
+					virtualized={virtualized}
+					virtualizerOptions={virtualizerOptions}
 					onCreateSuccess={value => {
 						setInternalData(internalData => [
 							{ value, label: value },
@@ -300,13 +316,6 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 
 						onCreateSuccess?.(value);
 					}}
-					onDropdownEndReached={onDropdownEndReached}
-					renderDropdown={renderDropdown}
-					renderFooter={renderFooter}
-					renderHeader={renderHeader}
-					renderOptions={renderOptions}
-					virtualized={virtualized}
-					virtualizerOptions={virtualizerOptions}
 				/>
 			</Combobox>
 			<Combobox.HiddenInput
@@ -318,7 +327,7 @@ function SelectBaseComponent(_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 			/>
 		</>
 	);
-}
+};
 
 const SelectBase = forwardRef(SelectBaseComponent);
 

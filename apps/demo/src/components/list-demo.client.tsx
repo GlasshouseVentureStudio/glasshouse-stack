@@ -6,7 +6,7 @@ import { Avatar, Group, Paper, Stack, Text } from '@mantine/core';
 
 import { type User } from './list-demo';
 
-const getFullName = (data: User) => {
+const getFullName = (data: User): string => {
 	return `${data.firstName} ${data.lastName}`;
 };
 

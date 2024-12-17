@@ -177,18 +177,18 @@ export const FullFeatures: StoryObj<DataTableProps<DataType>> = {
 					<EyeIcon size={12} />
 				</ActionIcon>
 				<ActionIcon
+					size='xs'
 					onClick={() => {
 						table.setEditingRow(row);
 					}}
-					size='xs'
 				>
 					<PencilIcon size={12} />
 				</ActionIcon>
 				<ActionIcon
+					size='xs'
 					onClick={() => {
 						row.pin('top');
 					}}
-					size='xs'
 				>
 					<PinIcon
 						className='gvs-rotate-180'
@@ -196,10 +196,10 @@ export const FullFeatures: StoryObj<DataTableProps<DataType>> = {
 					/>
 				</ActionIcon>
 				<ActionIcon
+					size='xs'
 					onClick={() => {
 						row.pin('bottom');
 					}}
-					size='xs'
 				>
 					<PinIcon size={12} />
 				</ActionIcon>

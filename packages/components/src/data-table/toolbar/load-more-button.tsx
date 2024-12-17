@@ -2,7 +2,7 @@ import { Button, Flex, Text } from '@mantine/core';
 
 import { type LoadMoreButtonProps } from '../data-table.types';
 
-const LoadMoreButton = ({ onClick, isFetching, hasNextPage }: LoadMoreButtonProps) => {
+export const LoadMoreButton = ({ onClick, isFetching, hasNextPage }: LoadMoreButtonProps) => {
 	return (
 		<Flex
 			align='center'
@@ -21,5 +21,3 @@ const LoadMoreButton = ({ onClick, isFetching, hasNextPage }: LoadMoreButtonProp
 		</Flex>
 	);
 };
-
-export default LoadMoreButton;

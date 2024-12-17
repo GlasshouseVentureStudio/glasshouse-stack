@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-pascal-case -- 3rd party */
-import React from 'react';
 import { Flex, type FlexProps } from '@mantine/core';
 import { clsx } from 'clsx';
 import {

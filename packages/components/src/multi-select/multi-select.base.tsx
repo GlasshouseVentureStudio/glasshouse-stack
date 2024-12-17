@@ -37,7 +37,7 @@ const defaultProps: Partial<MultiSelectBaseProps> = {
 	hiddenInputValuesDivider: ',',
 };
 
-function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRef<HTMLInputElement>) {
+const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRef<HTMLInputElement>) => {
 	const props = useProps('MultiSelect', defaultProps, _props);
 
 	const {
@@ -57,6 +57,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		description,
 		descriptionProps,
 		disabled,
+		// eslint-disable-next-line @typescript-eslint/no-deprecated -- keep for backward compatibility
 		dropdownLoadingType,
 		dropdownOpened,
 		error,
@@ -126,6 +127,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 		maxDisplayedValuesSeparator = ', ',
 		withScrollArea,
 		wrapperProps,
+		// eslint-disable-next-line @typescript-eslint/no-deprecated -- keep for backward compatibility
 		canSelectAll,
 		allowSelectAll = false,
 		selectAllLabel,
@@ -298,12 +300,12 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 			// eslint-disable-next-line react/no-array-index-key -- ensure key is unique
 			key={`${item}-${index}`}
 			disabled={disabled}
+			unstyled={unstyled}
+			withRemoveButton={!readOnly && !optionsLockup[item]?.disabled}
 			onRemove={() => {
 				setValue(_value.filter(i => item !== i));
 				onRemove?.(item);
 			}}
-			unstyled={unstyled}
-			withRemoveButton={!readOnly && !optionsLockup[item]?.disabled}
 			{...getStyles('pill')}
 		>
 			{getCumulativeValue(item)}
@@ -405,16 +407,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 					<PillsInput
 						{...styleProps}
 						__staticSelector='MultiSelect'
-						__stylesApiProps={{
-							...props,
-							rightSectionPointerEvents: rightSectionPointerEvents ?? (clearButton ? 'all' : 'none'),
-							multiline: true,
-						}}
 						className={className}
-						classNames={{
-							...resolvedClassNames,
-							input: cn(classes.input, classes.pillsInput, resolvedClassNames.input),
-						}}
 						description={description}
 						descriptionProps={descriptionProps}
 						disabled={disabled}
@@ -429,16 +422,7 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 						leftSectionPointerEvents={leftSectionPointerEvents}
 						leftSectionProps={leftSectionProps}
 						leftSectionWidth={leftSectionWidth}
-						mod={[
-							{
-								expanded: combobox.dropdownOpened || undefined,
-							},
-							mod,
-						]}
 						multiline
-						onClick={() => {
-							searchable ? combobox.openDropdown() : combobox.toggleDropdown();
-						}}
 						pointer={!searchable}
 						radius={radius}
 						required={required}
@@ -454,16 +438,38 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 						withAsterisk={withAsterisk}
 						withErrorStyles={withErrorStyles}
 						wrapperProps={wrapperProps}
+						__stylesApiProps={{
+							...props,
+							rightSectionPointerEvents: rightSectionPointerEvents ?? (clearButton ? 'all' : 'none'),
+							multiline: true,
+						}}
+						classNames={{
+							...resolvedClassNames,
+							input: cn(classes.input, classes.pillsInput, resolvedClassNames.input),
+						}}
+						mod={[
+							{
+								expanded: combobox.dropdownOpened || undefined,
+							},
+							mod,
+						]}
+						onClick={() => {
+							if (searchable) {
+								combobox.openDropdown();
+							} else {
+								combobox.toggleDropdown();
+							}
+						}}
 					>
 						<Pill.Group
 							disabled={disabled}
+							unstyled={unstyled}
 							mod={{
 								floating: floatingInput,
 								hasvalue: _value.length > 0 && floatingInput,
 								searchable,
 								'line-clamp': lineClamp === 1 && floatingInput,
 							}}
-							unstyled={unstyled}
 							{...getStyles('pillsList', {
 								style: {
 									'--text-line-clamp': lineClamp,
@@ -476,14 +482,14 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 								<MaxDisplayedValuesPill
 									maxDisplayedValues={maxDisplayedValues}
 									maxDisplayedValuesTooltipType={maxDisplayedValuesTooltipType ?? mode}
-									onRemove={value => {
-										setValue(_value.filter(i => value !== i));
-										onRemove?.(value);
-									}}
 									optionsLockup={optionsLockup}
 									renderMaxDisplayedValuesLabel={renderMaxDisplayedValuesLabel}
 									values={_value}
 									withMaxDisplayedValuesTooltip={withMaxDisplayedValuesTooltip}
+									onRemove={value => {
+										setValue(_value.filter(i => value !== i));
+										onRemove?.(value);
+									}}
 								/>
 							) : null}
 
@@ -493,25 +499,6 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 									ref={ref}
 									disabled={disabled}
 									id={_id}
-									mod={{
-										floating: floatingInput,
-										hasvalue: _value.length > 0 && floatingInput,
-										searchable,
-									}}
-									onBlur={event => {
-										onBlur?.(event);
-										!creatable && combobox.closeDropdown();
-										setSearchValue('');
-									}}
-									onChange={event => {
-										setSearchValue(event.currentTarget.value);
-										searchable && combobox.openDropdown();
-										selectFirstOptionOnChange && combobox.selectFirstOption();
-									}}
-									onFocus={event => {
-										onFocus?.(event);
-										searchable && combobox.openDropdown();
-									}}
 									onKeyDown={handleInputKeydown}
 									placeholder={placeholder}
 									pointer={!searchable}
@@ -519,6 +506,30 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 									type={!searchable && !placeholder ? 'hidden' : 'visible'}
 									unstyled={unstyled}
 									value={_searchValue}
+									mod={{
+										floating: floatingInput,
+										hasvalue: _value.length > 0 && floatingInput,
+										searchable,
+									}}
+									onBlur={event => {
+										onBlur?.(event);
+
+										if (!creatable) combobox.closeDropdown();
+
+										setSearchValue('');
+									}}
+									onChange={event => {
+										setSearchValue(event.currentTarget.value);
+
+										if (searchable) combobox.openDropdown();
+
+										if (selectFirstOptionOnChange) combobox.selectFirstOption();
+									}}
+									onFocus={event => {
+										onFocus?.(event);
+
+										if (searchable) combobox.openDropdown();
+									}}
 									{...getStyles('inputField')}
 								/>
 							</Combobox.EventsTarget>
@@ -547,13 +558,6 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 					nothingFoundMessage={nothingFoundMessage}
 					onCreate={onCreate}
 					onCreateError={onCreateError}
-					onCreateSuccess={value => {
-						setInternalData(internalData => [
-							{ value, label: value },
-							...(internalData as (string | ComboboxItem | ComboboxItemGroup)[]),
-						]);
-						onCreateSuccess?.(value);
-					}}
 					onDropdownEndReached={onDropdownEndReached}
 					optionsBottomRef={optionsBottomRef}
 					renderDropdown={renderDropdown}
@@ -570,6 +574,13 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 					virtualizerOptions={virtualizerOptions}
 					withCheckIcon={withCheckIcon}
 					withScrollArea={withScrollArea}
+					onCreateSuccess={value => {
+						setInternalData(internalData => [
+							{ value, label: value },
+							...(internalData as (string | ComboboxItem | ComboboxItemGroup)[]),
+						]);
+						onCreateSuccess?.(value);
+					}}
 					{...getStyles('option')}
 				/>
 			</Combobox>
@@ -583,6 +594,6 @@ function MultiSelectBaseComponent(_props: MultiSelectBaseProps, ref: ForwardedRe
 			/>
 		</>
 	);
-}
+};
 
 export const MultiSelectBase = forwardRef(MultiSelectBaseComponent);

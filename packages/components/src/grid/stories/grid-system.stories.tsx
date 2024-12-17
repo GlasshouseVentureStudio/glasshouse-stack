@@ -131,6 +131,8 @@ export const HideGuides: GridStory = {
 		return (
 			<Stack>
 				<Select
+					placeholder='Hide type'
+					value={hideGuidesType as string}
 					data={[
 						{ value: 'row', label: 'Row' },
 						{ value: 'column', label: 'Column' },
@@ -139,8 +141,6 @@ export const HideGuides: GridStory = {
 					onChange={value => {
 						setHideGuidesType(value as 'row' | 'column' | 'all');
 					}}
-					placeholder='Hide type'
-					value={hideGuidesType as string}
 				/>
 				<Grid
 					{...args}
@@ -188,6 +188,7 @@ export const GuideColor: GridStory = {
 			<Stack>
 				<Select
 					data={colors}
+					value={color}
 					onChange={value => {
 						setColor(value as MantineColor);
 					}}
@@ -211,7 +212,6 @@ export const GuideColor: GridStory = {
 							) : null}
 						</Group>
 					)}
-					value={color}
 				/>
 				<Grid
 					{...args}
@@ -251,12 +251,12 @@ export const Radius: GridStory = {
 					marks={MARKS}
 					onChange={handleChange}
 					step={25}
-					styles={{
-						markLabel: { display: 'none' },
-					}}
 					thumbLabel='Radius'
 					value={_value}
 					w={200}
+					styles={{
+						markLabel: { display: 'none' },
+					}}
 				/>
 				<Grid
 					{...args}
@@ -293,12 +293,12 @@ export const CellPadding: GridStory = {
 					marks={MARKS}
 					onChange={handleChange}
 					step={25}
-					styles={{
-						markLabel: { display: 'none' },
-					}}
 					thumbLabel='Radius'
 					value={_value}
 					w={200}
+					styles={{
+						markLabel: { display: 'none' },
+					}}
 				/>
 				<Grid
 					{...args}

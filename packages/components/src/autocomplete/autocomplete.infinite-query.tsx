@@ -7,7 +7,7 @@ import omit from 'lodash.omit';
 import { AutocompleteBase } from './autocomplete.base';
 import { type AutocompleteWithInfiniteQueryProps } from './autocomplete.types';
 
-function AutocompleteWithInfiniteQueryComponent<
+const AutocompleteWithInfiniteQueryComponent = <
 	TQueryFnData = unknown,
 	TError = Error,
 	TQueryKey extends QueryKey = QueryKey,
@@ -27,7 +27,7 @@ function AutocompleteWithInfiniteQueryComponent<
 		...props
 	}: AutocompleteWithInfiniteQueryProps<TQueryFnData, TError, TQueryKey, TPageParam>,
 	ref: ForwardedRef<HTMLInputElement>
-) {
+) => {
 	const [search, setSearch] = useState(defaultValue ?? value);
 	const [debouncedSearch] = useDebouncedValue(search, 300);
 	const viewportRef = useRef<HTMLDivElement>(null);
@@ -75,19 +75,19 @@ function AutocompleteWithInfiniteQueryComponent<
 			defaultValue={defaultValue}
 			dropdownLoading={isFetchingNextPage || dropdownLoading}
 			loading={isFetching || loading}
+			onOptionSubmit={value => onOptionSubmit?.(value, data)}
+			value={value}
 			onChange={value => {
 				setSearch(value);
 				onChange?.(value);
 			}}
-			onOptionSubmit={value => onOptionSubmit?.(value, data)}
 			scrollAreaProps={{
 				...scrollAreaProps,
 				onScrollPositionChange: handleScrollPositionChange,
 				viewportRef: mergedRef,
 			}}
-			value={value}
 		/>
 	);
-}
+};
 
 export const AutocompleteWithInfiniteQuery = forwardRef(AutocompleteWithInfiniteQueryComponent);

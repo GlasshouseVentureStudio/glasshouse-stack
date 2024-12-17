@@ -25,9 +25,7 @@ export const TablePaginationSimple = <TData extends MRT_RowData>({
 		options: {
 			enableToolbarInternalActions,
 			icons: { IconChevronDown, IconChevronLeft, IconChevronLeftPipe, IconChevronRight, IconChevronRightPipe },
-			localization,
 			mantinePaginationProps,
-			paginationDisplayMode,
 			rowCount,
 		},
 		setPageIndex,
@@ -51,26 +49,26 @@ export const TablePaginationSimple = <TData extends MRT_RowData>({
 	const totalRowCount = rowCount ?? getPrePaginationRowModel().rows.length;
 	const numberOfPages = Math.ceil(totalRowCount / pageSize);
 	const showFirstLastPageButtons = numberOfPages > 2;
-	const firstRowIndex = pageIndex * pageSize;
-	const lastRowIndex = Math.min(pageIndex * pageSize + pageSize, totalRowCount);
+	// const firstRowIndex = pageIndex * pageSize;
+	// const lastRowIndex = Math.min(pageIndex * pageSize + pageSize, totalRowCount);
 
 	const {
-		rowsPerPageOptions = defaultRowsPerPage,
-		showRowsPerPage = true,
+		// rowsPerPageOptions = defaultRowsPerPage,
+		// showRowsPerPage = true,
 		withEdges = showFirstLastPageButtons,
 		...rest
-	} = paginationProps ?? {};
+	} = paginationProps;
 
 	const needsTopMargin = position === 'top' && enableToolbarInternalActions && !showGlobalFilter;
 
 	return (
 		<Box className={clsx('mrt-table-pagination', classes.root, needsTopMargin && classes['with-top-margin'])}>
 			<Pagination.Root
+				total={numberOfPages}
+				value={pageIndex + 1}
 				onChange={newPageIndex => {
 					setPageIndex(newPageIndex - 1);
 				}}
-				total={numberOfPages}
-				value={pageIndex + 1}
 				{...rest}
 			>
 				<Group gap={2}>
@@ -109,13 +107,13 @@ export const TablePaginationSimple = <TData extends MRT_RowData>({
 						aria-labelledby='rpp-label'
 						className={classes.pagesize}
 						data={paginationProps.rowsPerPageOptions ?? defaultRowsPerPage}
-						onChange={(value: null | string) => {
-							setPageSize(Number(value!));
-						}}
 						rightSection={<IconChevronDown />}
 						value={pageSize.toString()}
 						variant='unstyled'
 						w={64}
+						onChange={(value: null | string) => {
+							setPageSize(Number(value));
+						}}
 					/>
 				</Group>
 			)}

@@ -6,7 +6,7 @@ import omit from 'lodash.omit';
 import { AutocompleteBase } from './autocomplete.base';
 import { type AutocompleteWithQueryProps } from './autocomplete.types';
 
-function AutocompleteWithQueryComponent<TQueryFnData = unknown, TError = Error, TQueryKey extends QueryKey = QueryKey>(
+const AutocompleteWithQueryComponent = <TQueryFnData = unknown, TError = Error, TQueryKey extends QueryKey = QueryKey>(
 	{
 		defaultValue,
 		getData,
@@ -18,7 +18,7 @@ function AutocompleteWithQueryComponent<TQueryFnData = unknown, TError = Error, 
 		...props
 	}: AutocompleteWithQueryProps<TQueryFnData, TError, TQueryKey>,
 	ref: ForwardedRef<HTMLInputElement>
-) {
+) => {
 	const [search, setSearch] = useState(defaultValue ?? value);
 	const [debouncedSearch] = useDebouncedValue(search, 300);
 	const { data, isFetching } = useQuery({
@@ -36,14 +36,14 @@ function AutocompleteWithQueryComponent<TQueryFnData = unknown, TError = Error, 
 			data={options}
 			defaultValue={defaultValue}
 			loading={isFetching || loading}
+			onOptionSubmit={value => onOptionSubmit?.(value, options, data)}
+			value={value}
 			onChange={value => {
 				setSearch(value);
 				onChange?.(value);
 			}}
-			onOptionSubmit={value => onOptionSubmit?.(value, options, data)}
-			value={value}
 		/>
 	);
-}
+};
 
 export const AutocompleteWithQuery = forwardRef(AutocompleteWithQueryComponent);

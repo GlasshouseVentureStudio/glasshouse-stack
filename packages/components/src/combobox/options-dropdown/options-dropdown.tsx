@@ -93,6 +93,7 @@ const Option = forwardRef<HTMLDivElement, OptionProps>(
 					active={checked}
 					aria-selected={checked}
 					className={clsx(classes.optionsDropdownOption && { [classes.optionsDropdownOption]: !unstyled })}
+					value={data.value}
 					mod={{
 						checked,
 						index,
@@ -100,7 +101,6 @@ const Option = forwardRef<HTMLDivElement, OptionProps>(
 						disabled: data.disabled,
 						virtualized,
 					}}
-					value={data.value}
 				>
 					{typeof renderOption === 'function' ? renderOption({ option: data, checked }) : defaultContent}
 				</Combobox.Option>
@@ -171,7 +171,7 @@ export interface OptionsDropdownProps {
 	withScrollArea: boolean | undefined;
 	style?: React.CSSProperties;
 	selectAllLabel?: string;
-	optionsBottomRef?: React.MutableRefObject<HTMLDivElement | null>;
+	optionsBottomRef?: React.RefObject<HTMLDivElement | null>;
 	onDropdownEndReached?: () => void;
 	virtualized?: boolean;
 
@@ -184,7 +184,7 @@ export interface OptionsDropdownProps {
 	>;
 }
 
-export function OptionsDropdown({
+export const OptionsDropdown = ({
 	'aria-label': ariaLabel,
 	checkIconPosition,
 	canSelectAll,
@@ -224,7 +224,7 @@ export function OptionsDropdown({
 	virtualized,
 	onDropdownEndReached,
 	virtualizerOptions,
-}: OptionsDropdownProps) {
+}: OptionsDropdownProps) => {
 	validateOptions(data);
 
 	const shouldFilter = typeof search === 'string';
@@ -253,15 +253,15 @@ export function OptionsDropdown({
 					<Option
 						key='all'
 						checkIconPosition={checkIconPosition}
-						data={{
-							label: selectAllLabel ?? 'Select All',
-							value: SELECT_ALL_VALUE,
-						}}
 						optionsLength={optionsLength}
 						renderOption={renderOption}
 						unstyled={unstyled}
 						value={value}
 						withCheckIcon={withCheckIcon}
+						data={{
+							label: selectAllLabel ?? 'Select All',
+							value: SELECT_ALL_VALUE,
+						}}
 					/>,
 				]
 			: []),
@@ -315,16 +315,16 @@ export function OptionsDropdown({
 						key='all'
 						ref={virtualizer.measureElement}
 						checkIconPosition={checkIconPosition}
-						data={{
-							label: selectAllLabel ?? 'Select All',
-							value: SELECT_ALL_VALUE,
-						}}
 						index={0}
 						optionsLength={optionsLength}
 						renderOption={renderOption}
 						unstyled={unstyled}
 						value={value}
 						withCheckIcon={withCheckIcon}
+						data={{
+							label: selectAllLabel ?? 'Select All',
+							value: SELECT_ALL_VALUE,
+						}}
 					/>,
 				]
 			: []),
@@ -478,4 +478,4 @@ export function OptionsDropdown({
 			{renderDropdown ? renderDropdown({ data: filteredData, options: comboboxDropdown }) : comboboxDropdown}
 		</Combobox.Dropdown>
 	);
-}
+};

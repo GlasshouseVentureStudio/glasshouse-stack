@@ -134,26 +134,26 @@ export const RenderFooter: StoryObj<SelectProps> = {
 						<Stack align='center'>
 							<ActionIcon.Group>
 								<ActionIcon
+									variant='light'
 									onClick={() => {
 										combobox.selectPreviousOption();
 									}}
-									variant='light'
 								>
 									<IconChevronLeft />
 								</ActionIcon>
 								<ActionIcon
+									variant='light'
 									onClick={() => {
 										combobox.selectNextOption();
 									}}
-									variant='light'
 								>
 									<IconChevronRight />
 								</ActionIcon>
 								<ActionIcon
+									variant='light'
 									onClick={() => {
 										combobox.clickSelectedOption();
 									}}
-									variant='light'
 								>
 									<IconCheck />
 								</ActionIcon>
@@ -209,6 +209,12 @@ export const Creatable: StoryObj<SelectProps> = {
 				<Select
 					{...props}
 					clearable
+					infinite={false}
+					label='Basic'
+					mb={24}
+					placeholder='Select person'
+					queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
+					w={256}
 					getData={() => {
 						return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 							setTimeout(() => {
@@ -219,12 +225,6 @@ export const Creatable: StoryObj<SelectProps> = {
 							}, 500);
 						});
 					}}
-					infinite={false}
-					label='Basic'
-					mb={24}
-					placeholder='Select person'
-					queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
-					w={256}
 				/>
 			</>
 		);
@@ -267,6 +267,11 @@ export const CreatableAsync: StoryObj<SelectProps> = {
 				<Select
 					{...props}
 					clearable
+					infinite={false}
+					label='Async'
+					placeholder='Select person'
+					queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
+					w={256}
 					getData={() => {
 						return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 							setTimeout(() => {
@@ -277,11 +282,6 @@ export const CreatableAsync: StoryObj<SelectProps> = {
 							}, 500);
 						});
 					}}
-					infinite={false}
-					label='Async'
-					placeholder='Select person'
-					queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
-					w={256}
 				/>
 			</>
 		);
@@ -293,6 +293,10 @@ export const WithQuery: StoryObj<SelectProps> = {
 		return (
 			<Select
 				clearable
+				placeholder='Select person'
+				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
+				searchable
+				w={256}
 				getData={(_, { search }) => {
 					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 						setTimeout(() => {
@@ -305,10 +309,6 @@ export const WithQuery: StoryObj<SelectProps> = {
 						}, 500);
 					});
 				}}
-				placeholder='Select person'
-				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
-				searchable
-				w={256}
 			/>
 		);
 	},
@@ -337,6 +337,10 @@ export const WithInfiniteQuery: StoryObj<
 			<Select
 				{...props}
 				clearable
+				infinite
+				placeholder='Select person'
+				searchable
+				w={256}
 				getData={({ pageParam }, { search }) => {
 					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 						setTimeout(() => {
@@ -350,8 +354,6 @@ export const WithInfiniteQuery: StoryObj<
 						}, 1000);
 					});
 				}}
-				infinite
-				placeholder='Select person'
 				queryOptions={{
 					queryKey: ['WithQuery'],
 					select: ({ pageParams, pages }) => ({ pageParams, pages: pages.map(page => page.data) }),
@@ -360,8 +362,6 @@ export const WithInfiniteQuery: StoryObj<
 					},
 					initialPageParam: { pageSize: 20, pageIndex: 0 },
 				}}
-				searchable
-				w={256}
 			/>
 		);
 	},
@@ -440,11 +440,11 @@ export const FormUsage: StoryObj<
 						{form.values.contacts.map((contact, index) => (
 							<Fieldset
 								key={contact.key}
+								variant='unstyled'
 								classNames={{
 									legend: 'mb-1',
 									root: 'mb-3',
 								}}
-								variant='unstyled'
 							>
 								<Group
 									gap='xs'
@@ -475,12 +475,13 @@ export const FormUsage: StoryObj<
 												{...form.getInputProps(`contacts.${index}.person`)}
 												clearable
 												creatable
-												getData={({ pageParam }, { search = '' }) =>
-													getUsers({ ...pageParam, q: search.toLowerCase() })
-												}
 												infinite
 												nothingFoundMessage='Nothing found'
 												placeholder='Select person'
+												searchable
+												getData={({ pageParam }, { search = '' }) =>
+													getUsers({ ...pageParam, q: search.toLowerCase() })
+												}
 												queryOptions={{
 													queryKey: ['WithQuery'],
 													select: ({ pageParams, pages }) => ({
@@ -507,7 +508,6 @@ export const FormUsage: StoryObj<
 														skip: 0,
 													},
 												}}
-												searchable
 											/>
 										</Grid.Col>
 									</Grid>
@@ -518,12 +518,12 @@ export const FormUsage: StoryObj<
 										<ActionIcon
 											color='red'
 											disabled={index === 0}
-											onClick={() => {
-												form.removeListItem('contacts', index);
-											}}
 											opacity={index === 0 ? 0 : undefined}
 											size='xs'
 											variant='subtle'
+											onClick={() => {
+												form.removeListItem('contacts', index);
+											}}
 										>
 											<MinusIcon size={14} />
 										</ActionIcon>

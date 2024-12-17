@@ -1,10 +1,11 @@
+import { useState } from 'react';
 import {
 	ActionIcon,
 	ColorPicker,
 	ColorSwatch,
 	getThemeColor,
 	Group,
-	MantineColor,
+	type MantineColor,
 	Paper,
 	Popover,
 	Tooltip,
@@ -13,7 +14,6 @@ import {
 	useMantineTheme,
 } from '@mantine/core';
 import { MoonStarIcon, SunIcon, SunMoonIcon } from 'lucide-react';
-import { useState } from 'react';
 
 export const Toolbar = ({ onPrimaryColorChange }: { onPrimaryColorChange?: (color: MantineColor) => void }) => {
 	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -49,9 +49,9 @@ export const Toolbar = ({ onPrimaryColorChange }: { onPrimaryColorChange?: (colo
 				<ColorPickerPopover onChange={onPrimaryColorChange} />
 				<Tooltip label='Change color scheme'>
 					<ActionIcon
-						variant='light'
-						onClick={toggleColorScheme}
 						color={options.color}
+						onClick={toggleColorScheme}
+						variant='light'
 					>
 						{options.icon}
 					</ActionIcon>
@@ -81,12 +81,12 @@ const ColorPickerPopover = ({ onChange }: { onChange?: (color: MantineColor) => 
 		>
 			<Popover.Target>
 				<Tooltip
-					opened={opened ? false : undefined}
 					label='Change primary color'
+					opened={opened ? false : undefined}
 				>
 					<ActionIcon
+						onClick={() => { setOpened(!opened); }}
 						variant='light'
-						onClick={() => setOpened(!opened)}
 					>
 						<ColorSwatch
 							color={primaryColorValue}
@@ -98,15 +98,15 @@ const ColorPickerPopover = ({ onChange }: { onChange?: (color: MantineColor) => 
 			</Popover.Target>
 			<Popover.Dropdown>
 				<ColorPicker
-					format='hex'
 					focusable
+					format='hex'
+					swatches={swatches.map(swatch => swatch.value)}
 					value={primaryColorValue}
+					withPicker={false}
 					onChange={value => {
 						const colorName = swatches.find(swatch => swatch.value === value)?.name;
 						if (colorName) onChange?.(colorName);
 					}}
-					withPicker={false}
-					swatches={swatches.map(swatch => swatch.value)}
 				/>
 			</Popover.Dropdown>
 		</Popover>

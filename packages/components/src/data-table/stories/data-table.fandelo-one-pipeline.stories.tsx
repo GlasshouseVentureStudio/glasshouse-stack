@@ -561,11 +561,11 @@ export const FandeloOnePipeline: StoryObj<DataTableProps<Pipeline, PipelineData>
 				</ActionIcon>
 				<ActionIcon
 					color='black'
+					size='xs'
+					variant='transparent'
 					onClick={() => {
 						table.setEditingRow(row);
 					}}
-					size='xs'
-					variant='transparent'
 				>
 					<PencilIcon
 						size={16}

@@ -111,12 +111,12 @@ export const ShadowSize: ScrollShadowStory = {
 							marks={MARKS}
 							onChange={handleChange}
 							step={25}
-							styles={{
-								markLabel: { display: 'none' },
-							}}
 							thumbLabel='Radius'
 							value={_value}
 							w={200}
+							styles={{
+								markLabel: { display: 'none' },
+							}}
 						/>
 					</Stack>
 				</Card.Section>

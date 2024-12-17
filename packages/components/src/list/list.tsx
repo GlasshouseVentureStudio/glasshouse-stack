@@ -200,13 +200,13 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 				ref={measureRef}
 				active={getActiveItem(item, index)}
 				measureElement={measureElements}
-				onClick={event => {
-					handleItemClick(event, item, index);
-				}}
 				orientation={orientation}
 				virtualized={virtualized}
 				virtualRow={virtualRow}
 				withItemBorder={withItemBorder}
+				onClick={event => {
+					handleItemClick(event, item, index);
+				}}
 			>
 				{renderItem(item, index, getActiveItem(item, index))}
 			</ListItem>
@@ -248,8 +248,10 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 
 	const virtualizedItems = virtualizer
 		.getVirtualItems()
+		// eslint-disable-next-line react-compiler/react-compiler -- not sure why this error is happening
 		.map(row => renderInnerItem(data[row.index] as T, row.index, row));
 
+	// eslint-disable-next-line react-compiler/react-compiler -- not sure why this error is happening
 	const normalItems = data.map((item, index) => renderInnerItem(item, index));
 
 	const items = virtualized ? virtualizedItems : normalItems;

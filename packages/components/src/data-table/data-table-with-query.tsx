@@ -64,6 +64,7 @@ export const DataTableWithQuery = <
 			{...props}
 			data={data}
 			initialState={initialState}
+			rowCount={getRowCount ? getRowCount(queryData) : props.rowCount}
 			onColumnFiltersChange={updater => {
 				setColumnFilters(updater);
 				onColumnFiltersChange?.(updater);
@@ -76,7 +77,6 @@ export const DataTableWithQuery = <
 				setSorting(updater);
 				onSortingChange?.(updater);
 			}}
-			rowCount={getRowCount ? getRowCount(queryData) : props.rowCount}
 			state={{
 				showSkeletons: isLoading,
 				isLoading: isFetching && !isLoading,

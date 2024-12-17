@@ -79,7 +79,7 @@ export interface Hair {
 	type: string;
 }
 
-const getComments = async () => {
+const getComments = async (): Promise<DummyUsersReponse> => {
 	const response = await fetch('https://dummyjson.com/users');
 
 	return response.json() as Promise<DummyUsersReponse>;

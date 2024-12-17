@@ -6,7 +6,7 @@ import omit from 'lodash.omit';
 import { MultiSelectBase } from './multi-select.base';
 import { type MultiSelectWithInfiniteQueryProps } from './multi-select.types';
 
-function MultiSelectWithInfiniteQueryComponent<
+const MultiSelectWithInfiniteQueryComponent = <
 	TQueryFnData = unknown,
 	TError = Error,
 	TQueryKey extends QueryKey = QueryKey,
@@ -24,7 +24,7 @@ function MultiSelectWithInfiniteQueryComponent<
 		...props
 	}: MultiSelectWithInfiniteQueryProps<TQueryFnData, TError, TQueryKey, TPageParam>,
 	ref: ForwardedRef<HTMLInputElement>
-) {
+) => {
 	const [search, setSearch] = useState(defaultSearchValue ?? searchValue);
 	const [debouncedSearch] = useDebouncedValue(search, 300);
 
@@ -62,13 +62,13 @@ function MultiSelectWithInfiniteQueryComponent<
 			loading={loading ?? (isLoading || isFetching)}
 			onDropdownEndReached={handleDropdownEndReached}
 			onOptionSubmit={value => onOptionSubmit?.(value, data)}
+			searchValue={searchValue}
 			onSearchChange={value => {
 				setSearch(value);
 				onSearchChange?.(value);
 			}}
-			searchValue={searchValue}
 		/>
 	);
-}
+};
 
 export const MultiSelectWithInfiniteQuery = forwardRef(MultiSelectWithInfiniteQueryComponent);

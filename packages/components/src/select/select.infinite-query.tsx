@@ -7,7 +7,7 @@ import omit from 'lodash.omit';
 import { SelectBase } from './select.base';
 import { type SelectWithInfiniteQueryProps } from './select.types';
 
-function SelectWithInfiniteQueryComponent<
+const SelectWithInfiniteQueryComponent = <
 	TQueryFnData = unknown,
 	TError = Error,
 	TQueryKey extends QueryKey = QueryKey,
@@ -29,7 +29,7 @@ function SelectWithInfiniteQueryComponent<
 		...props
 	}: SelectWithInfiniteQueryProps<TQueryFnData, TError, TQueryKey, TPageParam>,
 	ref: ForwardedRef<HTMLInputElement>
-) {
+) => {
 	const [search, setSearch] = useState(defaultSearchValue ?? searchValue);
 	const [debouncedSearch] = useDebouncedValue(search, 300);
 
@@ -104,6 +104,6 @@ function SelectWithInfiniteQueryComponent<
 			searchValue={searchValue ?? search}
 		/>
 	);
-}
+};
 
 export const SelectWithInfiniteQuery = forwardRef(SelectWithInfiniteQueryComponent);

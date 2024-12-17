@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-pascal-case -- 3rd party */
-import React, { type MutableRefObject } from 'react';
+import { type RefObject } from 'react';
 import { Box, type BoxProps, Flex } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { clsx } from 'clsx';
@@ -66,10 +65,11 @@ export const TopToolbar = <TData extends MRT_RowData>({ table, ...rest }: TopToo
 			{...toolbarProps}
 			ref={node => {
 				if (node) {
+					// eslint-disable-next-line react-compiler/react-compiler -- required to reassign ref
 					topToolbarRef.current = node;
 
 					if ('ref' in toolbarProps && toolbarProps.ref) {
-						(toolbarProps.ref as MutableRefObject<HTMLDivElement | null>).current = node;
+						(toolbarProps.ref as RefObject<HTMLDivElement | null>).current = node;
 					}
 				}
 			}}

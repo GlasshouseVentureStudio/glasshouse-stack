@@ -51,7 +51,7 @@ export interface UseDataScrollOverflowProps {
 	onVisibilityChange?: (overflow: ScrollOverflowVisibility) => void;
 }
 
-export function useDataScrollOverflow(props: UseDataScrollOverflowProps = {}) {
+export const useDataScrollOverflow = (props: UseDataScrollOverflowProps = {}): void => {
 	const {
 		domRef,
 		shadowEnabled = true,
@@ -75,7 +75,7 @@ export function useDataScrollOverflow(props: UseDataScrollOverflowProps = {}) {
 			hasAfter: boolean,
 			prefix: string,
 			suffix: string
-		) => {
+		): void => {
 			if (shadowVisibility === 'auto') {
 				const both = `${prefix}${capitalize(suffix)}Scroll`;
 
@@ -89,16 +89,18 @@ export function useDataScrollOverflow(props: UseDataScrollOverflowProps = {}) {
 					el.removeAttribute(`data-${prefix}-${suffix}-scroll`);
 				}
 			} else {
-				const next = hasBefore && hasAfter ? 'both' : hasBefore ? prefix : hasAfter ? suffix : 'none';
+				const suffixOrNone = hasAfter ? suffix : 'none';
+				const prefixOrSuffixOrNone = hasBefore ? prefix : suffixOrNone;
+				const scrollVisibility = hasBefore && hasAfter ? 'both' : prefixOrSuffixOrNone;
 
-				if (next !== visibleRef.current) {
-					onVisibilityChange?.(next as ScrollOverflowVisibility);
-					visibleRef.current = next as ScrollOverflowVisibility;
+				if (scrollVisibility !== visibleRef.current) {
+					onVisibilityChange?.(scrollVisibility as ScrollOverflowVisibility);
+					visibleRef.current = scrollVisibility as ScrollOverflowVisibility;
 				}
 			}
 		};
 
-		const checkOverflow = () => {
+		const checkOverflow = (): void => {
 			const directions = [
 				{ type: 'vertical', prefix: 'top', suffix: 'bottom' },
 				{ type: 'horizontal', prefix: 'left', suffix: 'right' },
@@ -117,7 +119,7 @@ export function useDataScrollOverflow(props: UseDataScrollOverflowProps = {}) {
 			}
 		};
 
-		const clearOverflow = () => {
+		const clearOverflow = (): void => {
 			['top', 'bottom', 'top-bottom', 'left', 'right', 'left-right'].forEach(attr => {
 				el.removeAttribute(`data-${attr}-scroll`);
 			});
@@ -132,7 +134,6 @@ export function useDataScrollOverflow(props: UseDataScrollOverflowProps = {}) {
 			clearOverflow();
 
 			if (shadowVisibility === 'both') {
-				// eslint-disable-next-line react-compiler/react-compiler
 				el.dataset.topBottomScroll = String(shadowOverflowCheck === 'vertical');
 				el.dataset.leftRightScroll = String(shadowOverflowCheck === 'horizontal');
 			} else {
@@ -149,7 +150,9 @@ export function useDataScrollOverflow(props: UseDataScrollOverflowProps = {}) {
 			el.removeEventListener('scroll', checkOverflow);
 			clearOverflow();
 		};
-	}, [...updateDeps, shadowEnabled, shadowVisibility, shadowOverflowCheck, onVisibilityChange, domRef]);
-}
+		// eslint-disable-next-line react-compiler/react-compiler -- reason below
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- must inlucde `updateDeps` for passing optional deps too this hook
+	}, [...updateDeps, domRef, onVisibilityChange, shadowEnabled, shadowOffset, shadowOverflowCheck, shadowVisibility]);
+};
 
 export type UseDataScrollOverflowReturn = ReturnType<typeof useDataScrollOverflow>;

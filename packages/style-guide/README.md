@@ -39,11 +39,54 @@ To use the shared Prettier config, set the following in `package.json`:
 
 ## ESLint
 
-> Note: ESLint is a peer-dependency of this package, and should be installed at the root of your project.
+> :information_source: ESLint is a peer-dependency of this package, and should be installed at the root of your project.
 >
-> See: [Getting Started with ESLint - ESLint - Pluggable JavaScript Linter](https://eslint.org/docs/v8.x/use/getting-started)
+> See: [Getting Started with ESLint - ESLint - Pluggable JavaScript Linter](https://eslint.org/docs/latest/use/getting-started)
 
-All configs require `typescript` to be installed and [additional configuration](#configuring-eslint-for-typescript).
+### Configuration (new: eslint.config.js)
+
+> :warning:**BREAKING CHANGE**:
+>
+> - ESLint minimum version is now `9.0.0`.
+> - Refactored configs using new flat config [format](https://eslint.org/blog/2022/08/new-config-system-part-2/#main).
+> - Moved all configs into a single object default export. You can now import new flat configs by the example below.
+>
+> ```js
+> import gvseslint from '@glasshouse/style-guide/eslint
+>
+> export default [
+> 	...gvseslint.configs.flat.node,
+> ]
+> ```
+
+> :information_source: These ESLint configs are based from `@vercel/style-guide/eslint`
+
+The following configs are available:
+
+- `browser`
+- `node`
+- `next` (requires `@next/eslint-plugin-next` to be installed at the same version as `next`)
+- `react`
+- `typescript` (requires typescript to be installed and [additional configuration](#configuring-eslint-new-eslintconfigjs-for-typescript))
+
+For example, use the shared ESLint config(s) in a Next.js project, set the following in `eslint.config.js` (or any other ESLint [configuration file format](https://eslint.org/docs/latest/use/configure/configuration-files)):
+
+```js
+import gvseslint from '@glasshouse/style-guide/eslint';
+
+/** @type {import('eslint').Linter.Config[]} */
+export default [
+	...gvseslint.configs.flat.browser,
+	...gvseslint.configs.flat.react,
+	...gvseslint.configs.flat.typescript,
+	...gvseslint.configs.flat.next,
+	// ...
+];
+```
+
+### Configuration (legacy: .eslintrc\*)
+
+All configs require `typescript` to be installed and [additional configuration](#configuring-eslint-legacy-eslintrc-for-typescript).
 
 The following configs are available:
 
@@ -52,21 +95,39 @@ The following configs are available:
 - `@glasshouse/style-guide/eslint/react`
 - `@glasshouse/style-guide/eslint/next` (requires `@next/eslint-plugin-next` to be installed at the same version as `next`)
 
-> You'll need to use `require.resolve` to provide ESLint with absolute paths, due to an issue around ESLint config resolution (see [eslint/eslint#9188](https://github.com/eslint/eslint/issues/9188)).
+> :information_source: You'll need to use `require.resolve` to provide ESLint with absolute paths, due to an issue around ESLint config resolution (see [eslint/eslint#9188](https://github.com/eslint/eslint/issues/9188)).
 
 For example, use the `@glasshouse/style-guide/eslint/next` in a Next.js project, set the following in `.eslintrc.js` (or any other ESLint config file format):
 
 ```js
+/** @type {import('eslint').Linter.Config} */
 module.exports = {
 	extends: [require.resolve('@glasshouse/style-guide/eslint/next')],
 };
 ```
 
-### Configuring ESLint for TypeScript
+### Configuring ESLint (new: eslint.config.js) for TypeScript
 
 Some of the rules enabled in the TypeScript config require additional type information, you'll need to provide the path to your `tsconfig.json`.
 
-For more information, see: https://typescript-eslint.io/docs/linting/type-linting
+For more information, see: https://typescript-eslint.io/getting-started/typed-linting
+
+```js
+export default [
+	//...,
+	...gvseslint.configs.flat.typescript,
+	{
+		languageOptions: {
+			parserOptions: {
+				projectService: true,
+				tsconfigRootDir: import.meta.dirname,
+			},
+		},
+	},
+];
+```
+
+### Configuring ESLint (legacy: .eslintrc\*) for TypeScript
 
 ```js
 const { resolve } = require('node:path');
@@ -111,7 +172,7 @@ The base TypeScript config is also available as `@glasshouse/style-guide/typescr
 
 ## Stylelint
 
-> Note: Stylelint is a peer-dependency of this package, and should be installed at the root of your project.
+> :information_source: Stylelint is a peer-dependency of this package, and should be installed at the root of your project.
 >
 > See: [Stylelint](https://stylelint.io/user-guide/get-started)
 

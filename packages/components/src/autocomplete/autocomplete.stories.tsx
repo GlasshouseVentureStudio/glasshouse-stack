@@ -105,26 +105,26 @@ export const RenderFooter: StoryObj<AutocompleteProps> = {
 						<Stack align='center'>
 							<ActionIcon.Group>
 								<ActionIcon
+									variant='light'
 									onClick={() => {
 										combobox.selectPreviousOption();
 									}}
-									variant='light'
 								>
 									<ChevronLeftIcon />
 								</ActionIcon>
 								<ActionIcon
+									variant='light'
 									onClick={() => {
 										combobox.selectNextOption();
 									}}
-									variant='light'
 								>
 									<ChevronRightIcon />
 								</ActionIcon>
 								<ActionIcon
+									variant='light'
 									onClick={() => {
 										combobox.clickSelectedOption();
 									}}
-									variant='light'
 								>
 									<CheckIcon />
 								</ActionIcon>
@@ -179,6 +179,12 @@ export const Creatable: StoryObj<AutocompleteProps> = {
 		return (
 			<Autocomplete
 				{...props}
+				infinite={false}
+				label='Basic'
+				mb={24}
+				placeholder='Autocomplete person'
+				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
+				w={256}
 				getData={() => {
 					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 						setTimeout(() => {
@@ -189,12 +195,6 @@ export const Creatable: StoryObj<AutocompleteProps> = {
 						}, 500);
 					});
 				}}
-				infinite={false}
-				label='Basic'
-				mb={24}
-				placeholder='Autocomplete person'
-				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
-				w={256}
 			/>
 		);
 	},
@@ -233,6 +233,11 @@ export const CreatableAsync: StoryObj<AutocompleteProps> = {
 		return (
 			<Autocomplete
 				{...props}
+				infinite={false}
+				label='Async'
+				placeholder='Autocomplete person'
+				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
+				w={256}
 				getData={() => {
 					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 						setTimeout(() => {
@@ -243,11 +248,6 @@ export const CreatableAsync: StoryObj<AutocompleteProps> = {
 						}, 500);
 					});
 				}}
-				infinite={false}
-				label='Async'
-				placeholder='Autocomplete person'
-				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
-				w={256}
 			/>
 		);
 	},
@@ -256,6 +256,9 @@ export const WithQuery: StoryObj<AutocompleteProps> = {
 	render: () => {
 		return (
 			<Autocomplete
+				placeholder='Autocomplete person'
+				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
+				w={256}
 				getData={(_, { search }) => {
 					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 						setTimeout(() => {
@@ -268,9 +271,6 @@ export const WithQuery: StoryObj<AutocompleteProps> = {
 						}, 500);
 					});
 				}}
-				placeholder='Autocomplete person'
-				queryOptions={{ queryKey: ['WithQuery'], select: ({ data }) => data }}
-				w={256}
 			/>
 		);
 	},
@@ -298,6 +298,9 @@ export const WithInfiniteQuery: StoryObj<
 		return (
 			<Autocomplete
 				{...props}
+				infinite
+				placeholder='Autocomplete person'
+				w={256}
 				getData={({ pageParam }, { search }) => {
 					return new Promise<{ data: ComboboxData; total: number }>(resolve => {
 						setTimeout(() => {
@@ -311,8 +314,6 @@ export const WithInfiniteQuery: StoryObj<
 						}, 1000);
 					});
 				}}
-				infinite
-				placeholder='Autocomplete person'
 				queryOptions={{
 					queryKey: ['WithQuery'],
 					select: ({ pageParams, pages }) => ({ pageParams, pages: pages.map(page => page.data) }),
@@ -321,7 +322,6 @@ export const WithInfiniteQuery: StoryObj<
 					},
 					initialPageParam: { pageSize: 20, pageIndex: 0 },
 				}}
-				w={256}
 			/>
 		);
 	},

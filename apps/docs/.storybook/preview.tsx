@@ -1,12 +1,13 @@
-import { MantineColor, MantineProvider } from '@mantine/core';
+import { useState } from 'react';
+import { type MantineColor, MantineProvider } from '@mantine/core';
 import type { Preview } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import { Toolbar } from './toolbar';
+
 import '@mantine/core/styles.css';
 import 'mantine-react-table/styles.css';
-import { useState } from 'react';
 import '../src/index.css';
-import { Toolbar } from './toolbar';
 
 const preview: Preview = {
 	parameters: {
@@ -15,7 +16,7 @@ const preview: Preview = {
 		},
 		controls: {
 			matchers: {
-				color: /(background|color)$/i,
+				color: /(?:background|color)$/i,
 				date: /Date$/i,
 			},
 			expanded: true,
@@ -29,6 +30,7 @@ const preview: Preview = {
 			return (
 				<QueryClientProvider client={queryClient}>
 					<MantineProvider
+						defaultColorScheme='auto'
 						theme={{
 							primaryColor,
 							cursorType: 'pointer',
@@ -204,7 +206,6 @@ const preview: Preview = {
 								],
 							},
 						}}
-						defaultColorScheme='auto'
 					>
 						<Toolbar onPrimaryColorChange={setPrimaryColor} />
 						{render()}

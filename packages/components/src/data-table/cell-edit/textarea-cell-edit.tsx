@@ -27,7 +27,8 @@ export function useEditTextArea<TData extends Record<string, unknown>>(props: Pr
 	const isEditing = editingRow?.id === row.id;
 
 	const handleOnChange = (newValue: string) => {
-		//@ts-ignore
+		//@ts-expect-error -- _valuesCache is private but we need to use it
+		// eslint-disable-next-line react-compiler/react-compiler -- TODO: fix this later
 		row._valuesCache[column.id] = newValue;
 
 		if (isCreating) setCreatingRow(row);
@@ -41,7 +42,7 @@ export function useEditTextArea<TData extends Record<string, unknown>>(props: Pr
 			try {
 				await onSaveValue(value);
 				setEditingCell(null);
-			} catch (error) {
+			} catch {
 				setEditingCell(null);
 			}
 		} else {
@@ -70,16 +71,17 @@ export const TextAreaCellEdit = <TData extends MRT_RowData>(props: PropsTextArea
 			ref={node => {
 				if (node) {
 					//@ts-expect-error -- use ref only for focus so we can ignore the diff between HTMLTextAreaElement and HTMLInputElement
+					// eslint-disable-next-line react-compiler/react-compiler -- TODO: fix this later
 					editInputRefs.current[cell.id] = node;
 				}
 			}}
 			autosize
-			onBlur={handleBlur}
+			onBlur={() => void handleBlur()}
+			onKeyDown={onKeyDown}
+			value={value}
 			onChange={event => {
 				handleOnChange(event.target.value);
 			}}
-			onKeyDown={onKeyDown}
-			value={value}
 			{...rest}
 		/>
 	);

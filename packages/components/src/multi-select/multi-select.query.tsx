@@ -6,7 +6,7 @@ import omit from 'lodash.omit';
 import { MultiSelectBase } from './multi-select.base';
 import { type MultiSelectWithQueryProps } from './multi-select.types';
 
-function MultiSelectWithQueryComponent<TQueryFnData = unknown, TError = Error, TQueryKey extends QueryKey = QueryKey>(
+const MultiSelectWithQueryComponent = <TQueryFnData = unknown, TError = Error, TQueryKey extends QueryKey = QueryKey>(
 	{
 		defaultSearchValue,
 		getData,
@@ -18,7 +18,7 @@ function MultiSelectWithQueryComponent<TQueryFnData = unknown, TError = Error, T
 		...props
 	}: MultiSelectWithQueryProps<TQueryFnData, TError, TQueryKey>,
 	ref: ForwardedRef<HTMLInputElement>
-) {
+) => {
 	const [search, setSearch] = useState(defaultSearchValue ?? searchValue);
 	const [debouncedSearch] = useDebouncedValue(search, 300);
 	const { data, isLoading } = useQuery({
@@ -38,15 +38,15 @@ function MultiSelectWithQueryComponent<TQueryFnData = unknown, TError = Error, T
 			defaultSearchValue={defaultSearchValue}
 			loading={isLoading || loading}
 			onOptionSubmit={value => onOptionSubmit?.(value, options, data)}
+			searchValue={searchValue}
 			onSearchChange={value => {
 				if (props.searchable) {
 					setSearch(value);
 					onSearchChange?.(value);
 				}
 			}}
-			searchValue={searchValue}
 		/>
 	);
-}
+};
 
 export const MultiSelectWithQuery = forwardRef(MultiSelectWithQueryComponent);

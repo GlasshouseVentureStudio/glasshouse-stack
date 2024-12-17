@@ -1,2 +1,2 @@
 export * from './scroll-shadow';
-export * from './scroll-shadow.types';
+export type * from './scroll-shadow.types';

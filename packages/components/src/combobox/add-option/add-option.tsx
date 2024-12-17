@@ -149,18 +149,18 @@ export const AddOption = ({
 				/>
 				<ActionIcon
 					disabled={isPending}
+					size='xs'
+					variant='subtle'
 					onClick={() => {
 						close();
 						field.reset();
 					}}
-					size='xs'
-					variant='subtle'
 				>
 					<XIcon />
 				</ActionIcon>
 				<ActionIcon
 					loading={isPending}
-					onClick={handleFieldSubmit}
+					onClick={() => void handleFieldSubmit()}
 					size='xs'
 					variant='subtle'
 				>

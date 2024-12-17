@@ -6,12 +6,15 @@ import { AutocompleteWithInfiniteQuery } from './autocomplete.infinite-query';
 import { AutocompleteWithQuery } from './autocomplete.query';
 import { type AutocompleteProps } from './autocomplete.types';
 
-function AutocompleteComponent<
+const AutocompleteComponent = <
 	TQueryFnData = unknown,
 	TError = Error,
 	TQueryKey extends QueryKey = QueryKey,
 	TPageParam = unknown,
->(props: AutocompleteProps<TQueryFnData, TError, TQueryKey, TPageParam>, ref: ForwardedRef<HTMLInputElement>) {
+>(
+	props: AutocompleteProps<TQueryFnData, TError, TQueryKey, TPageParam>,
+	ref: ForwardedRef<HTMLInputElement>
+) => {
 	if (props.queryOptions) {
 		if (props.infinite) {
 			return <AutocompleteWithInfiniteQuery {...props} />;
@@ -26,6 +29,6 @@ function AutocompleteComponent<
 			ref={ref}
 		/>
 	);
-}
+};
 
 export const Autocomplete = forwardRef(AutocompleteComponent);

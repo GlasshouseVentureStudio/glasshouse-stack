@@ -1,4 +1,4 @@
-import React, { type Dispatch, type DragEvent, type SetStateAction, useRef, useState } from 'react';
+import { type Dispatch, type DragEvent, type SetStateAction, useRef, useState } from 'react';
 import { Box, Menu, Switch, Text, Tooltip, useMantineTheme } from '@mantine/core';
 import {
 	dataVariable,
@@ -87,7 +87,6 @@ export const ColumnsControlMenuItems = <TData extends MRT_RowData>({
 
 	const grabHandle =
 		columnDef.enableColumnOrdering !== false ? (
-			// eslint-disable-next-line react/jsx-pascal-case -- 3rd party
 			<MRT_GrabHandleButton
 				onDragEnd={handleDragEnd}
 				onDragStart={handleDragStart}
@@ -98,7 +97,6 @@ export const ColumnsControlMenuItems = <TData extends MRT_RowData>({
 		);
 
 	const columnPinningButtons = column.getCanPin() ? (
-		// eslint-disable-next-line react/jsx-pascal-case -- 3rd party
 		<MRT_ColumnPinningButtons
 			column={column}
 			table={table}

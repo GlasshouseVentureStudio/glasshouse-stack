@@ -1,2 +1,2 @@
 export * from './data-list';
-export * from './data-list.types';
+export type * from './data-list.types';

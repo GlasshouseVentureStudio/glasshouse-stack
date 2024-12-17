@@ -18,7 +18,7 @@ import { type AutocompleteBaseProps } from './autocomplete.types';
 
 const defaultProps: Partial<AutocompleteBaseProps> = {};
 
-function AutocompleteBaseComponent(_props: AutocompleteBaseProps, ref: ForwardedRef<HTMLInputElement>) {
+const AutocompleteBaseComponent = (_props: AutocompleteBaseProps, ref: ForwardedRef<HTMLInputElement>) => {
 	const props = useProps('Autocomplete', defaultProps, _props);
 	const {
 		autoComplete,
@@ -108,16 +108,20 @@ function AutocompleteBaseComponent(_props: AutocompleteBaseProps, ref: Forwarded
 		<Combobox
 			__staticSelector='Autocomplete'
 			classNames={resolvedClassNames}
-			onOptionSubmit={val => {
-				onOptionSubmit?.(val);
-				optionsLockup[val]?.label && setValue(optionsLockup[val].label);
-				combobox.closeDropdown();
-			}}
 			readOnly={readOnly}
 			size={size}
 			store={combobox}
 			styles={resolvedStyles}
 			unstyled={unstyled}
+			onOptionSubmit={val => {
+				onOptionSubmit?.(val);
+
+				if (optionsLockup[val]?.label) {
+					setValue(optionsLockup[val].label);
+				}
+
+				combobox.closeDropdown();
+			}}
 			{...comboboxProps}
 		>
 			<Combobox.Target autoComplete={autoComplete}>
@@ -128,6 +132,12 @@ function AutocompleteBaseComponent(_props: AutocompleteBaseProps, ref: Forwarded
 					classNames={resolvedClassNames}
 					disabled={disabled}
 					id={_id}
+					readOnly={readOnly}
+					rightSection={loading ? <Loader size='xs' /> : undefined}
+					size={size}
+					styles={resolvedStyles}
+					unstyled={unstyled}
+					value={_value}
 					onBlur={event => {
 						if (!creatable || (creatablePosition !== 'footer' && creatablePosition !== 'header')) {
 							combobox.closeDropdown();
@@ -138,7 +148,10 @@ function AutocompleteBaseComponent(_props: AutocompleteBaseProps, ref: Forwarded
 					onChange={event => {
 						setValue(event.currentTarget.value);
 						combobox.openDropdown();
-						selectFirstOptionOnChange && combobox.selectFirstOption();
+
+						if (selectFirstOptionOnChange) {
+							combobox.selectFirstOption();
+						}
 					}}
 					onClick={event => {
 						combobox.openDropdown();
@@ -148,12 +161,6 @@ function AutocompleteBaseComponent(_props: AutocompleteBaseProps, ref: Forwarded
 						combobox.openDropdown();
 						onFocus?.(event);
 					}}
-					readOnly={readOnly}
-					rightSection={loading ? <Loader size='xs' /> : undefined}
-					size={size}
-					styles={resolvedStyles}
-					unstyled={unstyled}
-					value={_value}
 				/>
 			</Combobox.Target>
 			<OptionsDropdown
@@ -186,6 +193,6 @@ function AutocompleteBaseComponent(_props: AutocompleteBaseProps, ref: Forwarded
 			/>
 		</Combobox>
 	);
-}
+};
 
 export const AutocompleteBase = forwardRef(AutocompleteBaseComponent);

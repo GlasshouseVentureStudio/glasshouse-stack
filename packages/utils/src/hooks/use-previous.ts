@@ -13,7 +13,7 @@ export const usePrevious = <T>(value: T, checkFalsy?: boolean): T | undefined =>
 		}
 
 		ref.current = value;
-	}, [value]);
+	}, [checkFalsy, value]);
 
 	// eslint-disable-next-line react-compiler/react-compiler -- this is fine
 	return ref.current;

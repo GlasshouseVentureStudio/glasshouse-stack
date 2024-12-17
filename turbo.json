@@ -4,7 +4,10 @@
 		"build": {
 			"inputs": ["$TURBO_DEFAULT", ".env*"],
 			"outputs": ["dist/**", ".next/**", "!.next/cache/**", "storybook-static/**"],
-			"dependsOn": ["^build"]
+			"dependsOn": ["transit"]
+		},
+		"transit": {
+			"dependsOn": ["^transit"]
 		},
 		"chromatic": {
 			"cache": false

@@ -89,10 +89,6 @@ const ScrollShadowComponent = (_props: ScrollShadowProps & ScrollAreaProps, ref:
 	return (
 		<ScrollArea
 			ref={ref}
-			classNames={{
-				root: cn(getStyles('root').className),
-				viewport: getStyles('viewport').className,
-			}}
 			dir={dir}
 			mod={[{ 'shadow-size': shadowSize }, mod]}
 			offsetScrollbars={offsetScrollbars}
@@ -108,6 +104,10 @@ const ScrollShadowComponent = (_props: ScrollShadowProps & ScrollAreaProps, ref:
 			vars={vars}
 			viewportProps={viewportProps}
 			viewportRef={mergedRef}
+			classNames={{
+				root: cn(getStyles('root').className),
+				viewport: getStyles('viewport').className,
+			}}
 			{...getStyles('root')}
 			{...others}
 		>
@@ -165,9 +165,6 @@ const ScrollShadowAutosizeComponent = (
 				<ScrollShadow
 					classNames={classNames}
 					dir={dir}
-					mod={{
-						'shadow-size': shadowSize,
-					}}
 					offsetScrollbars={offsetScrollbars}
 					onBottomReached={onBottomReached}
 					onScrollPositionChange={onScrollPositionChange}
@@ -186,6 +183,9 @@ const ScrollShadowAutosizeComponent = (
 					vars={vars}
 					viewportProps={viewportProps}
 					viewportRef={viewportRef}
+					mod={{
+						'shadow-size': shadowSize,
+					}}
 				>
 					{children}
 				</ScrollShadow>

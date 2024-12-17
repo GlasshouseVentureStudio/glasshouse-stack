@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"target": "ES2017",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
@@ -22,6 +23,5 @@
 		}
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-	"exclude": ["node_modules"],
-	"extends": ["@glasshouse/style-guide/typescript"]
+	"exclude": ["node_modules"]
 }

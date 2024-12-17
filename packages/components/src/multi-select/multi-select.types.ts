@@ -152,7 +152,7 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	/** Separator between displayed values when `mode` is `texts`. */
 	maxDisplayedValuesSeparator?: string;
 	/** A React ref object pointing to the bottom element of the options list. */
-	optionsBottomRef?: React.MutableRefObject<HTMLDivElement | null>;
+	optionsBottomRef?: React.RefObject<HTMLDivElement | null>;
 	/**
 	 * A callback function that is called when the dropdown's scroll reaches the end.
 	 *

@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-pascal-case -- 3rd party */
 import { Box, type BoxProps } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { clsx } from 'clsx';
@@ -65,6 +64,7 @@ export const BottomToolbar = <TData extends MRT_RowData>({ table, ...rest }: Bot
 			{...toolbarProps}
 			ref={node => {
 				if (node) {
+					// eslint-disable-next-line react-compiler/react-compiler -- this is necessary to assign the node to ref
 					bottomToolbarRef.current = node;
 
 					if (toolbarProps.ref) {

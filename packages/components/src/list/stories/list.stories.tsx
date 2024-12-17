@@ -430,10 +430,10 @@ export const ControlledSelectable: ListStory = {
 		return (
 			<List
 				{...args}
+				value={value}
 				onChange={value => {
 					setValue(value);
 				}}
-				value={value}
 			/>
 		);
 	},
@@ -479,10 +479,10 @@ export const Pagination: ListStory = {
 				/>
 				<Radio.Group
 					label='Pagination position'
+					value={position}
 					onChange={value => {
 						setPosition(value as 'top' | 'bottom');
 					}}
-					value={position}
 				>
 					<Group>
 						<Radio
@@ -593,29 +593,29 @@ export const MeasureVirtualizedItems: ListStory = {
 			<Stack>
 				<Group gap='xs'>
 					<Button
+						size='xs'
+						variant='default'
 						onClick={() => {
 							ref.current?.scrollToIndex(0);
 						}}
-						size='xs'
-						variant='default'
 					>
 						Scroll to the start
 					</Button>
 					<Button
+						size='xs'
+						variant='default'
 						onClick={() => {
 							ref.current?.scrollToIndex(count / 2);
 						}}
-						size='xs'
-						variant='default'
 					>
 						Scroll to the middle
 					</Button>
 					<Button
+						size='xs'
+						variant='default'
 						onClick={() => {
 							ref.current?.scrollToIndex(count - 1);
 						}}
-						size='xs'
-						variant='default'
 					>
 						Scroll to the end
 					</Button>
@@ -630,6 +630,7 @@ export const MeasureVirtualizedItems: ListStory = {
 				<List
 					estimateGroupHeaderSize={grouped ? () => 40 : undefined}
 					groupByFn={grouped ? items => groupBy(items, item => item.location.country) : undefined}
+					virtualizerRef={ref}
 					renderGroupHeader={header => (
 						<Group
 							className='gvs-bg-white'
@@ -639,7 +640,6 @@ export const MeasureVirtualizedItems: ListStory = {
 							<Text fw={600}>{header.title}</Text>
 						</Group>
 					)}
-					virtualizerRef={ref}
 					{...args}
 				/>
 			</Stack>

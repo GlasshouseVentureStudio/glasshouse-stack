@@ -46,17 +46,17 @@ export const Detault: DataListStory = {
 		return (
 			<DataList
 				{...args}
+				estimateItemSize={() => 32}
+				fetchFn={fetchFn}
+				itemKey={item => item.id}
 				dataSelector={({ pages, pageParams }) => ({
 					pages: pages.flatMap(page => page.comments),
 					pageParams,
 				})}
-				estimateItemSize={() => 32}
-				fetchFn={fetchFn}
 				initialPageParam={{
 					limit: 20,
 					skip: 0,
 				}}
-				itemKey={item => item.id}
 				queryOptions={{
 					queryKey: ['data-list-comments'],
 					getNextPageParam: (lastPage, allPages, lastPageParam) => {
@@ -124,21 +124,22 @@ export const GroupedDataList: UsersDataListStory = {
 			<Stack>
 				<DataList
 					{...args}
-					dataSelector={({ pages, pageParams }) => ({
-						pages: pages.flatMap(page => page.users),
-						pageParams,
-					})}
 					estimateGroupHeaderSize={() => 32}
 					estimateItemSize={() => 32}
 					fetchFn={fetchFn}
 					groupByFn={items => groupBy(items, item => item.firstName.toLowerCase()[0])}
+					itemKey={item => item.id}
+					stickyGroupHeader={sticky}
+					dataSelector={({ pages, pageParams }) => ({
+						pages: pages.flatMap(page => page.users),
+						pageParams,
+					})}
 					initialPageParam={{
 						skip: 0,
 						limit: 20,
 						sortBy: 'firstName',
 						order: 'asc',
 					}}
-					itemKey={item => item.id}
 					queryOptions={{
 						queryKey: ['data-list-comments', order, sortBy],
 						getNextPageParam: (lastPage, _, lastPageParam) => {
@@ -166,21 +167,23 @@ export const GroupedDataList: UsersDataListStory = {
 					renderItem={item => {
 						return <Text className='gvs-line-clamp-1 gvs-px-3 gvs-py-1'>{item.firstName}</Text>;
 					}}
-					stickyGroupHeader={sticky}
 				/>
 				<Group>
 					<Select
 						checkIconPosition='right'
 						data={sortByOptions}
 						label='Sort by'
+						placeholder='Sort by'
+						value={sortBy}
 						onChange={value => {
 							setSortBy(value as unknown as keyof User);
 						}}
-						placeholder='Sort by'
-						value={sortBy}
 					/>
 					<Select
 						checkIconPosition='right'
+						label='Order'
+						placeholder='Order'
+						value={order}
 						data={[
 							{
 								label: 'Ascending',
@@ -191,12 +194,9 @@ export const GroupedDataList: UsersDataListStory = {
 								value: 'desc',
 							},
 						]}
-						label='Order'
 						onChange={value => {
 							setOrder(value as 'asc' | 'desc');
 						}}
-						placeholder='Order'
-						value={order}
 					/>
 					<Switch
 						checked={sticky}

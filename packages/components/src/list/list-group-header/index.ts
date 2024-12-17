@@ -1,2 +1,2 @@
 export * from './list-group-header';
-export * from './list-group-header.types';
+export type * from './list-group-header.types';
