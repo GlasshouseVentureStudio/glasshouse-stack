@@ -1,5 +1,27 @@
 # @glasshouse/style-guide
 
+## 1.0.0
+
+### Major Changes
+
+- eslint 9 migration, convert legacy eslint configs to new flat config format
+
+> :warning: **BREAKING CHANGE**:
+>
+> - ESLint minimum version is now `9.0.0`.
+> - Refactored configs using new flat config [format](https://eslint.org/blog/2022/08/new-config-system-part-2/#main).
+> - Moved all configs into a single object default export. You can now import new flat configs by the example below.
+>
+> ```js
+> import gvseslint from '@glasshouse/style-guide/eslint
+>
+> export default [
+> 	...gvseslint.configs.flat.node,
+> ]
+> ```
+>
+> - Read more in `README`
+
 ## 0.3.1
 
 ### Patch Changes

@@ -45,7 +45,7 @@ To use the shared Prettier config, set the following in `package.json`:
 
 ### Configuration (new: eslint.config.js)
 
-> :warning:**BREAKING CHANGE**:
+> :warning: **BREAKING CHANGE**:
 >
 > - ESLint minimum version is now `9.0.0`.
 > - Refactored configs using new flat config [format](https://eslint.org/blog/2022/08/new-config-system-part-2/#main).
@@ -85,6 +85,8 @@ export default [
 ```
 
 ### Configuration (legacy: .eslintrc\*)
+
+> :warning: This is compatible only with version 0.3.1 or earlier of the package. The latest version (1.0.0) introduces breaking changes, which are not supported.
 
 All configs require `typescript` to be installed and [additional configuration](#configuring-eslint-legacy-eslintrc-for-typescript).
 
