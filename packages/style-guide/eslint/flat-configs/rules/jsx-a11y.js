@@ -3,9 +3,9 @@
  * disable them.
  */
 const disabledRules = {
+	'jsx-a11y/no-autofocus': 'off',
 	// This rule has been deprecated, but not yet removed.
 	'jsx-a11y/no-onchange': 'off',
-	'jsx-a11y/no-autofocus': 'off',
 };
 
 /** @type {import('eslint').Linter.Config} */

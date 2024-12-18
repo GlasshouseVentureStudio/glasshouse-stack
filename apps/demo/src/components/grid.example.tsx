@@ -1,7 +1,11 @@
+'use client';
+
 import { Grid } from '@glasshouse/components';
 import { Card } from '@mantine/core';
 
-export const GridExample = () => {
+export const GridExample = async () => {
+	await fetch('https://api.example.com/data');
+
 	return (
 		<Card>
 			<Grid

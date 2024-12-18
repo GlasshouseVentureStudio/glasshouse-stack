@@ -16,6 +16,12 @@ module.exports = {
 	rules: {
 		...disabledRules,
 		/**
+		 * Display any violations of the rules of React.
+		 *
+		 * 🚫 Not fixable - https://react.dev/learn/react-compiler#installing-eslint-plugin-react-compiler
+		 */
+		'react-compiler/react-compiler': 'error',
+		/**
 		 * Require an explicit type when using button elements.
 		 *
 		 * 🚫 Not fixable - https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/button-has-type.md
@@ -84,6 +90,21 @@ module.exports = {
 		 */
 		'react/jsx-pascal-case': 'warn',
 		/**
+		 * Enforce props alphabetical sorting.
+		 *
+		 * 🔧 Fixable - https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/jsx-sort-props.md
+		 */
+		'react/jsx-sort-props': [
+			'warn',
+			{
+				callbacksLast: false,
+				ignoreCase: true,
+				multiline: 'last',
+				reservedFirst: true,
+				shorthandFirst: false,
+			},
+		],
+		/**
 		 * Disallow usage of Array index in keys.
 		 *
 		 * 🚫 Not fixable - https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/no-array-index-key.md
@@ -101,26 +122,5 @@ module.exports = {
 		 * 🔧 Fixable - https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/self-closing-comp.md
 		 */
 		'react/self-closing-comp': 'warn',
-		/**
-		 * Enforce props alphabetical sorting.
-		 *
-		 * 🔧 Fixable - https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/jsx-sort-props.md
-		 */
-		'react/jsx-sort-props': [
-			'warn',
-			{
-				ignoreCase: true,
-				callbacksLast: false,
-				shorthandFirst: false,
-				reservedFirst: true,
-				multiline: 'last',
-			},
-		],
-		/**
-		 * Display any violations of the rules of React.
-		 *
-		 * 🚫 Not fixable - https://react.dev/learn/react-compiler#installing-eslint-plugin-react-compiler
-		 */
-		'react-compiler/react-compiler': 'error',
 	},
 };

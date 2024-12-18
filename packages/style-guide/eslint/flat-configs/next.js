@@ -1,6 +1,7 @@
-const { FlatCompat } = require('@eslint/eslintrc');
 const requirePackage = require('../utils/require-package');
 const { JAVASCRIPT_FILES } = require('./_constants');
+const nextPlugin = require('@next/eslint-plugin-next');
+const { fixupPluginRules } = require('@eslint/compat');
 
 requirePackage('next', '@next/eslint-plugin-next');
 
@@ -8,6 +9,7 @@ const babelOptions = {
 	presets: (() => {
 		try {
 			require.resolve('next/babel');
+
 			return ['next/babel'];
 		} catch {
 			return [];
@@ -15,15 +17,14 @@ const babelOptions = {
 	})(),
 };
 
-const compat = new FlatCompat({
-	baseDirectory: __dirname,
-});
-
 /** @type {import("eslint").Linter.Config[]} */
 module.exports = [
-	...compat.config({
-		extends: ['plugin:@next/next/recommended'],
-	}),
+	{
+		plugins: {
+			'@next/next': fixupPluginRules(nextPlugin),
+		},
+		rules: nextPlugin.configs.recommended.rules,
+	},
 	{
 		files: JAVASCRIPT_FILES,
 		languageOptions: {

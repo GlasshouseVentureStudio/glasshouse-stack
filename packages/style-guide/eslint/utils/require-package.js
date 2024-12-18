@@ -8,6 +8,7 @@ const log = (message = '') => process.stderr.write(`${message}\n`);
  */
 function readPackageManager() {
 	const match = process.env.npm_config_user_agent?.match(/^(?<pm>\w+)\//);
+
 	return match?.groups ? match.groups?.pm : 'npm';
 }
 

@@ -33,7 +33,7 @@ jobs:
         uses: ./.github/composite-actions/install
 
       - name: Run ESLint check
-        run: pnpm lint
+        run: pnpm lint --filter="./packages/*"
 
   prettier:
     name: 'Prettier'

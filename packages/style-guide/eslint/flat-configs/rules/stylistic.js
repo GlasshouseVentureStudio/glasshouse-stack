@@ -68,23 +68,23 @@ module.exports = {
 		 */
 		'no-unneeded-ternary': 'error',
 		/**
-		 * Require use of an object spread over Object.assign.
-		 *
-		 * 🔧 Fixable - https://eslint.org/docs/rules/prefer-object-spread
-		 */
-		'prefer-object-spread': 'warn',
-		/**
 		 * Enforces consistent blank lines between statements.
 		 *
 		 * 🔧 Fixable - https://eslint.org/docs/latest/rules/padding-line-between-statements
 		 */
 		'padding-line-between-statements': [
 			'error',
-			{ blankLine: 'always', prev: '*', next: 'return' },
-			{ blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
-			{ blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
-			{ blankLine: 'always', prev: '*', next: ['if', 'try', 'switch', 'for', 'while'] },
-			{ blankLine: 'always', prev: ['if', 'try', 'switch', 'for', 'while'], next: '*' },
+			{ blankLine: 'always', next: 'return', prev: '*' },
+			{ blankLine: 'always', next: '*', prev: ['const', 'let', 'var'] },
+			{ blankLine: 'any', next: ['const', 'let', 'var'], prev: ['const', 'let', 'var'] },
+			{ blankLine: 'always', next: ['if', 'try', 'switch', 'for', 'while'], prev: '*' },
+			{ blankLine: 'always', next: '*', prev: ['if', 'try', 'switch', 'for', 'while'] },
 		],
+		/**
+		 * Require use of an object spread over Object.assign.
+		 *
+		 * 🔧 Fixable - https://eslint.org/docs/rules/prefer-object-spread
+		 */
+		'prefer-object-spread': 'warn',
 	},
 };

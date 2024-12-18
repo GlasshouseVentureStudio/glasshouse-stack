@@ -17,10 +17,12 @@ const eslintConfig = [
 				JSX: true,
 			},
 		},
-		ignores: ['*.config.mjs'],
 		rules: {
 			camelcase: ['error', { allow: ['^UNSAFE_', '^Geist_'], ignoreDestructuring: false, properties: 'never' }],
 		},
+	},
+	{
+		ignores: ['*.config.mjs', '*.config.ts', '*.config.js'],
 	},
 ];
 

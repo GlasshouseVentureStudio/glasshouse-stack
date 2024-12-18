@@ -59,6 +59,19 @@ module.exports = {
 			},
 		],
 		/**
+		 * Disallow Promises in places not designed to handle them.
+		 *
+		 * 🚫 Not fixable - https://typescript-eslint.io/rules/no-misused-promises/
+		 */
+		'@typescript-eslint/no-misused-promises': [
+			'error',
+			{
+				checksVoidReturn: {
+					attributes: false,
+				},
+			},
+		],
+		/**
 		 * Disallow members of unions and intersections that do nothing or override type information.
 		 *
 		 * 🚫 Not fixable - https://typescript-eslint.io/rules/no-redundant-type-constituents/
@@ -83,14 +96,6 @@ module.exports = {
 		 */
 		'@typescript-eslint/require-array-sort-compare': ['error', { ignoreStringArrays: true }],
 		/**
-		 * Require exhaustive checks when using union types in switch statements.
-		 *
-		 * This ensures cases are considered when items are later added to a union.
-		 *
-		 * 🚫 Not fixable - https://typescript-eslint.io/rules/switch-exhaustiveness-check/
-		 */
-		'@typescript-eslint/switch-exhaustiveness-check': 'error',
-		/**
 		 * Enforce template literal expressions to be of string type.
 		 *
 		 * The default settings of this rule intentionally do not allow objects with a custom toString() method to be used in template literals, because the stringification result may not be user-friendly.
@@ -106,17 +111,12 @@ module.exports = {
 			},
 		],
 		/**
-		 * Disallow Promises in places not designed to handle them.
+		 * Require exhaustive checks when using union types in switch statements.
 		 *
-		 * 🚫 Not fixable - https://typescript-eslint.io/rules/no-misused-promises/
+		 * This ensures cases are considered when items are later added to a union.
+		 *
+		 * 🚫 Not fixable - https://typescript-eslint.io/rules/switch-exhaustiveness-check/
 		 */
-		'@typescript-eslint/no-misused-promises': [
-			'error',
-			{
-				checksVoidReturn: {
-					attributes: false,
-				},
-			},
-		],
+		'@typescript-eslint/switch-exhaustiveness-check': 'error',
 	},
 };
