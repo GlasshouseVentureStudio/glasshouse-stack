@@ -85,8 +85,10 @@ const ColorPickerPopover = ({ onChange }: { onChange?: (color: MantineColor) => 
 					opened={opened ? false : undefined}
 				>
 					<ActionIcon
-						onClick={() => { setOpened(!opened); }}
 						variant='light'
+						onClick={() => {
+							setOpened(!opened);
+						}}
 					>
 						<ColorSwatch
 							color={primaryColorValue}
