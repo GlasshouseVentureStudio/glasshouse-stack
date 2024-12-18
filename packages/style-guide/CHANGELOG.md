@@ -1,5 +1,11 @@
 # @glasshouse/style-guide
 
+## 1.0.3
+
+### Patch Changes
+
+- Minor tweaks
+
 ## 1.0.2
 
 ### Patch Changes
