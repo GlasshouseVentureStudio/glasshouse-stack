@@ -32,6 +32,9 @@ jobs:
       - name: Install
         uses: ./.github/composite-actions/install
 
+      - name: Build packages
+        uses: pnpm build:packages
+
       - name: Run ESLint check
         run: pnpm lint --filter="./packages/*"
 
