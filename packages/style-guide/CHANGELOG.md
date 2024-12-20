@@ -1,5 +1,11 @@
 # @glasshouse/style-guide
 
+## 1.0.4
+
+### Patch Changes
+
+- Tweak switch exhausive rule
+
 ## 1.0.3
 
 ### Patch Changes
