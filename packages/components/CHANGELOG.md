@@ -1,5 +1,12 @@
 # @glasshouse/components
 
+## 0.8.3
+
+### Patch Changes
+
+- fix: cell padding now accept string and number and object of x and y padding
+- chore: multiselect text display mode tooltip now show all selected values
+
 ## 0.8.2
 
 ### Patch Changes
