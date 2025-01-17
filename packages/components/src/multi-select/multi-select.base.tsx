@@ -321,10 +321,7 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 	}, [_value.length, maxDisplayedValues, renderMaxDisplayedValuesLabel]);
 
 	const tooltipTextContent = maxDisplayedValues
-		? _value
-				.slice(maxDisplayedValues - 1)
-				.map(getCumulativeValue)
-				.join(', ')
+		? _value.map(getCumulativeValue).join(maxDisplayedValuesSeparator)
 		: undefined;
 
 	const textValues =

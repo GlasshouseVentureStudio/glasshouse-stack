@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks -- safe for stories */
-import { useState } from 'react';
 import { faker } from '@faker-js/faker';
 import {
 	ActionIcon,
@@ -19,6 +18,7 @@ import { notifications } from '@mantine/notifications';
 import type { Meta, StoryObj } from '@storybook/react';
 import { IconCheck, IconChevronLeft, IconChevronRight, IconThumbUp } from '@tabler/icons-react';
 import groupBy from 'lodash.groupby';
+import { useState } from 'react';
 
 import { MultiSelect } from '../multi-select';
 import { MultiSelectBase } from '../multi-select.base';
@@ -517,6 +517,7 @@ export const ValueMode: StoryObj<
 	args: {
 		...MaxDisplayedValues.args,
 		maxDisplayedValues: 2,
+		maxDisplayedValuesSeparator: '; ',
 	},
 	render: (
 		props: MultiSelectWithInfiniteQueryProps<
