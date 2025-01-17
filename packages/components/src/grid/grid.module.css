@@ -46,7 +46,8 @@
 	margin-bottom: var(--grid-guide-width);
 	margin-right: var(--grid-guide-width);
 	overflow: hidden;
-	padding: var(--grid-cell-padding, var(--grid-cell-padding-md));
+	padding: var(--grid-cell-padding-y, var(--grid-cell-padding-md))
+		var(--grid-cell-padding-x, var(--grid-cell-padding-md));
 }
 
 .guides {

@@ -41,8 +41,11 @@ export interface GridCssVariables {
 		| '--grid-guide-width'
 		| '--grid-guide-color'
 		| '--grid-radius'
-		| '--grid-cell-padding';
+		| '--grid-cell-padding-x'
+		| '--grid-cell-padding-y';
 }
+
+export type GridCellPadding = MantineSize | (string & {}) | number;
 
 /**
  * Base properties for the grid.
@@ -65,9 +68,10 @@ export interface GridProps extends BaseGridProps, BoxProps, StylesApiProps<GridF
 	 */
 	radius?: MantineRadius;
 	/**
-	 * Padding for the grid cell.
+	 * Padding for the grid cell, can be a `MantineSize`, `string`, `number`, or an object with `x` and `y` properties.
+	 * Automatically converts to `rem` by default.
 	 */
-	cellPadding?: MantineSize;
+	cellPadding?: GridCellPadding | { x?: GridCellPadding; y?: GridCellPadding };
 	/**
 	 * Option to add border to the root element, default `true`.
 	 */

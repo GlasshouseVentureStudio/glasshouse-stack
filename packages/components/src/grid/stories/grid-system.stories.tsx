@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks -- safe */
-import { useState } from 'react';
 import {
 	ColorSwatch,
 	Group,
@@ -7,6 +6,7 @@ import {
 	MantineProvider,
 	type MantineRadius,
 	type MantineSize,
+	NumberInput,
 	Select,
 	Slider,
 	Stack,
@@ -14,9 +14,10 @@ import {
 } from '@mantine/core';
 import { type Meta, type StoryObj } from '@storybook/react';
 import { CheckIcon } from 'lucide-react';
+import { useState } from 'react';
 
 import { Grid } from '../grid';
-import { type GridProps } from '../grid.types';
+import { GridCellPadding, type GridProps } from '../grid.types';
 
 const meta: Meta<GridProps> = {
 	title: 'Components/Grid',
@@ -278,7 +279,7 @@ export const Radius: GridStory = {
 
 export const CellPadding: GridStory = {
 	render: args => {
-		const [padding, setPadding] = useState<MantineSize | undefined>('md');
+		const [padding, setPadding] = useState<GridCellPadding | { x?: GridCellPadding; y?: GridCellPadding }>('md');
 
 		const _value = MARKS.find(mark => mark.label === padding)?.value;
 
@@ -288,21 +289,59 @@ export const CellPadding: GridStory = {
 
 		return (
 			<Stack>
-				<Slider
-					label={val => MARKS.find(mark => mark.value === val)?.label}
-					marks={MARKS}
-					onChange={handleChange}
-					step={25}
-					thumbLabel='Radius'
-					value={_value}
-					w={200}
-					styles={{
-						markLabel: { display: 'none' },
-					}}
-				/>
+				<Group>
+					<Slider
+						label={val => MARKS.find(mark => mark.value === val)?.label}
+						marks={MARKS}
+						onChange={handleChange}
+						step={25}
+						thumbLabel='Radius'
+						value={_value}
+						w={200}
+						styles={{
+							markLabel: { display: 'none' },
+						}}
+					/>
+					<NumberInput
+						placeholder='Input cell padding'
+						label='Vertical padding'
+						min={0}
+						onChange={value =>
+							setPadding(old =>
+								typeof old === 'object'
+									? {
+											x: old.x,
+											y: value,
+										}
+									: {
+											x: 'md',
+											y: value,
+										}
+							)
+						}
+					/>
+					<NumberInput
+						placeholder='Input cell padding'
+						label='Horizontal padding'
+						min={0}
+						onChange={value =>
+							setPadding(old =>
+								typeof old === 'object'
+									? {
+											y: old.y,
+											x: value,
+										}
+									: {
+											y: 'md',
+											x: value,
+										}
+							)
+						}
+					/>
+				</Group>
 				<Grid
 					{...args}
-					cellPadding={padding}
+					cellPadding={args.cellPadding ?? padding}
 					columns={3}
 					rows={2}
 				>

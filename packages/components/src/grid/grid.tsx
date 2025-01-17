@@ -30,6 +30,9 @@ const defaultProps: Partial<GridProps> = {
 };
 
 const varsResolver = createVarsResolver<GridFactory>((theme, { guideWidth, guideColor, radius, cellPadding }) => {
+	const paddingX = typeof cellPadding === 'object' ? cellPadding.x : cellPadding;
+	const paddingY = typeof cellPadding === 'object' ? cellPadding.y : cellPadding;
+
 	return {
 		root: {
 			'--grid-guide-width': rem(guideWidth),
@@ -42,7 +45,8 @@ const varsResolver = createVarsResolver<GridFactory>((theme, { guideWidth, guide
 			'--grid-min-width': '300px',
 			'--grid-guide-color': guideColor ? getThemeColor(guideColor, theme) : undefined,
 			'--grid-radius': radius === undefined ? undefined : getRadius(radius),
-			'--grid-cell-padding': getSize(cellPadding, 'grid-cell-padding'),
+			'--grid-cell-padding-x': getSize(paddingX, 'grid-cell-padding', true),
+			'--grid-cell-padding-y': getSize(paddingY, 'grid-cell-padding', true),
 		},
 	};
 });
