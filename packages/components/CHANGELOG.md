@@ -1,5 +1,17 @@
 # @glasshouse/components
 
+## 0.9.0
+
+### Minor Changes
+
+- - `@glasshouse/components`: expose data table instance via hooks
+  - `@glasshouse/utils`: add utils for creating compound components
+
+### Patch Changes
+
+- Updated dependencies
+  - @glasshouse/utils@0.3.3
+
 ## 0.8.3
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @glasshouse/utils
 
+## 0.3.3
+
+### Patch Changes
+
+- - `@glasshouse/components`: expose data table instance via hooks
+  - `@glasshouse/utils`: add utils for creating compound components
+
 ## 0.3.2
 
 ### Patch Changes
