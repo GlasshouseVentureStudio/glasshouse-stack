@@ -1,11 +1,19 @@
 # @glasshouse/components
 
+## 0.9.1
+
+### Patch Changes
+
+- Fix missing exports
+- Updated dependencies
+  - @glasshouse/utils@0.3.4
+
 ## 0.9.0
 
 ### Minor Changes
 
-- - `@glasshouse/components`: expose data table instance via hooks
-  - `@glasshouse/utils`: add utils for creating compound components
+- `@glasshouse/components`: expose data table instance via hooks
+- `@glasshouse/utils`: add utils for creating compound components
 
 ### Patch Changes
 
