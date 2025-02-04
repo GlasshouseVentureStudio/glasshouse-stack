@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { ActionIcon } from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react';
-import { type QueryKey } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider, type QueryKey } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import omit from 'lodash.omit';
 import { EyeIcon, PencilIcon, PinIcon, TrashIcon } from 'lucide-react';
@@ -10,10 +10,22 @@ import { type MRT_ColumnDef } from 'mantine-react-table';
 import { TextAreaCellEdit } from '../cell-edit/textarea-cell-edit';
 import { DataTable } from '../data-table';
 import { type DataTableProps, type GetDataFn } from '../data-table.types';
+import { useDataTable } from '../hooks';
 
 const meta: Meta = {
 	title: 'Components/DataTable/Generic',
 	component: DataTable,
+	decorators: [
+		Story => {
+			const queryClient = new QueryClient();
+
+			return (
+				<QueryClientProvider client={queryClient}>
+					<Story />
+				</QueryClientProvider>
+			);
+		},
+	],
 	tags: ['autodocs', 'DataTable'],
 };
 
@@ -304,5 +316,27 @@ export const FullFeatureWithInfiniteQuery: StoryObj<DataTableProps<DataType>> = 
 				}}
 			/>
 		);
+	},
+};
+
+export const WithUseDataTableHook: StoryObj<DataTableProps<DataType>> = {
+	args: {
+		...omit(FullFeatures.args, 'data'),
+	},
+	render: (props: DataTableProps<DataType>) => {
+		const table = useDataTable({
+			columns,
+			getData,
+			getRowCount: data => data?.total ?? 0,
+			infinite: false,
+			manualPagination: true,
+			queryOptions: {
+				queryKey: ['WithUseDataTableHook'],
+				select: data => data.data,
+			},
+			...omit(props, ['columns', 'getData', 'queryOptions', 'infinite']),
+		});
+
+		return <DataTable table={table} />;
 	},
 };
