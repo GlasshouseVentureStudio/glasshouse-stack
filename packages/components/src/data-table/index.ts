@@ -17,3 +17,11 @@ export type {
 	StateStorageProvider,
 } from './data-table.types';
 export { resolveComponentProps } from './data-table.utils';
+export {
+	useDataTable,
+	useDataTableBase,
+	type UseDataTableBaseOptions,
+	type UseDataTableOptions,
+	type UseDataTableWithInfiniteQueryOptions,
+	type UseDataTableWithQueryOptions,
+} from './hooks';
