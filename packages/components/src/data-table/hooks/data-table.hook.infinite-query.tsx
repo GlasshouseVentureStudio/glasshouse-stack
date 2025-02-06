@@ -162,7 +162,7 @@ export const useDataTableWithInfiniteQuery = <
 		[mantineProgressPropsFromProps, progress]
 	);
 
-	const table = useDataTableBase({
+	return useDataTableBase({
 		data,
 		editDisplayMode: 'cell',
 		enableEditing: true,
@@ -199,6 +199,4 @@ export const useDataTableWithInfiniteQuery = <
 		}),
 		...options,
 	});
-
-	return table;
 };

@@ -68,7 +68,7 @@ export const useDataTableWithQuery = <
 
 	const data = useMemo(() => (queryData && queryOptions.select?.(queryData)) ?? [], [queryData, queryOptions]);
 
-	const table = useDataTableBase({
+	return useDataTableBase({
 		data,
 		initialState,
 		rowCount: getRowCount ? getRowCount(queryData) : options.rowCount,
@@ -94,6 +94,4 @@ export const useDataTableWithQuery = <
 		},
 		...options,
 	});
-
-	return table;
 };

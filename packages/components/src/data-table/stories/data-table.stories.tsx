@@ -1,15 +1,32 @@
 import { faker } from '@faker-js/faker';
-import { ActionIcon } from '@mantine/core';
+import { ActionIcon, CSSProperties } from '@mantine/core';
 import type { Meta, StoryObj } from '@storybook/react';
-import { QueryClient, QueryClientProvider, type QueryKey } from '@tanstack/react-query';
+import {
+	keepPreviousData,
+	QueryClient,
+	QueryClientProvider,
+	useInfiniteQuery,
+	useQuery,
+	type QueryKey,
+} from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import omit from 'lodash.omit';
 import { EyeIcon, PencilIcon, PinIcon, TrashIcon } from 'lucide-react';
 import { type MRT_ColumnDef } from 'mantine-react-table';
 
+import { useRef, useState } from 'react';
+import { getDummyUsers } from '../../data-list/stories/api';
+import { GetDummyUsersParams, User } from '../../data-list/stories/types';
 import { TextAreaCellEdit } from '../cell-edit/textarea-cell-edit';
 import { DataTable } from '../data-table';
-import { type DataTableProps, type GetDataFn } from '../data-table.types';
+import {
+	DataTableBaseProps,
+	DataTableOptions,
+	DataTableWithInfiniteQueryProps,
+	type DataTableProps,
+	type GetDataFn,
+} from '../data-table.types';
+import { resolveComponentProps } from '../data-table.utils';
 import { useDataTable } from '../hooks';
 
 const meta: Meta = {
@@ -319,20 +336,157 @@ export const FullFeatureWithInfiniteQuery: StoryObj<DataTableProps<DataType>> = 
 	},
 };
 
-export const WithUseDataTableHook: StoryObj<DataTableProps<DataType>> = {
-	args: {
-		...omit(FullFeatures.args, 'data'),
-	},
-	render: (props: DataTableProps<DataType>) => {
+export const WithUseDataTableHookQuery: StoryObj<DataTableProps<User>> = {
+	name: 'With useDataTable hook (and useQuery)',
+	render: (props: DataTableProps<User>) => {
+		const [pagination, setPagination] = useState({
+			pageIndex: 0,
+			pageSize: 10,
+		});
+
+		const params: GetDummyUsersParams = {
+			limit: pagination.pageSize,
+			skip: pagination.pageIndex * pagination.pageSize,
+		};
+
+		const getData = () => getDummyUsers(params);
+
+		const { data, isLoading, isFetching } = useQuery({
+			queryKey: ['WithUseDataTableHook', params],
+			queryFn: getData,
+			placeholderData: keepPreviousData,
+		});
+
+		const users = data?.users ?? [];
+
+		const columns: MRT_ColumnDef<User>[] = [
+			{
+				accessorKey: 'firstName',
+				header: 'First Name',
+			},
+			{
+				accessorKey: 'lastName',
+				header: 'Last Name',
+			},
+			{
+				accessorKey: 'email',
+				header: 'Email',
+			},
+			{
+				accessorKey: 'phone',
+				header: 'Phone',
+			},
+		];
+
 		const table = useDataTable({
 			columns,
-			getData,
-			getRowCount: data => data?.total ?? 0,
-			infinite: false,
+			data: users,
+			rowCount: data?.total,
+			enablePagination: true,
+			enableBottomToolbar: true,
+			paginationDisplayMode: 'default',
+			onPaginationChange: setPagination,
+			state: {
+				pagination,
+				isLoading: isFetching && !isLoading,
+				showSkeletons: isLoading,
+			},
 			manualPagination: true,
-			queryOptions: {
-				queryKey: ['WithUseDataTableHook'],
-				select: data => data.data,
+			pageCount: Math.ceil((data?.total ?? 0) / 10),
+			...omit(props, ['columns', 'getData', 'queryOptions', 'infinite']),
+		});
+
+		return <DataTable table={table} />;
+	},
+};
+
+export const WithUseDataTableHookInfiniteQuery: StoryObj<DataTableProps<User>> = {
+	name: 'With useDataTable hook (and useInfiniteQuery)',
+	render: (props: DataTableProps<User>) => {
+		const params: GetDummyUsersParams = {
+			limit: 25,
+			skip: 0,
+		};
+
+		const { data, isLoading, isFetching, isFetchingNextPage, hasNextPage, fetchNextPage } = useInfiniteQuery({
+			queryKey: ['WithUseDataTableHookExternalQuery', params],
+			queryFn: ({ pageParam }) => getDummyUsers({ ...params, skip: pageParam }),
+			placeholderData: keepPreviousData,
+			initialPageParam: 0,
+			getNextPageParam: lastPage => {
+				const skip = lastPage.skip + lastPage.limit;
+
+				if (lastPage.users.length < lastPage.limit) {
+					return undefined;
+				}
+
+				return skip;
+			},
+		});
+
+		const users = data?.pages.flatMap(page => page.users ?? []) ?? [];
+		const total = data?.pages[0]?.total ?? 0;
+
+		const columns: MRT_ColumnDef<User>[] = [
+			{
+				accessorKey: 'firstName',
+				header: 'First Name',
+			},
+			{
+				accessorKey: 'lastName',
+				header: 'Last Name',
+			},
+			{
+				accessorKey: 'email',
+				header: 'Email',
+			},
+			{
+				accessorKey: 'phone',
+				header: 'Phone',
+			},
+		];
+
+		const tableContainerRef = useRef<HTMLDivElement>(null);
+
+		const mantineTableContainerProps: DataTableOptions<User>['mantineTableContainerProps'] = props => {
+			const resolvedProps = resolveComponentProps(
+				props,
+				(props as unknown as DataTableBaseProps<User>).mantineTableContainerProps
+			);
+			const resolvedStyle = resolvedProps?.style as CSSProperties;
+
+			return {
+				...resolvedProps,
+				ref: tableContainerRef,
+				style: { maxHeight: 400, ...resolvedStyle },
+				onScroll: e => {
+					const { scrollHeight, scrollTop, clientHeight } = e.currentTarget;
+
+					const scrollThreshold = (props as unknown as DataTableWithInfiniteQueryProps<User>).scrollThreshold ?? 0.25;
+					const threshold =
+						typeof scrollThreshold === 'number' ? scrollThreshold : parseInt(scrollThreshold.replace('px', ''));
+
+					if (
+						scrollHeight - scrollTop - clientHeight <
+							(typeof scrollThreshold === 'number' ? clientHeight * (1 - threshold) : threshold) &&
+						!isFetching &&
+						hasNextPage
+					) {
+						void fetchNextPage();
+					}
+				},
+			};
+		};
+
+		const table = useDataTable({
+			columns,
+			data: users,
+			rowCount: total,
+			mantineTableContainerProps,
+			state: {
+				isLoading: (isFetching || isFetchingNextPage) && !isLoading,
+				showSkeletons: isLoading,
+				showProgressBars: isFetchingNextPage,
 			},
 			...omit(props, ['columns', 'getData', 'queryOptions', 'infinite']),
 		});

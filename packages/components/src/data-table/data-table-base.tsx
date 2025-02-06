@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { MantineReactTable, type MRT_RowData, type MRT_TableInstance, type Xor } from 'mantine-react-table';
 
 import { type DataTableBaseProps } from './data-table.types';
@@ -25,6 +26,16 @@ export const DataTableBase = <TData extends MRT_RowData>(props: DataTableProps<T
 		// eslint-disable-next-line react-hooks/rules-of-hooks -- safe for this pattern
 		table = useDataTableBase(props);
 	}
+
+	const tableState = table.getState();
+
+	useEffect(() => {
+		if (props.statesStorageProvider) {
+			const { set } = props.statesStorageProvider;
+
+			set(tableState, props.statesStorageKey);
+		}
+	}, [props.statesStorageKey, props.statesStorageProvider, tableState]);
 
 	return <MantineReactTable table={table} />;
 };

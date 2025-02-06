@@ -1,3 +1,4 @@
+@import 'tailwindcss';
 @import '@radix-ui/colors/sage.css';
 @import '@radix-ui/colors/red.css';
 @import '@radix-ui/colors/pink.css';
@@ -12,10 +13,6 @@
 @import '@radix-ui/colors/teal.css';
 @import '@radix-ui/colors/violet.css';
 @import '@radix-ui/colors/yellow.css';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 :root {
 	font-family:
