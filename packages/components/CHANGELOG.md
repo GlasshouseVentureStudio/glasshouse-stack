@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.2
+
+### Patch Changes
+
+- Add additional layers of hooks for useDataTable hook
+
 ## 0.9.1
 
 ### Patch Changes
