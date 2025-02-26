@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.3
+
+### Patch Changes
+
+- Fix on clearing select value user can't input new search
+
 ## 0.9.2
 
 ### Patch Changes
