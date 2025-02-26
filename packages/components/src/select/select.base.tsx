@@ -1,4 +1,3 @@
-import { type ForwardedRef, forwardRef, useEffect, useMemo, useState } from 'react';
 import { usePrevious } from '@glasshouse/utils';
 import {
 	Combobox,
@@ -14,6 +13,7 @@ import {
 } from '@mantine/core';
 import { useId, useUncontrolled } from '@mantine/hooks';
 import omit from 'lodash.omit';
+import { type ForwardedRef, forwardRef, useEffect, useMemo, useState } from 'react';
 
 import { useProps } from '../../hooks/use-props';
 import { OptionsDropdown } from '../combobox/options-dropdown';
@@ -162,7 +162,9 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 		) {
 			setSearch(selectedOption.label);
 		}
-	}, [value, selectedOption, previousSelectedOption?.value, previousSelectedOption?.label, setSearch]);
+		// eslint-disable-next-line react-compiler/react-compiler -- This effect should only run when these values changes.
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- This effect should only run when these values changes.
+	}, [value, selectedOption]);
 
 	const clearButton = clearable && Boolean(_value) && !disabled && !readOnly && (
 		<Combobox.ClearButton
