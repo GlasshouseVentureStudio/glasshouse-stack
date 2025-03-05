@@ -1,5 +1,11 @@
 # @glasshouse/style-guide
 
+## 1.0.5
+
+### Patch Changes
+
+- Bump dependencies version
+
 ## 1.0.4
 
 ### Patch Changes
