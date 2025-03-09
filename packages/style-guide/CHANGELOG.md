@@ -1,5 +1,12 @@
 # @glasshouse/style-guide
 
+## 1.1.0
+
+### Minor Changes
+
+- - Remove legacy configs
+  - Add vitest config
+
 ## 1.0.8
 
 ### Patch Changes
