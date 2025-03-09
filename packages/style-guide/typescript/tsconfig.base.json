@@ -8,6 +8,5 @@
 		"skipLibCheck": true,
 		"strict": true
 	},
-	"display": "Glasshouse Base",
-	"extends": "./tsconfig.node20.json"
+	"display": "TypeScript Config Base"
 }
