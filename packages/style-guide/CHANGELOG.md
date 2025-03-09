@@ -1,5 +1,11 @@
 # @glasshouse/style-guide
 
+## 1.1.1
+
+### Patch Changes
+
+- Remove legacy config refs from index
+
 ## 1.1.0
 
 ### Minor Changes
