@@ -13,11 +13,5 @@ module.exports = {
 			react: require('./flat-configs/react'),
 			typescript: require('./flat-configs/typescript'),
 		},
-		legacy: {
-			base: require('./configs/base'),
-			library: require('./configs/library'),
-			next: require('./configs/next'),
-			react: require('./configs/react'),
-		},
 	},
 };
