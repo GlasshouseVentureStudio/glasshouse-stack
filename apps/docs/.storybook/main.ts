@@ -1,5 +1,5 @@
 import type { StorybookConfig } from '@storybook/react-vite';
-import { dirname, join } from 'path';
+import { dirname, join, resolve } from 'path';
 
 /**
  * This function is used to resolve the absolute path of a package.
@@ -8,10 +8,11 @@ import { dirname, join } from 'path';
 function getAbsolutePath(value: string) {
 	return dirname(require.resolve(join(value, 'package.json')));
 }
+
 const config: StorybookConfig = {
 	stories: [
 		'../src/**/*.mdx',
-		'../src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+		// '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)', commented out to surpress warning
 		'../../../packages/components/src/**/*.mdx',
 		'../../../packages/components/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
 	],
@@ -36,6 +37,21 @@ const config: StorybookConfig = {
 	framework: {
 		name: getAbsolutePath('@storybook/react-vite'),
 		options: {},
+	},
+	viteFinal(config) {
+		// customize the Vite config here
+		return {
+			...config,
+			define: { 'process.env': {} },
+			resolve: {
+				alias: [
+					{
+						find: 'components',
+						replacement: resolve(__dirname, '../../../packages/components'),
+					},
+				],
+			},
+		};
 	},
 };
 

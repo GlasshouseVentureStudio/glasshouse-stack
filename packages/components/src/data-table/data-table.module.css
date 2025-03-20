@@ -124,3 +124,9 @@
 		opacity: 0;
 	}
 }
+
+.container {
+	&[data-with-infinite-query] {
+		max-height: 768px;
+	}
+}

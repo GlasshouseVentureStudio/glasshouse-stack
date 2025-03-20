@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { type CSSProperties } from '@mantine/core';
+import { cn } from '@glasshouse/utils';
 import { useInterval } from '@mantine/hooks';
 import { type DefaultError, type InfiniteData, type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 import omit from 'lodash.omit';
@@ -22,6 +22,8 @@ import {
 import { resolveComponentProps } from '../data-table.utils';
 import { LoadMoreButton } from '../toolbar/load-more-button';
 import { useDataTableBase } from './data-table.hook.base';
+
+import styles from '../data-table.module.css';
 
 export type UseDataTableWithInfiniteQueryOptions<
 	TData extends MRT_RowData,
@@ -88,12 +90,11 @@ export const useDataTableWithInfiniteQuery = <
 
 	const mantineTableContainerProps: DataTableOptions<TData>['mantineTableContainerProps'] = props => {
 		const resolvedProps = resolveComponentProps(props, mantineTableContainerPropsFromProps);
-		const resolvedStyle = resolvedProps?.style as CSSProperties;
 
 		return {
 			...resolvedProps,
 			ref: tableContainerRef,
-			style: { maxHeight: 768, ...resolvedStyle },
+			className: cn(styles.container, resolvedProps?.className),
 			onScroll: enableLoadMoreButton
 				? undefined
 				: e => {

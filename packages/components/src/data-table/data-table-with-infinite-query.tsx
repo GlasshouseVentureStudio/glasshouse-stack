@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { cn } from '@glasshouse/utils';
 import { useInterval } from '@mantine/hooks';
 import { type DefaultError, type InfiniteData, type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 import omit from 'lodash.omit';
@@ -21,6 +22,8 @@ import {
 import { resolveComponentProps } from './data-table.utils';
 import { DataTableBase } from './data-table-base';
 import { LoadMoreButton } from './toolbar/load-more-button';
+
+import styles from './data-table.module.css';
 
 export const DataTableWithInfiniteQuery = <
 	TData extends MRT_RowData,
@@ -81,7 +84,7 @@ export const DataTableWithInfiniteQuery = <
 		return {
 			...resolvedProps,
 			ref: tableContainerRef,
-			style: { maxHeight: 768, ...resolvedProps?.style },
+			className: cn(styles.container, resolvedProps?.className),
 			onScroll: enableLoadMoreButton
 				? undefined
 				: e => {
