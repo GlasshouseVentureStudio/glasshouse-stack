@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.5
+
+### Patch Changes
+
+- Use css module instead of inline styles for data table container max height
+
 ## 0.9.4
 
 ### Patch Changes
