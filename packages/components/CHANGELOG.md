@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.7
+
+### Patch Changes
+
+- Bump react types version
+
 ## 0.9.6
 
 ### Patch Changes
