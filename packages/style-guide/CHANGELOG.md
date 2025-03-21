@@ -1,5 +1,11 @@
 # @glasshouse/style-guide
 
+## 1.1.2
+
+### Patch Changes
+
+- Disable `import/no-cycle` for better linting performance
+
 ## 1.1.1
 
 ### Patch Changes

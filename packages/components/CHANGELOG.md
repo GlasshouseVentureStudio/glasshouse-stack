@@ -1,5 +1,12 @@
 # @glasshouse/components
 
+## 0.9.6
+
+### Patch Changes
+
+- Correctly set mod for data attribute prop
+- @glasshouse/utils@0.3.4
+
 ## 0.9.5
 
 ### Patch Changes
