@@ -5,6 +5,6 @@
 	"fixed": [],
 	"linked": [],
 	"access": "public",
-	"ignore": ["@glasshouse/docs", "@glasshouse/demo"],
+	"ignore": ["@glasshouse/docs"],
 	"baseBranch": "main"
 }
