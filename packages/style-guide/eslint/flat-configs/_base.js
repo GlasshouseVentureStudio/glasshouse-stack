@@ -87,6 +87,7 @@ module.exports = [
 		rules: {
 			'import/no-default-export': 'off',
 			'import/prefer-default-export': ['error', { target: 'any' }],
+			'import/no-cycle': 'off', // This rule is the most taxing on performance
 		},
 	},
 ];
