@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { type InfiniteData, type QueryKey, useInfiniteQuery } from '@tanstack/react-query';
 import omit from 'lodash.omit';
 
@@ -22,6 +22,7 @@ export const DataList = <
 	fetchFn,
 	dataSelector,
 	initialPageParam,
+	onDataFetch,
 	...props
 }: DataListProps<TData, TQueryFnData, TError, TQueryKey, TPageParam>) => {
 	const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } = useInfiniteQuery<
@@ -47,6 +48,10 @@ export const DataList = <
 	const onEndReached = useCallback(() => {
 		if (hasNextPage) void fetchNextPage();
 	}, [fetchNextPage, hasNextPage]);
+
+	useEffect(() => {
+		if (onDataFetch) onDataFetch(data);
+	}, [onDataFetch, data]);
 
 	return (
 		<List

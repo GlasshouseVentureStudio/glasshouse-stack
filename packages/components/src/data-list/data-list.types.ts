@@ -53,6 +53,12 @@ export interface DataListProps<
 	renderItem: (item: TData, index: number, active?: boolean) => React.ReactNode;
 
 	initialPageParam: TPageParam;
+
+	/**
+	 * The callback function when data fetched.
+	 */
+
+	onDataFetch?: (data?: InfiniteData<TQueryFnData, TPageParam>) => void;
 }
 
 export type ListDataSelectorFn<TQueryFnData, TData, TPageParam> = (
