@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.8
+
+### Patch Changes
+
+- Add onDataFetch callback function for DataList
+
 ## 0.9.7
 
 ### Patch Changes
