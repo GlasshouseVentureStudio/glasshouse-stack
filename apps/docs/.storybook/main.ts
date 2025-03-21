@@ -16,6 +16,7 @@ const config: StorybookConfig = {
 		'../../../packages/components/src/**/*.mdx',
 		'../../../packages/components/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
 	],
+
 	addons: [
 		getAbsolutePath('@storybook/addon-links'),
 		getAbsolutePath('@storybook/addon-essentials'),
@@ -34,10 +35,12 @@ const config: StorybookConfig = {
 			},
 		},
 	],
+
 	framework: {
 		name: getAbsolutePath('@storybook/react-vite'),
 		options: {},
 	},
+
 	viteFinal(config) {
 		// customize the Vite config here
 		return {
@@ -52,6 +55,12 @@ const config: StorybookConfig = {
 				],
 			},
 		};
+	},
+
+	docs: {},
+
+	typescript: {
+		reactDocgen: 'react-docgen-typescript',
 	},
 };
 

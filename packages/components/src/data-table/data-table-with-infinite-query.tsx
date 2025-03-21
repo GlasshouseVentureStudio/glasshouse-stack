@@ -85,6 +85,12 @@ export const DataTableWithInfiniteQuery = <
 			...resolvedProps,
 			ref: tableContainerRef,
 			className: cn(styles.container, resolvedProps?.className),
+			mod: [
+				{
+					'with-infinite-query': true,
+				},
+				resolvedProps?.mod,
+			],
 			onScroll: enableLoadMoreButton
 				? undefined
 				: e => {

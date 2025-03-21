@@ -10,7 +10,7 @@ import 'mantine-react-table/styles.css';
 import '../src/index.css';
 
 const preview: Preview = {
-	parameters: {
+    parameters: {
 		docs: {
 			toc: true,
 		},
@@ -22,7 +22,8 @@ const preview: Preview = {
 			expanded: true,
 		},
 	},
-	decorators: [
+
+    decorators: [
 		render => {
 			const queryClient = new QueryClient();
 			const [primaryColor, setPrimaryColor] = useState<MantineColor>('blue');
@@ -214,6 +215,8 @@ const preview: Preview = {
 			);
 		},
 	],
+
+    tags: ['autodocs']
 };
 
 export default preview;
