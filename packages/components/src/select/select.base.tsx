@@ -341,7 +341,6 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 							styles={{
 								...resolvedStyles,
 								input: {
-									maxWidth: rem(props.w ?? '250'),
 									overflow: 'hidden',
 									whiteSpace: 'nowrap',
 									textOverflow: 'ellipsis',
