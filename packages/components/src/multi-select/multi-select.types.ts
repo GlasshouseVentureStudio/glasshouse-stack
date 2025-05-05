@@ -111,6 +111,8 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	selectAllLabel?: string;
 	/** Limit max number of values that can be displayed in input. Default `999`. */
 	maxDisplayedValues?: number;
+	/** Value props. */
+	dataProps?: ComboboxParsedItem;
 	/**
 	 * Label for max displayed values. Default is blank.
 	 *

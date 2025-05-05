@@ -1,3 +1,4 @@
+import { type ForwardedRef, forwardRef, useEffect, useMemo, useState } from 'react';
 import { usePrevious } from '@glasshouse/utils';
 import {
 	Combobox,
@@ -5,15 +6,19 @@ import {
 	type ComboboxItemGroup,
 	getOptionsLockup,
 	getParsedComboboxData,
+	Input,
 	InputBase,
 	type OptionsDropdownProps,
+	rem,
 	type SelectFactory,
+	Text,
+	Tooltip,
 	useCombobox,
 	useResolvedStylesApi,
 } from '@mantine/core';
 import { useId, useUncontrolled } from '@mantine/hooks';
 import omit from 'lodash.omit';
-import { type ForwardedRef, forwardRef, useEffect, useMemo, useState } from 'react';
+import uniqBy from 'lodash.uniqby';
 
 import { useProps } from '../../hooks/use-props';
 import { OptionsDropdown } from '../combobox/options-dropdown';
@@ -89,14 +94,19 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 		onDropdownEndReached,
 		virtualized,
 		virtualizerOptions,
+		dataProps,
 		...others
 	} = props;
 
 	const [internalData, setInternalData] = useState(data);
 
 	useEffect(() => {
-		setInternalData(data);
-	}, [data]);
+		const baseData = Array.isArray(data) ? data : [];
+
+		const combinedList = dataProps ? [...baseData, dataProps] : data;
+
+		setInternalData(uniqBy(combinedList, 'value'));
+	}, [data, dataProps]);
 
 	const parsedData = useMemo(() => getParsedComboboxData(internalData), [internalData]);
 
@@ -186,7 +196,7 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 		/>
 	);
 
-	const inputRightSection = clearButton ? clearButton : _rightSection;
+	const inputRightSection = clearButton ?? _rightSection;
 
 	const optionsDropdownProps: OptionsDropdownProps = {
 		'aria-label': others.label ? undefined : others['aria-label'],
@@ -194,7 +204,7 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 		data: parsedData,
 		filter,
 		filterOptions: searchable && selectedOption?.label !== search,
-		hidden: readOnly ? readOnly : disabled,
+		hidden: readOnly ?? disabled,
 		hiddenWhenEmpty: !nothingFoundMessage,
 		labelId: others.label ? `${_id}-label` : undefined,
 		limit,
@@ -218,7 +228,7 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 
 		if (nextValue !== _value) setValue(nextValue, optionLockup);
 
-		const optionLockupLabel = optionLockup?.label ? optionLockup.label : '';
+		const optionLockupLabel = optionLockup?.label ?? '';
 
 		if (!controlled) setSearch(typeof nextValue === 'string' ? optionLockupLabel : '');
 
@@ -227,6 +237,23 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 
 	/** Disable filter if search value equals selected option label. */
 	const filterOptions = searchable && selectedOption?.label !== search;
+
+	const textValues = (
+		<Tooltip
+			inline
+			label={search}
+			maw={rem(props.w)}
+			multiline
+		>
+			<Text
+				fz='var(--input-fz, var(--input-fz, var(--mantine-font-size-sm)))'
+				span
+				unstyled={unstyled}
+			>
+				{search}
+			</Text>
+		</Tooltip>
+	);
 
 	return (
 		<>
@@ -244,53 +271,90 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 					autoComplete={autoComplete}
 					targetType={searchable ? 'input' : 'button'}
 				>
-					<InputBase
-						ref={ref}
-						id={_id}
-						rightSection={inputRightSection}
-						rightSectionPointerEvents={rightSectionPointerEvents ?? (clearButton ? 'all' : 'none')}
-						{...omit(others, 'infinite')}
-						classNames={resolvedClassNames}
-						disabled={disabled}
-						error={error}
-						pointer={!searchable}
-						readOnly={readOnly ? readOnly : !searchable}
-						size={size}
-						styles={resolvedStyles}
-						unstyled={unstyled}
-						value={search}
-						onBlur={event => {
-							if (searchable && !creatable) combobox.closeDropdown();
+					{combobox.dropdownOpened ? (
+						<InputBase
+							ref={ref}
+							id={_id}
+							rightSection={inputRightSection}
+							rightSectionPointerEvents={rightSectionPointerEvents ?? (clearButton ? 'all' : 'none')}
+							{...omit(others, 'infinite')}
+							classNames={resolvedClassNames}
+							disabled={disabled}
+							error={error}
+							pointer={!searchable}
+							readOnly={readOnly ?? !searchable}
+							size={size}
+							styles={resolvedStyles}
+							unstyled={unstyled}
+							value={search}
+							onBlur={event => {
+								if (searchable && !creatable) combobox.closeDropdown();
 
-							if (_value === null) {
-								setSearch('');
-							} else {
-								setSearch(previousOptionsLockup?.[_value]?.label ?? '');
-							}
+								if (_value === null) {
+									setSearch('');
+								} else {
+									setSearch(previousOptionsLockup?.[_value]?.label ?? '');
+								}
 
-							onBlur?.(event);
-						}}
-						onChange={event => {
-							setSearch(event.currentTarget.value);
-							combobox.openDropdown();
-
-							if (selectFirstOptionOnChange) combobox.selectFirstOption();
-						}}
-						onClick={event => {
-							if (searchable) {
+								onBlur?.(event);
+							}}
+							onChange={event => {
+								setSearch(event.currentTarget.value);
 								combobox.openDropdown();
-							} else {
+
+								if (selectFirstOptionOnChange) combobox.selectFirstOption();
+							}}
+							onClick={event => {
+								if (searchable) {
+									combobox.openDropdown();
+								} else {
+									combobox.toggleDropdown();
+								}
+
+								onClick?.(event);
+							}}
+							onFocus={event => {
+								if (searchable) combobox.openDropdown();
+
+								onFocus?.(event);
+							}}
+						/>
+					) : (
+						// @ts-expect-error Type conflict with InputBase rendered as button
+						<InputBase
+							component='button'
+							id={_id}
+							rightSection={inputRightSection}
+							rightSectionPointerEvents={rightSectionPointerEvents ?? (clearButton ? 'all' : 'none')}
+							type='button'
+							{...omit(others, 'infinite', 'type')}
+							classNames={resolvedClassNames}
+							disabled={disabled}
+							error={error}
+							pointer
+							size={size}
+							unstyled={unstyled}
+							onClick={event => {
 								combobox.toggleDropdown();
-							}
-
-							onClick?.(event);
-						}}
-						onFocus={event => {
-							if (searchable) combobox.openDropdown();
-
-							onFocus?.(event);
-						}}
-					/>
+								onClick?.(event as unknown as React.MouseEvent<HTMLInputElement>);
+							}}
+							styles={{
+								...resolvedStyles,
+								input: {
+									maxWidth: rem(props.w ?? '250'),
+									overflow: 'hidden',
+									whiteSpace: 'nowrap',
+									textOverflow: 'ellipsis',
+								},
+							}}
+						>
+							{search ? (
+								textValues
+							) : (
+								<Input.Placeholder className={error ? 'text-red-500' : ''}>{props.placeholder}</Input.Placeholder>
+							)}
+						</InputBase>
+					)}
 				</Combobox.Target>
 				<OptionsDropdown
 					{...optionsDropdownProps}

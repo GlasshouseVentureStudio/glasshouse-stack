@@ -19,6 +19,7 @@ import {
 } from '@mantine/core';
 import { useId, useUncontrolled } from '@mantine/hooks';
 import omit from 'lodash.omit';
+import uniqBy from 'lodash.uniqby';
 import { XIcon } from 'lucide-react';
 
 import { useProps } from '../../hooks/use-props';
@@ -147,8 +148,14 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 	const [internalData, setInternalData] = useState(data);
 
 	useEffect(() => {
-		setInternalData(data);
-	}, [data]);
+		const baseData = Array.isArray(data) ? data : [];
+
+		const propsData = Array.isArray(props.dataProps) ? props.dataProps : [props.dataProps];
+
+		const combinedList = props.dataProps ? [...baseData, ...propsData] : data;
+
+		setInternalData(uniqBy(combinedList, 'value'));
+	}, [data, props.dataProps]);
 
 	const _id = useId(id);
 	const parsedData = getParsedComboboxData(internalData);
@@ -273,7 +280,7 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 		/>
 	);
 
-	const inputRightSection = clearButton ? clearButton : _rightSection;
+	const inputRightSection = clearButton ?? _rightSection;
 
 	const getCumulativeValue = (value: string) => {
 		const option = optionsLockup[value];
@@ -499,7 +506,7 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 									onKeyDown={handleInputKeydown}
 									placeholder={placeholder}
 									pointer={!searchable}
-									readOnly={readOnly ? readOnly : !searchable}
+									readOnly={readOnly ?? !searchable}
 									type={!searchable && !placeholder ? 'hidden' : 'visible'}
 									unstyled={unstyled}
 									value={_searchValue}
@@ -545,7 +552,7 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 					data={hidePickedOptions ? filteredData : parsedData}
 					filter={filter}
 					filterOptions={searchable}
-					hidden={readOnly ? readOnly : disabled}
+					hidden={readOnly ?? disabled}
 					hiddenWhenEmpty={!nothingFoundMessage}
 					labelId={label ? `${_id}-label` : undefined}
 					limit={limit}
