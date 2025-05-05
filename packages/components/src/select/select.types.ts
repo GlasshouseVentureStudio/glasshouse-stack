@@ -53,6 +53,8 @@ export interface SelectBaseProps extends MantineSelectProps {
 	renderHeader?: (props: { combobox: ComboboxStore; data: ComboboxParsedItem[] }) => ReactNode;
 	/** Function to render the options in the dropdown. */
 	renderOptions?: (data: ComboboxParsedItem[], options: ReactNode) => ReactNode;
+	/** Function to render the options in the dropdown. */
+	dataProps?: ComboboxParsedItem;
 	/**
 	 * A callback function that is called when the dropdown's scroll reaches the end.
 	 *

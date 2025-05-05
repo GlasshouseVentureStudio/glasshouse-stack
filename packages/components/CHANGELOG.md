@@ -1,5 +1,13 @@
 # @glasshouse/components
 
+## 0.9.9
+
+### Patch Changes
+
+- Add a tooltip to the Select combobox.
+
+- Add dataProps to the data of Select and Multi Select if available.
+
 ## 0.9.8
 
 ### Patch Changes
