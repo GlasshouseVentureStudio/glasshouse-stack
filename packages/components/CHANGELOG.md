@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.10
+
+### Patch Changes
+
+- - Add a tooltip to the Select combobox.
+
 ## 0.9.9
 
 ### Patch Changes
