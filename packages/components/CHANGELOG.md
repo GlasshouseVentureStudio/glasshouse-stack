@@ -12,6 +12,12 @@
 
 - Show all names in the tooltip when selecting all item
 
+## 0.9.11
+
+### Patch Changes
+
+- Show all names in the tooltip when selecting all item
+
 ## 0.9.10
 
 ### Patch Changes
