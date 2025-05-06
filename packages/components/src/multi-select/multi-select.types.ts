@@ -1,6 +1,7 @@
 import { type ReactNode, type ReactPortal } from 'react';
 import {
 	type ComboboxData,
+	type ComboboxItem,
 	type ComboboxParsedItem,
 	type ComboboxStore,
 	type MultiSelectProps as MantineMultiSelectProps,
@@ -112,7 +113,7 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	/** Limit max number of values that can be displayed in input. Default `999`. */
 	maxDisplayedValues?: number;
 	/** Value props. */
-	dataProps?: ComboboxParsedItem;
+	dataProps?: ComboboxItem;
 	/**
 	 * Label for max displayed values. Default is blank.
 	 *
