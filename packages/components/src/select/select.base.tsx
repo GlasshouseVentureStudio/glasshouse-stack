@@ -196,7 +196,8 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 		/>
 	);
 
-	const inputRightSection = clearButton ?? _rightSection;
+	// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- This effect should only run when these values changes.
+	const inputRightSection = clearButton ? clearButton : _rightSection;
 
 	const optionsDropdownProps: OptionsDropdownProps = {
 		'aria-label': others.label ? undefined : others['aria-label'],
