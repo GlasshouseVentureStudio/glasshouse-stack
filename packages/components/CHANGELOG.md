@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.13
+
+### Patch Changes
+
+- add dataProps into list data
+
 ## 0.9.12
 
 ### Patch Changes
