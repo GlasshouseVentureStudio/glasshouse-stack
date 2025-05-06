@@ -1,5 +1,17 @@
 # @glasshouse/components
 
+## 0.9.12
+
+### Patch Changes
+
+- Fix bug select combobox
+
+## 0.9.11
+
+### Patch Changes
+
+- Show all names in the tooltip when selecting all item
+
 ## 0.9.11
 
 ### Patch Changes
