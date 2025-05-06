@@ -327,9 +327,17 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 		}
 	}, [_value.length, maxDisplayedValues, renderMaxDisplayedValuesLabel]);
 
-	const tooltipTextContent = maxDisplayedValues
-		? _value.map(getCumulativeValue).join(maxDisplayedValuesSeparator)
-		: undefined;
+	let tooltipTextContent: string | undefined;
+
+	if (maxDisplayedValues) {
+		if (_value.length === flatOptionsData.length) {
+			tooltipTextContent = selectAllLabel ?? 'All Items';
+		} else {
+			tooltipTextContent = _value.map(getCumulativeValue).join(maxDisplayedValuesSeparator);
+		}
+	} else {
+		tooltipTextContent = undefined;
+	}
 
 	const textValues =
 		_value.length > 0 ? (
