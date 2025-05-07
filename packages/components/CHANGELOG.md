@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.15
+
+### Patch Changes
+
+- fix bug add dataProps to Select combobox case group option
+
 ## 0.9.14
 
 ### Patch Changes

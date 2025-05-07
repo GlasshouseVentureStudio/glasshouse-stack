@@ -24,6 +24,7 @@ import { Select } from './select';
 import { type SelectProps, type SelectWithInfiniteQueryProps } from './select.types';
 
 import '@mantine/notifications/styles.css';
+import groupBy from 'lodash.groupby';
 
 const meta: Meta = {
 	title: 'Components/Combobox/Select',
@@ -492,6 +493,165 @@ export const FormUsage: StoryObj<
 																value: user.username,
 															}))
 														),
+													}),
+													getNextPageParam: (lastPage, _ap, { skip, limit }) => {
+														if (skip + limit < lastPage.total) {
+															return {
+																skip: skip + limit,
+																limit,
+															};
+														}
+
+														return undefined;
+													},
+													initialPageParam: {
+														limit: 20,
+														skip: 0,
+													},
+												}}
+											/>
+										</Grid.Col>
+									</Grid>
+									<Group
+										gap='xs'
+										wrap='nowrap'
+									>
+										<ActionIcon
+											color='red'
+											disabled={index === 0}
+											opacity={index === 0 ? 0 : undefined}
+											size='xs'
+											variant='subtle'
+											onClick={() => {
+												form.removeListItem('contacts', index);
+											}}
+										>
+											<MinusIcon size={14} />
+										</ActionIcon>
+									</Group>
+								</Group>
+							</Fieldset>
+						))}
+						<Button
+							type='submit'
+							w={160}
+						>
+							Submit
+						</Button>
+					</Stack>
+				</form>
+				<Stack>
+					{contacts?.contacts.map(contact => (
+						<Group key={contact.key}>
+							<span>{contact.name}</span>
+							<span>{contact.phone}</span>
+							<span>{contact.email}</span>
+							<span>{contact.person}</span>
+						</Group>
+					))}
+				</Stack>
+			</Stack>
+		);
+	},
+};
+
+export const GroupSelect: StoryObj<
+	SelectWithInfiniteQueryProps<UsersResponse, Error, string[], { pageSize: number; pageIndex: number }>
+> = {
+	args: {
+		dropdownLoadingType: 'skeleton',
+	},
+	render: (
+		props: SelectWithInfiniteQueryProps<UsersResponse, Error, string[], { pageSize: number; pageIndex: number }>
+	) => {
+		const form = useForm<FormFields>({
+			initialValues: {
+				contacts: [
+					{
+						name: '',
+						phone: '',
+						email: '',
+						person: '',
+						key: '',
+					},
+				],
+			},
+		});
+
+		const handleAdd = () => {
+			form.insertListItem('contacts', {
+				name: '',
+				email: '',
+				phone: '',
+				person: '',
+				key: v4(),
+			});
+		};
+
+		const [contacts, setContacts] = useState<FormFields>();
+
+		const handleSubmit = (values: FormFields) => {
+			setContacts(values);
+		};
+
+		return (
+			<Stack>
+				<form onSubmit={form.onSubmit(handleSubmit)}>
+					<ActionIcon onClick={handleAdd}>
+						<PlusIcon />
+					</ActionIcon>
+					<Stack>
+						{form.values.contacts.map((contact, index) => (
+							<Fieldset
+								key={contact.key}
+								variant='unstyled'
+								classNames={{
+									legend: 'mb-1',
+									root: 'mb-3',
+								}}
+							>
+								<Group
+									gap='xs'
+									wrap='nowrap'
+								>
+									<Grid columns={2}>
+										<Grid.Col span={1}>
+											<TextInput
+												placeholder='Name'
+												{...form.getInputProps(`contacts.${index}.name`)}
+											/>
+										</Grid.Col>
+										<Grid.Col span={1}>
+											<Select
+												{...props}
+												{...form.getInputProps(`contacts.${index}.person`)}
+												clearable
+												creatable
+												infinite
+												nothingFoundMessage='Nothing found'
+												placeholder='Select person'
+												searchable
+												getData={({ pageParam }, { search = '' }) =>
+													getUsers({ ...pageParam, q: search.toLowerCase() })
+												}
+												queryOptions={{
+													queryKey: ['WithQuery'],
+													select: ({ pageParams, pages }) => ({
+														pageParams,
+														pages: pages.map(page => {
+															const groups = groupBy(page.users, user => user.firstName.charAt(0).toUpperCase());
+
+															return Object.keys(groups).map(group => {
+																return {
+																	group,
+																	items:
+																		groups[group]?.map(user => ({
+																			label: `${user.firstName} ${user.lastName}`,
+																			value: user.id.toString(),
+																		})) ?? [],
+																};
+															});
+														}),
 													}),
 													getNextPageParam: (lastPage, _ap, { skip, limit }) => {
 														if (skip + limit < lastPage.total) {

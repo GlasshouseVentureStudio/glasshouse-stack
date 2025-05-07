@@ -102,10 +102,48 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 
 	useEffect(() => {
 		const baseData = Array.isArray(data) ? data : [];
+		const isGrouped =
+			Array.isArray(baseData) &&
+			baseData.length > 0 &&
+			baseData.every(
+				item =>
+					item &&
+					typeof item === 'object' &&
+					typeof (item as ComboboxItemGroup).group === 'string' &&
+					Array.isArray((item as ComboboxItemGroup).items)
+			);
 
-		const combinedList = dataProps ? [...baseData, dataProps] : data;
+		if (isGrouped) {
+			const mergedGroups = [...(baseData as ComboboxItemGroup[])];
 
-		setInternalData(uniqBy(combinedList, 'value'));
+			if (dataProps) {
+				// Check if curentItem exists in any group
+				const selectedValue = (dataProps as ComboboxItem).value;
+				const exists = mergedGroups.some(group =>
+					group.items.some(item => (item as ComboboxItem).value === selectedValue)
+				);
+
+				if (!exists) {
+					// Check if N/A group exists
+					const naGroup = mergedGroups.find(group => group.group === 'N/A');
+
+					if (naGroup) {
+						naGroup.items.push(dataProps as ComboboxItem);
+					} else {
+						mergedGroups.push({
+							group: 'N/A',
+							items: [dataProps as ComboboxItem],
+						});
+					}
+				}
+			}
+
+			setInternalData(mergedGroups);
+		} else {
+			const combinedList = dataProps ? [...baseData, dataProps] : data;
+
+			setInternalData(uniqBy(combinedList, 'value'));
+		}
 	}, [data, dataProps]);
 
 	const parsedData = useMemo(() => getParsedComboboxData(internalData), [internalData]);
