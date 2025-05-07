@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.14
+
+### Patch Changes
+
+- Fix bug check is Group of Multiple Select
+
 ## 0.9.13
 
 ### Patch Changes
