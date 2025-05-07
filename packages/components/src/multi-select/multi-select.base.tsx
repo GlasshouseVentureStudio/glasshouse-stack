@@ -150,11 +150,44 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 	useEffect(() => {
 		const baseData = Array.isArray(data) ? data : [];
 
-		const propsData = Array.isArray(props.dataProps) ? props.dataProps : [props.dataProps];
+		const isGrouped =
+			Array.isArray(baseData) &&
+			(baseData[0] as ComboboxItemGroup).group &&
+			Array.isArray((baseData[0] as ComboboxItemGroup).items);
 
-		const combinedList = props.dataProps ? [...baseData, ...propsData] : data;
+		if (isGrouped) {
+			const mergedGroups = [...(baseData as ComboboxItemGroup[])];
 
-		setInternalData(uniqBy(combinedList, 'value'));
+			if (props.dataProps) {
+				// Check if curentItem exists in any group
+				const selectedValue = props.dataProps.value;
+				const exists = mergedGroups.some(group =>
+					group.items.some(item => (item as ComboboxItem).value === selectedValue)
+				);
+
+				if (!exists) {
+					// Check if N/A group exists
+					const naGroup = mergedGroups.find(group => group.group === 'N/A');
+
+					if (naGroup) {
+						naGroup.items.push(props.dataProps);
+					} else {
+						mergedGroups.push({
+							group: 'N/A',
+							items: [props.dataProps],
+						});
+					}
+				}
+			}
+
+			setInternalData(mergedGroups);
+		} else {
+			const propsData = Array.isArray(props.dataProps) ? props.dataProps : [props.dataProps];
+
+			const combinedList = props.dataProps ? [...baseData, ...propsData] : data;
+
+			setInternalData(uniqBy(combinedList, 'value'));
+		}
 	}, [data, props.dataProps]);
 
 	const _id = useId(id);
@@ -280,7 +313,8 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 		/>
 	);
 
-	const inputRightSection = clearButton ?? _rightSection;
+	// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- This effect should only run when these values changes.
+	const inputRightSection = clearButton ? clearButton : _rightSection;
 
 	const getCumulativeValue = (value: string) => {
 		const option = optionsLockup[value];

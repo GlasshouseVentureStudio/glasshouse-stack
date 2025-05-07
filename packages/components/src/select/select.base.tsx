@@ -1,4 +1,4 @@
-import { type ForwardedRef, forwardRef, useEffect, useMemo, useState } from 'react';
+import { type ForwardedRef, forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import { usePrevious } from '@glasshouse/utils';
 import {
 	Combobox,
@@ -209,7 +209,7 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 		hiddenWhenEmpty: !nothingFoundMessage,
 		labelId: others.label ? `${_id}-label` : undefined,
 		limit,
-		maxDropdownHeight,
+		maxDropdownHeight: maxDropdownHeight ?? 320,
 		nothingFoundMessage,
 		renderOption,
 		scrollAreaProps,
@@ -238,22 +238,46 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 
 	/** Disable filter if search value equals selected option label. */
 	const filterOptions = searchable && selectedOption?.label !== search;
+	const textRef = useRef<HTMLSpanElement>(null);
+	const [isTruncated, setIsTruncated] = useState(false);
 
-	const textValues = (
+	useEffect(() => {
+		const el = textRef.current;
+
+		if (el) {
+			setIsTruncated(el.scrollWidth > el.clientWidth);
+		}
+	}, [search]);
+
+	const textElement = (
+		<Text
+			ref={textRef}
+			component='span'
+			fz='var(--input-fz, var(--input-fz, var(--mantine-font-size-sm)))'
+			unstyled={unstyled}
+			style={{
+				whiteSpace: 'nowrap',
+				overflow: 'hidden',
+				textOverflow: 'ellipsis',
+				display: 'block',
+				maxWidth: '100%',
+			}}
+		>
+			{search}
+		</Text>
+	);
+
+	const textValues = isTruncated ? (
 		<Tooltip
 			inline
 			label={search}
 			maw={rem(props.w)}
 			multiline
 		>
-			<Text
-				fz='var(--input-fz, var(--input-fz, var(--mantine-font-size-sm)))'
-				span
-				unstyled={unstyled}
-			>
-				{search}
-			</Text>
+			{textElement}
 		</Tooltip>
+	) : (
+		textElement
 	);
 
 	return (
