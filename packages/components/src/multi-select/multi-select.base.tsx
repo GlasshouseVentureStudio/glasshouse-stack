@@ -152,8 +152,14 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 
 		const isGrouped =
 			Array.isArray(baseData) &&
-			(baseData[0] as ComboboxItemGroup).group &&
-			Array.isArray((baseData[0] as ComboboxItemGroup).items);
+			baseData.length > 0 &&
+			baseData.every(
+				item =>
+					item &&
+					typeof item === 'object' &&
+					typeof (item as ComboboxItemGroup).group === 'string' &&
+					Array.isArray((item as ComboboxItemGroup).items)
+			);
 
 		if (isGrouped) {
 			const mergedGroups = [...(baseData as ComboboxItemGroup[])];
