@@ -151,14 +151,15 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 		const baseData = Array.isArray(data) ? data : [];
 
 		const isGrouped =
-			Array.isArray(baseData) &&
 			baseData.length > 0 &&
 			baseData.every(
 				item =>
 					item &&
 					typeof item === 'object' &&
-					typeof (item as ComboboxItemGroup).group === 'string' &&
-					Array.isArray((item as ComboboxItemGroup).items)
+					'group' in item &&
+					'items' in item &&
+					typeof item.group === 'string' &&
+					Array.isArray(item.items)
 			);
 
 		if (isGrouped) {
@@ -190,9 +191,9 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 		} else {
 			const propsData = Array.isArray(props.dataProps) ? props.dataProps : [props.dataProps];
 
-			const combinedList = props.dataProps ? [...baseData, ...propsData] : data;
+			const combinedList = props.dataProps ? uniqBy([...baseData, ...propsData], 'value') : data;
 
-			setInternalData(uniqBy(combinedList, 'value'));
+			setInternalData(combinedList);
 		}
 	}, [data, props.dataProps]);
 
