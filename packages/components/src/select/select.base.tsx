@@ -102,15 +102,17 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 
 	useEffect(() => {
 		const baseData = Array.isArray(data) ? data : [];
+
 		const isGrouped =
-			Array.isArray(baseData) &&
 			baseData.length > 0 &&
 			baseData.every(
 				item =>
 					item &&
 					typeof item === 'object' &&
-					typeof (item as ComboboxItemGroup).group === 'string' &&
-					Array.isArray((item as ComboboxItemGroup).items)
+					'group' in item &&
+					'items' in item &&
+					typeof item.group === 'string' &&
+					Array.isArray(item.items)
 			);
 
 		if (isGrouped) {
@@ -140,9 +142,9 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 
 			setInternalData(mergedGroups);
 		} else {
-			const combinedList = dataProps ? [...baseData, dataProps] : data;
+			const combinedList = dataProps ? uniqBy([...baseData, dataProps], 'value') : data;
 
-			setInternalData(uniqBy(combinedList, 'value'));
+			setInternalData(combinedList);
 		}
 	}, [data, dataProps]);
 

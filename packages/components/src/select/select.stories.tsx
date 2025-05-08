@@ -714,6 +714,16 @@ export const GroupSelect: StoryObj<
 	},
 };
 
+export const SingleDataBasic: StoryObj<SelectProps> = {
+	args: {
+		data: ['A', 'B', 'C', 'D'],
+		w: 256,
+		placeholder: 'Select',
+		clearable: true,
+		searchable: true,
+	},
+};
+
 export const Virtualized: StoryObj<SelectProps> = {
 	args: {
 		data: generateData(1000),
