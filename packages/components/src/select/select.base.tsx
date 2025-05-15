@@ -99,6 +99,7 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 	} = props;
 
 	const [internalData, setInternalData] = useState(data);
+	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
 		const baseData = Array.isArray(data) ? data : [];
@@ -280,6 +281,7 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 	const filterOptions = searchable && selectedOption?.label !== search;
 	const textRef = useRef<HTMLSpanElement>(null);
 	const [isTruncated, setIsTruncated] = useState(false);
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		const el = textRef.current;
@@ -336,9 +338,49 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 					autoComplete={autoComplete}
 					targetType={searchable ? 'input' : 'button'}
 				>
-					{combobox.dropdownOpened ? (
+					{open && search ? (
+						// @ts-expect-error Type conflict with InputBase rendered as button
 						<InputBase
-							ref={ref}
+							component='button'
+							id={_id}
+							rightSection={inputRightSection}
+							rightSectionPointerEvents={rightSectionPointerEvents ?? (clearButton ? 'all' : 'none')}
+							type='button'
+							{...omit(others, 'infinite', 'type')}
+							classNames={resolvedClassNames}
+							disabled={disabled}
+							error={error}
+							pointer
+							size={size}
+							unstyled={unstyled}
+							onClick={event => {
+								combobox.toggleDropdown();
+								onClick?.(event as unknown as React.MouseEvent<HTMLInputElement>);
+								setOpen(false);
+								setTimeout(() => {
+									if (inputRef.current) {
+										inputRef.current.focus();
+									}
+								}, 0);
+							}}
+							styles={{
+								...resolvedStyles,
+								input: {
+									overflow: 'hidden',
+									whiteSpace: 'nowrap',
+									textOverflow: 'ellipsis',
+								},
+							}}
+						>
+							{search ? (
+								textValues
+							) : (
+								<Input.Placeholder className={error ? 'text-red-500' : ''}>{props.placeholder}</Input.Placeholder>
+							)}
+						</InputBase>
+					) : (
+						<InputBase
+							ref={inputRef}
 							id={_id}
 							rightSection={inputRightSection}
 							rightSectionPointerEvents={rightSectionPointerEvents ?? (clearButton ? 'all' : 'none')}
@@ -360,6 +402,7 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 								} else {
 									setSearch(previousOptionsLockup?.[_value]?.label ?? '');
 								}
+								setOpen(true);
 
 								onBlur?.(event);
 							}}
@@ -375,7 +418,7 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 								} else {
 									combobox.toggleDropdown();
 								}
-
+								setOpen(false);
 								onClick?.(event);
 							}}
 							onFocus={event => {
@@ -384,40 +427,6 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 								onFocus?.(event);
 							}}
 						/>
-					) : (
-						// @ts-expect-error Type conflict with InputBase rendered as button
-						<InputBase
-							component='button'
-							id={_id}
-							rightSection={inputRightSection}
-							rightSectionPointerEvents={rightSectionPointerEvents ?? (clearButton ? 'all' : 'none')}
-							type='button'
-							{...omit(others, 'infinite', 'type')}
-							classNames={resolvedClassNames}
-							disabled={disabled}
-							error={error}
-							pointer
-							size={size}
-							unstyled={unstyled}
-							onClick={event => {
-								combobox.toggleDropdown();
-								onClick?.(event as unknown as React.MouseEvent<HTMLInputElement>);
-							}}
-							styles={{
-								...resolvedStyles,
-								input: {
-									overflow: 'hidden',
-									whiteSpace: 'nowrap',
-									textOverflow: 'ellipsis',
-								},
-							}}
-						>
-							{search ? (
-								textValues
-							) : (
-								<Input.Placeholder className={error ? 'text-red-500' : ''}>{props.placeholder}</Input.Placeholder>
-							)}
-						</InputBase>
 					)}
 				</Combobox.Target>
 				<OptionsDropdown
