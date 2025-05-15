@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.17
+
+### Patch Changes
+
+- Fix bug focus Select combobox
+
 ## 0.9.16
 
 ### Patch Changes
