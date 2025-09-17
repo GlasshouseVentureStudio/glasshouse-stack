@@ -4,6 +4,7 @@ import {
 	Combobox,
 	type ComboboxItem,
 	type ComboboxItemGroup,
+	ComboboxParsedItem,
 	extractStyleProps,
 	getOptionsLockup,
 	getParsedComboboxData,
@@ -443,6 +444,39 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 		}
 	}, [_value.length]);
 
+	const baseData = hidePickedOptions ? filteredData : parsedData;
+
+	let sortedData = baseData;
+
+	const isGrouped =
+		baseData.length > 0 &&
+		baseData.every(
+			item =>
+				item &&
+				typeof item === 'object' &&
+				'group' in item &&
+				'items' in item &&
+				typeof item.group === 'string' &&
+				Array.isArray(item.items)
+		);
+
+	if (isGrouped) {
+		const newGroups = (baseData as ComboboxItemGroup[]).map(group => ({
+			...group,
+			items: group.items.filter(item => !_value.includes((item as ComboboxItem).value)) as ComboboxItem[],
+		}));
+
+		sortedData =
+			_value.length > 0
+				? [{ group: 'selected', items: cumulativeValue.filter(item => _value.includes(item.value)) }, ...newGroups]
+				: newGroups;
+	} else {
+		sortedData = [
+			...baseData.filter(item => _value.includes((item as ComboboxItem).value)),
+			...baseData.filter(item => !_value.includes((item as ComboboxItem).value)),
+		];
+	}
+
 	return (
 		<>
 			<Combobox
@@ -598,7 +632,7 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 					creatable={creatable}
 					creatablePosition={creatablePosition}
 					createInputValidator={createInputValidator}
-					data={hidePickedOptions ? filteredData : parsedData}
+					data={sortedData}
 					filter={filter}
 					filterOptions={searchable}
 					hidden={readOnly ?? disabled}
