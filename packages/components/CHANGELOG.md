@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.18
+
+### Major Changes
+
+- Selecting multiple horses
+
 ## 0.9.17
 
 ### Patch Changes
