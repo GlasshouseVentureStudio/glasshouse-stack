@@ -459,21 +459,22 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 				Array.isArray(item.items)
 		);
 
-	if (isGrouped) {
-		const newGroups = (baseData as ComboboxItemGroup[]).map(group => ({
-			...group,
-			items: group.items.filter(item => !_value.includes((item as ComboboxItem).value)) as ComboboxItem[],
-		}));
-
-		sortedData =
-			_value.length > 0
-				? [{ group: 'selected', items: cumulativeValue.filter(item => _value.includes(item.value)) }, ...newGroups]
-				: newGroups;
-	} else {
-		sortedData = [
-			...baseData.filter(item => _value.includes((item as ComboboxItem).value)),
-			...baseData.filter(item => !_value.includes((item as ComboboxItem).value)),
-		];
+	if (_value.length !== flatOptionsData.length) {
+		if (isGrouped) {
+			const newGroups = (baseData as ComboboxItemGroup[]).map(group => ({
+				...group,
+				items: group.items.filter(item => !_value.includes((item as ComboboxItem).value)) as ComboboxItem[],
+			}));
+			sortedData =
+				_value.length > 0
+					? [{ group: 'selected', items: flatOptionsData.filter(item => _value.includes(item.value)) }, ...newGroups]
+					: newGroups;
+		} else {
+			sortedData = [
+				...baseData.filter(item => _value.includes((item as ComboboxItem).value)),
+				...baseData.filter(item => !_value.includes((item as ComboboxItem).value)),
+			];
+		}
 	}
 
 	return (
