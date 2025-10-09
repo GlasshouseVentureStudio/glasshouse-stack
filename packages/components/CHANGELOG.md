@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.20
+
+### Major Changes
+
+- Multiple select go on top list
+
 ## 0.9.19
 
 ### Major Changes
