@@ -470,10 +470,12 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 					? [{ group: 'selected', items: flatOptionsData.filter(item => _value.includes(item.value)) }, ...newGroups]
 					: newGroups;
 		} else {
-			sortedData = [
-				...baseData.filter(item => _value.includes((item as ComboboxItem).value)),
-				...baseData.filter(item => !_value.includes((item as ComboboxItem).value)),
-			];
+			const filteredCumulative = cumulativeValue.filter(item => _value.includes(item.value));
+
+			sortedData = uniqBy(
+				[...filteredCumulative, ...baseData.filter(item => !_value.includes((item as ComboboxItem).value))],
+				'value'
+			);
 		}
 	}
 
