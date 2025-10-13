@@ -358,6 +358,15 @@ export const WithInfiniteQuery: StoryObj<
 						},
 						initialPageParam: { limit: 20, skip: 0 },
 					}}
+					renderOption={({ option, checked }) => (
+						<Group wrap='nowrap'>
+							<Checkbox
+								checked={checked}
+								readOnly
+							/>
+							<Text>{option.label}</Text>
+						</Group>
+					)}
 				/>
 				<MultiSelect
 					{...props}
