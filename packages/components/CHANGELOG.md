@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.22
+
+### Major Changes
+
+- Selecting multiple with infinite show on top when select page index > 1
+
 ## 0.9.21
 
 ### Major Changes
