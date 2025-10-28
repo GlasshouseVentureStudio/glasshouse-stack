@@ -447,8 +447,6 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	let sortedData = baseData;
 
-	console.log('sortedData', sortedData);
-
 	const isGrouped =
 		baseData.length > 0 &&
 		baseData.every(
