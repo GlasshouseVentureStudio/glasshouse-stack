@@ -447,6 +447,8 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	let sortedData = baseData;
 
+	console.log('sortedData', sortedData);
+
 	const isGrouped =
 		baseData.length > 0 &&
 		baseData.every(
@@ -465,18 +467,27 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 				...group,
 				items: group.items.filter(item => !_value.includes((item as ComboboxItem).value)) as ComboboxItem[],
 			}));
+
+			const selectedGroup = {
+				group: 'selected',
+				items: flatOptionsData.filter(item => _value.includes(item.value)),
+			};
+
 			sortedData =
-				_value.length > 0
-					? [{ group: 'selected', items: flatOptionsData.filter(item => _value.includes(item.value)) }, ...newGroups]
-					: newGroups;
+				_value.length > 0 ? (_searchValue ? [...newGroups, selectedGroup] : [selectedGroup, ...newGroups]) : newGroups;
 		} else {
 			const filteredCumulative = cumulativeValue.filter(item => _value.includes(item.value));
 
+			const selectedItems = baseData.filter(item => _value.includes((item as ComboboxItem).value));
+			const unselectedItems = baseData.filter(item => !_value.includes((item as ComboboxItem).value));
+
 			sortedData = uniqBy(
 				[
-					...filteredCumulative,
-					...baseData.filter(item => _value.includes((item as ComboboxItem).value)),
-					...baseData.filter(item => !_value.includes((item as ComboboxItem).value)),
+					...(!_searchValue ? [...filteredCumulative, ...selectedItems] : []),
+
+					...unselectedItems,
+
+					...(_searchValue ? [...selectedItems, ...filteredCumulative] : []),
 				],
 				'value'
 			);
