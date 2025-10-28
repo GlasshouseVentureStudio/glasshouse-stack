@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.23
+
+### Major Changes
+
+- Selected horses should be at the bottom of the list when searching
+
 ## 0.9.22
 
 ### Major Changes
