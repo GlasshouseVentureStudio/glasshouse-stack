@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.24
+
+### Major Changes
+
+- Remove console
+
 ## 0.9.23
 
 ### Major Changes
