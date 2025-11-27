@@ -1,44 +1,50 @@
 # @glasshouse/components
 
+## 0.9.25
+
+### Patch Changes
+
+- include selected in downdown when searching
+
 ## 0.9.24
 
-### Major Changes
+### Patch Changes
 
 - Remove console
 
 ## 0.9.23
 
-### Major Changes
+### Patch Changes
 
 - Selected horses should be at the bottom of the list when searching
 
 ## 0.9.22
 
-### Major Changes
+### Patch Changes
 
 - Selecting multiple with infinite show on top when select page index > 1
 
 ## 0.9.21
 
-### Major Changes
+### Patch Changes
 
 - Multiple select go on top list
 
 ## 0.9.20
 
-### Major Changes
+### Patch Changes
 
 - Multiple select go on top list
 
 ## 0.9.19
 
-### Major Changes
+### Patch Changes
 
 - Multiple selected on top
 
 ## 0.9.18
 
-### Major Changes
+### Patch Changes
 
 - Selecting multiple horses on top dropdown
 

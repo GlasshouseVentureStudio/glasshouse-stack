@@ -30,6 +30,7 @@ import { type MultiSelectBaseProps } from './multi-select.types';
 import { filterPickedValues } from './multi-select.utils';
 
 import classes from './multi-select.module.css';
+import orderBy from 'lodash.orderby';
 
 const defaultProps: Partial<MultiSelectBaseProps> = {
 	maxValues: Infinity,
@@ -468,27 +469,56 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 
 			const selectedGroup = {
 				group: 'selected',
-				items: flatOptionsData.filter(item => _value.includes(item.value)),
+				items: orderBy(
+					flatOptionsData.filter(item => _value.includes(item.value)),
+					'label'
+				),
 			};
 
-			sortedData =
-				_value.length > 0 ? (_searchValue ? [...newGroups, selectedGroup] : [selectedGroup, ...newGroups]) : newGroups;
+			if (_searchValue) {
+				const searchedGroups = (baseData as ComboboxItemGroup[]).map(group => ({
+					...group,
+					items: group.items.filter(item =>
+						(item as ComboboxItem).label?.toLowerCase().includes(_searchValue.toLowerCase())
+					),
+				}));
+
+				const finalGroups = searchedGroups.map(group => ({
+					...group,
+					items: group.items.filter(item => !_value.includes((item as ComboboxItem).value)) as ComboboxItem[],
+				}));
+
+				sortedData = [...finalGroups, selectedGroup];
+			} else {
+				sortedData = _value.length > 0 ? [selectedGroup, ...newGroups] : newGroups;
+			}
 		} else {
-			const filteredCumulative = cumulativeValue.filter(item => _value.includes(item.value));
+			const filteredCumulative = orderBy(
+				cumulativeValue.filter(item => _value.includes(item.value)),
+				'label'
+			);
 
 			const selectedItems = baseData.filter(item => _value.includes((item as ComboboxItem).value));
-			const unselectedItems = baseData.filter(item => !_value.includes((item as ComboboxItem).value));
 
-			sortedData = uniqBy(
-				[
-					...(!_searchValue ? [...filteredCumulative, ...selectedItems] : []),
+			if (_searchValue) {
+				const searchedItems = baseData.filter(item =>
+					(item as ComboboxItem).label?.toLowerCase().includes(_searchValue.toLowerCase())
+				);
+				const unselectedSearched = searchedItems.filter(item => !_value.includes((item as ComboboxItem).value));
 
-					...unselectedItems,
+				sortedData = uniqBy([...unselectedSearched, ...filteredCumulative], 'value');
+			} else {
+				const unselectedItems = baseData.filter(item => !_value.includes((item as ComboboxItem).value));
 
-					...(_searchValue ? [...selectedItems, ...filteredCumulative] : []),
-				],
-				'value'
-			);
+				sortedData = uniqBy(
+					[
+						...(!_searchValue ? [...filteredCumulative, ...selectedItems] : []),
+						...unselectedItems,
+						...(_searchValue ? [...selectedItems, ...filteredCumulative] : []),
+					],
+					'value'
+				);
+			}
 		}
 	}
 
@@ -649,7 +679,7 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 					createInputValidator={createInputValidator}
 					data={sortedData}
 					filter={filter}
-					filterOptions={searchable}
+					filterOptions={false}
 					hidden={readOnly ?? disabled}
 					hiddenWhenEmpty={!nothingFoundMessage}
 					labelId={label ? `${_id}-label` : undefined}
