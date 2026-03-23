@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.26
+
+### Patch Changes
+
+- Scroll Bar Missing
+
 ## 0.9.25
 
 ### Patch Changes

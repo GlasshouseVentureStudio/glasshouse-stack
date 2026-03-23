@@ -395,7 +395,8 @@ export const OptionsDropdown = ({
 		<ScrollArea.Autosize
 			mah={maxDropdownHeight ?? 220}
 			scrollbarSize='var(--combobox-padding)'
-			type='scroll'
+			style={{ overflowY: 'auto' }}
+			type='auto'
 			{...scrollAreaProps}
 			viewportRef={mergedViewportRef}
 		>
