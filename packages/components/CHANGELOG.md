@@ -1,5 +1,12 @@
 # @glasshouse/components
 
+## 0.9.27
+
+### Patch Changes
+
+- 5ab501f: fix lint error
+- 5ab501f: fix lint error
+
 ## 0.9.26
 
 ### Patch Changes
