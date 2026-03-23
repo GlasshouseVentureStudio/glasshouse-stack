@@ -37,8 +37,8 @@ export const ToolbarInternalButtons = <TData extends MRT_RowData>({
 		},
 	} = table;
 
-	const hiding = enableHiding ? enableHiding : false;
-	const columnOrdering = enableColumnOrdering ? enableColumnOrdering : false;
+	const hiding = enableHiding ?? false;
+	const columnOrdering = enableColumnOrdering ?? false;
 
 	return (
 		<Flex

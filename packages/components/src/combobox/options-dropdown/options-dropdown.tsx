@@ -229,7 +229,7 @@ export const OptionsDropdown = ({
 
 	const shouldFilter = typeof search === 'string';
 	const filteredData = shouldFilter
-		? (filter ? filter : defaultOptionsFilter)({
+		? (filter ?? defaultOptionsFilter)({
 				options: data,
 				search: filterOptions ? search : '',
 				limit: limit ?? Infinity,
@@ -474,7 +474,7 @@ export const OptionsDropdown = ({
 	return (
 		<Combobox.Dropdown
 			className={classes.optionsDropdown}
-			hidden={hidden ? hidden : hiddenWhenEmpty && isEmpty}
+			hidden={hidden ?? (hiddenWhenEmpty && isEmpty)}
 		>
 			{renderDropdown ? renderDropdown({ data: filteredData, options: comboboxDropdown }) : comboboxDropdown}
 		</Combobox.Dropdown>

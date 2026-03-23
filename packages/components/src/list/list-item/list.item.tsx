@@ -33,10 +33,7 @@ export const ListItem = factory<ListItemFactory>((_props, ref) => {
 	const elementStyles = getStyles('item', {
 		className,
 		classNames,
-		style: {
-			...virtualizedStyles,
-			...style,
-		},
+		style: [virtualizedStyles, style],
 		styles,
 	});
 

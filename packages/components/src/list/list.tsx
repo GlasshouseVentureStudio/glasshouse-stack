@@ -98,7 +98,7 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 	// =============== Handle selection =============== //
 	const [value, setValue] = useState<T | T[] | undefined>(valueProp);
 
-	const realValue = valueProp ? valueProp : value;
+	const realValue = valueProp ?? value;
 
 	const handleItemClick = useCallback(
 		(event: React.MouseEvent, item: T, index: number) => {
@@ -165,9 +165,7 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 			key = item[itemKey] as string | number;
 		}
 
-		if (!key) {
-			key = `list-item-${index}`;
-		}
+		key ??= `list-item-${index}`;
 
 		const measureRef = measureElements ? virtualizer.measureElement : undefined;
 
@@ -248,10 +246,8 @@ const ListInner = <T extends object>(_props: ListProps<T>, ref: React.ForwardedR
 
 	const virtualizedItems = virtualizer
 		.getVirtualItems()
-		// eslint-disable-next-line react-compiler/react-compiler -- not sure why this error is happening
 		.map(row => renderInnerItem(data[row.index] as T, row.index, row));
 
-	// eslint-disable-next-line react-compiler/react-compiler -- not sure why this error is happening
 	const normalItems = data.map((item, index) => renderInnerItem(item, index));
 
 	const items = virtualized ? virtualizedItems : normalItems;
