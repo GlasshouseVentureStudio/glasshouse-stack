@@ -19,6 +19,7 @@ import {
 } from '@mantine/core';
 import { useId, useUncontrolled } from '@mantine/hooks';
 import omit from 'lodash.omit';
+import orderBy from 'lodash.orderby';
 import uniqBy from 'lodash.uniqby';
 import { XIcon } from 'lucide-react';
 
@@ -30,7 +31,6 @@ import { type MultiSelectBaseProps } from './multi-select.types';
 import { filterPickedValues } from './multi-select.utils';
 
 import classes from './multi-select.module.css';
-import orderBy from 'lodash.orderby';
 
 const defaultProps: Partial<MultiSelectBaseProps> = {
 	maxValues: Infinity,
@@ -452,7 +452,6 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 		baseData.length > 0 &&
 		baseData.every(
 			item =>
-				item &&
 				typeof item === 'object' &&
 				'group' in item &&
 				'items' in item &&
@@ -479,7 +478,7 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 				const searchedGroups = (baseData as ComboboxItemGroup[]).map(group => ({
 					...group,
 					items: group.items.filter(item =>
-						(item as ComboboxItem).label?.toLowerCase().includes(_searchValue.toLowerCase())
+						(item as ComboboxItem).label.toLowerCase().includes(_searchValue.toLowerCase())
 					),
 				}));
 
@@ -502,7 +501,7 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 
 			if (_searchValue) {
 				const searchedItems = baseData.filter(item =>
-					(item as ComboboxItem).label?.toLowerCase().includes(_searchValue.toLowerCase())
+					(item as ComboboxItem).label.toLowerCase().includes(_searchValue.toLowerCase())
 				);
 				const unselectedSearched = searchedItems.filter(item => !_value.includes((item as ComboboxItem).value));
 
