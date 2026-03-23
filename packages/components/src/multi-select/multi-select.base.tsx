@@ -452,6 +452,8 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 		baseData.length > 0 &&
 		baseData.every(
 			item =>
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, eqeqeq -- runtime data may contain nulls
+				item != null &&
 				typeof item === 'object' &&
 				'group' in item &&
 				'items' in item &&
@@ -478,7 +480,8 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 				const searchedGroups = (baseData as ComboboxItemGroup[]).map(group => ({
 					...group,
 					items: group.items.filter(item =>
-						(item as ComboboxItem).label.toLowerCase().includes(_searchValue.toLowerCase())
+						// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime data may have undefined labels
+						((item as ComboboxItem).label ?? '').toLowerCase().includes(_searchValue.toLowerCase())
 					),
 				}));
 
@@ -501,7 +504,8 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 
 			if (_searchValue) {
 				const searchedItems = baseData.filter(item =>
-					(item as ComboboxItem).label.toLowerCase().includes(_searchValue.toLowerCase())
+					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime data may have undefined labels
+					((item as ComboboxItem).label ?? '').toLowerCase().includes(_searchValue.toLowerCase())
 				);
 				const unselectedSearched = searchedItems.filter(item => !_value.includes((item as ComboboxItem).value));
 
