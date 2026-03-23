@@ -31,10 +31,7 @@ export const ListGroupHeader = polymorphicFactory<ListGroupHeaderFactory>((_prop
 	const elementStyles = getStyles('groupHeader', {
 		className,
 		classNames,
-		style: {
-			...virtualizedStyles,
-			...style,
-		},
+		style: [virtualizedStyles, style],
 		styles,
 	});
 

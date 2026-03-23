@@ -1,4 +1,4 @@
-import { type ForwardedRef, forwardRef, useEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import { usePrevious } from '@glasshouse/utils';
 import {
 	Combobox,
@@ -24,7 +24,7 @@ import { useProps } from '../../hooks/use-props';
 import { OptionsDropdown } from '../combobox/options-dropdown';
 import { type SelectBaseProps } from './select.types';
 
-const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInputElement>) => {
+const SelectBaseComponent = (_props: SelectBaseProps) => {
 	const defaultProps: Partial<SelectBaseProps> = {
 		searchable: false,
 		withCheckIcon: true,
@@ -402,6 +402,7 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 								} else {
 									setSearch(previousOptionsLockup?.[_value]?.label ?? '');
 								}
+
 								setOpen(true);
 
 								onBlur?.(event);
@@ -418,6 +419,7 @@ const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInpu
 								} else {
 									combobox.toggleDropdown();
 								}
+
 								setOpen(false);
 								onClick?.(event);
 							}}

@@ -171,7 +171,7 @@ const AutocompleteBaseComponent = (_props: AutocompleteBaseProps, ref: Forwarded
 				createInputValidator={createInputValidator}
 				data={parsedData}
 				filter={filter}
-				hidden={readOnly ? readOnly : disabled}
+				hidden={readOnly ?? disabled}
 				hiddenWhenEmpty
 				labelId={others.label ? `${_id}-label` : undefined}
 				limit={limit}

@@ -72,7 +72,7 @@ const SelectWithQueryComponent = <TQueryFnData = unknown, TError = Error, TQuery
 			ref={ref}
 			data={options}
 			defaultSearchValue={defaultSearchValue}
-			filter={filter ? filter : optionsFilter}
+			filter={filter ?? optionsFilter}
 			loading={isLoading || loading}
 			onOptionSubmit={handleOptionSubmit}
 			onSearchChange={handleSearchChange}

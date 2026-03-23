@@ -22,9 +22,7 @@ export const GridCellVariables = ({ column, row, selector }: GridCellVariablesPr
 	});
 
 	const queries = keys(theme.breakpoints).reduce<Record<string, Record<string, unknown>>>((acc, breakpoint) => {
-		if (!acc[breakpoint]) {
-			acc[breakpoint] = {};
-		}
+		acc[breakpoint] ??= {};
 
 		if (typeof column === 'object' && column[breakpoint] !== undefined) {
 			acc[breakpoint]['--grid-column'] = column[breakpoint];
