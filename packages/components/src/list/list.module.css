@@ -8,6 +8,7 @@
 
 .scrollArea {
 	position: relative;
+	min-height: 0;
 	border-radius: var(--list-radius, var(--mantine-radius-md, 0.25rem));
 
 	&[data-orientation='vertical'] {
