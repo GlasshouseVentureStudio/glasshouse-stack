@@ -128,9 +128,7 @@ export const OnItemClick: ListStory = {
 export const ScrollShadow: ListStory = {
 	args: {
 		...Default.args,
-		classNames: {
-			root: 'gvs-h-60',
-		},
+		h: rem(240),
 		data,
 		scrollShadowProps: {
 			shadowSize: 'xl',
@@ -285,7 +283,7 @@ export const Virtualized: ListStory = {
 		...Default.args,
 		data,
 		virtualized: true,
-		className: 'gvs-h-96',
+		h: rem(384),
 	},
 	render: ({ virtualized, ...args }) => {
 		const data = virtualized ? args.data : args.data.slice(0, 100);
@@ -306,7 +304,7 @@ export const Virtualized: ListStory = {
 export const Grouped: ListStory = {
 	args: {
 		...Default.args,
-		data,
+		data: data.slice(0, 100),
 		groupByFn: items => groupBy(items, item => item.name.toLowerCase()[0]),
 
 		renderGroupHeader: header => (
@@ -315,7 +313,7 @@ export const Grouped: ListStory = {
 			</Box>
 		),
 
-		className: 'gvs-h-96',
+		h: rem(384),
 		stickyGroupHeader: false,
 		estimateGroupHeaderSize: () => 41,
 
