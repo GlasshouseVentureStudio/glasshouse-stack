@@ -1,5 +1,11 @@
 # @glasshouse/components
 
+## 0.9.28
+
+### Major Changes
+
+- correct commit message to pass commitlint
+
 ## 0.9.27
 
 ### Patch Changes

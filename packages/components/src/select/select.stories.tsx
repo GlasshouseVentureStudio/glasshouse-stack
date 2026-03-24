@@ -716,7 +716,7 @@ export const GroupSelect: StoryObj<
 
 export const SingleDataBasic: StoryObj<SelectProps> = {
 	args: {
-		data: ['A', 'B', 'C', 'D'],
+		data: ['A', 'B', 'C', 'D', 'E'],
 		w: 256,
 		placeholder: 'Select',
 		clearable: true,
