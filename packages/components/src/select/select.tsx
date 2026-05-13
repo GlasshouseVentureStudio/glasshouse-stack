@@ -17,10 +17,20 @@ const SelectComponent = <
 ) => {
 	if (props.queryOptions) {
 		if (props.infinite) {
-			return <SelectWithInfiniteQuery {...props} />;
+			return (
+				<SelectWithInfiniteQuery
+					{...props}
+					ref={ref}
+				/>
+			);
 		}
 
-		return <SelectWithQuery {...props} />;
+		return (
+			<SelectWithQuery
+				{...props}
+				ref={ref}
+			/>
+		);
 	}
 
 	return (

@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
+import { type ForwardedRef, forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import { usePrevious } from '@glasshouse/utils';
 import {
 	Combobox,
@@ -16,7 +16,7 @@ import {
 	useCombobox,
 	useResolvedStylesApi,
 } from '@mantine/core';
-import { useId, useUncontrolled } from '@mantine/hooks';
+import { useId, useMergedRef, useUncontrolled } from '@mantine/hooks';
 import omit from 'lodash.omit';
 import uniqBy from 'lodash.uniqby';
 
@@ -24,7 +24,7 @@ import { useProps } from '../../hooks/use-props';
 import { OptionsDropdown } from '../combobox/options-dropdown';
 import { type SelectBaseProps } from './select.types';
 
-const SelectBaseComponent = (_props: SelectBaseProps) => {
+const SelectBaseComponent = (_props: SelectBaseProps, ref: ForwardedRef<HTMLInputElement>) => {
 	const defaultProps: Partial<SelectBaseProps> = {
 		searchable: false,
 		withCheckIcon: true,
@@ -282,6 +282,7 @@ const SelectBaseComponent = (_props: SelectBaseProps) => {
 	const textRef = useRef<HTMLSpanElement>(null);
 	const [isTruncated, setIsTruncated] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
+	const mergedRef = useMergedRef(ref, inputRef);
 
 	useEffect(() => {
 		const el = textRef.current;
@@ -341,6 +342,7 @@ const SelectBaseComponent = (_props: SelectBaseProps) => {
 					{open && search ? (
 						// @ts-expect-error Type conflict with InputBase rendered as button
 						<InputBase
+							ref={mergedRef}
 							component='button'
 							id={_id}
 							rightSection={inputRightSection}
@@ -380,7 +382,7 @@ const SelectBaseComponent = (_props: SelectBaseProps) => {
 						</InputBase>
 					) : (
 						<InputBase
-							ref={inputRef}
+							ref={mergedRef}
 							id={_id}
 							rightSection={inputRightSection}
 							rightSectionPointerEvents={rightSectionPointerEvents ?? (clearButton ? 'all' : 'none')}
