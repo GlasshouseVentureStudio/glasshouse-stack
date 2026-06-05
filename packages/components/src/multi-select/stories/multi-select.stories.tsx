@@ -60,6 +60,17 @@ export const Basic: StoryObj<MultiSelectStory> = {
 	},
 };
 
+export const KeepSearchValue: StoryObj<MultiSelectStory> = {
+	args: {
+		data: generateData(20),
+		w: 256,
+		placeholder: 'Select person',
+		searchable: true,
+		clearable: true,
+		clearSearchOnChange: false,
+	},
+};
+
 export const RenderOption: StoryObj<MultiSelectProps> = {
 	args: {
 		data: generateData(20),
