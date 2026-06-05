@@ -37,6 +37,7 @@ const defaultProps: Partial<MultiSelectBaseProps> = {
 	withCheckIcon: true,
 	checkIconPosition: 'left',
 	hiddenInputValuesDivider: ',',
+	clearSearchOnChange: false,
 };
 
 const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRef<HTMLInputElement>) => {
@@ -143,6 +144,7 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 		onDropdownEndReached,
 		virtualized,
 		virtualizerOptions,
+		clearSearchOnChange,
 		...others
 	} = props;
 
@@ -275,16 +277,6 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 			event.preventDefault();
 			combobox.toggleDropdown();
 		}
-
-		if (event.key === 'Backspace' && _searchValue.length === 0 && _value.length > 0) {
-			const val = _value[_value.length - 1];
-
-			if (val) {
-				onRemove?.(val);
-			}
-
-			setValue(_value.slice(0, _value.length - 1));
-		}
 	};
 
 	useEffect(() => {
@@ -293,7 +285,7 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 		}
 	}, [selectFirstOptionOnChange, _value, combobox]);
 
-	const clearButton = clearable && _value.length > 0 && !disabled && !readOnly && (
+	const clearButton = clearable && _value.length > 0 && !disabled && !readOnly && !combobox.dropdownOpened && (
 		<Combobox.ClearButton
 			size={size}
 			{...clearButtonProps}
@@ -406,7 +398,11 @@ const MultiSelectBaseComponent = (_props: MultiSelectBaseProps, ref: ForwardedRe
 
 	const handleOptionSubmit = (value: string) => {
 		onOptionSubmit?.(value);
-		setSearchValue('');
+
+		if (clearSearchOnChange) {
+			setSearchValue('');
+		}
+
 		combobox.updateSelectedOptionIndex('selected');
 
 		const option = optionsLockup[value];

@@ -1,5 +1,15 @@
 # @glasshouse/components
 
+## 0.10.0
+
+### Minor Changes
+
+- MultiSelect: improve search and selection behavior
+
+  - Add `clearSearchOnChange` prop (default `false`). By default the search text and the filtered result list are now kept after selecting an option, so users can keep picking multiple items from the same search without retyping. Set `clearSearchOnChange` to `true` to clear the search on every change (the previous behavior).
+  - Hide the clear-all (`X`) button while the dropdown is open to avoid accidentally wiping all selections during search.
+  - Stop removing the last selected item when pressing Backspace on an empty search input.
+
 ## 0.9.29
 
 ### Patch Changes

@@ -164,6 +164,17 @@ export interface MultiSelectBaseProps extends MantineMultiSelectProps {
 	/** A boolean that determines whether the options list should use virtualization. */
 	virtualized?: boolean;
 
+	/**
+	 * Whether to clear the search value when the selected value changes (an option is selected or deselected).
+	 *
+	 * By default the search text and the filtered result list are kept after a selection, so users can continue
+	 * picking multiple items from the same search without retyping. Set to `true` to clear the search on every
+	 * change. The search is always cleared when the input is blurred, the dropdown is reopened, or the value is cleared.
+	 *
+	 * @defaultValue `false`
+	 */
+	clearSearchOnChange?: boolean;
+
 	/** Options for the virtualizer.
 	 * @see https://tanstack.com/virtual/latest/docs/api/virtualizer
 	 */
